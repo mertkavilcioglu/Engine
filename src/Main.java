@@ -13,8 +13,11 @@ public class Main {
             Unit u = new Unit();
             u.name = name;
             u.pos = new Position();
-            u.pos.x = ThreadLocalRandom.current().nextInt(50);
-            u.pos.y = ThreadLocalRandom.current().nextInt(50);
+            u.pos.x = ThreadLocalRandom.current().nextInt(10);
+            u.pos.y = ThreadLocalRandom.current().nextInt(10);
+            u.speed = new Speed();
+            u.speed.x = ThreadLocalRandom.current().nextInt(3);
+            u.speed.y = ThreadLocalRandom.current().nextInt(3);
 
             Radar r = new Radar();
             u.components.add(r);
@@ -72,14 +75,20 @@ public class Main {
     public static class Position {
         int x,y;
     }
+    public static class Speed {
+        int x,y;
+    }
     public static class Unit {
         String name;
         Position pos;
-        int speed = 1;
+        Speed speed;
         ArrayList<Component> components = new ArrayList<>();
 
         void update(int deltaTime) {
-            System.out.println("Unit::update -" + name + " - " + "time:" + deltaTime);
+
+            pos.x += speed.x;
+            pos.y += speed.y;
+            System.out.println("Unit::update -" + name + " - " + "time:" + deltaTime + " position: " + pos.x + " " + pos.y + " speed: " + speed.x + " " + speed.y);
             for (int i = 0; i < components.size(); i++) {
                 components.get(i).update(deltaTime);
             }
@@ -99,7 +108,7 @@ public class Main {
 
         @Override
         public void update(int deltaTime) {
-            System.out.println("Component::update");
+            //System.out.println("ComponentRadar::update");
         }
     }
 }
