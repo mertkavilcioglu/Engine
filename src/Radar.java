@@ -17,7 +17,7 @@ public class Radar extends Component{
         boolean hasVisual = false;
         for (int i = 0; i < units.size(); i++) {
             if(sqrt((units.get(i).pos.x - selfPosition.x)*(units.get(i).pos.x - selfPosition.x) + (units.get(i).pos.y - selfPosition.y)*(units.get(i).pos.y - selfPosition.y)) <= range && (units.get(i).pos.x != selfPosition.x || units.get(i).pos.y != selfPosition.y)){
-                System.out.println("ComponentRadar::update Unit " + parentUnit.name.toUpperCase() + " has detected unit " + units.get(i).name.toUpperCase());
+                System.out.format("ComponentRadar::update Unit %s has detected unit %s.\n",parentUnit.name.toUpperCase(),units.get(i).name.toUpperCase());
                 hasVisual = true;
 
                 // Position check for distance calculation accuracy
@@ -28,7 +28,7 @@ public class Radar extends Component{
             //System.out.println("ComponentRadar::update Unit " + parentUnit.name.toUpperCase() + " has no detection ");
         }
         if(!hasVisual)
-            System.out.println("ComponentRadar::update Unit " + parentUnit.name.toUpperCase() + " has no detection ");
+            System.out.format("ComponentRadar::update Unit %s has no detection.\n", parentUnit.name.toUpperCase());
         System.out.println("");
     }
 
