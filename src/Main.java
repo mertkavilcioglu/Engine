@@ -127,7 +127,7 @@ public class Main {
 
             boolean hasVisual = false;
             for (int i = 0; i < units.size(); i++) {
-                if(sqrt((units.get(i).pos.x - selfPosition.x)*(units.get(i).pos.x - selfPosition.x) + (units.get(i).pos.y - selfPosition.y)) <= range && (units.get(i).pos.x != selfPosition.x || units.get(i).pos.y != selfPosition.y)){
+                if(sqrt((units.get(i).pos.x - selfPosition.x)*(units.get(i).pos.x - selfPosition.x) + (units.get(i).pos.y - selfPosition.y)*(units.get(i).pos.y - selfPosition.y)) <= range && (units.get(i).pos.x != selfPosition.x || units.get(i).pos.y != selfPosition.y)){
                     System.out.println("ComponentRadar::update Unit " + parentUnit.name.toUpperCase() + " has detected unit " + units.get(i).name.toUpperCase());
                     hasVisual = true;
 
