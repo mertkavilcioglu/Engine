@@ -1,13 +1,14 @@
 import java.util.ArrayList;
 
 public class World {
-    WorldMap map;
-    static ArrayList<Unit> units = new ArrayList<>();
+    public WorldMap map = new WorldMap();
+    public static ArrayList<Entity> entities = new ArrayList<>();
 
     void update(int deltaTime) {
-        System.out.println("World::update");
-        for (int i = 0; i < units.size(); i++) {
-            units.get(i).update(deltaTime);
+        System.out.println(Thread.currentThread().getName());
+        //System.out.println("World::update");
+        for (int i = 0; i < entities.size(); i++) {
+            entities.get(i).update(deltaTime);
         }
     }
     void render() {

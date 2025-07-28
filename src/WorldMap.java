@@ -1,4 +1,4 @@
 public class WorldMap {
-    int maxX = 1000;
-    int maxY = 1000;
+    int maxX = 100;
+    int maxY = 100;
 }

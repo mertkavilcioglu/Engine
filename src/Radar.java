@@ -1,23 +1,32 @@
 import java.util.List;
+import java.util.Vector;
 
 import static java.lang.Math.sqrt;
 
 public class Radar extends Component{
-    int range = 10;
+    int range = 50;
 
-    public Radar(Unit parent) {
+    public Radar(Entity parent) {
         super(parent);
     }
 
 
-    void detect(Position selfPosition, List<Unit> units) {
+    void detect(List<Entity> entities) {
         // calc distance for every unit
         // check range
 
         boolean hasVisual = false;
-        for (int i = 0; i < units.size(); i++) {
-            if(sqrt((units.get(i).pos.x - selfPosition.x)*(units.get(i).pos.x - selfPosition.x) + (units.get(i).pos.y - selfPosition.y)*(units.get(i).pos.y - selfPosition.y)) <= range && (units.get(i).pos.x != selfPosition.x || units.get(i).pos.y != selfPosition.y)){
-                System.out.format("ComponentRadar::update Unit %s has detected unit %s.\n",parentUnit.name.toUpperCase(),units.get(i).name.toUpperCase());
+        for (int i = 0; i < entities.size(); i++) {
+            Entity e = entities.get(i);
+            if (e == parentEntity) {
+                continue;
+            }
+            Vec2int p = entities.get(i).pos;
+            double dist = parentEntity.pos.distance(p);
+            if(dist <= range) {
+                System.out.format("ComponentRadar::update Unit %s has detected unit %s - distance: %.2f.\n",
+                        parentEntity.name.toUpperCase(), entities.get(i).name.toUpperCase(),
+                        dist);
                 hasVisual = true;
 
                 // Position check for distance calculation accuracy
@@ -28,13 +37,13 @@ public class Radar extends Component{
             //System.out.println("ComponentRadar::update Unit " + parentUnit.name.toUpperCase() + " has no detection ");
         }
         if(!hasVisual)
-            System.out.format("ComponentRadar::update Unit %s has no detection.\n", parentUnit.name.toUpperCase());
-        System.out.println("");
+            System.out.format("ComponentRadar::update Unit %s has no detection.\n", parentEntity.name.toUpperCase());
+
     }
 
     @Override
     public void update(int deltaTime) {
-        detect(parentUnit.pos, World.units);
+        detect(World.entities);
         //System.out.println("ComponentRadar::update");
     }
 }

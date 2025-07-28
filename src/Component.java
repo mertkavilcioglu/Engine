@@ -1,12 +1,12 @@
 public abstract class Component {
-    Unit parentUnit;
+    Entity parentEntity;
 
-    public Component(Unit parent){
-        parentUnit = parent;
+    public Component(Entity parent){
+        parentEntity = parent;
     }
 
     public abstract void update(int deltaTime);
-    void setPosition(Position pos){
-        parentUnit.pos = pos;
+    void setPosition(Vec2int pos){
+        parentEntity.pos = pos;
     }
 }
