@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static java.lang.Math.sqrt;
@@ -24,6 +25,11 @@ public class Main {
             u.speed.y = ThreadLocalRandom.current().nextInt(1, 4);
 
             Radar r = new Radar(u);
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.format("Assign the range of %s's radar: ", u.name);
+            r.range = scanner.nextInt();
+
             u.components.add(r);
 
             return u;
