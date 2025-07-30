@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -13,7 +14,7 @@ public class SimApp {
         Entity u = new Entity();
         u.name = name;
 
-        u.pos = Vec2int.getRandom(world.map.maxX,world.map.maxY);
+        u.pos = Vec2int.getRandom(world.map.maxX / 8 ,world.map.maxY / 6);
         u.speed = Vec2int.getRandom(0,4,0,4);
 
             /*
@@ -23,10 +24,10 @@ public class SimApp {
             */
         Radar r = new Radar(u);
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.format("Assign the range of %s's radar: ", u.name);
+        //Scanner scanner = new Scanner(System.in);
+        //System.out.format("Assign the range of %s's radar: ", u.name);
 
-        int input = 10;
+        //int input = 20;
             /*
             do
             {
@@ -43,7 +44,7 @@ public class SimApp {
             while (true);
             */
 
-        r.range = input;
+        //r.range = input;
 
         u.components.add(r);
 
@@ -100,14 +101,53 @@ public class SimApp {
         // TODO JButton JTextField // Image? Icon?
         // TODO READ SWING RENDERING ON JPANEL
         // TODO GRAPHICS & GRAPHICS2D
+
         mapView = new MapView(world);
         window.add(mapView,BorderLayout.CENTER);
 
-        JButton btn = new JButton("BUTON");
-        btn.addActionListener(e -> {
+        JPanel compPanel = new JPanel();
+        compPanel.setLayout(new GridLayout(25,1));
+        compPanel.setPreferredSize(new Dimension(150,window.getHeight()));
+        //addPanel.setBackground(Color.lightGray);
+        window.add(compPanel, BorderLayout.EAST);
+        compPanel.setBorder(new TitledBorder("Create Entity"));
+
+
+        JButton createBtn = new JButton("Create");
+        createBtn.addActionListener(e -> {
             System.out.println("button clicked");
         });
+        createBtn.setFocusable(false);
+
         //System.out.println("CURRENT THREAD: 1" + Thread.currentThread().getName());
+
+        JLabel eName = new JLabel("Name:");
+        compPanel.add(eName);
+        JTextField eNameInp = new JTextField();
+        compPanel.add(eNameInp);
+        JLabel poslabel = new JLabel("Position:");
+        compPanel.add(poslabel);
+
+        JPanel posPnl = new JPanel(new GridLayout(1,4));
+        JLabel posXlabel = new JLabel("X:");
+        JTextField posXfield = new JTextField();
+        JLabel posYlabel = new JLabel("Y:");
+        JTextField posYfield = new JTextField();
+
+        posPnl.add(posXlabel);
+        posPnl.add(posXfield);
+        posPnl.add(posYlabel);
+        posPnl.add(posYfield);
+
+        compPanel.add(posPnl);
+
+
+
+
+
+
+
+        compPanel.add(createBtn);
         window.setVisible(true);
 
         world.entities.add(createUnit("Mert"));

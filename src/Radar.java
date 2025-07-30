@@ -28,17 +28,10 @@ public class Radar extends Component{
                         parentEntity.name.toUpperCase(), entities.get(i).name.toUpperCase(),
                         dist);
                 hasVisual = true;
-
-                // Position check for distance calculation accuracy
-                // System.out.println("Position of unit " + parentUnit.name.toUpperCase() + " : " + parentUnit.pos.x + " " + parentUnit.pos.y);
-                // System.out.println("Position of unit " + units.get(i).name.toUpperCase() + " : " + units.get(i).pos.x + " " + units.get(i).pos.y);
-
             }
-            //System.out.println("ComponentRadar::update Unit " + parentUnit.name.toUpperCase() + " has no detection ");
         }
         if(!hasVisual)
             System.out.format("ComponentRadar::update Unit %s has no detection.\n", parentEntity.name.toUpperCase());
-
     }
 
     @Override

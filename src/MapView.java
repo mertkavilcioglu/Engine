@@ -19,7 +19,7 @@ public class MapView extends JPanel {
 
             //drawEntity(e);
             g.setColor(Color.BLACK);
-            g.drawOval(e.pos.x, e.pos.y, 40, 20);
+            g.drawOval(e.pos.x, e.pos.y, 20, 20);
         }
     }
 
