@@ -3,7 +3,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Scanner;
 
 public class SimApp {
     World world;
@@ -49,6 +48,36 @@ public class SimApp {
         u.components.add(r);
 
         return u;
+    }
+
+    private Entity createEntity(String eName, String ePosX, String ePosY){
+        boolean isValid = true;
+        if(eName == null || eName.trim().isEmpty()){
+            System.out.println("NAME CANNOT BE NULL");
+            isValid = false;
+        }
+        if(!IntegerValidate(ePosX)){
+            System.out.println("POS X IS NOT VALID");
+            isValid = false;
+        }
+        if(!IntegerValidate(ePosY)){
+            System.out.println("POS Y IS NOT VALID");
+            isValid = false;
+        }
+        if(isValid){
+            //create entity
+            System.out.format("Created entity %s with x:%d and y:%d", eName, stringToInt(ePosX), stringToInt(ePosY));
+            Entity u = new Entity();
+            u.name = eName;
+
+            u.pos = new Vec
+            u.speed = Vec2int.getRandom(0,4,0,4);
+
+            Radar r = new Radar(u);
+            u.components.add(r);
+
+            return u;
+        }
     }
 
     public void run() {
@@ -112,19 +141,12 @@ public class SimApp {
         window.add(compPanel, BorderLayout.EAST);
         compPanel.setBorder(new TitledBorder("Create Entity"));
 
-
-        JButton createBtn = new JButton("Create");
-        createBtn.addActionListener(e -> {
-            System.out.println("button clicked");
-        });
-        createBtn.setFocusable(false);
-
         //System.out.println("CURRENT THREAD: 1" + Thread.currentThread().getName());
 
         JLabel eName = new JLabel("Name:");
         compPanel.add(eName);
-        JTextField eNameInp = new JTextField();
-        compPanel.add(eNameInp);
+        JTextField eNameField = new JTextField();
+        compPanel.add(eNameField);
         JLabel poslabel = new JLabel("Position:");
         compPanel.add(poslabel);
 
@@ -139,15 +161,17 @@ public class SimApp {
         posPnl.add(posYlabel);
         posPnl.add(posYfield);
 
+        JButton createBtn = new JButton("Create");
+        createBtn.addActionListener(e -> {
+            System.out.println("button clicked");
+            world.entities.add(createEntity(eNameField.getText(), posXfield.getText(), posYfield.getText()));
+        });
+        createBtn.setFocusable(false);
+
+
         compPanel.add(posPnl);
-
-
-
-
-
-
-
         compPanel.add(createBtn);
+
         window.setVisible(true);
 
         world.entities.add(createUnit("Mert"));
@@ -178,5 +202,24 @@ public class SimApp {
 
     private void renderToWindow() {
         window.repaint();
+    }
+
+
+
+    private boolean IntegerValidate(String s){
+        if(s == null)
+            return false;
+        int str;
+        try {
+            str = Integer.parseInt(s);
+        }
+        catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private int stringToInt(String s){
+        return Integer.parseInt(s);
     }
 }
