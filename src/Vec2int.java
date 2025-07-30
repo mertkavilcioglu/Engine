@@ -13,6 +13,10 @@ public class Vec2int {
       return sqrt((other.x - this.x)*(other.x - this.x) + (other.y - this.y)*(other.y - this.y));
     }
 
+    public double hypotenuse() {
+        return sqrt((this.x * this.x) + (this.y * this.y));
+    }
+
     public static Vec2int getRandom(int maxX, int maxY) {
         Vec2int res = new Vec2int();
         res.x = ThreadLocalRandom.current().nextInt(maxX);
