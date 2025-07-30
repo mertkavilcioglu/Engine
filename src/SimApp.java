@@ -9,7 +9,7 @@ public class SimApp {
     JFrame window;
     MapView mapView;
 
-    public Entity createUnit(String name) {
+    public Entity createEntity(String name) {
         Entity u = new Entity();
         u.name = name;
 
@@ -51,6 +51,7 @@ public class SimApp {
     }
 
     private Entity createEntity(String eName, String ePosX, String ePosY){
+        //TODO add speed, radar range and attack target inputs through UI
         boolean isValid = true;
         if(eName == null || eName.trim().isEmpty()){
             System.out.println("NAME CANNOT BE NULL");
@@ -70,7 +71,7 @@ public class SimApp {
             Entity u = new Entity();
             u.name = eName;
 
-            u.pos = new Vec
+            u.pos = new Vec2int(stringToInt(ePosX), stringToInt(ePosY));
             u.speed = Vec2int.getRandom(0,4,0,4);
 
             Radar r = new Radar(u);
@@ -78,6 +79,7 @@ public class SimApp {
 
             return u;
         }
+        return null;
     }
 
     public void run() {
@@ -87,9 +89,9 @@ public class SimApp {
         int updateInterval = 1000;
 
 
-        world.entities.add(createUnit("Mert"));
-        world.entities.add(createUnit("Emir"));
-        world.entities.add(createUnit("Seda"));
+        world.entities.add(createEntity("Mert"));
+        world.entities.add(createEntity("Emir"));
+        world.entities.add(createEntity("Seda"));
 
 
         while (isWorking) {
@@ -174,9 +176,9 @@ public class SimApp {
 
         window.setVisible(true);
 
-        world.entities.add(createUnit("Mert"));
-        world.entities.add(createUnit("Emir"));
-        world.entities.add(createUnit("Seda"));
+        world.entities.add(createEntity("Mert"));
+        world.entities.add(createEntity("Emir"));
+        world.entities.add(createEntity("Seda"));
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
