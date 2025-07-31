@@ -145,34 +145,19 @@ public class SimApp {
 
         //System.out.println("CURRENT THREAD: 1" + Thread.currentThread().getName());
 
-        JLabel eName = new JLabel("Name:");
-        compPanel.add(eName);
-        JTextField eNameField = new JTextField();
-        compPanel.add(eNameField);
-        JLabel poslabel = new JLabel("Position:");
-        compPanel.add(poslabel);
-
-        JPanel posPnl = new JPanel(new GridLayout(1,4));
-        JLabel posXlabel = new JLabel("X:");
-        JTextField posXfield = new JTextField();
-        JLabel posYlabel = new JLabel("Y:");
-        JTextField posYfield = new JTextField();
-
-        posPnl.add(posXlabel);
-        posPnl.add(posXfield);
-        posPnl.add(posYlabel);
-        posPnl.add(posYfield);
+        TextFieldInputPanel eNamePanel = new TextFieldInputPanel(compPanel, "Name:");
+        Vect2IntInputPanel ePositionPanel = new Vect2IntInputPanel(compPanel, "Position:");
+        Vect2IntInputPanel eSpeedPanel = new Vect2IntInputPanel(compPanel, "Velocity");
 
         JButton createBtn = new JButton("Create");
         createBtn.addActionListener(e -> {
             System.out.println("button clicked");
-            Entity ent = createEntity(eNameField.getText(), posXfield.getText(), posYfield.getText());
+            Entity ent = createEntity(eNamePanel.getInputField().getText(), ePositionPanel.getPosXinputField().getText(),
+                    ePositionPanel.getPosYinputField().getText());
             if(ent != null)
                 world.entities.add(ent);
         });
         createBtn.setFocusable(false);
-
-        compPanel.add(posPnl);
         compPanel.add(createBtn);
 
         window.setVisible(true);
@@ -207,8 +192,6 @@ public class SimApp {
         window.repaint();
     }
 
-
-
     private boolean integerValidate(String s){
         if(s == null)
             return false;
@@ -225,4 +208,54 @@ public class SimApp {
     private int stringToInt(String s){
         return Integer.parseInt(s);
     }
+
+    public class TextFieldInputPanel{
+        private JLabel inputLabel;
+        private JTextField inputField;
+
+        TextFieldInputPanel(JPanel panel, String label){
+            inputLabel = new JLabel(label);
+            panel.add(inputLabel);
+            inputField = new JTextField();
+            panel.add(inputField);
+        }
+
+        public JTextField getInputField(){
+            return inputField;
+        }
+    }
+    public class Vect2IntInputPanel{
+        private JLabel panelNameLabel;
+        private JPanel gridPanel;
+        private JLabel posXlabel;
+        private JTextField posXinputField;
+        private JLabel posYlabel;
+        private JTextField posYinputField;
+
+        Vect2IntInputPanel(JPanel panel, String label){
+            panelNameLabel = new JLabel(label);
+            panel.add(panelNameLabel);
+            gridPanel = new JPanel(new GridLayout(1,4));
+            posXlabel = new JLabel("X:");
+            posXinputField = new JTextField();
+            posYlabel = new JLabel("Y:");
+            posYinputField = new JTextField();
+
+            gridPanel.add(posXlabel);
+            gridPanel.add(posXinputField);
+            gridPanel.add(posYlabel);
+            gridPanel.add(posYinputField);
+
+            panel.add(gridPanel);
+        }
+
+        public JTextField getPosXinputField(){
+            return posXinputField;
+        }
+
+        public JTextField getPosYinputField(){
+            return posYinputField;
+        }
+    }
+
 }
