@@ -3,12 +3,13 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 public class SimApp {
     World world;
     JFrame window;
     MapView mapView;
-
+    ArrayList<JLabel> entityNames = new ArrayList<>();
     public Entity createEntity(String name) {
         Entity u = new Entity();
         u.name = name;
@@ -46,7 +47,6 @@ public class SimApp {
         //r.range = input;
 
         u.components.add(r);
-
         return u;
     }
 
@@ -89,9 +89,9 @@ public class SimApp {
         int updateInterval = 1000;
 
 
-        world.entities.add(createEntity("Mert"));
-        world.entities.add(createEntity("Emir"));
-        world.entities.add(createEntity("Seda"));
+        //world.entities.add(createEntity("Mert"));
+        //world.entities.add(createEntity("Emir"));
+        //world.entities.add(createEntity("Seda"));
 
 
         while (isWorking) {
@@ -149,22 +149,39 @@ public class SimApp {
         Vect2IntInputPanel ePositionPanel = new Vect2IntInputPanel(compPanel, "Position:");
         Vect2IntInputPanel eSpeedPanel = new Vect2IntInputPanel(compPanel, "Velocity");
 
+        JPanel hierarchyPanel = new JPanel();
+        hierarchyPanel.setLayout(new GridLayout(25,1));
+        hierarchyPanel.setPreferredSize(new Dimension(150,window.getHeight()));
+        //addPanel.setBackground(Color.lightGray);
+        window.add(hierarchyPanel, BorderLayout.WEST);
+        hierarchyPanel.setBorder(new TitledBorder("Hierarchy"));
+
         JButton createBtn = new JButton("Create");
         createBtn.addActionListener(e -> {
             System.out.println("button clicked");
             Entity ent = createEntity(eNamePanel.getInputField().getText(), ePositionPanel.getPosXinputField().getText(),
                     ePositionPanel.getPosYinputField().getText());
-            if(ent != null)
+            if(ent != null){
                 world.entities.add(ent);
+                addLabel(hierarchyPanel, ent.name);
+
+            }
         });
         createBtn.setFocusable(false);
         compPanel.add(createBtn);
+
+
 
         window.setVisible(true);
 
         world.entities.add(createEntity("Mert"));
         world.entities.add(createEntity("Emir"));
         world.entities.add(createEntity("Seda"));
+
+        addLabel(hierarchyPanel, "Mert");
+        addLabel(hierarchyPanel, "Emir");
+        addLabel(hierarchyPanel, "Seda");
+
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -256,6 +273,12 @@ public class SimApp {
         public JTextField getPosYinputField(){
             return posYinputField;
         }
+    }
+
+    private void addLabel(JPanel panel, String str){
+        JLabel nameLabel = new JLabel(str);
+        panel.add(nameLabel);
+        panel.revalidate();
     }
 
 }
