@@ -50,7 +50,7 @@ public class SimApp {
         return u;
     }
 
-    private Entity createEntity(String eName, String ePosX, String ePosY){
+    private Entity createEntity(String eName, String ePosX, String ePosY, String eSpeedX, String eSpeedY){
         //TODO add speed, radar range and attack target inputs through UI
         boolean isValid = true;
         if(eName == null || eName.trim().isEmpty()){
@@ -65,6 +65,14 @@ public class SimApp {
             System.out.println("POS Y IS NOT VALID");
             isValid = false;
         }
+        if(!integerValidate(eSpeedX)){
+            System.out.println("SPEED X IS NOT VALID");
+            isValid = false;
+        }
+        if(!integerValidate(eSpeedY)){
+            System.out.println("SPEED Y IS NOT VALID");
+            isValid = false;
+        }
         if(isValid){
             //create entity
             System.out.format("Created entity %s with x:%d and y:%d", eName, stringToInt(ePosX), stringToInt(ePosY));
@@ -72,7 +80,8 @@ public class SimApp {
             u.name = eName;
 
             u.pos = new Vec2int(stringToInt(ePosX), stringToInt(ePosY));
-            u.speed = Vec2int.getRandom(0,4,0,4);
+            //u.speed = Vec2int.getRandom(0,4,0,4);
+            u.speed = new Vec2int(stringToInt(eSpeedX), stringToInt(eSpeedY));
 
             Radar r = new Radar(u);
             u.components.add(r);
@@ -160,7 +169,8 @@ public class SimApp {
         createBtn.addActionListener(e -> {
             System.out.println("button clicked");
             Entity ent = createEntity(eNamePanel.getInputField().getText(), ePositionPanel.getPosXinputField().getText(),
-                    ePositionPanel.getPosYinputField().getText());
+                    ePositionPanel.getPosYinputField().getText(), eSpeedPanel.getPosXinputField().getText(),
+                    eSpeedPanel.getPosYinputField().getText());
             if(ent != null){
                 world.entities.add(ent);
                 addLabel(hierarchyPanel, ent.name);
