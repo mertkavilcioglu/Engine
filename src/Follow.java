@@ -1,36 +1,41 @@
 import java.util.List;
 
-public class Follow extends Component{
+public class Follow{
 
-    public Follow(Entity parent){
-        super(parent);
+    Entity findEntity(List<Entity> entities, String trgtname) {
+        //Vec2int targetpos = Arrays.stream(entities).map(if(entities.getName().equals(name)){})
+        System.out.println("Follow: : findEntity function");
+        Entity entity = new Entity();
+        for (int i = 0; i < entities.size(); i++) {
+            Entity e = entities.get(i);
+            if (e.name.equals(trgtname)) {
+                entity = e;
+            }
+        }
+        return entity;
     }
 
-    boolean isPresent = 
+    public void followTo(List<Entity> entities, String fname, String tname){
 
-    public void followTo(Entity target){
+        Entity follower = findEntity(entities, fname);
+        Entity target = findEntity(entities, tname);
 
-        Vec2int p = target.pos;
-        double distX = target.pos.x - parentEntity.pos.x;
-        double distY = target.pos.y - parentEntity.pos.y;
-        double dist = parentEntity.pos.distance(p);
+        double distX = target.pos.x - follower.pos.x;
+        double distY = target.pos.y - follower.pos.y;
+        double dist = follower.pos.distance(target.pos);
         if(dist == 0.0){
-            System.out.format("%s reached the target %s. \n", parentEntity.name, target.name);
+            System.out.format("%s reached the target. \n", follower.name);
             return;
         }
 
-        double speed = parentEntity.speed.hypotenuse();
-        parentEntity.speed.x = (int) ((distX/dist) * speed);
-        parentEntity.speed.y = (int) ((distY/dist) * speed);
+        double speed = follower.speed.hypotenuse();
+        follower.speed.x = (int) ((distX/dist) * speed);
+        follower.speed.y = (int) ((distY/dist) * speed);
 
-        parentEntity.pos.x += parentEntity.speed.x;
-        parentEntity.pos.y += parentEntity.speed.y;
+        follower.pos.x += follower.speed.x;
+        follower.pos.y += follower.speed.y;
 
-    }
+        System.out.println("Following in process!!");
 
-
-    @Override
-    public void update(int deltaTime) {
-        followTo(Entity );
     }
 }
