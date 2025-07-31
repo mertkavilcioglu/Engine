@@ -57,11 +57,11 @@ public class SimApp {
             System.out.println("NAME CANNOT BE NULL");
             isValid = false;
         }
-        if(!IntegerValidate(ePosX)){
+        if(!integerValidate(ePosX)){
             System.out.println("POS X IS NOT VALID");
             isValid = false;
         }
-        if(!IntegerValidate(ePosY)){
+        if(!integerValidate(ePosY)){
             System.out.println("POS Y IS NOT VALID");
             isValid = false;
         }
@@ -166,10 +166,11 @@ public class SimApp {
         JButton createBtn = new JButton("Create");
         createBtn.addActionListener(e -> {
             System.out.println("button clicked");
-            world.entities.add(createEntity(eNameField.getText(), posXfield.getText(), posYfield.getText()));
+            Entity ent = createEntity(eNameField.getText(), posXfield.getText(), posYfield.getText());
+            if(ent != null)
+                world.entities.add(ent);
         });
         createBtn.setFocusable(false);
-
 
         compPanel.add(posPnl);
         compPanel.add(createBtn);
@@ -208,7 +209,7 @@ public class SimApp {
 
 
 
-    private boolean IntegerValidate(String s){
+    private boolean integerValidate(String s){
         if(s == null)
             return false;
         int str;
