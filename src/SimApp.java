@@ -6,6 +6,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class SimApp {
+    //TODO UI ile ilgili kisimlari foldera tasi ayri classlarla
+    //TODO sim ile ilgili seyler main harici sim folder'a
+    //TODO Layout tamamla, tum panelleri ekle
+    //TODO panelleri ayri class yap extn. JPanel
+    //TODO paneller icin selected
+    //TODO projeye isim bul
+    //TODO invalid inputsa kırmızı yap fieldı
+    //TODO InputVerifier
     World world;
     JFrame window;
     MapView mapView;
