@@ -1,5 +1,6 @@
 import UI.EditorView;
 import UI.HierarchyView;
+import UI.TextEditor;
 import UI.Vec2intEditor;
 import Vec.Vec2int;
 
@@ -166,21 +167,23 @@ public class SimApp {
 
         //System.out.println("CURRENT THREAD: 1" + Thread.currentThread().getName());
 
-        TextFieldInputPanel eNamePanel = new TextFieldInputPanel(editorPanel, "Name:");
+        TextEditor eNamePanel = new TextEditor("Name:");
         Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
         Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
-        HierarchyView hierarchyPanel = new HierarchyView();
         editorPanel.add(ePositionPanel);
         editorPanel.add(eSpeedPanel);
+        editorPanel.add(eNamePanel);
 
+        HierarchyView hierarchyPanel = new HierarchyView();
         hierarchyPanel.setPreferredSize(new Dimension(150,window.getHeight()));
         //addPanel.setBackground(Color.lightGray);
         window.add(hierarchyPanel, BorderLayout.WEST);
         hierarchyPanel.setBorder(new TitledBorder("Hierarchy"));
 
+        /* MAGICAL BUTTON
         JButton createBtn = new JButton("Create");
         createBtn.addActionListener(e -> {
-            System.out.println("button clicked");
+            //System.out.println("button clicked");
             Entity ent = createEntity(eNamePanel.getInputField().getText(), ePositionPanel.getPosXinputField().getText(),
                     ePositionPanel.getPosYinputField().getText(), eSpeedPanel.getPosXinputField().getText(),
                     eSpeedPanel.getPosYinputField().getText());
@@ -192,7 +195,7 @@ public class SimApp {
         });
         createBtn.setFocusable(false);
         editorPanel.add(createBtn);
-
+        */
 
 
         window.setVisible(true);
@@ -249,21 +252,6 @@ public class SimApp {
         return Integer.parseInt(s);
     }
 
-    public class TextFieldInputPanel{
-        private JLabel inputLabel;
-        private JTextField inputField;
-
-        TextFieldInputPanel(JPanel panel, String label){
-            inputLabel = new JLabel(label);
-            panel.add(inputLabel);
-            inputField = new JTextField();
-            panel.add(inputField);
-        }
-
-        public JTextField getInputField(){
-            return inputField;
-        }
-    }
 
     private void addLabel(JPanel panel, String str){
         JLabel nameLabel = new JLabel(str);
