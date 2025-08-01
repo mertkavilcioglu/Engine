@@ -1,3 +1,6 @@
+import UI.EditorView;
+import UI.HierarchyView;
+import UI.Vec2intEditor;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -155,21 +158,21 @@ public class SimApp {
         mapView = new MapView(world);
         window.add(mapView,BorderLayout.CENTER);
 
-        JPanel compPanel = new JPanel();
-        compPanel.setLayout(new GridLayout(25,1));
-        compPanel.setPreferredSize(new Dimension(150,window.getHeight()));
+        EditorView editorPanel = new EditorView();
+        editorPanel.setPreferredSize(new Dimension(150,window.getHeight()));
         //addPanel.setBackground(Color.lightGray);
-        window.add(compPanel, BorderLayout.EAST);
-        compPanel.setBorder(new TitledBorder("Create Entity"));
+        window.add(editorPanel, BorderLayout.EAST);
+        editorPanel.setBorder(new TitledBorder("Create Entity"));
 
         //System.out.println("CURRENT THREAD: 1" + Thread.currentThread().getName());
 
-        TextFieldInputPanel eNamePanel = new TextFieldInputPanel(compPanel, "Name:");
-        Vect2IntInputPanel ePositionPanel = new Vect2IntInputPanel(compPanel, "Position:");
-        Vect2IntInputPanel eSpeedPanel = new Vect2IntInputPanel(compPanel, "Velocity");
+        TextFieldInputPanel eNamePanel = new TextFieldInputPanel(editorPanel, "Name:");
+        Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
+        Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
+        HierarchyView hierarchyPanel = new HierarchyView();
+        editorPanel.add(ePositionPanel);
+        editorPanel.add(eSpeedPanel);
 
-        JPanel hierarchyPanel = new JPanel();
-        hierarchyPanel.setLayout(new GridLayout(25,1));
         hierarchyPanel.setPreferredSize(new Dimension(150,window.getHeight()));
         //addPanel.setBackground(Color.lightGray);
         window.add(hierarchyPanel, BorderLayout.WEST);
@@ -188,7 +191,7 @@ public class SimApp {
             }
         });
         createBtn.setFocusable(false);
-        compPanel.add(createBtn);
+        editorPanel.add(createBtn);
 
 
 
@@ -259,39 +262,6 @@ public class SimApp {
 
         public JTextField getInputField(){
             return inputField;
-        }
-    }
-    public class Vect2IntInputPanel{
-        private JLabel panelNameLabel;
-        private JPanel gridPanel;
-        private JLabel posXlabel;
-        private JTextField posXinputField;
-        private JLabel posYlabel;
-        private JTextField posYinputField;
-
-        Vect2IntInputPanel(JPanel panel, String label){
-            panelNameLabel = new JLabel(label);
-            panel.add(panelNameLabel);
-            gridPanel = new JPanel(new GridLayout(1,4));
-            posXlabel = new JLabel("X:");
-            posXinputField = new JTextField(10);
-            posYlabel = new JLabel("Y:");
-            posYinputField = new JTextField(10);
-
-            gridPanel.add(posXlabel);
-            gridPanel.add(posXinputField);
-            gridPanel.add(posYlabel);
-            gridPanel.add(posYinputField);
-
-            panel.add(gridPanel);
-        }
-
-        public JTextField getPosXinputField(){
-            return posXinputField;
-        }
-
-        public JTextField getPosYinputField(){
-            return posYinputField;
         }
     }
 
