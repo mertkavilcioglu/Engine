@@ -1,8 +1,10 @@
+package Sim;
+
 import Vec.Vec2int;
 
 import java.util.List;
 
-public class Radar extends Component{
+public class Radar extends Component {
     int range = 50;
 
     public Radar(Entity parent) {

@@ -1,3 +1,5 @@
+package Sim;
+
 import static java.lang.Math.sqrt;
 
 public class Position {

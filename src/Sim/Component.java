@@ -1,3 +1,5 @@
+package Sim;
+
 import Vec.Vec2int;
 
 public abstract class Component {

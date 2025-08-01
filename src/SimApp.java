@@ -1,3 +1,6 @@
+import Sim.Entity;
+import Sim.Radar;
+import Sim.World;
 import UI.EditorView;
 import UI.HierarchyView;
 import UI.Vec2intEditor;
@@ -25,10 +28,10 @@ public class SimApp {
     ArrayList<JLabel> entityNames = new ArrayList<>();
     public Entity createEntity(String name) {
         Entity u = new Entity();
-        u.name = name;
+        u.setName(name);
 
-        u.pos = Vec2int.getRandom(world.map.maxX / 8 ,world.map.maxY / 6);
-        u.speed = Vec2int.getRandom(0,4,0,4);
+        u.setPos(Vec2int.getRandom(world.map.maxX / 8 ,world.map.maxY / 6));
+        u.setSpeed(Vec2int.getRandom(0,4,0,4));
 
             /*
             u.speed = new Vec.Vec2int();
@@ -59,7 +62,7 @@ public class SimApp {
 
         //r.range = input;
 
-        u.components.add(r);
+        u.addComponents(r);
         return u;
     }
 
@@ -90,14 +93,14 @@ public class SimApp {
             //create entity
             System.out.format("Created entity %s with x:%d and y:%d", eName, stringToInt(ePosX), stringToInt(ePosY));
             Entity u = new Entity();
-            u.name = eName;
+            u.setName(eName);
 
-            u.pos = new Vec2int(stringToInt(ePosX), stringToInt(ePosY));
+            u.setPos(new Vec2int(stringToInt(ePosX), stringToInt(ePosY)));
             //u.speed = Vec.Vec2int.getRandom(0,4,0,4);
-            u.speed = new Vec2int(stringToInt(eSpeedX), stringToInt(eSpeedY));
+            u.setSpeed(new Vec2int(stringToInt(eSpeedX), stringToInt(eSpeedY)));
 
             Radar r = new Radar(u);
-            u.components.add(r);
+            u.addComponents(r);
 
             return u;
         }
@@ -162,12 +165,12 @@ public class SimApp {
         editorPanel.setPreferredSize(new Dimension(150,window.getHeight()));
         //addPanel.setBackground(Color.lightGray);
         window.add(editorPanel, BorderLayout.EAST);
-        editorPanel.setBorder(new TitledBorder("Create Entity"));
+        editorPanel.setBorder(new TitledBorder("Create Sim.Entity"));
 
         //System.out.println("CURRENT THREAD: 1" + Thread.currentThread().getName());
 
         TextFieldInputPanel eNamePanel = new TextFieldInputPanel(editorPanel, "Name:");
-        Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
+        Vec2intEditor ePositionPanel = new Vec2intEditor("Sim.Position:");
         Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
         HierarchyView hierarchyPanel = new HierarchyView();
         editorPanel.add(ePositionPanel);
@@ -186,7 +189,7 @@ public class SimApp {
                     eSpeedPanel.getPosYinputField().getText());
             if(ent != null){
                 world.entities.add(ent);
-                addLabel(hierarchyPanel, ent.name);
+                addLabel(hierarchyPanel, ent.getName());
 
             }
         });
