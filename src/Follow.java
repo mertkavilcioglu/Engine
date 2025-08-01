@@ -3,7 +3,7 @@ import java.util.List;
 public class Follow{
 
     Entity findEntity(List<Entity> entities, String trgtname) {
-        //Vec2int targetpos = Arrays.stream(entities).map(if(entities.getName().equals(name)){})
+        //Vec.Vec2int targetpos = Arrays.stream(entities).map(if(entities.getName().equals(name)){})
         System.out.println("Follow: : findEntity function");
         Entity entity = new Entity();
         for (int i = 0; i < entities.size(); i++) {

@@ -1,3 +1,5 @@
+import Vec.Vec2int;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -26,7 +28,7 @@ public class SimApp {
         u.speed = Vec2int.getRandom(0,4,0,4);
 
             /*
-            u.speed = new Vec2int();
+            u.speed = new Vec.Vec2int();
             u.speed.x = 0; //ThreadLocalRandom.current().nextInt(1, 4);
             u.speed.y = 0; //ThreadLocalRandom.current().nextInt(1, 4);
             */
@@ -88,7 +90,7 @@ public class SimApp {
             u.name = eName;
 
             u.pos = new Vec2int(stringToInt(ePosX), stringToInt(ePosY));
-            //u.speed = Vec2int.getRandom(0,4,0,4);
+            //u.speed = Vec.Vec2int.getRandom(0,4,0,4);
             u.speed = new Vec2int(stringToInt(eSpeedX), stringToInt(eSpeedY));
 
             Radar r = new Radar(u);
@@ -272,9 +274,9 @@ public class SimApp {
             panel.add(panelNameLabel);
             gridPanel = new JPanel(new GridLayout(1,4));
             posXlabel = new JLabel("X:");
-            posXinputField = new JTextField();
+            posXinputField = new JTextField(10);
             posYlabel = new JLabel("Y:");
-            posYinputField = new JTextField();
+            posYinputField = new JTextField(10);
 
             gridPanel.add(posXlabel);
             gridPanel.add(posXinputField);

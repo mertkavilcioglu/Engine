@@ -1,7 +1,6 @@
-import java.util.List;
-import java.util.Vector;
+import Vec.Vec2int;
 
-import static java.lang.Math.sqrt;
+import java.util.List;
 
 public class Radar extends Component{
     int range = 50;

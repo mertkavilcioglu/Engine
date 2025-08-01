@@ -1,3 +1,5 @@
+import Vec.Vec2int;
+
 import java.util.ArrayList;
 
 public class Entity {

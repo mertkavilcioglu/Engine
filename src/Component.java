@@ -1,3 +1,5 @@
+import Vec.Vec2int;
+
 public abstract class Component {
     Entity parentEntity;
 
