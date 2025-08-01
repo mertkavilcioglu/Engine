@@ -13,7 +13,7 @@ public class TextEditor extends JPanel {
         lbl = new JLabel(labelName);
         txt = new JTextField();
 
-        this.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        this.setLayout(new GridLayout(2,1));
         this.add(lbl);
         this.add(txt);
     }

@@ -16,15 +16,17 @@ public class Vec2intEditor extends JPanel{
         nameLbl = new JLabel(label);
         lblX = new JLabel("X:");
         lblY = new JLabel("Y:");
-        txtX = new JTextField(10);
-        txtY = new JTextField(10);
+        txtX = new JTextField();
+        txtY = new JTextField();
 
-        this.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        this.setLayout(new GridLayout(2,1));
         this.add(nameLbl);
-        this.add(lblX);
-        this.add(txtX);
-        this.add(lblY);
-        this.add(txtY);
+        JPanel vecPnl = new JPanel(new GridLayout(1,4));
+        vecPnl.add(lblX);
+        vecPnl.add(txtX);
+        vecPnl.add(lblY);
+        vecPnl.add(txtY);
+        this.add(vecPnl);
 
     }
 
@@ -35,7 +37,8 @@ public class Vec2intEditor extends JPanel{
     }
 
     public Vec2int readData() {
-        // sayımı degilmi
+        //TODO sayımı degilmi kontrolünü burada yap
+        //TODO buton classı da ekle
         data.x = Integer.parseInt(txtX.getText());
         data.y = Integer.parseInt(txtY.getText());
         return data;
