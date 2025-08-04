@@ -14,6 +14,6 @@ public class World {
         }
     }
     public void render() {
-        System.out.println("Sim.World::render");
+        System.out.println("World::render");
     }
 }

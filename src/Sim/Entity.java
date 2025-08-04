@@ -47,6 +47,6 @@ public class Entity {
 
     @Override
     public String toString() {
-        return String.format("Name: %s - Pos: %s, Sim.Speed: %s", name, pos.toString(), speed.toString());
+        return String.format("Name: %s - Pos: %s, Speed: %s", name, pos.toString(), speed.toString());
     }
 }
