@@ -45,6 +45,13 @@ public class Entity {
         this.components.add(c);
     }
 
+    public boolean isNullName(){
+        if(name == null){
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return String.format("Name: %s - Pos: %s, Speed: %s", name, pos.toString(), speed.toString());

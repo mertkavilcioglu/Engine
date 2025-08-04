@@ -25,11 +25,12 @@ public class TextEditor extends JPanel {
     public JTextField getInputField(){
         return txt;
     }
-    //public Vec2int readData() {
-        // sayımı degilmi
-        //data.x = Integer.parseInt(txtX.getText());
-        //data.y = Integer.parseInt(txtY.getText());
-        //return data;
-    //}
+    public String readData() {
+        if(txt.getText() != null && !txt.getText().trim().isEmpty()){
+            return txt.getText().trim();
+        }
+        System.out.format("%s IS NOT VALID\n", lbl.getText());
+        return null;
+    }
 
 }

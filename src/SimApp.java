@@ -68,45 +68,26 @@ public class SimApp {
         return u;
     }
 
-    private Entity createEntity(String eName, String ePosX, String ePosY, String eSpeedX, String eSpeedY){
+    private Entity createEntity(String eName, Vec2int pos, Vec2int speed){
         //TODO add speed, radar range and attack target inputs through UI
-        boolean isValid = true;
-        if(eName == null || eName.trim().isEmpty()){
-            System.out.println("NAME CANNOT BE NULL");
-            isValid = false;
+        //create entity
+        if(eName == null){
+            //System.out.println("NAME IS NULL");
+            return null;
         }
-        if(!integerValidate(ePosX)){
-            System.out.println("POS X IS NOT VALID");
-            isValid = false;
-        }
-        if(!integerValidate(ePosY)){
-            System.out.println("POS Y IS NOT VALID");
-            isValid = false;
-        }
-        if(!integerValidate(eSpeedX)){
-            System.out.println("SPEED X IS NOT VALID");
-            isValid = false;
-        }
-        if(!integerValidate(eSpeedY)){
-            System.out.println("SPEED Y IS NOT VALID");
-            isValid = false;
-        }
-        if(isValid){
-            //create entity
-            System.out.format("Created entity %s with x:%d and y:%d", eName, stringToInt(ePosX), stringToInt(ePosY));
-            Entity u = new Entity();
-            u.setName(eName);
 
-            u.setPos(new Vec2int(stringToInt(ePosX), stringToInt(ePosY)));
-            //u.speed = Vec.Vec2int.getRandom(0,4,0,4);
-            u.setSpeed(new Vec2int(stringToInt(eSpeedX), stringToInt(eSpeedY)));
+        System.out.format("Created entity %s with x:%d and y:%d", eName, pos.x, pos.y);
+        Entity u = new Entity();
+        u.setName(eName);
 
-            Radar r = new Radar(u);
-            u.addComponents(r);
+        u.setPos(new Vec2int(pos.x, pos.y));
+        //u.speed = Vec.Vec2int.getRandom(0,4,0,4);
+        u.setSpeed(new Vec2int(speed.x, speed.y));
 
-            return u;
-        }
-        return null;
+        Radar r = new Radar(u);
+        u.addComponents(r);
+
+        return u;
     }
 
     public void run() {
@@ -188,12 +169,14 @@ public class SimApp {
         JButton createBtn = new JButton("Create");
         createBtn.addActionListener(e -> {
             //System.out.println("button clicked");
-            Entity ent = createEntity(eNamePanel.getInputField().getText(), ePositionPanel.getPosXinputField().getText(),
-                    ePositionPanel.getPosYinputField().getText(), eSpeedPanel.getPosXinputField().getText(),
-                    eSpeedPanel.getPosYinputField().getText());
-            if(ent != null){
-                world.entities.add(ent);
-                addLabel(hierarchyPanel, ent.getName());
+            try{
+                Entity ent = createEntity(eNamePanel.readData(), ePositionPanel.readData(), eSpeedPanel.readData());
+                if(ent != null && !ent.isNullName()){
+                    world.entities.add(ent);
+                    addLabel(hierarchyPanel, ent.getName());
+                }
+            }
+            catch (NumberFormatException err){
 
             }
         });
