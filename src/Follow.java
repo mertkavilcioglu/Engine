@@ -38,19 +38,29 @@ public class Follow extends Component{
             return;
         }
 
-        double speedMax = sqrt((distX*distX) + (distY*distY));
+        double speedMax = dist;
         double angle = asin((distX/dist));
 
         double speed = parentEntity.speed.hypotenuse();
 
-        while (true){
-            speedMax = speedMax/speed;
+        if(speed == 0.0){
+            while ((speedMax>4)){
+                speedMax = speedMax/2;
+            }
             parentEntity.speed.x = (int) (sin(angle) * speedMax);
             parentEntity.speed.y = (int) (cos(angle) * speedMax);
-            if(parentEntity.speed.x < 4 && parentEntity.speed.y < 4){
-                break;
+        }
+        else{
+            while (true){
+                speedMax = speedMax/speed;
+                parentEntity.speed.x = (int) (sin(angle) * speedMax);
+                parentEntity.speed.y = (int) (cos(angle) * speedMax);
+                if(parentEntity.speed.x < 4 && parentEntity.speed.y < 4){
+                    break;
+                }
             }
         }
+
 
         //parentEntity.speed.x = (int) (sin(angle) * speedMax);
         //parentEntity.speed.y = (int) (cos(angle) * speedMax);
@@ -59,8 +69,8 @@ public class Follow extends Component{
         //follower.speed.x = (int) ((distX/dist) * speed);
         //follower.speed.y = (int) ((distY/dist) * speed);
 
-        //parentEntity.pos.x += parentEntity.speed.x;
-        //parentEntity.pos.y += parentEntity.speed.y;
+        parentEntity.pos.x += parentEntity.speed.x;
+        parentEntity.pos.y += parentEntity.speed.y;
 
         System.out.println("Following in process!!");
 
