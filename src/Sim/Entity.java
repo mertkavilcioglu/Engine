@@ -19,6 +19,8 @@ public class Entity {
         }
     }
 
+    //To access and change content of Entity from other packages.
+
     public String getName(){
         return name;
     }

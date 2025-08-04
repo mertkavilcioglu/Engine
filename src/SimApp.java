@@ -3,6 +3,9 @@ import UI.HierarchyView;
 import UI.TextEditor;
 import UI.Vec2intEditor;
 import Vec.Vec2int;
+import Sim.Entity;
+import Sim.Radar;
+import Sim.World;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -26,10 +29,11 @@ public class SimApp {
     ArrayList<JLabel> entityNames = new ArrayList<>();
     public Entity createEntity(String name) {
         Entity u = new Entity();
-        u.name = name;
+        u.setName(name);
 
-        u.pos = Vec2int.getRandom(world.map.maxX / 8 ,world.map.maxY / 6);
-        u.speed = Vec2int.getRandom(0,4,0,4);
+        u.setPos(Vec2int.getRandom(world.map.maxX / 8 ,world.map.maxY / 6));
+        u.setSpeed(Vec2int.getRandom(0,4,0,4));
+
 
             /*
             u.speed = new Vec.Vec2int();
@@ -60,7 +64,7 @@ public class SimApp {
 
         //r.range = input;
 
-        u.components.add(r);
+        u.addComponents(r);
         return u;
     }
 
@@ -91,14 +95,14 @@ public class SimApp {
             //create entity
             System.out.format("Created entity %s with x:%d and y:%d", eName, stringToInt(ePosX), stringToInt(ePosY));
             Entity u = new Entity();
-            u.name = eName;
+            u.setName(eName);
 
-            u.pos = new Vec2int(stringToInt(ePosX), stringToInt(ePosY));
+            u.setPos(new Vec2int(stringToInt(ePosX), stringToInt(ePosY)));
             //u.speed = Vec.Vec2int.getRandom(0,4,0,4);
-            u.speed = new Vec2int(stringToInt(eSpeedX), stringToInt(eSpeedY));
+            u.setSpeed(new Vec2int(stringToInt(eSpeedX), stringToInt(eSpeedY)));
 
             Radar r = new Radar(u);
-            u.components.add(r);
+            u.addComponents(r);
 
             return u;
         }
