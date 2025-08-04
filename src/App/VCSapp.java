@@ -1,9 +1,7 @@
 package App;
 
 import UI.*;
-import Vec.Vec2int;
 import Sim.Entity;
-import Sim.Radar;
 import Sim.World;
 
 import javax.swing.*;
@@ -29,72 +27,12 @@ public class VCSapp {
     //TODO invalid inputsa kırmızı yap fieldı
 
     // VIRTUAL COMBAT SYSTEM (VCS)
-    World world;
+    public World world;
     JFrame window;
     MapView mapView;
+    EntityEditorView editorPanel;
+    HierarchyView hierarchyPanel;
     ArrayList<JLabel> entityNames = new ArrayList<>();
-    public Entity createEntity(String name) { // TODO worlde tasi
-        Entity u = new Entity();
-        u.setName(name);
-
-        u.setPos(Vec2int.getRandom(world.map.maxX / 8 ,world.map.maxY / 6));
-        u.setSpeed(Vec2int.getRandom(0,4,0,4));
-
-
-            /*
-            u.speed = new Vec.Vec2int();
-            u.speed.x = 0; //ThreadLocalRandom.current().nextInt(1, 4);
-            u.speed.y = 0; //ThreadLocalRandom.current().nextInt(1, 4);
-            */
-        Radar r = new Radar(u);
-
-        //Scanner scanner = new Scanner(System.in);
-        //System.out.format("Assign the range of %s's radar: ", u.name);
-
-        //int input = 20;
-            /*
-            do
-            {
-                try {
-                    String s = scanner.nextLine();
-                    input = Integer.parseInt(s);
-                    break;
-                }
-                catch (Exception e)
-                {
-                    System.out.println("Couldn't parse input, please try again");
-                }
-            }
-            while (true);
-            */
-
-        //r.range = input;
-
-        u.addComponents(r);
-        return u;
-    }
-
-    private Entity createEntity(String eName, Vec2int pos, Vec2int speed){
-        //TODO add speed, radar range and attack target inputs through UI
-        //create entity
-        if(eName == null){
-            //System.out.println("NAME IS NULL");
-            return null;
-        }
-
-        System.out.format("Created entity %s with x:%d and y:%d", eName, pos.x, pos.y);
-        Entity u = new Entity();
-        u.setName(eName);
-
-        u.setPos(new Vec2int(pos.x, pos.y));
-        //u.speed = Vec.Vec2int.getRandom(0,4,0,4);
-        u.setSpeed(new Vec2int(speed.x, speed.y));
-
-        Radar r = new Radar(u);
-        u.addComponents(r);
-
-        return u;
-    }
 
     public void run() {
         System.out.println("App::run");
@@ -131,54 +69,31 @@ public class VCSapp {
     public void runWithWindow() throws InterruptedException, InvocationTargetException {
 
         world = new World();
+        window = new AppWindow(this);
+        mapView = new MapView(this);
+        editorPanel = new EntityEditorView(this);
+        hierarchyPanel = new HierarchyView(this);
 
-        window = new JFrame("VCS: Virtual Combat System");
-        window.setSize(world.map.maxX, world.map.maxY);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // TODO READ SWING LAYOUT MANAGERS
-        // BoderLayout
-        // GridLayout
-        // GridBagLayout
-        window.setLayout(new BorderLayout(10,10));
-
-        // TODO READ SWING COMPNENTS - JPANEL
-        // TODO JButton JTextField // Image? Icon?
-        // TODO READ SWING RENDERING ON JPANEL
-        // TODO GRAPHICS & GRAPHICS2D
-
-        mapView = new MapView(world,this);
         window.add(mapView,BorderLayout.CENTER);
-
-        EntityEditorView editorPanel = new EntityEditorView(this);
-        editorPanel.setPreferredSize(new Dimension(150,window.getHeight()));
-        //addPanel.setBackground(Color.lightGray);
         window.add(editorPanel, BorderLayout.EAST);
-        editorPanel.setBorder(new TitledBorder("Create Entity"));
+        window.add(hierarchyPanel, BorderLayout.WEST);
 
-        //System.out.println("CURRENT THREAD: 1" + Thread.currentThread().getName());
-
-        TextEditor eNamePanel = new TextEditor("Name:");
+        StringEditor eNamePanel = new StringEditor("Name:");
         Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
         Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
+
         editorPanel.add(eNamePanel);
         editorPanel.add(ePositionPanel);
         editorPanel.add(eSpeedPanel);
-
-        HierarchyView hierarchyPanel = new HierarchyView(this);
-        hierarchyPanel.setPreferredSize(new Dimension(150,window.getHeight()));
-        //addPanel.setBackground(Color.lightGray);
-        window.add(hierarchyPanel, BorderLayout.WEST);
-        hierarchyPanel.setBorder(new TitledBorder("Hierarchy"));
 
         JButton createBtn = createEntityButton(eNamePanel, ePositionPanel, eSpeedPanel, hierarchyPanel);
         editorPanel.add(createBtn);
 
         window.setVisible(true);
 
-        world.entities.add(createEntity("Mert"));
-        world.entities.add(createEntity("Emir"));
-        world.entities.add(createEntity("Seda"));
+        world.createEntity("Mert");
+        world.createEntity("Emir");
+        world.createEntity("Seda");
 
         addLabel(hierarchyPanel, "Mert");
         addLabel(hierarchyPanel, "Emir");
@@ -207,14 +122,14 @@ public class VCSapp {
 
     }
 
-    private JButton createEntityButton(TextEditor namePanel, Vec2intEditor posPanel,
+    private JButton createEntityButton(StringEditor namePanel, Vec2intEditor posPanel,
                                        Vec2intEditor speedPanel, HierarchyView hierarchyPanel){
 
         JButton createBtn = new JButton("Create");
         createBtn.addActionListener(e -> {
             //System.out.println("button clicked");
             try{
-                Entity ent = createEntity(namePanel.readData(), posPanel.readData(), speedPanel.readData());
+                Entity ent = world.createEntity(namePanel.readData(), posPanel.readData(), speedPanel.readData());
                 if(ent != null && !ent.isNullName()){
                     world.entities.add(ent);
                     addLabel(hierarchyPanel, ent.getName());
@@ -256,6 +171,10 @@ public class VCSapp {
         JLabel nameLabel = new JLabel(str);
         panel.add(nameLabel);
         panel.revalidate();
+    }
+
+    public JFrame getWindow(){
+        return window;
     }
 
 }

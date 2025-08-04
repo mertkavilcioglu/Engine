@@ -2,11 +2,15 @@ package Sim;
 
 import Vec.Vec2int;
 
+import java.util.ArrayList;
+
 public abstract class Component {
     Entity parentEntity;
+    protected ArrayList<Entity> entities;
 
-    public Component(Entity parent){
+    public Component(Entity parent, ArrayList<Entity> entities){
         parentEntity = parent;
+        this.entities = entities;
     }
 
     public abstract void update(int deltaTime);

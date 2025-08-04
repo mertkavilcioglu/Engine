@@ -1,15 +1,13 @@
 package UI;
 
-import Vec.Vec2int;
-
 import javax.swing.*;
 import java.awt.*;
 
-public class TextEditor extends JPanel {
+public class StringEditor extends JPanel {
     private JLabel lbl;
     private JTextField txt;
 
-    public TextEditor(String labelName){
+    public StringEditor(String labelName){
         lbl = new JLabel(labelName);
         txt = new JTextField();
 

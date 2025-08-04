@@ -2,13 +2,14 @@ package Sim;
 
 import Vec.Vec2int;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Radar extends Component {
     int range = 50;
 
-    public Radar(Entity parent) {
-        super(parent);
+    public Radar(Entity parent, ArrayList<Entity> entities) {
+        super(parent, entities);
     }
 
 
@@ -37,8 +38,10 @@ public class Radar extends Component {
 
     @Override
     public void update(int deltaTime) {
-        detect(World.entities);
+        detect(entities);
         //System.out.println("ComponentRadar::update");
     }
+
+    //TODO: simapp'ten bir entity gunclelleme fonksiyonu alarak entityleri güncelle
 }
 

@@ -11,9 +11,9 @@ import java.awt.*;
 public class MapView extends VCSpanel {
     private World world;
 
-    public MapView(World world, VCSapp app) {
+    public MapView(VCSapp app) {
         super(app);
-        this.world = world;
+        this.world = app.world;
     }
 
     @Override
@@ -28,8 +28,8 @@ public class MapView extends VCSpanel {
         g.setColor(Color.RED);
         //g.fillRect(0,0, this.getWidth(), this.getHeight());
 
-        for (int i = 0; i < World.entities.size(); i++) {
-            Entity e = World.entities.get(i);
+        for (int i = 0; i < world.entities.size(); i++) {
+            Entity e = world.entities.get(i);
             Vec2int pos = e.getPos();
 
             //drawEntity(e);
