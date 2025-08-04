@@ -43,4 +43,12 @@ public class Vec2intEditor extends JPanel{
         data.y = Integer.parseInt(txtY.getText());
         return data;
     }
+    public JTextField getPosXinputField(){
+        return txtX;
+    }
+
+    public JTextField getPosYinputField(){
+        return txtY;
+    }
+
 }

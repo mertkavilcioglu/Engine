@@ -174,9 +174,9 @@ public class SimApp {
         TextEditor eNamePanel = new TextEditor("Name:");
         Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
         Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
+        editorPanel.add(eNamePanel);
         editorPanel.add(ePositionPanel);
         editorPanel.add(eSpeedPanel);
-        editorPanel.add(eNamePanel);
 
         HierarchyView hierarchyPanel = new HierarchyView();
         hierarchyPanel.setPreferredSize(new Dimension(150,window.getHeight()));
@@ -184,7 +184,7 @@ public class SimApp {
         window.add(hierarchyPanel, BorderLayout.WEST);
         hierarchyPanel.setBorder(new TitledBorder("Hierarchy"));
 
-        /* MAGICAL BUTTON
+
         JButton createBtn = new JButton("Create");
         createBtn.addActionListener(e -> {
             //System.out.println("button clicked");
@@ -193,13 +193,13 @@ public class SimApp {
                     eSpeedPanel.getPosYinputField().getText());
             if(ent != null){
                 world.entities.add(ent);
-                addLabel(hierarchyPanel, ent.name);
+                addLabel(hierarchyPanel, ent.getName());
 
             }
         });
         createBtn.setFocusable(false);
         editorPanel.add(createBtn);
-        */
+
 
 
         window.setVisible(true);

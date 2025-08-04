@@ -21,6 +21,10 @@ public class TextEditor extends JPanel {
     public void setData(String text) {
         txt.setText(text);
     }
+
+    public JTextField getInputField(){
+        return txt;
+    }
     //public Vec2int readData() {
         // sayımı degilmi
         //data.x = Integer.parseInt(txtX.getText());
