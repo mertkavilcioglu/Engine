@@ -1,5 +1,6 @@
 package UI;
 
+import App.VCSapp;
 import Sim.Entity;
 import Sim.World;
 import Vec.Vec2int;
@@ -10,9 +11,16 @@ import java.awt.*;
 public class MapView extends VCSpanel {
     private World world;
 
-    public MapView(World world) {
+    public MapView(World world, VCSapp app) {
+        super(app);
         this.world = world;
     }
+
+    @Override
+    public void selectedEntityChanged(Entity entity) {
+        System.out.println("EditorView::selectedEntityChanged");
+    }
+
     @Override
     public void paint(Graphics g) {
         //super.paint(g);

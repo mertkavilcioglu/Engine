@@ -4,7 +4,7 @@ import Vec.Vec2int;
 import javax.swing.*;
 import java.awt.*;
 
-public class Vec2intEditor extends VCSpanel{
+public class Vec2intEditor extends JPanel{
     private Vec2int data = new Vec2int();
     private JLabel nameLbl;
     private JLabel lblX;

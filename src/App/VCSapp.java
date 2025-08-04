@@ -1,3 +1,5 @@
+package App;
+
 import UI.*;
 import Vec.Vec2int;
 import Sim.Entity;
@@ -145,10 +147,10 @@ public class VCSapp {
         // TODO READ SWING RENDERING ON JPANEL
         // TODO GRAPHICS & GRAPHICS2D
 
-        mapView = new MapView(world);
+        mapView = new MapView(world,this);
         window.add(mapView,BorderLayout.CENTER);
 
-        EntityEditorView editorPanel = new EntityEditorView();
+        EntityEditorView editorPanel = new EntityEditorView(this);
         editorPanel.setPreferredSize(new Dimension(150,window.getHeight()));
         //addPanel.setBackground(Color.lightGray);
         window.add(editorPanel, BorderLayout.EAST);
@@ -163,7 +165,7 @@ public class VCSapp {
         editorPanel.add(ePositionPanel);
         editorPanel.add(eSpeedPanel);
 
-        HierarchyView hierarchyPanel = new HierarchyView();
+        HierarchyView hierarchyPanel = new HierarchyView(this);
         hierarchyPanel.setPreferredSize(new Dimension(150,window.getHeight()));
         //addPanel.setBackground(Color.lightGray);
         window.add(hierarchyPanel, BorderLayout.WEST);
