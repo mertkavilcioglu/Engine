@@ -12,19 +12,26 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class SimApp {
-    //TODO UI ile ilgili kisimlari foldera tasi ayri classlarla
-    //TODO sim ile ilgili seyler main harici sim folder'a
+    //TODO VCSpanel base class |MERT
+    //TODO SimApp referans aracı olsun, her panelde app referansı bulunsun |MERT
+
     //TODO Layout tamamla, tum panelleri ekle
-    //TODO panelleri ayri class yap extn. JPanel
+    //TODO tree hiyerarşi
+
     //TODO paneller icin selected
-    //TODO projeye isim bul
+    //TODO ekrana logu bastırma
+
+    //TODO PLAY PAUSE BIRLIKTE, TEK GIRME
+
+    //OPT.
     //TODO invalid inputsa kırmızı yap fieldı
-    //TODO InputVerifier
+
+    // VIRTUAL COMBAT SYSTEM (VCS)
     World world;
     JFrame window;
     MapView mapView;
     ArrayList<JLabel> entityNames = new ArrayList<>();
-    public Entity createEntity(String name) {
+    public Entity createEntity(String name) { // TODO worlde tasi
         Entity u = new Entity();
         u.setName(name);
 
@@ -123,7 +130,7 @@ public class SimApp {
 
         world = new World();
 
-        window = new JFrame("Military Grade Simulation");
+        window = new JFrame("VCS: Virtual Combat System");
         window.setSize(world.map.maxX, world.map.maxY);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -141,7 +148,7 @@ public class SimApp {
         mapView = new MapView(world);
         window.add(mapView,BorderLayout.CENTER);
 
-        EditorView editorPanel = new EditorView();
+        EntityEditorView editorPanel = new EntityEditorView();
         editorPanel.setPreferredSize(new Dimension(150,window.getHeight()));
         //addPanel.setBackground(Color.lightGray);
         window.add(editorPanel, BorderLayout.EAST);
@@ -211,7 +218,7 @@ public class SimApp {
                     addLabel(hierarchyPanel, ent.getName());
                 }
             }
-            catch (NumberFormatException err){
+            catch (NumberFormatException err){ //TODO bi tekrar bak
                 posPanel.dataValidate();
                 speedPanel.dataValidate();
             }

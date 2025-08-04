@@ -37,12 +37,12 @@ public class Vec2intEditor extends JPanel{
     }
 
     public Vec2int readData() {
-        //TODO sayımı degilmi kontrolünü burada yap
-        //TODO buton classı da ekle
         data.x = Integer.parseInt(txtX.getText());
         data.y = Integer.parseInt(txtY.getText());
         return data;
     }
+
+    //TODO 2 kere catch yapma günah
 
     public void dataValidate(){
         int x,y;

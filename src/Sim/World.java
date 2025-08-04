@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class World {
     public WorldMap map = new WorldMap();
-    public static ArrayList<Entity> entities = new ArrayList<>();
+    public static ArrayList<Entity> entities = new ArrayList<>(); //TODO static kalmadan yapmaya calis
 
     public void update(int deltaTime) {
         System.out.println(Thread.currentThread().getName());
