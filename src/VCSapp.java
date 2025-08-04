@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-public class SimApp {
+public class VCSapp {
     //TODO VCSpanel base class |MERT
     //TODO SimApp referans aracı olsun, her panelde app referansı bulunsun |MERT
 

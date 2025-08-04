@@ -7,7 +7,7 @@ import Vec.Vec2int;
 import javax.swing.*;
 import java.awt.*;
 
-public class MapView extends JPanel {
+public class MapView extends VCSpanel {
     private World world;
 
     public MapView(World world) {

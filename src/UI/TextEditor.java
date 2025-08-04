@@ -5,7 +5,7 @@ import Vec.Vec2int;
 import javax.swing.*;
 import java.awt.*;
 
-public class TextEditor extends JPanel {
+public class TextEditor extends VCSpanel {
     private JLabel lbl;
     private JTextField txt;
 
