@@ -1,7 +1,4 @@
-import UI.EditorView;
-import UI.HierarchyView;
-import UI.TextEditor;
-import UI.Vec2intEditor;
+import UI.*;
 import Vec.Vec2int;
 import Sim.Entity;
 import Sim.Radar;
@@ -165,25 +162,8 @@ public class SimApp {
         window.add(hierarchyPanel, BorderLayout.WEST);
         hierarchyPanel.setBorder(new TitledBorder("Hierarchy"));
 
-
-        JButton createBtn = new JButton("Create");
-        createBtn.addActionListener(e -> {
-            //System.out.println("button clicked");
-            try{
-                Entity ent = createEntity(eNamePanel.readData(), ePositionPanel.readData(), eSpeedPanel.readData());
-                if(ent != null && !ent.isNullName()){
-                    world.entities.add(ent);
-                    addLabel(hierarchyPanel, ent.getName());
-                }
-            }
-            catch (NumberFormatException err){
-
-            }
-        });
-        createBtn.setFocusable(false);
+        JButton createBtn = createEntityButton(eNamePanel, ePositionPanel, eSpeedPanel, hierarchyPanel);
         editorPanel.add(createBtn);
-
-
 
         window.setVisible(true);
 
@@ -216,6 +196,29 @@ public class SimApp {
 
         //System.out.println("CURRENT THREAD END: 3" + Thread.currentThread().getName());
 
+    }
+
+    private JButton createEntityButton(TextEditor namePanel, Vec2intEditor posPanel,
+                                       Vec2intEditor speedPanel, HierarchyView hierarchyPanel){
+
+        JButton createBtn = new JButton("Create");
+        createBtn.addActionListener(e -> {
+            //System.out.println("button clicked");
+            try{
+                Entity ent = createEntity(namePanel.readData(), posPanel.readData(), speedPanel.readData());
+                if(ent != null && !ent.isNullName()){
+                    world.entities.add(ent);
+                    addLabel(hierarchyPanel, ent.getName());
+                }
+            }
+            catch (NumberFormatException err){
+                posPanel.dataValidate();
+                speedPanel.dataValidate();
+            }
+        });
+        createBtn.setFocusable(false);
+
+        return createBtn;
     }
 
     private void renderToWindow() {

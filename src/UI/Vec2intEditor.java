@@ -43,4 +43,23 @@ public class Vec2intEditor extends JPanel{
         data.y = Integer.parseInt(txtY.getText());
         return data;
     }
+
+    public void dataValidate(){
+        int x,y;
+
+        try {
+            x = Integer.parseInt(txtX.getText());
+        }
+        catch (NumberFormatException e) {
+            System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblX.getText());
+        }
+
+        try {
+            y = Integer.parseInt(txtY.getText());
+        }
+        catch (NumberFormatException e) {
+            System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblY.getText());
+        }
+    }
+
 }
