@@ -47,6 +47,9 @@ public class SimApp {
 
         u.components.add(r);
 
+        Follow f = new Follow(u);
+        u.components.add(f);
+
         return u;
     }
 
