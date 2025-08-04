@@ -1,5 +1,7 @@
 import java.util.List;
 
+import static java.lang.Math.*;
+
 public class Follow{
 
     Entity findEntity(List<Entity> entities, String trgtname) {
@@ -28,9 +30,21 @@ public class Follow{
             return;
         }
 
+        double speedMax = sqrt((distX*distX) + (distY*distY));
+
         double speed = follower.speed.hypotenuse();
-        follower.speed.x = (int) ((distX/dist) * speed);
-        follower.speed.y = (int) ((distY/dist) * speed);
+
+        while (speedMax>speed){
+            speedMax = speedMax/speed;
+        }
+
+        double angle = asin((distX/dist));
+        follower.speed.x = (int) (sin(angle) * speedMax);
+        follower.speed.y = (int) (cos(angle) * speedMax);
+
+
+        //follower.speed.x = (int) ((distX/dist) * speed);
+        //follower.speed.y = (int) ((distY/dist) * speed);
 
         follower.pos.x += follower.speed.x;
         follower.pos.y += follower.speed.y;
