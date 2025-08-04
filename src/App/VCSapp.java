@@ -94,10 +94,13 @@ public class VCSapp {
         world.createEntity("Mert");
         world.createEntity("Emir");
         world.createEntity("Seda");
+        addLeaf("Mert");
+        addLeaf("Emir");
+        addLeaf("Seda");
 
-        addLabel(hierarchyPanel, "Mert");
-        addLabel(hierarchyPanel, "Emir");
-        addLabel(hierarchyPanel, "Seda");
+        //addLabel(hierarchyPanel, "Mert");
+        //addLabel(hierarchyPanel, "Emir");
+        //addLabel(hierarchyPanel, "Seda");
 
 
         SwingUtilities.invokeLater(new Runnable() {
@@ -132,7 +135,8 @@ public class VCSapp {
                 Entity ent = world.createEntity(namePanel.readData(), posPanel.readData(), speedPanel.readData());
                 if(ent != null && !ent.isNullName()){
                     world.entities.add(ent);
-                    addLabel(hierarchyPanel, ent.getName());
+                    //addLabel(hierarchyPanel, ent.getName());
+                    addLeaf(ent.getName());
                 }
             }
             catch (NumberFormatException err){ //TODO bi tekrar bak
@@ -171,6 +175,11 @@ public class VCSapp {
         JLabel nameLabel = new JLabel(str);
         panel.add(nameLabel);
         panel.revalidate();
+    }
+
+    private void addLeaf(String name){
+        hierarchyPanel.addNameLeaf(name);
+        hierarchyPanel.revalidate();
     }
 
     public JFrame getWindow(){
