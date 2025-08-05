@@ -8,7 +8,9 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.html.HTML;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import java.awt.*;
+import java.util.Enumeration;
 
 public class HierarchyView extends VCSpanel {
 
@@ -25,10 +27,32 @@ public class HierarchyView extends VCSpanel {
         add(tree);
     }
 
-    public void addNameLeaf (String name ){
+    public void leafWithDetails(DefaultMutableTreeNode leaf, String name, Vec2int pos, Vec2int vel){
+
+        //DefaultMutableTreeNode entNode = findnodeByName(rootNode,name);
+
+        remove(tree);
+        //DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(name);
+
+        DefaultMutableTreeNode posNode = new DefaultMutableTreeNode("Pos:");
+        posNode.add(new DefaultMutableTreeNode("X: " + pos.x));
+        posNode.add(new DefaultMutableTreeNode("Y: " + pos.y));
+        leaf.add(posNode);
+
+
+        DefaultMutableTreeNode velNode = new DefaultMutableTreeNode("Vel:");
+        velNode.add(new DefaultMutableTreeNode("X: " + vel.x));
+        velNode.add(new DefaultMutableTreeNode("Y: " + vel.y));
+        leaf.add(velNode);
+
+    }
+
+    public void addNameLeaf (String name , Vec2int pos, Vec2int speed){
         remove(tree);
         DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(name);
         rootNode.add(leaf);
+        // leafi parametre olarak al fonk cagır
+        leafWithDetails(leaf, name, pos, speed);
         tree = new JTree(rootNode);
         add(tree);
     }

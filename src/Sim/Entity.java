@@ -41,6 +41,8 @@ public class Entity {
         this.speed = speed;
     }
 
+    public Vec2int getSpeed(){return speed;}
+
     public void addComponents(Component c) {
         this.components.add(c);
     }

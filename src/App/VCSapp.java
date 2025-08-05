@@ -3,6 +3,7 @@ package App;
 import UI.*;
 import Sim.Entity;
 import Sim.World;
+import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -84,25 +85,31 @@ public class VCSapp {
         window.add(southPanel, BorderLayout.SOUTH);
         window.add(northPanel, BorderLayout.NORTH);
 
-        StringEditor eNamePanel = new StringEditor("Name:");
-        Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
-        Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
+//        StringEditor eNamePanel = new StringEditor("Name:");
+//        Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
+//        Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
+//
+//        editorPanel.add(eNamePanel);
+//        editorPanel.add(ePositionPanel);
+//        editorPanel.add(eSpeedPanel);
 
-        editorPanel.add(eNamePanel);
-        editorPanel.add(ePositionPanel);
-        editorPanel.add(eSpeedPanel);
-
-        JButton createBtn = createEntityButton(eNamePanel, ePositionPanel, eSpeedPanel, hierarchyPanel);
-        editorPanel.add(createBtn);
+//        JButton createBtn = createEntityButton(eNamePanel, ePositionPanel, eSpeedPanel, hierarchyPanel);
+//        editorPanel.add(createBtn);
 
         window.setVisible(true);
 
-        world.createEntity("Mert");
-        world.createEntity("Emir");
-        world.createEntity("Seda");
-        addLeaf("Mert");
-        addLeaf("Emir");
-        addLeaf("Seda");
+        Entity mert = world.createEntity("Mert");
+        world.entities.add(mert);
+        addLeaf(mert.getName(), mert.getPos(), mert.getSpeed());
+
+        Entity emir = world.createEntity("Emir");
+        world.entities.add(emir);
+        addLeaf(emir.getName(), emir.getPos(), emir.getSpeed());
+
+        Entity seda = world.createEntity("Seda");
+        world.entities.add(seda);
+        addLeaf(seda.getName(), seda.getPos(), seda.getSpeed());
+
 
         //addLabel(hierarchyPanel, "Mert");
         //addLabel(hierarchyPanel, "Emir");
@@ -131,7 +138,7 @@ public class VCSapp {
 
     }
 
-    private JButton createEntityButton(StringEditor namePanel, Vec2intEditor posPanel,
+    public JButton createEntityButton(StringEditor namePanel, Vec2intEditor posPanel,
                                        Vec2intEditor speedPanel, HierarchyView hierarchyPanel){
 
         JButton createBtn = new JButton("Create");
@@ -142,7 +149,7 @@ public class VCSapp {
                 if(ent != null && !ent.isNullName()){
                     world.entities.add(ent);
                     //addLabel(hierarchyPanel, ent.getName());
-                    addLeaf(ent.getName());
+                    addLeaf(ent.getName(), ent.getPos(), ent.getSpeed());
                 }
             }
             catch (NumberFormatException err){ //TODO bi tekrar bak
@@ -183,13 +190,15 @@ public class VCSapp {
         panel.revalidate();
     }
 
-    private void addLeaf(String name){
-        hierarchyPanel.addNameLeaf(name);
+    private void addLeaf(String name, Vec2int pos, Vec2int speed){
+        hierarchyPanel.addNameLeaf(name, pos, speed);
         hierarchyPanel.revalidate();
     }
 
     public JFrame getWindow(){
         return window;
     }
+
+
 
 }
