@@ -2,6 +2,8 @@ package UI;
 
 import Vec.Vec2int;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class Vec2intEditor extends JPanel{
@@ -11,6 +13,7 @@ public class Vec2intEditor extends JPanel{
     private JLabel lblY;
     private JTextField txtX;
     private JTextField txtY;
+    Border defaultBorder;
 
     public Vec2intEditor(String label){
         nameLbl = new JLabel(label);
@@ -22,11 +25,13 @@ public class Vec2intEditor extends JPanel{
         this.setLayout(new GridLayout(2,1));
         this.add(nameLbl);
         JPanel vecPnl = new JPanel(new GridLayout(1,4));
+        this.setMaximumSize(new Dimension(Integer.MAX_VALUE,40 ));
         vecPnl.add(lblX);
         vecPnl.add(txtX);
         vecPnl.add(lblY);
         vecPnl.add(txtY);
         this.add(vecPnl);
+        defaultBorder = txtX.getBorder();
 
     }
 
@@ -52,6 +57,7 @@ public class Vec2intEditor extends JPanel{
         }
         catch (NumberFormatException e) {
             System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblX.getText());
+            txtX.setBorder(new LineBorder(Color.RED, 2));
         }
 
         try {
@@ -59,7 +65,19 @@ public class Vec2intEditor extends JPanel{
         }
         catch (NumberFormatException e) {
             System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblY.getText());
+            txtY.setBorder(new LineBorder(Color.RED, 2));
         }
+        new Thread(()->{
+            try {
+                Thread.sleep(1000);
+                //txt.setBackground(Color.WHITE);
+                txtX.setBorder(defaultBorder);
+                txtY.setBorder(defaultBorder);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+
     }
 
 }

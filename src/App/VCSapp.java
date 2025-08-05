@@ -82,16 +82,16 @@ public class VCSapp {
         window.add(hierarchyPanel, BorderLayout.WEST);
         window.add(southPanel, BorderLayout.SOUTH);
 
-        StringEditor eNamePanel = new StringEditor("Name:");
-        Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
-        Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
+//        StringEditor eNamePanel = new StringEditor("Name:");
+//        Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
+//        Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
+//
+//        editorPanel.add(eNamePanel);
+//        editorPanel.add(ePositionPanel);
+//        editorPanel.add(eSpeedPanel);
 
-        editorPanel.add(eNamePanel);
-        editorPanel.add(ePositionPanel);
-        editorPanel.add(eSpeedPanel);
-
-        JButton createBtn = createEntityButton(eNamePanel, ePositionPanel, eSpeedPanel, hierarchyPanel);
-        editorPanel.add(createBtn);
+//        JButton createBtn = createEntityButton(eNamePanel, ePositionPanel, eSpeedPanel, hierarchyPanel);
+//        editorPanel.add(createBtn);
 
         window.setVisible(true);
 
@@ -135,7 +135,7 @@ public class VCSapp {
 
     }
 
-    private JButton createEntityButton(StringEditor namePanel, Vec2intEditor posPanel,
+    public JButton createEntityButton(StringEditor namePanel, Vec2intEditor posPanel,
                                        Vec2intEditor speedPanel, HierarchyView hierarchyPanel){
 
         JButton createBtn = new JButton("Create");
