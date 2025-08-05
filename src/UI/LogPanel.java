@@ -4,6 +4,7 @@ import App.VCSapp;
 import Sim.Entity;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class LogPanel extends VCSpanel{
@@ -12,7 +13,13 @@ public class LogPanel extends VCSpanel{
         this.setSize(100,200);
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
         JLabel label = new JLabel("Log: ");
-        this.add(label);
+        JTextField text = new JTextField();
+        text.setBorder(new TitledBorder("Log:"));
+        text.setPreferredSize(new Dimension(300,200));
+        text.setText("Log will be shown in here.");
+        text.setEditable(false);
+        //this.add(label);
+        this.add(text);
 
     }
 
