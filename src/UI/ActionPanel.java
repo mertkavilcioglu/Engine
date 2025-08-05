@@ -36,7 +36,13 @@ public class ActionPanel extends VCSpanel{
         targetp.add(new JButton("2"));
         targetp.add(new JButton("3"));
 
-        movep = new Vec2intEditor("Position:");
+        movep = new JPanel(new GridLayout(2,1));
+        Vec2intEditor meditor = new Vec2intEditor("Position:");
+        JButton mbutton = new JButton("Move");
+        mbutton.setFocusable(false);
+        //mbutton.setMargin(new Insets(10,10,10,10));   //try to make button smaller.
+        movep.add(meditor);
+        movep.add(mbutton);
 
         currentp = new JPanel();
         currentp.add(new JLabel("Current Order"));
