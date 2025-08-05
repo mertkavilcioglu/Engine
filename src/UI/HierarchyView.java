@@ -27,12 +27,12 @@ public class HierarchyView extends VCSpanel {
         add(tree);
     }
 
-    public void leafWithDetails(String name, Vec2int pos, Vec2int vel){
+    public void leafWithDetails(DefaultMutableTreeNode leaf, String name, Vec2int pos, Vec2int vel){
 
-        DefaultMutableTreeNode entNode = findnodeByName(rootNode,name);
+        //DefaultMutableTreeNode entNode = findnodeByName(rootNode,name);
 
         remove(tree);
-        DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(name);
+        //DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(name);
 
         DefaultMutableTreeNode posNode = new DefaultMutableTreeNode("Pos:");
         posNode.add(new DefaultMutableTreeNode("X: " + pos.x));
@@ -47,25 +47,12 @@ public class HierarchyView extends VCSpanel {
 
     }
 
-    private DefaultMutableTreeNode findnodeByName(DefaultMutableTreeNode rootNode, String name) {
-
-        Enumeration<TreeNode> e = rootNode.children();
-        while (e.hasMoreElements()){
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
-            if (node.getUserObject().toString().equals(name)){
-
-                return node;
-            }
-        }
-        return null;
-    }
-
-    public void addNameLeaf (String name ){
+    public void addNameLeaf (String name , Vec2int pos, Vec2int speed){
         remove(tree);
         DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(name);
         rootNode.add(leaf);
         // leafi parametre olarak al fonk cagır
-        leafWithDetails(leaf);
+        leafWithDetails(leaf, name, pos, speed);
         tree = new JTree(rootNode);
         add(tree);
     }

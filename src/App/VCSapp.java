@@ -3,6 +3,7 @@ package App;
 import UI.*;
 import Sim.Entity;
 import Sim.World;
+import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -94,13 +95,17 @@ public class VCSapp {
 
         window.setVisible(true);
 
-        world.createEntity("Mert");
-        world.createEntity("Emir");
-        world.createEntity("Seda");
-        addLeaf("Mert");
-        addLeaf("Emir");
-        addLeaf("Seda");
+        Entity mert = world.createEntity("Mert");
+        world.entities.add(mert);
+        addLeaf(mert.getName(), mert.getPos(), mert.getSpeed());
 
+        Entity emir = world.createEntity("Emir");
+        world.entities.add(emir);
+        addLeaf(emir.getName(), emir.getPos(), emir.getSpeed());
+
+        Entity seda = world.createEntity("Seda");
+        world.entities.add(seda);
+        addLeaf(seda.getName(), seda.getPos(), seda.getSpeed());
 
 
         //addLabel(hierarchyPanel, "Mert");
@@ -141,7 +146,7 @@ public class VCSapp {
                 if(ent != null && !ent.isNullName()){
                     world.entities.add(ent);
                     //addLabel(hierarchyPanel, ent.getName());
-                    addLeaf(ent.getName());
+                    addLeaf(ent.getName(), ent.getPos(), ent.getSpeed());
                 }
             }
             catch (NumberFormatException err){ //TODO bi tekrar bak
@@ -182,8 +187,8 @@ public class VCSapp {
         panel.revalidate();
     }
 
-    private void addLeaf(String name){
-        hierarchyPanel.addNameLeaf(name);
+    private void addLeaf(String name, Vec2int pos, Vec2int speed){
+        hierarchyPanel.addNameLeaf(name, pos, speed);
         hierarchyPanel.revalidate();
     }
 
