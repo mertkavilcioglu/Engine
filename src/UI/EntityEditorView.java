@@ -5,10 +5,13 @@ import Sim.Entity;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.text.BoxView;
 import java.awt.*;
 
 public class EntityEditorView extends VCSpanel {
+    String[] components = {"Radar"};
+    RadarEditor radarPanel = null;
+    JButton addComponentButton;
+
     public EntityEditorView(VCSapp app){
         super(app);
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
@@ -21,9 +24,49 @@ public class EntityEditorView extends VCSpanel {
         add(eNamePanel);
         add(ePositionPanel);
         add(eSpeedPanel);
-        add(app.createEntityButton(eNamePanel, ePositionPanel,  eSpeedPanel, null));
-        add(Box.createVerticalGlue());
-        add(addComponentButton(eNamePanel, ePositionPanel,  eSpeedPanel, null));
+        add(app.createEntityButton(eNamePanel, ePositionPanel,  eSpeedPanel, null), BorderLayout.CENTER);
+        add(new JLabel(" "));
+        addComponentButton = new JButton("Add Component");
+        addComponentButton.setBounds(150,300,150,30);
+
+        JPopupMenu popupMenu = new JPopupMenu();
+        for (String comp : components){
+            JMenuItem item = new JMenuItem(comp);
+            item.addActionListener(e -> {
+                switch (comp){
+                    case "Radar":
+                        if(radarPanel == null){
+                            radarPanel = new RadarEditor("Radar:", this);
+                            remove(addComponentButton);
+                            add(radarPanel);
+                            add(addComponentButton);
+                            revalidate();
+                            break;
+                        }
+                }
+            });
+            popupMenu.add(item);
+        }
+        addComponentButton.addActionListener(e -> {
+            int x=0;
+            int y = popupMenu.getPreferredSize().height;
+            popupMenu.show(addComponentButton,x,y);
+        });
+        add(addComponentButton, BorderLayout.CENTER);
+    }
+
+    public void removeComponent(JPanel panel, String compName){
+        remove(panel);
+        remove(addComponentButton);
+        add(addComponentButton);
+        switch (compName){
+            case "Radar":
+                if(radarPanel != null){
+                    radarPanel = null;
+                    break;
+                }
+        }
+        revalidate();
 
     }
 
@@ -32,27 +75,5 @@ public class EntityEditorView extends VCSpanel {
         System.out.println("EditorView::selectedEntityChanged");
     }
 
-    public JButton addComponentButton(StringEditor namePanel, Vec2intEditor posPanel,
-                                      Vec2intEditor speedPanel, HierarchyView hierarchyPanel){
-
-        JButton createBtn = new JButton("Add C");
-        createBtn.addActionListener(e -> {
-            //System.out.println("button clicked");
-            /*try{
-                Entity ent = world.createEntity(namePanel.readData(), posPanel.readData(), speedPanel.readData());
-                if(ent != null && !ent.isNullName()){
-                    world.entities.add(ent);
-                    //addLabel(hierarchyPanel, ent.getName());
-                    addLeaf(ent.getName());
-                }
-            }
-            catch (NumberFormatException err){ //TODO bi tekrar bak
-                posPanel.dataValidate();
-                speedPanel.dataValidate();
-            }*/
-        });
-        createBtn.setFocusable(false);
-        return createBtn;
-    }
 }
 //TODO window yap
