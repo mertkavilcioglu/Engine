@@ -42,23 +42,25 @@ public class ActionPanel extends VCSpanel{
         currentp.add(new JLabel("Current Order"));
         currentp.add(new JTextField());
 
-        JPanel empty = new JPanel(new CardLayout());
-        empty.add(targetp, "target");
-        empty.add(movep, "move");
+        JPanel showp = new JPanel(new CardLayout());
+        JPanel empty = new JPanel();
+        showp.add(empty, "empty");
+        showp.add(targetp, "target");
+        showp.add(movep, "move");
 
         orderp.setSize(100,200);
         orderp.setBorder(BorderFactory.createDashedBorder(Color.black));
-        empty.setSize(100,200);
-        empty.setBorder(BorderFactory.createDashedBorder(Color.black));
+        showp.setSize(100,200);
+        showp.setBorder(BorderFactory.createDashedBorder(Color.black));
         currentp.setSize(100,200);
         currentp.setBorder(BorderFactory.createDashedBorder(Color.black));
 
-        CardLayout cardLayout = (CardLayout) empty.getLayout();
-        attack.addActionListener(e -> cardLayout.show(empty, "target"));
-        move.addActionListener(e -> cardLayout.show(empty, "move"));
+        CardLayout cardLayout = (CardLayout) showp.getLayout();
+        attack.addActionListener(e -> cardLayout.show(showp, "target"));
+        move.addActionListener(e -> cardLayout.show(showp, "move"));
 
         panel.add(orderp);
-        panel.add(empty);
+        panel.add(showp);
         panel.add(currentp);
 
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
