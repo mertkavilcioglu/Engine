@@ -5,10 +5,9 @@ import Sim.Entity;
 import Sim.World;
 import Vec.Vec2int;
 
-import javax.swing.*;
 import java.awt.*;
 
-public class MapView extends VCSpanel {
+public class MapView extends VCSPanel {
     private World world;
 
     public MapView(VCSapp app) {

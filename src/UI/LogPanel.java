@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class LogPanel extends VCSpanel{
+public class LogPanel extends VCSPanel {
     public LogPanel(VCSapp app) {
         super(app);
         this.setSize(100,200);

@@ -6,7 +6,7 @@ import Sim.Entity;
 import javax.swing.*;
 import java.awt.*;
 
-public class SouthPanel extends VCSpanel{
+public class SouthPanel extends VCSPanel {
 
 
     public SouthPanel(VCSapp app) {

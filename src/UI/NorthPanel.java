@@ -6,7 +6,7 @@ import Sim.Entity;
 import javax.swing.*;
 import java.awt.*;
 
-public class NorthPanel extends VCSpanel{
+public class NorthPanel extends VCSPanel {
     JPanel playpanel;
     JPanel importpanel;
 

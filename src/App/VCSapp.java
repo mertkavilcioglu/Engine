@@ -27,6 +27,20 @@ public class VCSapp {
     //OPT.
     //TODO invalid inputsa kırmızı yap fieldı
 
+
+    //TODO ilk başta her birim target olsun
+    //TODO entitylere taraf ekle, hem sağ panele hem de renge göre order düzenle
+    //TODO map sınırlarına gelen entity hareket etmeyi bırakır, dışına çıkmaz
+    //TODO hierarchyde pozisyonlar güncellenecek
+    //TODO hız değiştiği zaman, tree'de hız da güncellenmesi lazım
+
+    //TODO radar componentini create'e bağla
+
+    //TODO
+
+
+
+
     // VIRTUAL COMBAT SYSTEM (VCS)
     public World world;
     JFrame window;
@@ -100,15 +114,15 @@ public class VCSapp {
 
         Entity mert = world.createEntity("Mert");
         world.entities.add(mert);
-        addLeaf(mert.getName(), mert.getPos(), mert.getSpeed());
+        hierarchyPanel.entityAdded(mert);
 
         Entity emir = world.createEntity("Emir");
         world.entities.add(emir);
-        addLeaf(emir.getName(), emir.getPos(), emir.getSpeed());
+        hierarchyPanel.entityAdded(emir);
 
         Entity seda = world.createEntity("Seda");
         world.entities.add(seda);
-        addLeaf(seda.getName(), seda.getPos(), seda.getSpeed());
+        hierarchyPanel.entityAdded(seda);
 
 
         //addLabel(hierarchyPanel, "Mert");
@@ -146,10 +160,11 @@ public class VCSapp {
             //System.out.println("button clicked");
             try{
                 Entity ent = world.createEntity(namePanel.readData(), posPanel.readData(), speedPanel.readData());
-                if(ent != null && !ent.isNullName()){
+                if(ent != null){
                     world.entities.add(ent);
                     //addLabel(hierarchyPanel, ent.getName());
-                    addLeaf(ent.getName(), ent.getPos(), ent.getSpeed());
+                    //addLeaf(ent.getName(), ent.getPos(), ent.getSpeed());
+                    hierarchyPanel.entityAdded(ent);
                 }
             }
             catch (NumberFormatException err){ //TODO bi tekrar bak
@@ -188,11 +203,6 @@ public class VCSapp {
         JLabel nameLabel = new JLabel(str);
         panel.add(nameLabel);
         panel.revalidate();
-    }
-
-    private void addLeaf(String name, Vec2int pos, Vec2int speed){
-        hierarchyPanel.addNameLeaf(name, pos, speed);
-        hierarchyPanel.revalidate();
     }
 
     public JFrame getWindow(){

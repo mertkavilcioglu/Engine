@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class EntityEditorView extends VCSpanel {
+public class EntityEditorView extends VCSPanel {
     String[] components = {"Radar"};
     RadarEditor radarPanel = null;
     JButton addComponentButton;

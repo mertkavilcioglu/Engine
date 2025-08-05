@@ -6,16 +6,16 @@ import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.text.html.HTML;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
-import java.util.Enumeration;
 
-public class HierarchyView extends VCSpanel {
+public class HierarchyView extends VCSPanel {
 
-    public JTree tree;
-    DefaultMutableTreeNode rootNode;
+    private JTree tree;
+    private DefaultMutableTreeNode rootNode;
+    private DefaultTreeModel model; // data of tree
+
     public HierarchyView(VCSapp app){
         super(app);
         this.setLayout(new BorderLayout());
@@ -23,38 +23,24 @@ public class HierarchyView extends VCSpanel {
         this.setBorder(new TitledBorder("Hierarchy"));
 
         rootNode = new DefaultMutableTreeNode("Hierarchy");
-        tree = new JTree(rootNode);
-        add(tree);
+        model = new DefaultTreeModel(rootNode);
+        tree = new JTree(model);
+        add(tree, BorderLayout.CENTER);
     }
 
-    public void leafWithDetails(DefaultMutableTreeNode leaf, String name, Vec2int pos, Vec2int vel){
-
-        //DefaultMutableTreeNode entNode = findnodeByName(rootNode,name);
-
-        remove(tree);
-        //DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(name);
-
+    private DefaultMutableTreeNode createNode(Entity e){
+        DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(e.getName());
         DefaultMutableTreeNode posNode = new DefaultMutableTreeNode("Pos:");
-        posNode.add(new DefaultMutableTreeNode("X: " + pos.x));
-        posNode.add(new DefaultMutableTreeNode("Y: " + pos.y));
+        posNode.add(new DefaultMutableTreeNode("X: " + e.getPos().x));
+        posNode.add(new DefaultMutableTreeNode("Y: " + e.getPos().y));
         leaf.add(posNode);
 
-
         DefaultMutableTreeNode velNode = new DefaultMutableTreeNode("Vel:");
-        velNode.add(new DefaultMutableTreeNode("X: " + vel.x));
-        velNode.add(new DefaultMutableTreeNode("Y: " + vel.y));
+        velNode.add(new DefaultMutableTreeNode("X: " + e.getSpeed().x));
+        velNode.add(new DefaultMutableTreeNode("Y: " + e.getSpeed().y));
         leaf.add(velNode);
 
-    }
-
-    public void addNameLeaf (String name , Vec2int pos, Vec2int speed){
-        remove(tree);
-        DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(name);
-        rootNode.add(leaf);
-        // leafi parametre olarak al fonk cagır
-        leafWithDetails(leaf, name, pos, speed);
-        tree = new JTree(rootNode);
-        add(tree);
+        return leaf;
     }
 
     public void addComponentLeaf(DefaultMutableTreeNode root, String name, Vec2int vec){
@@ -66,6 +52,15 @@ public class HierarchyView extends VCSpanel {
         leaf.add(yLeaf);
     }
 
+    public void entityAdded(Entity e){
+        DefaultMutableTreeNode node = createNode(e);
+        rootNode.add(node);
+        model.reload(rootNode);
+    }
+
+    public void entityRemoved(Entity e){
+        //REMOVE
+    }
 
     @Override
     public void selectedEntityChanged(Entity entity) {

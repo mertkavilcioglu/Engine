@@ -2,13 +2,12 @@ package UI;
 
 import App.VCSapp;
 import Sim.Entity;
-import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class ActionPanel extends VCSpanel{
+public class ActionPanel extends VCSPanel {
     private JPanel orderp;
     private JButton attack;
     private JButton move;

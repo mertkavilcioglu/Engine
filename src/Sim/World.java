@@ -1,7 +1,5 @@
 package Sim;
 
-import App.VCSapp;
-import UI.VCSpanel;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
