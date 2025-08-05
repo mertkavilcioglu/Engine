@@ -6,6 +6,7 @@ import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.html.HTML;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 
@@ -15,7 +16,7 @@ public class HierarchyView extends VCSpanel {
     DefaultMutableTreeNode rootNode;
     public HierarchyView(VCSapp app){
         super(app);
-        this.setLayout(new GridLayout(25,1));
+        this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
         this.setBorder(new TitledBorder("Hierarchy"));
 
@@ -25,8 +26,11 @@ public class HierarchyView extends VCSpanel {
     }
 
     public void addNameLeaf (String name ){
+        remove(tree);
         DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(name);
         rootNode.add(leaf);
+        tree = new JTree(rootNode);
+        add(tree);
     }
 
     public void addComponentLeaf(DefaultMutableTreeNode root, String name, Vec2int vec){
