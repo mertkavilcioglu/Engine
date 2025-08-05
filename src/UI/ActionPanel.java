@@ -2,6 +2,7 @@ package UI;
 
 import App.VCSapp;
 import Sim.Entity;
+import Vec.Vec2int;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,10 +72,13 @@ public class ActionPanel extends VCSpanel{
         attack.addActionListener(e -> cardLayout.show(showp, "target"));
         move.addActionListener(e -> cardLayout.show(showp, "move"));
 
+        //butonların ActionListener ları attactan move a ya da move dan attack a geçince ekrana yazdırıyor ona bakmak lazım....
         first.addActionListener(e -> currentp.add(new JLabel("First target selected.")));
         second.addActionListener(e -> currentp.add(new JLabel("Second target selected.")));
         third.addActionListener(e -> currentp.add(new JLabel("Third target selected.")));
+        mbutton.addActionListener(e -> currentp.add(new JLabel("Moving to " + meditor.readData())));
 
+        
         panel.add(orderp);
         panel.add(showp);
         panel.add(currentp);
