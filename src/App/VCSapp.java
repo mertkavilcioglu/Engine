@@ -32,6 +32,7 @@ public class VCSapp {
     MapView mapView;
     EntityEditorView editorPanel;
     HierarchyView hierarchyPanel;
+    SouthPanel southPanel;
     ArrayList<JLabel> entityNames = new ArrayList<>();
 
     public void run() {
@@ -73,10 +74,12 @@ public class VCSapp {
         mapView = new MapView(this);
         editorPanel = new EntityEditorView(this);
         hierarchyPanel = new HierarchyView(this);
+        southPanel = new SouthPanel(this);
 
         window.add(mapView,BorderLayout.CENTER);
         window.add(editorPanel, BorderLayout.EAST);
         window.add(hierarchyPanel, BorderLayout.WEST);
+        window.add(southPanel, BorderLayout.SOUTH);
 
         StringEditor eNamePanel = new StringEditor("Name:");
         Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
