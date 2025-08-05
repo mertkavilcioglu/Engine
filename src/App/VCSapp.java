@@ -101,6 +101,8 @@ public class VCSapp {
         addLeaf("Emir");
         addLeaf("Seda");
 
+
+
         //addLabel(hierarchyPanel, "Mert");
         //addLabel(hierarchyPanel, "Emir");
         //addLabel(hierarchyPanel, "Seda");
@@ -188,5 +190,7 @@ public class VCSapp {
     public JFrame getWindow(){
         return window;
     }
+
+
 
 }
