@@ -5,12 +5,13 @@ import Sim.Entity;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.BoxView;
 import java.awt.*;
 
 public class EntityEditorView extends VCSpanel {
     public EntityEditorView(VCSapp app){
         super(app);
-        this.setLayout(new GridLayout(15,1));
+        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
         this.setBorder(new TitledBorder("Create Entity"));
 
