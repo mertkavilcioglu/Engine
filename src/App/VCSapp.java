@@ -47,8 +47,10 @@ public class VCSapp {
     MapView mapView;
     EntityEditorView editorPanel;
     HierarchyView hierarchyPanel;
-    SouthPanel southPanel;
-    NorthPanel northPanel;
+    ActionPanel actionPanel;
+    LogPanel logPanel;
+    ButtonsPanel buttonsPanel;
+    ImportPanel importPanel;
     ArrayList<JLabel> entityNames = new ArrayList<>();
 
     public void run() {
@@ -90,14 +92,25 @@ public class VCSapp {
         mapView = new MapView(this);
         editorPanel = new EntityEditorView(this);
         hierarchyPanel = new HierarchyView(this);
-        southPanel = new SouthPanel(this);
-        northPanel= new NorthPanel(this);
+        logPanel = new LogPanel(this);
+        actionPanel = new ActionPanel(this);
+        buttonsPanel = new ButtonsPanel(this);
+        importPanel = new ImportPanel(this);
+
+        JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
+        mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
+        mergeSouthPanel.add(actionPanel);
+        mergeSouthPanel.add(logPanel);
+
+        JPanel mergeNorthPanel = new JPanel(new BorderLayout());
+        mergeNorthPanel.add(importPanel, BorderLayout.WEST);
+        mergeNorthPanel.add(buttonsPanel, BorderLayout.CENTER);
 
         window.add(mapView,BorderLayout.CENTER);
         window.add(editorPanel, BorderLayout.EAST);
         window.add(hierarchyPanel, BorderLayout.WEST);
-        window.add(southPanel, BorderLayout.SOUTH);
-        window.add(northPanel, BorderLayout.NORTH);
+        window.add(mergeSouthPanel, BorderLayout.SOUTH);
+        window.add(mergeNorthPanel, BorderLayout.NORTH);
 
 //        StringEditor eNamePanel = new StringEditor("Name:");
 //        Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
