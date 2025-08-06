@@ -62,6 +62,13 @@ public class HierarchyView extends VCSPanel {
         //REMOVE
     }
 
+    public void update(int deltaTime){
+        for(Entity e : app.world.entities){
+            //
+        }
+
+    }
+
     @Override
     public void selectedEntityChanged(Entity entity) {
         System.out.println("EditorView::selectedEntityChanged");

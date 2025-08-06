@@ -13,6 +13,7 @@ public class MapView extends VCSPanel {
     public MapView(VCSapp app) {
         super(app);
         this.world = app.world;
+        setBackground(Color.WHITE);
     }
 
     @Override
@@ -22,10 +23,10 @@ public class MapView extends VCSPanel {
 
     @Override
     public void paint(Graphics g) {
-        //super.paint(g);
+        super.paint(g);
 
         g.setColor(Color.RED);
-        //g.fillRect(0,0, this.getWidth(), this.getHeight());
+        g.fillRect(0,0, app.world.map.maxX, app.world.map.maxY);
 
         for (int i = 0; i < world.entities.size(); i++) {
             Entity e = world.entities.get(i);
@@ -33,7 +34,7 @@ public class MapView extends VCSPanel {
 
             //drawEntity(e);
             g.setColor(Color.BLACK);
-            g.drawOval(pos.x, pos.y, 20, 20);
+            g.drawOval(pos.x-10, pos.y-10, 20, 20);
         }
     }
 

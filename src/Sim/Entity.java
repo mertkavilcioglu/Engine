@@ -9,10 +9,41 @@ public class Entity {
     Vec2int pos;
     Vec2int speed;
     ArrayList<Component> components = new ArrayList<>();
+    private final World w;
+
+    public Entity(World w) {
+        this.w = w;
+    }
 
     void update(int deltaTime) {
         pos.x += speed.x;
         pos.y += -speed.y;
+
+        if(pos.x <= 0){
+            pos.x = 0;
+            speed.x = 0;
+            speed.y = 0;
+        }
+
+        if(pos.x >= w.map.maxX){
+            pos.x = w.map.maxX;
+            speed.x = 0;
+            speed.y = 0;
+        }
+
+        if(pos.y <= 0){
+            pos.y = 0;
+            speed.x = 0;
+            speed.y = 0;
+        }
+
+        if(pos.y >= w.map.maxY){
+            pos.y = w.map.maxY;
+            speed.x = 0;
+            speed.y = 0;
+        }
+
+
         System.out.format("Sim.Entity::update - %s - time: %d\n", this, deltaTime);
         for (int i = 0; i < components.size(); i++) {
             components.get(i).update(deltaTime);

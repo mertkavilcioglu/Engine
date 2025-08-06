@@ -2,6 +2,7 @@ package UI;
 
 import App.VCSapp;
 import Sim.Entity;
+import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -24,7 +25,28 @@ public class EntityEditorView extends VCSPanel {
         add(eNamePanel);
         add(ePositionPanel);
         add(eSpeedPanel);
-        add(app.createEntityButton(eNamePanel, ePositionPanel,  eSpeedPanel, null), BorderLayout.CENTER);
+        JButton createButton = new JButton("Create");
+        createButton.addActionListener(e -> {
+            try{
+                String name = eNamePanel.readData();
+                Vec2int pos = ePositionPanel.readData();
+                Vec2int speed = eSpeedPanel.readData();
+
+                app.createEntity(name, pos, speed);
+            }
+            catch (Exception ex){
+               //TODO eNamePanel.dataV düzgün bir validate yapmaya çalış
+                ePositionPanel.dataValidate();
+                eSpeedPanel.dataValidate();
+            }
+
+
+
+
+
+        });
+        add(createButton);
+        //add(app.createEntityButton(eNamePanel, ePositionPanel,  eSpeedPanel, null), BorderLayout.CENTER);
         add(new JLabel(" "));
         addComponentButton = new JButton("Add Component");
         addComponentButton.setBounds(150,300,150,30);

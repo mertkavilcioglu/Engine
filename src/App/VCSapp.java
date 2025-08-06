@@ -36,7 +36,10 @@ public class VCSapp {
 
     //TODO radar componentini create'e bağla
 
-    //TODO
+    //TODO---------
+
+    //TODO x,y konumuna çizilen bir çemberde merkez x ve y olması lazım
+    //TODO appteki gereksiz kısımları butonları çıkar
 
 
 
@@ -152,6 +155,7 @@ public class VCSapp {
                         //System.out.println("Update THREAD: 2" + Thread.currentThread().getName());
                         // update world
                         world.update(1000);
+                        hierarchyPanel.update(1000);
                         // render world
                         //w.render();
                         renderToWindow();
@@ -220,6 +224,13 @@ public class VCSapp {
 
     public JFrame getWindow(){
         return window;
+    }
+
+    public void createEntity(String name, Vec2int pos, Vec2int speed){
+        Entity ent = world.createEntity(name, pos, speed);
+        hierarchyPanel.entityAdded(ent);
+        // diğer panellere bu entity'yi dağıt
+        // log, attack vs.
     }
 
 

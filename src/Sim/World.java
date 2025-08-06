@@ -9,7 +9,7 @@ public class World{
     public ArrayList<Entity> entities = new ArrayList<>(); //TODO static kalmadan yapmaya calis
 
     public Entity createEntity(String name) {
-        Entity ent = new Entity();
+        Entity ent = new Entity(this);
         ent.setName(name);
         ent.setPos(Vec2int.getRandom(map.maxX / 8 ,map.maxY / 6));
         ent.setSpeed(Vec2int.getRandom(0,4,0,4));
@@ -26,7 +26,7 @@ public class World{
         }
 
         System.out.format("Created entity %s with x:%d and y:%d", eName, pos.x, pos.y);
-        Entity ent = new Entity();
+        Entity ent = new Entity(this);
         ent.setName(eName);
 
         ent.setPos(new Vec2int(pos.x, pos.y));
