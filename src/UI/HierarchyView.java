@@ -9,12 +9,14 @@ import javax.swing.border.TitledBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
+import java.util.HashMap;
 
 public class HierarchyView extends VCSPanel {
 
     private JTree tree;
     private DefaultMutableTreeNode rootNode;
     private DefaultTreeModel model; // data of tree
+    private HashMap<String, DefaultMutableTreeNode> leaves = new HashMap<>();
 
     public HierarchyView(VCSApp app){
         super(app);
@@ -30,16 +32,31 @@ public class HierarchyView extends VCSPanel {
 
     private DefaultMutableTreeNode createNode(Entity e){
         DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(e.getName());
+
         DefaultMutableTreeNode posNode = new DefaultMutableTreeNode("Pos:");
-        posNode.add(new DefaultMutableTreeNode("X: " + e.getPos().x));
-        posNode.add(new DefaultMutableTreeNode("Y: " + e.getPos().y));
+        DefaultMutableTreeNode posXnode = new DefaultMutableTreeNode("X: " + e.getPos().x);
+        DefaultMutableTreeNode posYnode = new DefaultMutableTreeNode("Y: " + e.getPos().y);
+
+        posNode.add(posXnode);
+        posNode.add(posYnode);
+
+        leaves.put(e.getName() + "/pos/x", posXnode);
+        leaves.put(e.getName() + "/pos/y", posYnode);
+
         leaf.add(posNode);
 
         DefaultMutableTreeNode velNode = new DefaultMutableTreeNode("Vel:");
-        velNode.add(new DefaultMutableTreeNode("X: " + e.getSpeed().x));
-        velNode.add(new DefaultMutableTreeNode("Y: " + e.getSpeed().y));
-        leaf.add(velNode);
+        DefaultMutableTreeNode velXnode = new DefaultMutableTreeNode("X: " + e.getSpeed().x);
+        DefaultMutableTreeNode velYnode = new DefaultMutableTreeNode("Y: " + e.getSpeed().y);
 
+        velNode.add(velXnode);
+        velNode.add(velYnode);
+
+        leaves.put(e.getName() + "/vel/x", velXnode);
+        leaves.put(e.getName() + "/vel/y", velYnode);
+
+        leaf.add(velNode);
+        //TODO: aynı isimde entityler olursa burada sıkıntı çıkar, yeni isim türeterek entity oluştur bu durumda
         return leaf;
     }
 
@@ -55,7 +72,11 @@ public class HierarchyView extends VCSPanel {
     public void entityAdded(Entity e){
         DefaultMutableTreeNode node = createNode(e);
         rootNode.add(node);
+        leaves.put(e.getName(), node);
         model.reload(rootNode);
+
+        //TODO: aynı isimde entityler olursa burada sıkıntı çıkar, yeni isim türeterek entity oluştur bu durumda
+        //TODO: ayrıca scroll ekle panele
     }
 
     public void entityRemoved(Entity e){
@@ -64,7 +85,10 @@ public class HierarchyView extends VCSPanel {
 
     public void update(int deltaTime){
         for(Entity e : app.world.entities){
-            //
+            leaves.get((e.getName() + "/pos/x")).setUserObject(e.getPos().x);
+            leaves.get((e.getName() + "/pos/y")).setUserObject(e.getPos().y);
+            model.nodeChanged(leaves.get((e.getName() + "/pos/x")));
+            model.nodeChanged(leaves.get((e.getName() + "/pos/y")));
         }
 
     }
