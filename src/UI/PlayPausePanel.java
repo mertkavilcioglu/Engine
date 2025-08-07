@@ -6,8 +6,8 @@ import Sim.Entity;
 import javax.swing.*;
 import java.awt.*;
 
-public class ButtonsPanel extends VCSPanel{
-    public ButtonsPanel(VCSApp app) {
+public class PlayPausePanel extends VCSPanel{
+    public PlayPausePanel(VCSApp app) {
         super(app);
 
         this.setLayout(new GridBagLayout());

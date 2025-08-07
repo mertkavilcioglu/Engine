@@ -33,7 +33,7 @@ public class VCSApp {
     private HierarchyView hierarchyPanel;
     private ActionPanel actionPanel;
     private LogPanel logPanel;
-    private ButtonsPanel buttonsPanel;
+    private PlayPausePanel playPausePanel;
     private ImportPanel importPanel;
     private ArrayList<JLabel> entityNames = new ArrayList<>();
 
@@ -69,7 +69,7 @@ public class VCSApp {
         hierarchyPanel = new HierarchyView(this);
         logPanel = new LogPanel(this);
         actionPanel = new ActionPanel(this);
-        buttonsPanel = new ButtonsPanel(this);
+        playPausePanel = new PlayPausePanel(this);
         importPanel = new ImportPanel(this);
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
@@ -79,7 +79,7 @@ public class VCSApp {
 
         JPanel mergeNorthPanel = new JPanel(new BorderLayout());
         mergeNorthPanel.add(importPanel, BorderLayout.WEST);
-        mergeNorthPanel.add(buttonsPanel, BorderLayout.CENTER);
+        mergeNorthPanel.add(playPausePanel, BorderLayout.CENTER);
 
         window.add(mapView,BorderLayout.CENTER);
         window.add(editorPanel, BorderLayout.EAST);
@@ -91,12 +91,15 @@ public class VCSApp {
 
         Entity mert = world.createEntity("Mert");
         hierarchyPanel.entityAdded(mert);
+        actionPanel.newTarget(mert);
 
         Entity emir = world.createEntity("Emir");
         hierarchyPanel.entityAdded(emir);
+        actionPanel.newTarget(emir);
 
         Entity seda = world.createEntity("Seda");
         hierarchyPanel.entityAdded(seda);
+        actionPanel.newTarget(seda);
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -129,6 +132,7 @@ public class VCSApp {
     public void createEntity(String name, Vec2int pos, Vec2int speed){
         Entity ent = world.createEntity(name, pos, speed);
         hierarchyPanel.entityAdded(ent);
+        actionPanel.newTarget(ent);
         // diğer panellere bu entity'yi dağıt
         // log, attack vs.
     }

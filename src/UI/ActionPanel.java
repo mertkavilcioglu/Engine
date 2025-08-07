@@ -8,91 +8,85 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class ActionPanel extends VCSPanel {
-    private JPanel orderp;
-    private JButton attack;
-    private JButton move;
-    private JPanel targetp;
+    private JPanel orderPanel;
+    private JButton attackButton;
+    private JButton moveButton;
+    private JPanel targetPanel;
     private JButton first;
     private JButton second;
     private JButton third;
-    private JPanel movep;
-    private JPanel currentp;
-    private JLabel label;
+    private JPanel movePanel;
+    private JPanel currentOrderPanel;
+    private JTextField currentOrderText;
+    private JLabel mainLabel;
 
     public ActionPanel(VCSApp app){
         super(app);
         this.setLayout(new BorderLayout());
 
-        label = new JLabel("Selected Unit:", SwingConstants.CENTER);
+        mainLabel = new JLabel("Selected Unit:", SwingConstants.CENTER);
         JPanel panel = new JPanel(new GridLayout(1,3,0,0));
 
-        orderp = new JPanel(new GridLayout(5,1));
-        attack = new JButton("Attack");
-        move = new JButton("Move");
+        orderPanel = new JPanel(new GridLayout(5,1));
+        attackButton = new JButton("Attack");
+        moveButton = new JButton("Move");
 
-        orderp.add(new JLabel("Give Order"));
-        orderp.add(attack);
-        orderp.add(move);
+        orderPanel.add(attackButton);
+        orderPanel.add(moveButton);
 
-        targetp = new JPanel(new GridLayout(5,1));
-        first = new JButton("1");
-        second = new JButton("2");
-        third = new JButton("3");
-        targetp.add(new JLabel("Choose Target:"));
-        targetp.add(first);
-        targetp.add(second);
-        targetp.add(third);
+        targetPanel = new JPanel();
+        targetPanel.setLayout(new BoxLayout(targetPanel, BoxLayout.Y_AXIS));
 
-        movep = new JPanel(new GridLayout(2,1));
+        movePanel = new JPanel(new GridLayout(2,1));
         Vec2intEditor meditor = new Vec2intEditor("Position:");
         JButton mbutton = new JButton("Move");
         mbutton.setFocusable(false);
         //mbutton.setMargin(new Insets(10,10,10,10));   //try to make button smaller.
-        movep.add(meditor);
-        movep.add(mbutton);
+        movePanel.add(meditor);
+        movePanel.add(mbutton);
 
-        currentp = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
-        JTextField text = new JTextField();
-        text.setBorder(new TitledBorder("Current Order"));
-        text.setEditable(false);
-        text.setPreferredSize(new Dimension(120,220));
-        currentp.add(new JScrollPane(text));
+        currentOrderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
+        currentOrderText = new JTextField();
+        currentOrderText.setBorder(new TitledBorder("Current Order"));
+        currentOrderText.setEditable(false);
+        currentOrderText.setPreferredSize(new Dimension(120,220));
+        currentOrderPanel.add(new JScrollPane(currentOrderText));
 
         JPanel showp = new JPanel(new CardLayout());
         JPanel empty = new JPanel();
         showp.add(empty, "empty");
-        showp.add(targetp, "target");
-        showp.add(movep, "move");
+        showp.add(targetPanel, "target");
+        showp.add(movePanel, "move");
 
-        orderp.setPreferredSize(new Dimension(120,220));
-        orderp.setBorder(BorderFactory.createDashedBorder(Color.black));
+        orderPanel.setPreferredSize(new Dimension(120,220));
+        orderPanel.setBorder(new TitledBorder("Give Order"));;
         showp.setPreferredSize(new Dimension(120,220));
-        showp.setBorder(BorderFactory.createDashedBorder(Color.black));
-        currentp.setPreferredSize(new Dimension(120,220));
-        //currentp.setBorder(BorderFactory.createDashedBorder(Color.black));
+        showp.setBorder(new TitledBorder("Choose"));;
+        currentOrderPanel.setPreferredSize(new Dimension(120,220));
 
         CardLayout cardLayout = (CardLayout) showp.getLayout();
-        attack.addActionListener(e -> cardLayout.show(showp, "target"));
-        move.addActionListener(e -> cardLayout.show(showp, "move"));
+        attackButton.addActionListener(e -> cardLayout.show(showp, "target"));
+        moveButton.addActionListener(e -> cardLayout.show(showp, "move"));
 
-        //butonların ActionListener ları attactan move a ya da move dan attack a geçince ekrana yazdırıyor ona bakmak lazım....
-        first.addActionListener(e -> text.setText("First target"));
-        second.addActionListener(e -> text.setText("Second target"));
-        third.addActionListener(e -> text.setText("Third target"));
-        mbutton.addActionListener(e -> text.setText("Moving to " + meditor.readData()));
+        mbutton.addActionListener(e -> currentOrderText.setText("Moving to " + meditor.readData()));
 
 
-        panel.add(orderp);
+        panel.add(orderPanel);
         panel.add(showp);
-        panel.add(currentp);
+        panel.add(currentOrderPanel);
 
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
 
-        this.add(label, BorderLayout.NORTH);
+        this.add(mainLabel, BorderLayout.NORTH);
         this.add(panel, BorderLayout.CENTER);
 
     }
-    
+
+    public void newTarget(Entity entity){
+        JButton targetButton = new JButton(entity.getName());
+        targetPanel.add(targetButton);
+        targetButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
+    }
     @Override
     public void selectedEntityChanged(Entity entity) {
 
