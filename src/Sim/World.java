@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class World{
     public WorldMap map = new WorldMap();
-    public ArrayList<Entity> entities = new ArrayList<>(); //TODO static kalmadan yapmaya calis
+    public ArrayList<Entity> entities = new ArrayList<>();
 
     public Entity createEntity(String name) {
         Entity ent = new Entity(this);
@@ -15,13 +15,12 @@ public class World{
         ent.setSpeed(Vec2int.getRandom(0,4,0,4));
         Radar r = new Radar(ent,entities);
         ent.addComponents(r);
-        //entities.add(ent);
+        entities.add(ent);
         return ent;
     }
 
     public Entity createEntity(String eName, Vec2int pos, Vec2int speed){
         if(eName == null){
-            //System.out.println("NAME IS NULL");
             return null;
         }
 
@@ -30,11 +29,11 @@ public class World{
         ent.setName(eName);
 
         ent.setPos(new Vec2int(pos.x, pos.y));
-        //u.speed = Vec.Vec2int.getRandom(0,4,0,4);
         ent.setSpeed(new Vec2int(speed.x, speed.y));
 
         Radar r = new Radar(ent, entities);
         ent.addComponents(r);
+        entities.add(ent);
 
         return ent;
     }

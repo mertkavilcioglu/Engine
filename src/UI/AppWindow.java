@@ -1,15 +1,14 @@
 package UI;
 
-import App.VCSapp;
-import Sim.World;
+import App.VCSApp;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class AppWindow extends JFrame {
-    public AppWindow(VCSapp app){
+    public AppWindow(VCSApp app){
         super("VCS: Virtual Combat System");
-        setSize(app.world.map.maxX, app.world.map.maxY);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10,10));
     }

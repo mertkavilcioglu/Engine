@@ -1,6 +1,6 @@
 package UI;
 
-import App.VCSapp;
+import App.VCSApp;
 import Sim.Entity;
 import Vec.Vec2int;
 
@@ -16,7 +16,7 @@ public class HierarchyView extends VCSPanel {
     private DefaultMutableTreeNode rootNode;
     private DefaultTreeModel model; // data of tree
 
-    public HierarchyView(VCSapp app){
+    public HierarchyView(VCSApp app){
         super(app);
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));

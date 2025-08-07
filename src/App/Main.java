@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Main {
     public static void main(String[] args) {
-        VCSapp app = new VCSapp();
+        VCSApp app = new VCSApp();
         //Thread.currentThread().setName("MAIN THREAD");
         //app.run();
         try {

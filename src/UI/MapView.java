@@ -1,6 +1,6 @@
 package UI;
 
-import App.VCSapp;
+import App.VCSApp;
 import Sim.Entity;
 import Sim.World;
 import Vec.Vec2int;
@@ -10,7 +10,7 @@ import java.awt.*;
 public class MapView extends VCSPanel {
     private World world;
 
-    public MapView(VCSapp app) {
+    public MapView(VCSApp app) {
         super(app);
         this.world = app.world;
         setBackground(Color.WHITE);

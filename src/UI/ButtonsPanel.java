@@ -1,13 +1,13 @@
 package UI;
 
-import App.VCSapp;
+import App.VCSApp;
 import Sim.Entity;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ButtonsPanel extends VCSPanel{
-    public ButtonsPanel(VCSapp app) {
+    public ButtonsPanel(VCSApp app) {
         super(app);
 
         this.setLayout(new GridBagLayout());

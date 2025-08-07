@@ -1,6 +1,6 @@
 package UI;
 
-import App.VCSapp;
+import App.VCSApp;
 import Sim.Entity;
 
 import javax.swing.*;
@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class ImportPanel extends VCSPanel{
 
-    public ImportPanel(VCSapp app) {
+    public ImportPanel(VCSApp app) {
         super(app);
         this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         //importpanel.setBounds(0,0,10,50);

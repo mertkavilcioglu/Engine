@@ -1,6 +1,6 @@
 package UI;
 
-import App.VCSapp;
+import App.VCSApp;
 import Sim.Entity;
 
 import javax.swing.*;
@@ -8,7 +8,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class LogPanel extends VCSPanel {
-    public LogPanel(VCSapp app) {
+    public LogPanel(VCSApp app) {
         super(app);
         this.setSize(100,200);
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));

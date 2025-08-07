@@ -1,6 +1,6 @@
 package UI;
 
-import App.VCSapp;
+import App.VCSApp;
 import Sim.Entity;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ public class ActionPanel extends VCSPanel {
     private JPanel currentp;
     private JLabel label;
 
-    public ActionPanel(VCSapp app){
+    public ActionPanel(VCSApp app){
         super(app);
         this.setLayout(new BorderLayout());
 

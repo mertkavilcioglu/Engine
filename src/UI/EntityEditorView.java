@@ -1,6 +1,6 @@
 package UI;
 
-import App.VCSapp;
+import App.VCSApp;
 import Sim.Entity;
 import Vec.Vec2int;
 
@@ -13,7 +13,7 @@ public class EntityEditorView extends VCSPanel {
     RadarEditor radarPanel = null;
     JButton addComponentButton;
 
-    public EntityEditorView(VCSapp app){
+    public EntityEditorView(VCSApp app){
         super(app);
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
