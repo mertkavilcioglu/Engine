@@ -12,9 +12,7 @@ public class ActionPanel extends VCSPanel {
     private JButton attackButton;
     private JButton moveButton;
     private JPanel targetPanel;
-    private JButton first;
-    private JButton second;
-    private JButton third;
+    private JScrollPane scrollPane;
     private JPanel movePanel;
     private JPanel currentOrderPanel;
     private JTextField currentOrderText;
@@ -36,6 +34,7 @@ public class ActionPanel extends VCSPanel {
 
         targetPanel = new JPanel();
         targetPanel.setLayout(new BoxLayout(targetPanel, BoxLayout.Y_AXIS));
+        //targetPanel.setPreferredSize(new Dimension(panel.getPreferredSize()));
 
         movePanel = new JPanel(new GridLayout(2,1));
         Vec2intEditor meditor = new Vec2intEditor("Position:");
@@ -52,27 +51,31 @@ public class ActionPanel extends VCSPanel {
         currentOrderText.setPreferredSize(new Dimension(120,220));
         currentOrderPanel.add(new JScrollPane(currentOrderText));
 
-        JPanel showp = new JPanel(new CardLayout());
-        JPanel empty = new JPanel();
-        showp.add(empty, "empty");
-        showp.add(targetPanel, "target");
-        showp.add(movePanel, "move");
+        scrollPane = new JScrollPane(targetPanel);
+        //scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        //scrollPane.add(targetPanel);  //TODO düzelt!
+
+        JPanel showPanel = new JPanel(new CardLayout());
+        JPanel emptyPanel = new JPanel();
+        showPanel.add(emptyPanel, "empty");
+        showPanel.add(scrollPane, "target");       //TODO
+        showPanel.add(movePanel, "move");
 
         orderPanel.setPreferredSize(new Dimension(120,220));
         orderPanel.setBorder(new TitledBorder("Give Order"));;
-        showp.setPreferredSize(new Dimension(120,220));
-        showp.setBorder(new TitledBorder("Choose"));;
+        showPanel.setPreferredSize(new Dimension(120,220));
+        showPanel.setBorder(new TitledBorder("Choose"));;
         currentOrderPanel.setPreferredSize(new Dimension(120,220));
 
-        CardLayout cardLayout = (CardLayout) showp.getLayout();
-        attackButton.addActionListener(e -> cardLayout.show(showp, "target"));
-        moveButton.addActionListener(e -> cardLayout.show(showp, "move"));
+        CardLayout cardLayout = (CardLayout) showPanel.getLayout();
+        attackButton.addActionListener(e -> cardLayout.show(showPanel, "target"));
+        moveButton.addActionListener(e -> cardLayout.show(showPanel, "move"));
 
         mbutton.addActionListener(e -> currentOrderText.setText("Moving to " + meditor.readData()));
 
 
         panel.add(orderPanel);
-        panel.add(showp);
+        panel.add(showPanel);
         panel.add(currentOrderPanel);
 
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
