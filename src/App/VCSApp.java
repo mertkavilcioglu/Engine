@@ -16,11 +16,11 @@ public class VCSApp {
     //TODO ekrana logu bastırma
     //TODO PLAY PAUSE BIRLIKTE, TEK GIRME
 
-    //TODO ilk başta her birim target olsun
+    //TODO ilk başta her birim target olsun //DONE
     //TODO entitylere taraf ekle, hem sağ panele hem de renge göre order düzenle
 
-    //TODO hierarchyde pozisyonlar güncellenecek
-    //TODO hız değiştiği zaman, tree'de hız da güncellenmesi lazım
+    //TODO hierarchyde pozisyonlar güncellenecek //DONE
+    //TODO hız değiştiği zaman, tree'de hız da güncellenmesi lazım  //DONE
 
     //TODO radar componentini create'e bağla
 
@@ -93,15 +93,15 @@ public class VCSApp {
 
         window.setVisible(true);
 
-        Entity mert = world.createEntity("Mert");
+        Entity mert = world.createEntity("Mert", "ally");
         hierarchyPanel.entityAdded(mert);
         actionPanel.newTarget(mert);
 
-        Entity emir = world.createEntity("Emir");
+        Entity emir = world.createEntity("Emir", "ally");
         hierarchyPanel.entityAdded(emir);
         actionPanel.newTarget(emir);
 
-        Entity seda = world.createEntity("Seda");
+        Entity seda = world.createEntity("Seda", "ally");
         hierarchyPanel.entityAdded(seda);
         actionPanel.newTarget(seda);
 
@@ -133,8 +133,8 @@ public class VCSApp {
         return window;
     }
 
-    public void createEntity(String name, Vec2int pos, Vec2int speed){
-        Entity ent = world.createEntity(name, pos, speed);
+    public void createEntity(String name, String side, Vec2int pos, Vec2int speed){
+        Entity ent = world.createEntity(name, side, pos, speed);
         hierarchyPanel.entityAdded(ent);
         actionPanel.newTarget(ent);
         // diğer panellere bu entity'yi dağıt

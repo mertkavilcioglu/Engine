@@ -9,9 +9,10 @@ public class World{
     public WorldMap map = new WorldMap();
     public ArrayList<Entity> entities = new ArrayList<>();
 
-    public Entity createEntity(String name) {
+    public Entity createEntity(String name, String side) {
         Entity ent = new Entity(this);
         ent.setName(name);
+        ent.setSide(side);
         ent.setPos(Vec2int.getRandom(map.maxX / 8 ,map.maxY / 6));
         ent.setSpeed(Vec2int.getRandom(0,4,0,4));
         Radar r = new Radar(ent,entities);
@@ -20,7 +21,7 @@ public class World{
         return ent;
     }
 
-    public Entity createEntity(String eName, Vec2int pos, Vec2int speed){
+    public Entity createEntity(String eName, String eSide, Vec2int pos, Vec2int speed){
         if(eName == null){
             return null;
         }
@@ -29,6 +30,7 @@ public class World{
         String uniqueID = UUID.randomUUID().toString();
         ent.setId(uniqueID);
         ent.setName(eName);
+        ent.setSide(eSide);
 
         ent.setPos(new Vec2int(pos.x, pos.y));
         ent.setSpeed(new Vec2int(speed.x, speed.y));

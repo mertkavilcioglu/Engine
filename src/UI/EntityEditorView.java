@@ -12,6 +12,8 @@ public class EntityEditorView extends VCSPanel {
     String[] components = {"Radar"};
     RadarEditor radarPanel = null;
     JButton addComponentButton;
+    JPanel addSidePanel;
+    JComboBox addSideBox;
 
     public EntityEditorView(VCSApp app){
         super(app);
@@ -22,7 +24,19 @@ public class EntityEditorView extends VCSPanel {
         StringEditor eNamePanel = new StringEditor("Name:");
         Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
         Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
+
+        String sides[] = {"Ally", "Enemy"};
+        addSideBox = new JComboBox<>(sides);
+        addSideBox.setEditable(false);
+        addSideBox.setSelectedIndex(0);
+        addSideBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        addSidePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        addSidePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        addSidePanel.add(new JLabel("Side: "));
+        addSidePanel.add(addSideBox);
+
         add(eNamePanel);
+        add(addSidePanel);
         add(ePositionPanel);
         add(eSpeedPanel);
         JButton createButton = new JButton("Create");
@@ -31,8 +45,9 @@ public class EntityEditorView extends VCSPanel {
                 String name = eNamePanel.readData();
                 Vec2int pos = ePositionPanel.readData();
                 Vec2int speed = eSpeedPanel.readData();
+                String side = sides[addSideBox.getSelectedIndex()];
 
-                app.createEntity(name, pos, speed);
+                app.createEntity(name, side, pos, speed);
             }
             catch (Exception ex){
                //TODO eNamePanel.dataV düzgün bir validate yapmaya çalış
