@@ -9,7 +9,7 @@ public class World{
     public WorldMap map = new WorldMap();
     public ArrayList<Entity> entities = new ArrayList<>();
 
-    public Entity createEntity(String name, String side) {
+    public Entity createEntity(String name, int side) {
         Entity ent = new Entity(this);
         ent.setName(name);
         ent.setSide(side);
@@ -21,7 +21,7 @@ public class World{
         return ent;
     }
 
-    public Entity createEntity(String eName, String eSide, Vec2int pos, Vec2int speed){
+    public Entity createEntity(String eName, int eSide, Vec2int pos, Vec2int speed){
         if(eName == null){
             return null;
         }

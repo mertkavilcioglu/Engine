@@ -25,15 +25,21 @@ public class MapView extends VCSPanel {
     public void paint(Graphics g) {
         super.paint(g);
 
-        g.setColor(Color.RED);
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(0,0, app.world.map.maxX, app.world.map.maxY);
 
         for (int i = 0; i < world.entities.size(); i++) {
             Entity e = world.entities.get(i);
             Vec2int pos = e.getPos();
+            int side = e.getSide();
+
+            if(side == 0)
+                g.setColor(Color.blue);
+            else if (side == 1)
+                g.setColor(Color.red);
 
             //drawEntity(e);
-            g.setColor(Color.BLACK);
+            //g.setColor(Color.BLACK);
             g.drawOval(pos.x-10, pos.y-10, 20, 20);
         }
     }

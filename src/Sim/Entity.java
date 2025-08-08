@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Entity {
     String id;   //TODO
     String name;
-    String side;
+    int side = 0;
     Vec2int pos;
     Vec2int speed;
     ArrayList<Component> components = new ArrayList<>();
@@ -88,8 +88,23 @@ public class Entity {
         return id;
     }
 
-    public void setSide(String side){
+    public void setSide(int side){
         this.side = side;
+    }
+
+    public int getSide(){
+        return side;
+    }
+
+    public String getSideasName(){
+        String sideName = "";
+        if (side == 0) {
+            sideName = "Ally";
+        }
+        else if (side == 1) {
+            sideName = "Enemy";
+        }
+        return sideName;
     }
 
     public boolean isNullName(){
@@ -99,8 +114,12 @@ public class Entity {
         return false;
     }
 
+    public String toLog() {
+        return String.format("Name: %s - Pos: %s, Speed: %s", name, pos.toString(), speed.toString());
+    }
+
     @Override
     public String toString() {
-        return String.format("Name: %s - Pos: %s, Speed: %s", name, pos.toString(), speed.toString());
+        return name;
     }
 }

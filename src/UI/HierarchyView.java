@@ -6,6 +6,8 @@ import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
@@ -27,15 +29,33 @@ public class HierarchyView extends VCSPanel {
         rootNode = new DefaultMutableTreeNode("Hierarchy");
         model = new DefaultTreeModel(rootNode);
         tree = new JTree(model);
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+                        tree.getLastSelectedPathComponent();
+
+                // if nothing is selected
+                if (node == null) return;
+
+                Entity entityFound = searchForEntity(node);
+                if (entityFound == null) return;
+
+                app.actionPanel.selectedUnit(entityFound);
+            }
+        });
         add(tree, BorderLayout.CENTER);
     }
 
     private DefaultMutableTreeNode createNode(Entity e){
         DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(e.getName());
 
+        DefaultMutableTreeNode sideNode = new DefaultMutableTreeNode(e.getSideasName());
         DefaultMutableTreeNode posNode = new DefaultMutableTreeNode("Pos:");
         DefaultMutableTreeNode posXnode = new DefaultMutableTreeNode("X: " + e.getPos().x);
         DefaultMutableTreeNode posYnode = new DefaultMutableTreeNode("Y: " + e.getPos().y);
+
+        leaf.add(sideNode);
 
         posNode.add(posXnode);
         posNode.add(posYnode);
@@ -56,6 +76,7 @@ public class HierarchyView extends VCSPanel {
         leaves.put(e.getId() + "/vel/y", velYnode);
 
         leaf.add(velNode);
+        leaf.setUserObject(e);
         return leaf;
     }
 
@@ -82,6 +103,18 @@ public class HierarchyView extends VCSPanel {
 
     public void entityRemoved(Entity e){
         //REMOVE
+    }
+    
+    private Entity searchForEntity(DefaultMutableTreeNode node){
+        Object nodeInfo = node.getUserObject();
+        if (nodeInfo.getClass() == Entity.class) {
+            return (Entity) nodeInfo;
+        }else {
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
+            if (parent == null) return null;
+            return searchForEntity(parent);
+        }
+
     }
 
     public void update(int deltaTime){

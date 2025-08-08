@@ -31,7 +31,7 @@ public class VCSApp {
     private MapView mapView;
     private EntityEditorView editorPanel;
     private HierarchyView hierarchyPanel;
-    private ActionPanel actionPanel;
+    public ActionPanel actionPanel;
     private LogPanel logPanel;
     private PlayPausePanel playPausePanel;
     private ImportPanel importPanel;
@@ -93,15 +93,15 @@ public class VCSApp {
 
         window.setVisible(true);
 
-        Entity mert = world.createEntity("Mert", "ally");
+        Entity mert = world.createEntity("Mert", 0);
         hierarchyPanel.entityAdded(mert);
         actionPanel.newTarget(mert);
 
-        Entity emir = world.createEntity("Emir", "ally");
+        Entity emir = world.createEntity("Emir", 0);
         hierarchyPanel.entityAdded(emir);
         actionPanel.newTarget(emir);
 
-        Entity seda = world.createEntity("Seda", "ally");
+        Entity seda = world.createEntity("Seda", 0);
         hierarchyPanel.entityAdded(seda);
         actionPanel.newTarget(seda);
 
@@ -114,6 +114,7 @@ public class VCSApp {
                         // update world
                         world.update(1000);
                         hierarchyPanel.update(1000);
+                        //isEntitySelected();
                         // render world
                         //w.render();
                         renderToWindow();
@@ -133,13 +134,17 @@ public class VCSApp {
         return window;
     }
 
-    public void createEntity(String name, String side, Vec2int pos, Vec2int speed){
+    public void createEntity(String name, int side, Vec2int pos, Vec2int speed){
         Entity ent = world.createEntity(name, side, pos, speed);
         hierarchyPanel.entityAdded(ent);
         actionPanel.newTarget(ent);
         // diğer panellere bu entity'yi dağıt
         // log, attack vs.
     }
+
+    /*public void isEntitySelected(){
+        actionPanel.selectedUnit(hierarchyPanel.entitySelected());
+    }*/
 
 
 

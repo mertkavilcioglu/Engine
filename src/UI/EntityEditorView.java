@@ -45,7 +45,7 @@ public class EntityEditorView extends VCSPanel {
                 String name = eNamePanel.readData();
                 Vec2int pos = ePositionPanel.readData();
                 Vec2int speed = eSpeedPanel.readData();
-                String side = sides[addSideBox.getSelectedIndex()];
+                int side = addSideBox.getSelectedIndex();
 
                 app.createEntity(name, side, pos, speed);
             }

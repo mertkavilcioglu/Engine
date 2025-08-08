@@ -17,12 +17,16 @@ public class ActionPanel extends VCSPanel {
     private JPanel currentOrderPanel;
     private JTextField currentOrderText;
     private JLabel mainLabel;
+    boolean isEnemy = false;
+
+    String name;
+    int side;
 
     public ActionPanel(VCSApp app){
         super(app);
         this.setLayout(new BorderLayout());
 
-        mainLabel = new JLabel("Selected Unit:", SwingConstants.CENTER);
+        mainLabel = new JLabel("Selected Unit: " + name, SwingConstants.CENTER);
         JPanel panel = new JPanel(new GridLayout(1,3,0,0));
 
         orderPanel = new JPanel(new GridLayout(5,1));
@@ -85,11 +89,30 @@ public class ActionPanel extends VCSPanel {
 
     }
 
-    public void newTarget(Entity entity){
-        JButton targetButton = new JButton(entity.getName());
-        targetPanel.add(targetButton);
-        targetButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
+    public void selectedUnit(Entity entity){
+        this.name = entity.getName();
+        this.side = entity.getSide();
+        if(side == 1) isEnemy = true;
+        else if (side == 0) isEnemy = false;
     }
+
+    public void newTarget(Entity entity){
+        JButton targetAllyButton = new JButton();
+        JButton targetEnemyButton = new JButton();
+        if(entity.getSide() == 0) {
+            targetAllyButton.add(new JLabel(entity.getName()));
+            targetAllyButton.setVisible(isEnemy);
+            targetPanel.add(targetAllyButton);
+            targetAllyButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
+        } else if (entity.getSide() == 1) {
+            targetEnemyButton.add(new JLabel(entity.getName()));
+            targetEnemyButton.setVisible(!isEnemy);
+            targetPanel.add(targetEnemyButton);
+            targetEnemyButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
+        }
+
+    }
+
     @Override
     public void selectedEntityChanged(Entity entity) {
 
