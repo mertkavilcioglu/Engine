@@ -81,9 +81,13 @@ public class VCSApp {
         mergeNorthPanel.add(importPanel, BorderLayout.WEST);
         mergeNorthPanel.add(playPausePanel, BorderLayout.CENTER);
 
+        JScrollPane hierarchyScroll = new JScrollPane(hierarchyPanel);
+        hierarchyScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        hierarchyScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
         window.add(mapView,BorderLayout.CENTER);
         window.add(editorPanel, BorderLayout.EAST);
-        window.add(hierarchyPanel, BorderLayout.WEST);
+        window.add(hierarchyScroll, BorderLayout.WEST);
         window.add(mergeSouthPanel, BorderLayout.SOUTH);
         window.add(mergeNorthPanel, BorderLayout.NORTH);
 

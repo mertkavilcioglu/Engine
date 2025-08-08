@@ -5,6 +5,7 @@ import Vec.Vec2int;
 import java.util.ArrayList;
 
 public class Entity {
+    String id;
     String name;
     Vec2int pos;
     Vec2int speed;
@@ -76,6 +77,14 @@ public class Entity {
 
     public void addComponents(Component c) {
         this.components.add(c);
+    }
+
+    public void setId(String id){
+        this.id = id;
+    }
+
+    public String getId(){
+        return id;
     }
 
     public boolean isNullName(){

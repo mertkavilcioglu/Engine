@@ -40,8 +40,8 @@ public class HierarchyView extends VCSPanel {
         posNode.add(posXnode);
         posNode.add(posYnode);
 
-        leaves.put(e.getName() + "/pos/x", posXnode);
-        leaves.put(e.getName() + "/pos/y", posYnode);
+        leaves.put(e.getId() + "/pos/x", posXnode);
+        leaves.put(e.getId() + "/pos/y", posYnode);
 
         leaf.add(posNode);
 
@@ -52,11 +52,10 @@ public class HierarchyView extends VCSPanel {
         velNode.add(velXnode);
         velNode.add(velYnode);
 
-        leaves.put(e.getName() + "/vel/x", velXnode);
-        leaves.put(e.getName() + "/vel/y", velYnode);
+        leaves.put(e.getId() + "/vel/x", velXnode);
+        leaves.put(e.getId() + "/vel/y", velYnode);
 
         leaf.add(velNode);
-        //TODO: aynı isimde entityler olursa burada sıkıntı çıkar, yeni isim türeterek entity oluştur bu durumda
         return leaf;
     }
 
@@ -72,11 +71,13 @@ public class HierarchyView extends VCSPanel {
     public void entityAdded(Entity e){
         DefaultMutableTreeNode node = createNode(e);
         rootNode.add(node);
-        leaves.put(e.getName(), node);
+        leaves.put(e.getId(), node);
         model.reload(rootNode);
 
-        //TODO: aynı isimde entityler olursa burada sıkıntı çıkar, yeni isim türeterek entity oluştur bu durumda
-        //TODO: ayrıca scroll ekle panele
+        //TODO: hashmap içine id değil direk entity node'unu at.
+        //TODO: her component için değil sadece entity için hashmap tut,
+        //TODO: yeni bir class aç, bir container vs. içinde tut component bilgilerini,
+        //TODO: her entity içinde bir de bu class ile comp. bilgilerini referanslarını falan tut
     }
 
     public void entityRemoved(Entity e){
@@ -85,10 +86,15 @@ public class HierarchyView extends VCSPanel {
 
     public void update(int deltaTime){
         for(Entity e : app.world.entities){
-            leaves.get((e.getName() + "/pos/x")).setUserObject(e.getPos().x);
-            leaves.get((e.getName() + "/pos/y")).setUserObject(e.getPos().y);
-            model.nodeChanged(leaves.get((e.getName() + "/pos/x")));
-            model.nodeChanged(leaves.get((e.getName() + "/pos/y")));
+            leaves.get((e.getId() + "/pos/x")).setUserObject(e.getPos().x);
+            leaves.get((e.getId() + "/pos/y")).setUserObject(e.getPos().y);
+            model.nodeChanged(leaves.get((e.getId() + "/pos/x")));
+            model.nodeChanged(leaves.get((e.getId() + "/pos/y")));
+
+            leaves.get((e.getId() + "/vel/x")).setUserObject(e.getSpeed().x);
+            leaves.get((e.getId() + "/vel/y")).setUserObject(e.getSpeed().y);
+            model.nodeChanged(leaves.get((e.getId() + "/vel/x")));
+            model.nodeChanged(leaves.get((e.getId() + "/vel/y")));
         }
 
     }

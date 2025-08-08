@@ -3,6 +3,7 @@ package Sim;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class World{
     public WorldMap map = new WorldMap();
@@ -23,9 +24,10 @@ public class World{
         if(eName == null){
             return null;
         }
-
         System.out.format("Created entity %s with x:%d and y:%d", eName, pos.x, pos.y);
         Entity ent = new Entity(this);
+        String uniqueID = UUID.randomUUID().toString();
+        ent.setId(uniqueID);
         ent.setName(eName);
 
         ent.setPos(new Vec2int(pos.x, pos.y));
