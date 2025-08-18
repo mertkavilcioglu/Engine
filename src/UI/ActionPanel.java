@@ -11,18 +11,18 @@ public class ActionPanel extends VCSPanel {
     private JPanel giveOrderPanel;
     private JButton attackButton;
     private JButton moveButton;
-    JPanel chooseActionPanel;
-    private JPanel chooseTargetPanel;
-    private JScrollPane scrollPane;
-    private JPanel setMovePanel;
+    private JPanel allyTargetPanel;
+    private JPanel enemyTargetPanel;
+    private JPanel chooseActionPanel;
+    private CardLayout cardLayout;
+    private JPanel movePanel;
     private JPanel currentOrderPanel;
     private JTextField currentOrderText;
     private JLabel mainLabel;
-    boolean isEnemy = false;
 
+    boolean isEnemy = false;
+    String name;
     int side;
-    JPanel targetAllyPage;
-    JPanel targetEnemyPage;
 
     public ActionPanel(VCSApp app){
         super(app);
@@ -38,17 +38,21 @@ public class ActionPanel extends VCSPanel {
         giveOrderPanel.add(attackButton);
         giveOrderPanel.add(moveButton);
 
-        chooseTargetPanel = new JPanel();
-        chooseTargetPanel.setLayout(new BoxLayout(chooseTargetPanel, BoxLayout.Y_AXIS));
-        //targetPanel.setPreferredSize(new Dimension(panel.getPreferredSize()));
+        allyTargetPanel = new JPanel();
+        allyTargetPanel.setLayout(new BoxLayout(allyTargetPanel, BoxLayout.Y_AXIS));
+        allyTargetPanel.setBorder(new TitledBorder("Choose Target: "));
 
-        setMovePanel = new JPanel(new GridLayout(2,1));
-        Vec2intEditor moveEditor = new Vec2intEditor("Position:");
-        JButton moveButton = new JButton("Move");
-        moveButton.setFocusable(false);
-        //mbutton.setMargin(new Insets(10,10,10,10));   //try to make button smaller.
-        setMovePanel.add(moveEditor);
-        setMovePanel.add(moveButton);
+        enemyTargetPanel = new JPanel();
+        enemyTargetPanel.setLayout(new BoxLayout(enemyTargetPanel, BoxLayout.Y_AXIS));
+        enemyTargetPanel.setBorder(new TitledBorder("Choose Target: "));
+
+        movePanel = new JPanel(new GridLayout(2,1));
+        Vec2intEditor meditor = new Vec2intEditor("Position:");
+        JButton mbutton = new JButton("Move");
+        mbutton.setFocusable(false);
+        //try to make button smaller to good look.
+        movePanel.add(meditor);
+        movePanel.add(mbutton);
 
         currentOrderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
         currentOrderText = new JTextField();
@@ -57,30 +61,29 @@ public class ActionPanel extends VCSPanel {
         currentOrderText.setPreferredSize(new Dimension(120,220));
         currentOrderPanel.add(new JScrollPane(currentOrderText));
 
-        scrollPane = new JScrollPane(chooseTargetPanel);
-        //scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        //scrollPane.add(chooseTargetPanel);  //TODO düzelt!
-
-        chooseActionPanel = new JPanel(new CardLayout());
-        JPanel emptyPanel = new JPanel();
-        chooseActionPanel.add(emptyPanel, "empty");
-        chooseActionPanel.add(scrollPane, "target");       //TODO
-        //chooseActionPanel.add(targetAllyPage, "targetAlly");
-        //chooseActionPanel.add(targetEnemyPage, "targetEnemy");
-        chooseActionPanel.add(setMovePanel, "move");
+        cardLayout = new CardLayout();
+        chooseActionPanel = new JPanel(cardLayout);
+        chooseActionPanel.add(new JPanel(), "empty");
+        chooseActionPanel.add(allyTargetPanel, "ally");
+        chooseActionPanel.add(enemyTargetPanel, "enemy");
+        chooseActionPanel.add(movePanel, "move");
 
         giveOrderPanel.setPreferredSize(new Dimension(120,220));
-        giveOrderPanel.setBorder(new TitledBorder("Give Order"));
+        giveOrderPanel.setBorder(new TitledBorder("Give Order"));;
         chooseActionPanel.setPreferredSize(new Dimension(120,220));
-        chooseActionPanel.setBorder(new TitledBorder("Choose"));
+        chooseActionPanel.setBorder(new TitledBorder(""));;
         currentOrderPanel.setPreferredSize(new Dimension(120,220));
 
-        CardLayout cardLayout = (CardLayout) chooseActionPanel.getLayout();
-        attackButton.addActionListener(e -> cardLayout.show(chooseActionPanel, "empty"));
-        attackButton.addActionListener(e -> cardLayout.show(chooseActionPanel, "target"));
+        attackButton.addActionListener(e -> {
+            if (isEnemy){
+                cardLayout.show(chooseActionPanel, "ally");
+            }else {
+                cardLayout.show(chooseActionPanel, "enemy");
+            }
+        });
         moveButton.addActionListener(e -> cardLayout.show(chooseActionPanel, "move"));
-        moveButton.addActionListener(e -> currentOrderText.setText("Moving to " + moveEditor.readData()));
 
+        mbutton.addActionListener(e -> currentOrderText.setText("Moving to " + meditor.readData()));
 
         panel.add(giveOrderPanel);
         panel.add(chooseActionPanel);
@@ -94,46 +97,37 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void selectedUnit(Entity entity){
-        mainLabel.setText("Selected Unit: "+entity.getName());
+        this.name = entity.getName();
+        mainLabel.setText("Selected Entity: " + name);
         this.side = entity.getSide();
-        if(side == 1) {
-            //isEnemy = true;
-            //targetAllyButton.setVisible(true);
-            attackButton.addActionListener(e -> {
-                targetEnemyPage.setVisible(false);
-                targetAllyPage.setVisible(true);});
-        }
-        else if (side == 0) {
-            //isEnemy = false;
-            //targetEnemyButton.setVisible(true);
-            attackButton.addActionListener(e -> {
-                targetAllyPage.setVisible(false);
-                targetEnemyPage.setVisible(true);});
-        }
+        if(side == 1) isEnemy = true;
+        else if (side == 0) isEnemy = false;
+
+        cardLayout.show(chooseActionPanel, "empty");
     }
 
     public void newTarget(Entity entity){
-        targetAllyPage = new JPanel();
-        targetAllyPage.setLayout(new BoxLayout(targetAllyPage, BoxLayout.Y_AXIS));
-        targetEnemyPage = new JPanel();
-        targetEnemyPage.setLayout(new BoxLayout(targetEnemyPage, BoxLayout.Y_AXIS));
-        JButton targetAllyButton = new JButton();
-        JButton targetEnemyButton = new JButton();
-        if(entity.getSide() == 0) { /*
-            targetAllyButton.add(new JLabel(entity.getName()));
-            //targetAllyButton.setVisible(false);
-            targetAllyButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
-            targetAllyPage.add(targetAllyButton);
-            chooseTargetPanel.add(targetAllyPage);
-            targetAllyButton.setVisible(false); */
-        } else if (entity.getSide() == 1) { /*
-            targetEnemyButton.add(new JLabel(entity.getName()));
-            targetEnemyButton.setVisible(false);
-            targetEnemyButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
-            targetEnemyPage.add(targetEnemyButton);
-            chooseTargetPanel.add(targetEnemyPage);
-            targetEnemyPage.setVisible(false); */
+        JButton targetButton = new JButton(entity.getName());
+        if (entity.getSide() == 0){
+            allyTargetPanel.add(targetButton);
+        } else {
+            enemyTargetPanel.add(targetButton);
         }
+        targetButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
+
+        /* JButton targetAllyButton = new JButton();
+        JButton targetEnemyButton = new JButton();
+        if(entity.getSide() == 0) {
+            targetAllyButton.add(new JLabel(entity.getName()));
+            targetAllyButton.setVisible(isEnemy);
+            targetPanel.add(targetAllyButton);
+            targetAllyButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
+        } else if (entity.getSide() == 1) {
+            targetEnemyButton.add(new JLabel(entity.getName()));
+            targetEnemyButton.setVisible(!isEnemy);
+            targetPanel.add(targetEnemyButton);
+            targetEnemyButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
+        } */
 
     }
 
