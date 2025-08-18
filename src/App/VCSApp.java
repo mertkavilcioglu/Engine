@@ -105,6 +105,10 @@ public class VCSApp {
         hierarchyPanel.entityAdded(seda);
         actionPanel.newTarget(seda);
 
+        Entity hasan = world.createEntity("Hasan", 0);
+        hierarchyPanel.entityAdded(hasan);
+        actionPanel.newTarget(hasan);
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
