@@ -45,14 +45,18 @@ public class EntityEditorView extends VCSPanel {
                 String name = eNamePanel.readData();
                 Vec2int pos = ePositionPanel.readData();
                 Vec2int speed = eSpeedPanel.readData();
+                int range = 0;
+                if(radarPanel != null)
+                    range = radarPanel.readData();
                 int side = addSideBox.getSelectedIndex();
-
-                app.createEntity(name, side, pos, speed);
+                app.createEntity(name, side, pos, speed, range);
             }
             catch (Exception ex){
                //TODO eNamePanel.dataV düzgün bir validate yapmaya çalış
                 ePositionPanel.dataValidate();
                 eSpeedPanel.dataValidate();
+                if(radarPanel != null)
+                    radarPanel.dataValidate();
             }
 
 
@@ -105,6 +109,10 @@ public class EntityEditorView extends VCSPanel {
         }
         revalidate();
 
+    }
+
+    public void setRadarPanel(RadarEditor rdr){
+        radarPanel = rdr;
     }
 
     @Override

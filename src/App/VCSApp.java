@@ -138,8 +138,8 @@ public class VCSApp {
         return window;
     }
 
-    public void createEntity(String name, int side, Vec2int pos, Vec2int speed){
-        Entity ent = world.createEntity(name, side, pos, speed);
+    public void createEntity(String name, int side, Vec2int pos, Vec2int speed, int range){
+        Entity ent = world.createEntity(name, side, pos, speed, range);
         hierarchyPanel.entityAdded(ent);
         actionPanel.newTarget(ent);
         // diğer panellere bu entity'yi dağıt
