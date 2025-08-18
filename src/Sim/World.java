@@ -3,7 +3,6 @@ package Sim;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class World{
     public WorldMap map = new WorldMap();
@@ -21,14 +20,12 @@ public class World{
         return ent;
     }
 
-    public Entity createEntity(String eName, int eSide, Vec2int pos, Vec2int speed){
+    public Entity createEntity(String eName, int eSide, Vec2int pos, Vec2int speed, int range){
         if(eName == null){
             return null;
         }
         System.out.format("Created entity %s with x:%d and y:%d", eName, pos.x, pos.y);
         Entity ent = new Entity(this);
-        String uniqueID = UUID.randomUUID().toString();
-        ent.setId(uniqueID);
         ent.setName(eName);
         ent.setSide(eSide);
 
@@ -36,6 +33,7 @@ public class World{
         ent.setSpeed(new Vec2int(speed.x, speed.y));
 
         Radar r = new Radar(ent, entities);
+        r.setRange(range);
         ent.addComponents(r);
         entities.add(ent);
 

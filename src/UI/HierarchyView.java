@@ -3,6 +3,7 @@ package UI;
 import App.VCSApp;
 import Sim.Entity;
 import Sim.NodeInfo;
+import Sim.Radar;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -65,6 +66,13 @@ public class HierarchyView extends VCSPanel {
 
         leaf.add(posNode);
 
+        // if has radar
+        DefaultMutableTreeNode radarNode = new DefaultMutableTreeNode("Radar:");
+        //DefaultMutableTreeNode radarRange = new DefaultMutableTreeNode(e.getComponents().getFirst().getClass().getEnclosingClass()); //TODO: classa göre çek
+        //radarNode.add(radarRange);
+
+
+
         DefaultMutableTreeNode velNode = new DefaultMutableTreeNode("Vel:");
         DefaultMutableTreeNode velXnode = new DefaultMutableTreeNode("X: " + e.getSpeed().x);
         DefaultMutableTreeNode velYnode = new DefaultMutableTreeNode("Y: " + e.getSpeed().y);
@@ -79,6 +87,7 @@ public class HierarchyView extends VCSPanel {
         e.getNodeInfo().assignNode("velY", velYnode);
 
         leaf.add(velNode);
+        leaf.add(radarNode);
         leaf.setUserObject(e);
         return leaf;
     }

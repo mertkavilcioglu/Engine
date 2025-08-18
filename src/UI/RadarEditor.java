@@ -13,7 +13,7 @@ public class RadarEditor extends JPanel {
     private JLabel lbl;
     private JTextField txt;
     Border defaultBorder;
-
+    //TODO radar comp. eklenmemişse radarsız oluştur, radar varsa ama invalidse kırmızı yap
     public RadarEditor(String label, EntityEditorView editor){
         nameLbl = new JLabel(label);
         lbl = new JLabel("Range:");
@@ -33,7 +33,7 @@ public class RadarEditor extends JPanel {
         this.add(vecPnl);
         defaultBorder = txt.getBorder();
         add(new JLabel(" "));
-
+        editor.setRadarPanel(this);
     }
 
     public void setData(int data) {
