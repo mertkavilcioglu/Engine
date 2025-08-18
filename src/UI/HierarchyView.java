@@ -1,6 +1,7 @@
 package UI;
 
 import App.VCSApp;
+import Sim.Component;
 import Sim.Entity;
 import Sim.NodeInfo;
 import Sim.Radar;
@@ -66,10 +67,7 @@ public class HierarchyView extends VCSPanel {
 
         leaf.add(posNode);
 
-        // if has radar
-        DefaultMutableTreeNode radarNode = new DefaultMutableTreeNode("Radar:");
-        //DefaultMutableTreeNode radarRange = new DefaultMutableTreeNode(e.getComponents().getFirst().getClass().getEnclosingClass()); //TODO: classa göre çek
-        //radarNode.add(radarRange);
+
 
 
 
@@ -87,7 +85,18 @@ public class HierarchyView extends VCSPanel {
         e.getNodeInfo().assignNode("velY", velYnode);
 
         leaf.add(velNode);
-        leaf.add(radarNode);
+
+        for(Component c : e.getComponents()){
+            if(c instanceof Radar){
+                if(((Radar) c).getRange() != 0){
+                    DefaultMutableTreeNode radarNode = new DefaultMutableTreeNode("Radar:");
+                    DefaultMutableTreeNode radarRange = new DefaultMutableTreeNode(((Radar) c).getRange());
+                    radarNode.add(radarRange);
+                    leaf.add(radarNode);
+                }
+            }
+        }
+
         leaf.setUserObject(e);
         return leaf;
     }
