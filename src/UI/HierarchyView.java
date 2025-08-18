@@ -2,6 +2,7 @@ package UI;
 
 import App.VCSApp;
 import Sim.Entity;
+import Sim.NodeInfo;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ public class HierarchyView extends VCSPanel {
     private JTree tree;
     private DefaultMutableTreeNode rootNode;
     private DefaultTreeModel model; // data of tree
-    private HashMap<String, DefaultMutableTreeNode> leaves = new HashMap<>();
+    private HashMap<Entity, NodeInfo> leaves = new HashMap<>();
 
     public HierarchyView(VCSApp app){
         super(app);
@@ -60,8 +61,7 @@ public class HierarchyView extends VCSPanel {
         posNode.add(posXnode);
         posNode.add(posYnode);
 
-        leaves.put(e.getId() + "/pos/x", posXnode);
-        leaves.put(e.getId() + "/pos/y", posYnode);
+
 
         leaf.add(posNode);
 
@@ -72,8 +72,11 @@ public class HierarchyView extends VCSPanel {
         velNode.add(velXnode);
         velNode.add(velYnode);
 
-        leaves.put(e.getId() + "/vel/x", velXnode);
-        leaves.put(e.getId() + "/vel/y", velYnode);
+        leaves.put(e, e.getNodeInfo());
+        e.getNodeInfo().assignNode("posX", posXnode);
+        e.getNodeInfo().assignNode("posY", posYnode);
+        e.getNodeInfo().assignNode("velX", velXnode);
+        e.getNodeInfo().assignNode("velY", velYnode);
 
         leaf.add(velNode);
         leaf.setUserObject(e);
@@ -92,12 +95,12 @@ public class HierarchyView extends VCSPanel {
     public void entityAdded(Entity e){
         DefaultMutableTreeNode node = createNode(e);
         rootNode.add(node);
-        leaves.put(e.getId(), node);
+        leaves.put(e, e.getNodeInfo());
         model.reload(rootNode);
 
         //TODO: hashmap içine id değil direk entity node'unu at.
         //TODO: her component için değil sadece entity için hashmap tut,
-        //TODO: yeni bir class aç, bir container vs. içinde tut component bilgilerini,
+        //TODO: yeni bir class aç ve içinde tut component bilgilerini,
         //TODO: her entity içinde bir de bu class ile comp. bilgilerini referanslarını falan tut
     }
 
@@ -114,20 +117,19 @@ public class HierarchyView extends VCSPanel {
             if (parent == null) return null;
             return searchForEntity(parent);
         }
-
     }
 
     public void update(int deltaTime){
         for(Entity e : app.world.entities){
-            leaves.get((e.getId() + "/pos/x")).setUserObject(e.getPos().x);
-            leaves.get((e.getId() + "/pos/y")).setUserObject(e.getPos().y);
-            model.nodeChanged(leaves.get((e.getId() + "/pos/x")));
-            model.nodeChanged(leaves.get((e.getId() + "/pos/y")));
+            leaves.get(e).getNode("posX").setUserObject(e.getPos().x);
+            leaves.get(e).getNode("posY").setUserObject(e.getPos().y);
+            model.nodeChanged(leaves.get(e).getNode("posX"));
+            model.nodeChanged(leaves.get(e).getNode("posY"));
 
-            leaves.get((e.getId() + "/vel/x")).setUserObject(e.getSpeed().x);
-            leaves.get((e.getId() + "/vel/y")).setUserObject(e.getSpeed().y);
-            model.nodeChanged(leaves.get((e.getId() + "/vel/x")));
-            model.nodeChanged(leaves.get((e.getId() + "/vel/y")));
+            leaves.get(e).getNode("velX").setUserObject(e.getSpeed().x);
+            leaves.get(e).getNode("velY").setUserObject(e.getSpeed().y);
+            model.nodeChanged(leaves.get(e).getNode("velX"));
+            model.nodeChanged(leaves.get(e).getNode("velY"));
         }
 
     }
