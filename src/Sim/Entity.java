@@ -12,9 +12,11 @@ public class Entity {
     Vec2int speed;
     ArrayList<Component> components = new ArrayList<>();
     private final World w;
+    private NodeInfo nodeInfo;
 
     public Entity(World w) {
         this.w = w;
+        nodeInfo = new NodeInfo();
     }
 
     void update(int deltaTime) {
@@ -121,5 +123,9 @@ public class Entity {
     @Override
     public String toString() {
         return name;
+    }
+
+    public NodeInfo getNodeInfo(){
+        return nodeInfo;
     }
 }
