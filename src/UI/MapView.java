@@ -31,16 +31,17 @@ public class MapView extends VCSPanel {
         for (int i = 0; i < world.entities.size(); i++) {
             Entity e = world.entities.get(i);
             Vec2int pos = e.getPos();
-            int side = e.getSide();
 
-            if(side == 0)
+            if(e.getSide() == 0)
                 g.setColor(Color.blue);
-            else if (side == 1)
+            else if (e.getSide() == 1)
                 g.setColor(Color.red);
 
             //drawEntity(e);
             //g.setColor(Color.BLACK);
             g.drawOval(pos.x-10, pos.y-10, 20, 20);
+            //g.fillOval(pos.x-10, pos.y-10, 20, 20);
+
         }
     }
 
