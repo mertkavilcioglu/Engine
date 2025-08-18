@@ -128,4 +128,8 @@ public class Entity {
     public NodeInfo getNodeInfo(){
         return nodeInfo;
     }
+
+    public ArrayList<Component> getComponents(){
+        return components;
+    }
 }

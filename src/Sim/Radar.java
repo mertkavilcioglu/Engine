@@ -42,6 +42,10 @@ public class Radar extends Component {
         //System.out.println("ComponentRadar::update");
     }
 
+    public void setRange(int r){
+        range = r;
+    }
+
     //TODO: simapp'ten bir entity gunclelleme fonksiyonu alarak entityleri güncelle
 }
 
