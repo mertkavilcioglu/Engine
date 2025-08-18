@@ -8,45 +8,47 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class ActionPanel extends VCSPanel {
-    private JPanel orderPanel;
+    private JPanel giveOrderPanel;
     private JButton attackButton;
     private JButton moveButton;
-    private JPanel targetPanel;
+    JPanel chooseActionPanel;
+    private JPanel chooseTargetPanel;
     private JScrollPane scrollPane;
-    private JPanel movePanel;
+    private JPanel setMovePanel;
     private JPanel currentOrderPanel;
     private JTextField currentOrderText;
     private JLabel mainLabel;
     boolean isEnemy = false;
 
-    String name;
     int side;
+    JPanel targetAllyPage;
+    JPanel targetEnemyPage;
 
     public ActionPanel(VCSApp app){
         super(app);
         this.setLayout(new BorderLayout());
 
-        mainLabel = new JLabel("Selected Unit: " + name, SwingConstants.CENTER);
+        mainLabel = new JLabel("No unit selected.", SwingConstants.CENTER);
         JPanel panel = new JPanel(new GridLayout(1,3,0,0));
 
-        orderPanel = new JPanel(new GridLayout(5,1));
+        giveOrderPanel = new JPanel(new GridLayout(5,1));
         attackButton = new JButton("Attack");
         moveButton = new JButton("Move");
 
-        orderPanel.add(attackButton);
-        orderPanel.add(moveButton);
+        giveOrderPanel.add(attackButton);
+        giveOrderPanel.add(moveButton);
 
-        targetPanel = new JPanel();
-        targetPanel.setLayout(new BoxLayout(targetPanel, BoxLayout.Y_AXIS));
+        chooseTargetPanel = new JPanel();
+        chooseTargetPanel.setLayout(new BoxLayout(chooseTargetPanel, BoxLayout.Y_AXIS));
         //targetPanel.setPreferredSize(new Dimension(panel.getPreferredSize()));
 
-        movePanel = new JPanel(new GridLayout(2,1));
-        Vec2intEditor meditor = new Vec2intEditor("Position:");
-        JButton mbutton = new JButton("Move");
-        mbutton.setFocusable(false);
+        setMovePanel = new JPanel(new GridLayout(2,1));
+        Vec2intEditor moveEditor = new Vec2intEditor("Position:");
+        JButton moveButton = new JButton("Move");
+        moveButton.setFocusable(false);
         //mbutton.setMargin(new Insets(10,10,10,10));   //try to make button smaller.
-        movePanel.add(meditor);
-        movePanel.add(mbutton);
+        setMovePanel.add(moveEditor);
+        setMovePanel.add(moveButton);
 
         currentOrderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
         currentOrderText = new JTextField();
@@ -55,31 +57,33 @@ public class ActionPanel extends VCSPanel {
         currentOrderText.setPreferredSize(new Dimension(120,220));
         currentOrderPanel.add(new JScrollPane(currentOrderText));
 
-        scrollPane = new JScrollPane(targetPanel);
+        scrollPane = new JScrollPane(chooseTargetPanel);
         //scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        //scrollPane.add(targetPanel);  //TODO düzelt!
+        //scrollPane.add(chooseTargetPanel);  //TODO düzelt!
 
-        JPanel showPanel = new JPanel(new CardLayout());
+        chooseActionPanel = new JPanel(new CardLayout());
         JPanel emptyPanel = new JPanel();
-        showPanel.add(emptyPanel, "empty");
-        showPanel.add(scrollPane, "target");       //TODO
-        showPanel.add(movePanel, "move");
+        chooseActionPanel.add(emptyPanel, "empty");
+        chooseActionPanel.add(scrollPane, "target");       //TODO
+        //chooseActionPanel.add(targetAllyPage, "targetAlly");
+        //chooseActionPanel.add(targetEnemyPage, "targetEnemy");
+        chooseActionPanel.add(setMovePanel, "move");
 
-        orderPanel.setPreferredSize(new Dimension(120,220));
-        orderPanel.setBorder(new TitledBorder("Give Order"));;
-        showPanel.setPreferredSize(new Dimension(120,220));
-        showPanel.setBorder(new TitledBorder("Choose"));;
+        giveOrderPanel.setPreferredSize(new Dimension(120,220));
+        giveOrderPanel.setBorder(new TitledBorder("Give Order"));
+        chooseActionPanel.setPreferredSize(new Dimension(120,220));
+        chooseActionPanel.setBorder(new TitledBorder("Choose"));
         currentOrderPanel.setPreferredSize(new Dimension(120,220));
 
-        CardLayout cardLayout = (CardLayout) showPanel.getLayout();
-        attackButton.addActionListener(e -> cardLayout.show(showPanel, "target"));
-        moveButton.addActionListener(e -> cardLayout.show(showPanel, "move"));
+        CardLayout cardLayout = (CardLayout) chooseActionPanel.getLayout();
+        attackButton.addActionListener(e -> cardLayout.show(chooseActionPanel, "empty"));
+        attackButton.addActionListener(e -> cardLayout.show(chooseActionPanel, "target"));
+        moveButton.addActionListener(e -> cardLayout.show(chooseActionPanel, "move"));
+        moveButton.addActionListener(e -> currentOrderText.setText("Moving to " + moveEditor.readData()));
 
-        mbutton.addActionListener(e -> currentOrderText.setText("Moving to " + meditor.readData()));
 
-
-        panel.add(orderPanel);
-        panel.add(showPanel);
+        panel.add(giveOrderPanel);
+        panel.add(chooseActionPanel);
         panel.add(currentOrderPanel);
 
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
@@ -90,25 +94,45 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void selectedUnit(Entity entity){
-        this.name = entity.getName();
+        mainLabel.setText("Selected Unit: "+entity.getName());
         this.side = entity.getSide();
-        if(side == 1) isEnemy = true;
-        else if (side == 0) isEnemy = false;
+        if(side == 1) {
+            //isEnemy = true;
+            //targetAllyButton.setVisible(true);
+            attackButton.addActionListener(e -> {
+                targetEnemyPage.setVisible(false);
+                targetAllyPage.setVisible(true);});
+        }
+        else if (side == 0) {
+            //isEnemy = false;
+            //targetEnemyButton.setVisible(true);
+            attackButton.addActionListener(e -> {
+                targetAllyPage.setVisible(false);
+                targetEnemyPage.setVisible(true);});
+        }
     }
 
     public void newTarget(Entity entity){
+        targetAllyPage = new JPanel();
+        targetAllyPage.setLayout(new BoxLayout(targetAllyPage, BoxLayout.Y_AXIS));
+        targetEnemyPage = new JPanel();
+        targetEnemyPage.setLayout(new BoxLayout(targetEnemyPage, BoxLayout.Y_AXIS));
         JButton targetAllyButton = new JButton();
         JButton targetEnemyButton = new JButton();
-        if(entity.getSide() == 0) {
+        if(entity.getSide() == 0) { /*
             targetAllyButton.add(new JLabel(entity.getName()));
-            targetAllyButton.setVisible(isEnemy);
-            targetPanel.add(targetAllyButton);
+            //targetAllyButton.setVisible(false);
             targetAllyButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
-        } else if (entity.getSide() == 1) {
+            targetAllyPage.add(targetAllyButton);
+            chooseTargetPanel.add(targetAllyPage);
+            targetAllyButton.setVisible(false); */
+        } else if (entity.getSide() == 1) { /*
             targetEnemyButton.add(new JLabel(entity.getName()));
-            targetEnemyButton.setVisible(!isEnemy);
-            targetPanel.add(targetEnemyButton);
+            targetEnemyButton.setVisible(false);
             targetEnemyButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
+            targetEnemyPage.add(targetEnemyButton);
+            chooseTargetPanel.add(targetEnemyPage);
+            targetEnemyPage.setVisible(false); */
         }
 
     }
