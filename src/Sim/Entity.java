@@ -10,6 +10,7 @@ public class Entity {
     int side = 0;
     Vec2int pos;
     Vec2int speed;
+    String type;
     ArrayList<Component> components = new ArrayList<>();
     private final World w;
     private NodeInfo nodeInfo;
@@ -41,8 +42,8 @@ public class Entity {
             speed.y = 0;
         }
 
-        if(pos.y >= w.map.maxY){
-            pos.y = w.map.maxY;
+        if(pos.y >= w.map.midY){
+            pos.y = w.map.midY;
             speed.x = 0;
             speed.y = 0;
         }
@@ -98,6 +99,14 @@ public class Entity {
         return side;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType(){
+        return type;
+    }
+
     public String getSideasName(){
         String sideName = "";
         if (side == 0) {
@@ -132,4 +141,6 @@ public class Entity {
     public ArrayList<Component> getComponents(){
         return components;
     }
+
+
 }
