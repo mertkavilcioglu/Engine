@@ -27,7 +27,7 @@ public class MapView extends VCSPanel {
 
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0,0, app.world.map.maxX, app.world.map.maxY);
-        g.setColor(Color.BLUE);
+        g.setColor(Color.CYAN);
         g.fillRect(0,0, app.world.map.maxX, app.world.map.midY);
         for (int i = 0; i < world.entities.size(); i++) {
             Entity e = world.entities.get(i);

@@ -3,6 +3,7 @@ package Sim;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Entity {
     String id;   //TODO
@@ -21,6 +22,8 @@ public class Entity {
     }
 
     void update(int deltaTime) {
+
+
         pos.x += speed.x;
         pos.y += -speed.y;
 
@@ -36,14 +39,26 @@ public class Entity {
             speed.y = 0;
         }
 
+        if(Objects.equals(type, "Ship") && pos.y >= w.map.midY){
+            pos.y = w.map.midY;
+            speed.x = 0;
+            speed.y = 0;
+        }
+
+        if(Objects.equals(type, "Tank") && pos.y <= w.map.midY){
+            pos.y = w.map.midY;
+            speed.x = 0;
+            speed.y = 0;
+        }
+
         if(pos.y <= 0){
             pos.y = 0;
             speed.x = 0;
             speed.y = 0;
         }
 
-        if(pos.y >= w.map.midY){
-            pos.y = w.map.midY;
+        if(pos.y >= w.map.maxY){
+            pos.y = w.map.maxY;
             speed.x = 0;
             speed.y = 0;
         }
