@@ -12,5 +12,8 @@ public abstract class VCSPanel extends JPanel {
         this.app = app;
     }
     public abstract void selectedEntityChanged(Entity entity);
+    protected void log(String message){
+        if (app != null) app.log(message);
+    }
 
 }

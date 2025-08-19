@@ -21,7 +21,7 @@ public class ActionPanel extends VCSPanel {
     private JLabel mainLabel;
 
     boolean isEnemy = false;
-    String name;
+    String selectedUnitName;
     int side;
 
     public ActionPanel(VCSApp app){
@@ -83,7 +83,13 @@ public class ActionPanel extends VCSPanel {
         });
         moveButton.addActionListener(e -> cardLayout.show(chooseActionPanel, "move"));
 
-        mbutton.addActionListener(e -> currentOrderText.setText("Moving to " + meditor.readData()));
+        mbutton.addActionListener(e -> {
+            currentOrderText.setText("Moving to " + meditor.readData());
+            if (selectedUnitName != null){
+                log(selectedUnitName + " moving to " + meditor.readData());
+            }
+
+        });
 
         panel.add(giveOrderPanel);
         panel.add(chooseActionPanel);
@@ -97,8 +103,8 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void selectedUnit(Entity entity){
-        this.name = entity.getName();
-        mainLabel.setText("Selected Entity: " + name);
+        this.selectedUnitName = entity.getName();
+        mainLabel.setText("Selected Entity: " + selectedUnitName);
         this.side = entity.getSide();
         if(side == 1) isEnemy = true;
         else if (side == 0) isEnemy = false;
@@ -113,7 +119,13 @@ public class ActionPanel extends VCSPanel {
         } else {
             enemyTargetPanel.add(targetButton);
         }
-        targetButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
+        targetButton.addActionListener(e -> {
+            currentOrderText.setText(entity.getName() + " selected.");
+            if (selectedUnitName != null){
+                log(selectedUnitName + " going to attack " + entity.getName());
+            }
+        });
+
 
         /* JButton targetAllyButton = new JButton();
         JButton targetEnemyButton = new JButton();

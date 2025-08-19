@@ -146,6 +146,10 @@ public class VCSApp {
         // log, attack vs.
     }
 
+    public void log(String message){
+        if (logPanel != null) logPanel.messageToLog(message);
+    }
+
     /*public void isEntitySelected(){
         actionPanel.selectedUnit(hierarchyPanel.entitySelected());
     }*/
