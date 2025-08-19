@@ -7,6 +7,7 @@ import Vec.Vec2int;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class EntityEditorView extends VCSPanel {
     String[] components = {"Radar"};
@@ -14,7 +15,7 @@ public class EntityEditorView extends VCSPanel {
     JButton addComponentButton;
     JPanel addSidePanel;
     JComboBox addSideBox;
-
+    String type ="";
     public EntityEditorView(VCSApp app){
         super(app);
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
@@ -40,6 +41,17 @@ public class EntityEditorView extends VCSPanel {
         add(ePositionPanel);
         add(eSpeedPanel);
         JButton createButton = new JButton("Create");
+        JButton tank = new JButton("Tank");
+        tank.addActionListener(e -> { type = "tank";});
+        add(tank);
+
+        JButton plane = new JButton("Plane");
+        plane.addActionListener(e -> { type = "plane";});
+        add(plane);
+
+        JButton ship = new JButton("Ship");
+        ship.addActionListener(e -> { type = "ship";});
+        add(ship);
         createButton.addActionListener(e -> {
             try{
                 String name = eNamePanel.readData();
@@ -49,11 +61,11 @@ public class EntityEditorView extends VCSPanel {
                 if(radarPanel != null)
                     range = radarPanel.readData();
                 int side = addSideBox.getSelectedIndex();
-                app.createEntity(name, side, pos, speed, range);
-                log("New unit named " + name + " created.");
+                app.createEntity(name, side, pos, speed, range, type);
+                log("New unit named " + name + " created." );
             }
             catch (Exception ex){
-               //TODO eNamePanel.dataV düzgün bir validate yapmaya çalış
+                //TODO eNamePanel.dataV düzgün bir validate yapmaya çalış
                 ePositionPanel.dataValidate();
                 eSpeedPanel.dataValidate();
                 if(radarPanel != null)

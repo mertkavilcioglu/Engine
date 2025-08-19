@@ -23,8 +23,9 @@ public class LogPanel extends VCSPanel {
         logArea.setEditable(false);
         logArea.setCaretColor(Color.white);
         logArea.setBorder(new TitledBorder("Log:"));
+        JScrollPane scrollPanel = new JScrollPane(logArea);
         //this.add(label);
-        this.add(logArea);
+        this.add(scrollPanel);
     }
 
     public void messageToLog(String message){
