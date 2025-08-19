@@ -41,18 +41,23 @@ public class RadarEditor extends JPanel {
         txt.setText(String.valueOf(data));
     }
 
-    public int readData() {
+    public Integer readData() {
         data = Integer.parseInt(txt.getText());
-        return data;
+        if(data != 0)
+            return data;
+        return null;
     }
 
     //TODO 2 kere catch yapma günah
 
     public void dataValidate(){
         int r;
-
         try {
             r = Integer.parseInt(txt.getText());
+            if(Integer.parseInt(txt.getText()) == 0){
+                System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lbl.getText());
+                txt.setBorder(new LineBorder(Color.RED, 2));
+            }
         }
         catch (NumberFormatException e) {
             System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lbl.getText());

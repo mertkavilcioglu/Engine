@@ -46,6 +46,10 @@ public class Radar extends Component {
         range = r;
     }
 
+    public int getRange(){
+        return range;
+    }
+
     //TODO: simapp'ten bir entity gunclelleme fonksiyonu alarak entityleri güncelle
 }
 
