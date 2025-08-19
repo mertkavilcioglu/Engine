@@ -3,6 +3,7 @@ package Sim;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Entity {
     String id;   //TODO
@@ -10,6 +11,7 @@ public class Entity {
     int side = 0;
     Vec2int pos;
     Vec2int speed;
+    String type;
     ArrayList<Component> components = new ArrayList<>();
     private final World w;
     private NodeInfo nodeInfo;
@@ -20,6 +22,8 @@ public class Entity {
     }
 
     void update(int deltaTime) {
+
+
         pos.x += speed.x;
         pos.y += -speed.y;
 
@@ -31,6 +35,18 @@ public class Entity {
 
         if(pos.x >= w.map.maxX){
             pos.x = w.map.maxX;
+            speed.x = 0;
+            speed.y = 0;
+        }
+
+        if(Objects.equals(type, "Ship") && pos.y >= w.map.midY){
+            pos.y = w.map.midY;
+            speed.x = 0;
+            speed.y = 0;
+        }
+
+        if(Objects.equals(type, "Tank") && pos.y <= w.map.midY){
+            pos.y = w.map.midY;
             speed.x = 0;
             speed.y = 0;
         }
@@ -98,6 +114,14 @@ public class Entity {
         return side;
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType(){
+        return type;
+    }
+
     public String getSideasName(){
         String sideName = "";
         if (side == 0) {
@@ -132,4 +156,6 @@ public class Entity {
     public ArrayList<Component> getComponents(){
         return components;
     }
+
+
 }

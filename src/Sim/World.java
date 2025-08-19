@@ -20,17 +20,20 @@ public class World{
         return ent;
     }
 
-    public Entity createEntity(String eName, int eSide, Vec2int pos, Vec2int speed, int range){
+    public Entity createEntity(String eName, int eSide, Vec2int pos, Vec2int speed, int range, String type){
         if(eName == null){
             return null;
         }
         System.out.format("Created entity %s with x:%d and y:%d", eName, pos.x, pos.y);
+        System.out.format("Created entity type %s", type);
         Entity ent = new Entity(this);
         ent.setName(eName);
         ent.setSide(eSide);
 
         ent.setPos(new Vec2int(pos.x, pos.y));
         ent.setSpeed(new Vec2int(speed.x, speed.y));
+
+        ent.setType(type);
 
         Radar r = new Radar(ent, entities);
         r.setRange(range);
