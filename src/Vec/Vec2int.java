@@ -7,6 +7,7 @@ import static java.lang.Math.sqrt;
 public class Vec2int {
     public int x;
     public int y;
+    public double length;
 
     public Vec2int() {
     }
@@ -14,10 +15,25 @@ public class Vec2int {
     public Vec2int(int x, int y){
         this.x = x;
         this.y = y;
+        length = sqrt((x*x) + (y*y));
     }
 
     public double distance(Vec2int other) {
       return sqrt((other.x - this.x)*(other.x - this.x) + (other.y - this.y)*(other.y - this.y));
+    }
+
+    public Vec2int vectorDiff(Vec2int other) {
+        return new Vec2int((other.x - this.x),(other.y - this.y));
+    }
+
+    public Vec2int normalize(int targetLength){
+        //Vec2int normalized = input;
+        double vMagnitude = this.length;
+        double vecX = targetLength * this.x / vMagnitude;
+        double vecY = -targetLength * this.y / vMagnitude;
+        this.x = (int) (vecX + 0.5);
+        this.y = (int) (vecY + 0.5);
+        return this;
     }
 
     public double hypotenuse() {
