@@ -7,14 +7,15 @@ import Vec.Vec2int;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class EntityEditorView extends VCSPanel {
     String[] components = {"Radar"};
     RadarEditor radarPanel = null;
     JButton addComponentButton;
     JPanel addSidePanel;
+    JPanel addTypePanel;
     JComboBox addSideBox;
+    JComboBox addTypeBox;
     String type ="";
     public EntityEditorView(VCSApp app){
         super(app);
@@ -36,11 +37,23 @@ public class EntityEditorView extends VCSPanel {
         addSidePanel.add(new JLabel("Side: "));
         addSidePanel.add(addSideBox);
 
+        String types[] = {"Tank", "Plane", "Ship"};
+        addTypeBox = new JComboBox<>(types);
+        addTypeBox.setEditable(false);
+        addTypeBox.setSelectedIndex(0);
+        addTypeBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        addTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        addTypePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        addTypePanel.add(new JLabel("Type: "));
+        addTypePanel.add(addTypeBox);
+
         add(eNamePanel);
         add(addSidePanel);
+        add(addTypePanel);
         add(ePositionPanel);
         add(eSpeedPanel);
         JButton createButton = new JButton("Create");
+/*
         JButton tank = new JButton("Tank");
         tank.addActionListener(e -> { type = "tank";});
         add(tank);
@@ -52,6 +65,8 @@ public class EntityEditorView extends VCSPanel {
         JButton ship = new JButton("Ship");
         ship.addActionListener(e -> { type = "ship";});
         add(ship);
+
+ */
         createButton.addActionListener(e -> {
             try{
                 String name = eNamePanel.readData();
@@ -61,7 +76,9 @@ public class EntityEditorView extends VCSPanel {
                 if(radarPanel != null)
                     range = radarPanel.readData();
                 int side = addSideBox.getSelectedIndex();
+                type = (String) addTypeBox.getSelectedItem();
                 app.createEntity(name, side, pos, speed, range, type);
+                log("New unit named " + name + " created.");
             }
             catch (Exception ex){
                //TODO eNamePanel.dataV düzgün bir validate yapmaya çalış
