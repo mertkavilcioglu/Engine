@@ -78,7 +78,7 @@ public class EntityEditorView extends VCSPanel {
                 int side = addSideBox.getSelectedIndex();
                 type = (String) addTypeBox.getSelectedItem();
                 app.createEntity(name, side, pos, speed, range, type);
-                log("New unit named" + name + " created.");
+                log("New unit named " + name + " created.");
             }
             catch (Exception ex){
                //TODO eNamePanel.dataV düzgün bir validate yapmaya çalış

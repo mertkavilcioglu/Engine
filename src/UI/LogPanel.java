@@ -12,7 +12,8 @@ public class LogPanel extends VCSPanel {
 
     public LogPanel(VCSApp app) {
         super(app);
-        this.setSize(100,200);
+        this.setLayout(new BorderLayout());
+        this.setPreferredSize(new Dimension(getWidth(),getHeight()));
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
         //JLabel label = new JLabel("Log: ");
         //JTextField text = new JTextField();
@@ -25,7 +26,7 @@ public class LogPanel extends VCSPanel {
         logArea.setBorder(new TitledBorder("Log:"));
         JScrollPane scrollPanel = new JScrollPane(logArea);
         //this.add(label);
-        this.add(scrollPanel);
+        this.add(scrollPanel, BorderLayout.CENTER);
     }
 
     public void messageToLog(String message){
