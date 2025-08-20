@@ -22,23 +22,20 @@ public class Attack extends Order{
         return entity;
     }
 
-    public void attackEntity(String followerName, String targetName){
-
-        Entity follower = findEntity(followerName);
-        Entity target = findEntity(targetName);
-        if(target == null)
+    public void attackEntity(Entity followerEntity, Entity targetEntity){
+        if(targetEntity == null || followerEntity == null)
             return;
-        double distX = target.getPos().x - follower.getPos().x;
-        double distY = target.getPos().y - follower.getPos().y;
-        double dist = follower.getPos().distance(target.getPos());
+        double distX = targetEntity.getPos().x - followerEntity.getPos().x;
+        double distY = targetEntity.getPos().y - followerEntity.getPos().y;
+        double dist = followerEntity.getPos().distance(targetEntity.getPos());
         if(dist <= 3.0){
-            System.out.format("%s reached the target. \n", follower.getName());
+            System.out.format("%s reached the target. \n", followerEntity.getName());
             //follower.setSpeed(new Vec2int(0,0));
-            destroy(target);
+            destroy(targetEntity);
         }
         else{
-            Vec2int newSpeed = follower.getPos().vectorDiff(target.getPos()).normalize(4);
-            follower.setSpeed(newSpeed);
+            Vec2int newSpeed = followerEntity.getPos().vectorDiff(targetEntity.getPos()).normalize(4);
+            followerEntity.setSpeed(newSpeed);
         }
     }
 

@@ -131,7 +131,7 @@ public class VCSApp {
                         //isEntitySelected();
                         // render world
                         //w.render();
-                        attack.attackEntity("Emir", "Mert");
+                        attack.attackEntity(emir, mert);
                         world.entities.removeAll(world.entitiesToRemove);
                         world.entitiesToRemove.clear();
                         renderToWindow();
