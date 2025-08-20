@@ -1,5 +1,6 @@
 package App;
 
+import Sim.Orders.Follow;
 import UI.*;
 import Sim.Entity;
 import Sim.World;
@@ -36,6 +37,7 @@ public class VCSApp {
     private PlayPausePanel playPausePanel;
     private ImportPanel importPanel;
     private ArrayList<JLabel> entityNames = new ArrayList<>();
+    private Follow follow;
 
     public void run() {
         System.out.println("App::run");
@@ -71,6 +73,7 @@ public class VCSApp {
         actionPanel = new ActionPanel(this);
         playPausePanel = new PlayPausePanel(this);
         importPanel = new ImportPanel(this);
+        follow = new Follow(this);
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
@@ -118,6 +121,7 @@ public class VCSApp {
                         // update world
                         world.update(1000);
                         hierarchyPanel.update(1000);
+                        actionPanel.update(1000);
                         //isEntitySelected();
                         // render world
                         //w.render();
@@ -148,6 +152,10 @@ public class VCSApp {
 
     public void log(String message){
         if (logPanel != null) logPanel.messageToLog(message);
+    }
+
+    public void followTo(String followerName, String targetName){
+        follow.followEntity(followerName, targetName);
     }
 
     /*public void isEntitySelected(){

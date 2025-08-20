@@ -13,6 +13,7 @@ public class ActionPanel extends VCSPanel {
     private JButton moveButton;
     private JPanel allyTargetPanel;
     private JPanel enemyTargetPanel;
+    private JButton newTargetButton;
     private JPanel chooseActionPanel;
     private CardLayout cardLayout;
     private JPanel movePanel;
@@ -23,6 +24,8 @@ public class ActionPanel extends VCSPanel {
     boolean isEnemy = false;
     String selectedUnitName;
     int side;
+    String newTargetName;
+    boolean isFollow = false;
 
     public ActionPanel(VCSApp app){
         super(app);
@@ -113,19 +116,22 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void newTarget(Entity entity){
-        JButton targetButton = new JButton(entity.getName());
+        newTargetName = entity.getName();
+        newTargetButton = new JButton(newTargetName);
+
         if (entity.getSide() == 0){
-            allyTargetPanel.add(targetButton);
+            allyTargetPanel.add(newTargetButton);
         } else {
-            enemyTargetPanel.add(targetButton);
+            enemyTargetPanel.add(newTargetButton);
         }
-        targetButton.addActionListener(e -> {
-            currentOrderText.setText(entity.getName() + " selected.");
+        newTargetButton.addActionListener(e -> {
+            currentOrderText.setText(newTargetName + " selected.");
             if (selectedUnitName != null){
-                log(selectedUnitName + " going to attack " + entity.getName());
+                app.followTo(selectedUnitName, newTargetName);
+                isFollow = true;
+                log(selectedUnitName + " going to attack " + newTargetName);
             }
         });
-
 
         /* JButton targetAllyButton = new JButton();
         JButton targetEnemyButton = new JButton();
@@ -141,6 +147,12 @@ public class ActionPanel extends VCSPanel {
             targetEnemyButton.addActionListener(e -> currentOrderText.setText(entity.getName() + " selected."));
         } */
 
+    }
+
+    public void update(int deltaTime){
+        if (isFollow){
+            app.followTo(selectedUnitName, newTargetName);
+        }
     }
 
     @Override
