@@ -26,12 +26,10 @@ public class ActionPanel extends VCSPanel {
 
     boolean isEnemy = false;
     String selectedUnitName;
-    String followerUnitName;
     int side;
-    String targetName;
     String movingUnitName;
     Vec2int coordinates;
-    boolean isAttacing = false;
+    public boolean isAttacing = false;
     public boolean isMoving = false;
 
     public ActionPanel(VCSApp app){
@@ -144,11 +142,11 @@ public class ActionPanel extends VCSPanel {
         newTargetButton.addActionListener(e -> {
             targetEntity = entity;
             attackerEntity = selectedEntity;
-            currentOrderText.setText(targetName + " selected.");
-            if (followerUnitName != null){
+            currentOrderText.setText(targetEntity.getName() + " selected.");
+            if (attackerEntity != null){
                 app.attack.attackEntity(attackerEntity, targetEntity);
                 isAttacing = true;
-                log(followerUnitName + " going to attack " + targetName);
+                log(attackerEntity.getName() + " going to attack " + targetEntity.getName());
             }
         });
 
