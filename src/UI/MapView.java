@@ -32,6 +32,12 @@ public class MapView extends VCSPanel {
         for (int i = 0; i < world.entities.size(); i++) {
             Entity e = world.entities.get(i);
             Vec2int pos = e.getPos();
+            String name = e.getName();
+
+            FontMetrics fontMetric = g.getFontMetrics();
+            int textLength = fontMetric.stringWidth(name);
+            int textX = pos.x - 10 + (20 - textLength) / 2;
+            int textY = pos.y - 10;
 
             if(e.getSide() == 0)
                 g.setColor(Color.blue);
@@ -40,7 +46,11 @@ public class MapView extends VCSPanel {
 
             //drawEntity(e);
             //g.setColor(Color.BLACK);
+
             g.drawOval(pos.x-10, pos.y-10, 20, 20);
+
+            g.setFont(new Font("Times New Roman", Font.PLAIN, 10 ));
+            g.drawString(name, textX, textY);
             //g.fillOval(pos.x-10, pos.y-10, 20, 20);
 
         }
