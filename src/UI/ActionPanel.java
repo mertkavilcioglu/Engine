@@ -127,7 +127,7 @@ public class ActionPanel extends VCSPanel {
         newTargetButton.addActionListener(e -> {
             currentOrderText.setText(newTargetName + " selected.");
             if (selectedUnitName != null){
-                app.followTo(selectedUnitName, newTargetName);
+                app.follow.followEntity(selectedUnitName, newTargetName);
                 isFollow = true;
                 log(selectedUnitName + " going to attack " + newTargetName);
             }
@@ -151,7 +151,7 @@ public class ActionPanel extends VCSPanel {
 
     public void update(int deltaTime){
         if (isFollow){
-            app.followTo(selectedUnitName, newTargetName);
+            app.follow.followEntity(selectedUnitName, newTargetName);
         }
     }
 
