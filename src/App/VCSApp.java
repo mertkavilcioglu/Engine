@@ -104,19 +104,19 @@ public class VCSApp {
 
         Entity mert = world.createEntity("Mert", 0);
         hierarchyPanel.entityAdded(mert);
-        actionPanel.newTarget(mert);
+        actionPanel.createNewTarget(mert);
 
         Entity emir = world.createEntity("Emir", 0);
         hierarchyPanel.entityAdded(emir);
-        actionPanel.newTarget(emir);
+        actionPanel.createNewTarget(emir);
 
         Entity seda = world.createEntity("Seda", 0);
         hierarchyPanel.entityAdded(seda);
-        actionPanel.newTarget(seda);
+        actionPanel.createNewTarget(seda);
 
         Entity hasan = world.createEntity("Hasan", 0);
         hierarchyPanel.entityAdded(hasan);
-        actionPanel.newTarget(hasan);
+        actionPanel.createNewTarget(hasan);
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -154,7 +154,7 @@ public class VCSApp {
     public void createEntity(String name, int side, Vec2int pos, Vec2int speed, int range, String type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
         hierarchyPanel.entityAdded(ent);
-        actionPanel.newTarget(ent);
+        actionPanel.createNewTarget(ent);
         // diğer panellere bu entity'yi dağıt
         // log, attack vs.
     }
@@ -162,6 +162,7 @@ public class VCSApp {
     public void removeEntity(Entity e){
         world.entitiesToRemove.add(e);
         hierarchyPanel.entityRemoved(e);
+        actionPanel.deleteTarget(e);
         //TODO: tree'den sil (hierarchyPanel.entityRemoved(e);)
         //TODO: gerekirse diğer panellere de bildir bu entitynin silindiğini
     }
