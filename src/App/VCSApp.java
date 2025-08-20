@@ -132,6 +132,8 @@ public class VCSApp {
                         // render world
                         //w.render();
                         attack.attackEntity("Emir", "Hasan");
+                        world.entities.removeAll(world.entitiesToRemove);
+                        world.entitiesToRemove.clear();
                         renderToWindow();
                     }
                 });
