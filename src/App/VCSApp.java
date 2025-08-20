@@ -1,5 +1,6 @@
 package App;
 
+import Sim.Orders.Attack;
 import Sim.Orders.Follow;
 import UI.*;
 import Sim.Entity;
@@ -37,7 +38,8 @@ public class VCSApp {
     private PlayPausePanel playPausePanel;
     private ImportPanel importPanel;
     private ArrayList<JLabel> entityNames = new ArrayList<>();
-    private Follow follow;
+    public Follow follow;
+    public Attack attack;
 
     public void run() {
         System.out.println("App::run");
@@ -74,6 +76,7 @@ public class VCSApp {
         playPausePanel = new PlayPausePanel(this);
         importPanel = new ImportPanel(this);
         follow = new Follow(this);
+        attack = new Attack(this);
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
@@ -125,6 +128,7 @@ public class VCSApp {
                         //isEntitySelected();
                         // render world
                         //w.render();
+                        attack.attackEntity("Emir", "Hasan");
                         renderToWindow();
                     }
                 });
@@ -150,13 +154,15 @@ public class VCSApp {
         // log, attack vs.
     }
 
+    public void removeEntity(Entity e){
+        // tree'den sil (hierarchyPanel.entityRemoved(e);)
+        // gerekirse diğer panellere de bildir bu entitynin silindiğini
+    }
+
     public void log(String message){
         if (logPanel != null) logPanel.messageToLog(message);
     }
 
-    public void followTo(String followerName, String targetName){
-        follow.followEntity(followerName, targetName);
-    }
 
     /*public void isEntitySelected(){
         actionPanel.selectedUnit(hierarchyPanel.entitySelected());
