@@ -116,7 +116,9 @@ public class ActionPanel extends VCSPanel {
 
     }
 
+    Entity selectedEntity;
     public void selectedUnit(Entity entity){
+        selectedEntity = entity;
         this.selectedUnitName = entity.getName();
         mainLabel.setText("Selected Entity: " + selectedUnitName);
         this.side = entity.getSide();
@@ -128,6 +130,8 @@ public class ActionPanel extends VCSPanel {
 
     Map<Entity, JButton> allyButtons = new HashMap<>();
     Map<Entity, JButton> enemyButtons = new HashMap<>();
+    Entity targetEntity;
+    Entity attackerEntity;
     public void createNewTarget(Entity entity){
         newTargetButton = new JButton(entity.getName());
         if (entity.getSide() == 0){
@@ -138,11 +142,11 @@ public class ActionPanel extends VCSPanel {
             enemyTargetPanel.add(newTargetButton);
         }
         newTargetButton.addActionListener(e -> {
-            targetName = entity.getName();
-            followerUnitName = selectedUnitName;
+            targetEntity = entity;
+            attackerEntity = selectedEntity;
             currentOrderText.setText(targetName + " selected.");
             if (followerUnitName != null){
-                app.attack.attackEntity(followerUnitName, targetName);
+                app.attack.attackEntity(attackerEntity, targetEntity);
                 isAttacing = true;
                 log(followerUnitName + " going to attack " + targetName);
             }
@@ -179,7 +183,7 @@ public class ActionPanel extends VCSPanel {
 
     public void update(int deltaTime){
         if (isAttacing){
-            app.attack.attackEntity(followerUnitName, targetName);
+            app.attack.attackEntity(attackerEntity, targetEntity);
         }
         if (isMoving){
             app.move.moveTo(movingUnitName, coordinates);
