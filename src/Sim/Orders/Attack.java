@@ -33,7 +33,7 @@ public class Attack extends Order{
         double dist = follower.getPos().distance(target.getPos());
         if(dist <= 3.0){
             System.out.format("%s reached the target. \n", follower.getName());
-            follower.setSpeed(new Vec2int(0,0));
+            //follower.setSpeed(new Vec2int(0,0));
             destroy(target);
         }
         else{
@@ -43,6 +43,6 @@ public class Attack extends Order{
     }
 
     public void destroy(Entity e){
-        app.world.entitiesToRemove.add(e); 
+        app.removeEntity(e);
     }
 }
