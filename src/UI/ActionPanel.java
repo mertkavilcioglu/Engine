@@ -24,8 +24,10 @@ public class ActionPanel extends VCSPanel {
 
     boolean isEnemy = false;
     String selectedUnitName;
+    String followerUnitName;
     int side;
-    String newTargetName;
+    String targetName;
+    String movingUnitName;
     Vec2int coordinates;
     boolean isFollow = false;
     public boolean isMoving = false;
@@ -93,9 +95,10 @@ public class ActionPanel extends VCSPanel {
             coordinates = meditor.readData();
             currentOrderText.setText("Moving to " + coordinates);
             if (selectedUnitName != null){
-                app.move.moveTo(selectedUnitName, coordinates);
+                movingUnitName = selectedUnitName;
+                app.move.moveTo(movingUnitName, coordinates);
                 isMoving = true;
-                log(selectedUnitName + " moving to " + coordinates);
+                log(movingUnitName + " moving to " + coordinates);
             }
 
         });
@@ -122,8 +125,7 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void newTarget(Entity entity){
-        newTargetName = entity.getName();
-        newTargetButton = new JButton(newTargetName);
+        newTargetButton = new JButton(entity.getName());
 
         if (entity.getSide() == 0){
             allyTargetPanel.add(newTargetButton);
@@ -131,11 +133,13 @@ public class ActionPanel extends VCSPanel {
             enemyTargetPanel.add(newTargetButton);
         }
         newTargetButton.addActionListener(e -> {
-            currentOrderText.setText(newTargetName + " selected.");
-            if (selectedUnitName != null){
-                app.follow.followEntity(selectedUnitName, newTargetName);
+            targetName = entity.getName();
+            followerUnitName = selectedUnitName;
+            currentOrderText.setText(targetName + " selected.");
+            if (followerUnitName != null){
+                app.follow.followEntity(followerUnitName, targetName);
                 isFollow = true;
-                log(selectedUnitName + " going to attack " + newTargetName);
+                log(followerUnitName + " going to attack " + targetName);
             }
         });
 
@@ -157,10 +161,10 @@ public class ActionPanel extends VCSPanel {
 
     public void update(int deltaTime){
         if (isFollow){
-            app.follow.followEntity(selectedUnitName, newTargetName);
+            app.follow.followEntity(followerUnitName, targetName);
         }
         if (isMoving){
-            app.move.moveTo(selectedUnitName, coordinates);
+            app.move.moveTo(movingUnitName, coordinates);
         }
     }
 
