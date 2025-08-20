@@ -7,6 +7,8 @@ import Vec.Vec2int;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActionPanel extends VCSPanel {
     private JPanel giveOrderPanel;
@@ -29,7 +31,7 @@ public class ActionPanel extends VCSPanel {
     String targetName;
     String movingUnitName;
     Vec2int coordinates;
-    boolean isFollow = false;
+    boolean isAttacing = false;
     public boolean isMoving = false;
 
     public ActionPanel(VCSApp app){
@@ -124,12 +126,15 @@ public class ActionPanel extends VCSPanel {
         cardLayout.show(chooseActionPanel, "empty");
     }
 
-    public void newTarget(Entity entity){
+    Map<Entity, JButton> allyButtons = new HashMap<>();
+    Map<Entity, JButton> enemyButtons = new HashMap<>();
+    public void createNewTarget(Entity entity){
         newTargetButton = new JButton(entity.getName());
-
         if (entity.getSide() == 0){
+            allyButtons.put(entity, newTargetButton);
             allyTargetPanel.add(newTargetButton);
         } else {
+            enemyButtons.put(entity, newTargetButton);
             enemyTargetPanel.add(newTargetButton);
         }
         newTargetButton.addActionListener(e -> {
@@ -137,8 +142,8 @@ public class ActionPanel extends VCSPanel {
             followerUnitName = selectedUnitName;
             currentOrderText.setText(targetName + " selected.");
             if (followerUnitName != null){
-                app.follow.followEntity(followerUnitName, targetName);
-                isFollow = true;
+                app.attack.attackEntity(followerUnitName, targetName);
+                isAttacing = true;
                 log(followerUnitName + " going to attack " + targetName);
             }
         });
@@ -159,9 +164,22 @@ public class ActionPanel extends VCSPanel {
 
     }
 
+    public void deleteTarget(Entity entity){
+        JButton deletedButton;
+        if (entity.getSide() == 0){
+            deletedButton = allyButtons.remove(entity);
+            allyTargetPanel.remove(deletedButton);
+        } else if (entity.getSide() == 1) {
+            deletedButton = enemyButtons.remove(entity);
+            enemyTargetPanel.remove(deletedButton);
+        }
+        revalidate();
+        repaint();
+    }
+
     public void update(int deltaTime){
-        if (isFollow){
-            app.follow.followEntity(followerUnitName, targetName);
+        if (isAttacing){
+            app.attack.attackEntity(followerUnitName, targetName);
         }
         if (isMoving){
             app.move.moveTo(movingUnitName, coordinates);
