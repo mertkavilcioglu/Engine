@@ -2,6 +2,7 @@ package UI;
 
 import App.VCSApp;
 import Sim.Entity;
+import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -25,7 +26,9 @@ public class ActionPanel extends VCSPanel {
     String selectedUnitName;
     int side;
     String newTargetName;
+    Vec2int coordinates;
     boolean isFollow = false;
+    public boolean isMoving = false;
 
     public ActionPanel(VCSApp app){
         super(app);
@@ -87,9 +90,12 @@ public class ActionPanel extends VCSPanel {
         moveButton.addActionListener(e -> cardLayout.show(chooseActionPanel, "move"));
 
         mbutton.addActionListener(e -> {
-            currentOrderText.setText("Moving to " + meditor.readData());
+            coordinates = meditor.readData();
+            currentOrderText.setText("Moving to " + coordinates);
             if (selectedUnitName != null){
-                log(selectedUnitName + " moving to " + meditor.readData());
+                app.move.moveTo(selectedUnitName, coordinates);
+                isMoving = true;
+                log(selectedUnitName + " moving to " + coordinates);
             }
 
         });
@@ -152,6 +158,9 @@ public class ActionPanel extends VCSPanel {
     public void update(int deltaTime){
         if (isFollow){
             app.follow.followEntity(selectedUnitName, newTargetName);
+        }
+        if (isMoving){
+            app.move.moveTo(selectedUnitName, coordinates);
         }
     }
 

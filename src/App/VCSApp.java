@@ -2,6 +2,7 @@ package App;
 
 import Sim.Orders.Attack;
 import Sim.Orders.Follow;
+import Sim.Orders.Move;
 import UI.*;
 import Sim.Entity;
 import Sim.World;
@@ -40,6 +41,7 @@ public class VCSApp {
     private ArrayList<JLabel> entityNames = new ArrayList<>();
     public Follow follow;
     public Attack attack;
+    public Move move;
 
     public void run() {
         System.out.println("App::run");
@@ -77,6 +79,7 @@ public class VCSApp {
         importPanel = new ImportPanel(this);
         follow = new Follow(this);
         attack = new Attack(this);
+        move = new Move(this);
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));

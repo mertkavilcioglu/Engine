@@ -44,6 +44,6 @@ public class Attack extends Order{
 
     public void destroy(Entity e){
         app.world.entities.remove(e);
-        app.
+        //app.
     }
 }
