@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class World{
     public WorldMap map = new WorldMap();
     public ArrayList<Entity> entities = new ArrayList<>();
+    public ArrayList<Entity> entitiesToRemove = new ArrayList<>();
 
     public Entity createEntity(String name, int side) {
         Entity ent = new Entity(this);
