@@ -131,7 +131,7 @@ public class VCSApp {
                         //isEntitySelected();
                         // render world
                         //w.render();
-                        attack.attackEntity("Emir", "Hasan");
+                        attack.attackEntity("Emir", "Mert");
                         world.entities.removeAll(world.entitiesToRemove);
                         world.entitiesToRemove.clear();
                         renderToWindow();
@@ -160,8 +160,10 @@ public class VCSApp {
     }
 
     public void removeEntity(Entity e){
-        // tree'den sil (hierarchyPanel.entityRemoved(e);)
-        // gerekirse diğer panellere de bildir bu entitynin silindiğini
+        world.entitiesToRemove.add(e);
+        hierarchyPanel.entityRemoved(e);
+        //TODO: tree'den sil (hierarchyPanel.entityRemoved(e);)
+        //TODO: gerekirse diğer panellere de bildir bu entitynin silindiğini
     }
 
     public void log(String message){
