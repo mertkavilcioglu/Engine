@@ -63,13 +63,7 @@ public class HierarchyView extends VCSPanel {
         posNode.add(posXnode);
         posNode.add(posYnode);
 
-
-
         leaf.add(posNode);
-
-
-
-
 
         DefaultMutableTreeNode velNode = new DefaultMutableTreeNode("Vel:");
         DefaultMutableTreeNode velXnode = new DefaultMutableTreeNode("X: " + e.getSpeed().x);
@@ -83,6 +77,7 @@ public class HierarchyView extends VCSPanel {
         e.getNodeInfo().assignNode("posY", posYnode);
         e.getNodeInfo().assignNode("velX", velXnode);
         e.getNodeInfo().assignNode("velY", velYnode);
+        e.getNodeInfo().assignRoot(leaf);
 
         leaf.add(velNode);
 
@@ -124,6 +119,8 @@ public class HierarchyView extends VCSPanel {
 
     public void entityRemoved(Entity e){
         //REMOVE
+        rootNode.remove(leaves.get(e).getRoot());
+        model.reload(rootNode);
     }
     
     private Entity searchForEntity(DefaultMutableTreeNode node){

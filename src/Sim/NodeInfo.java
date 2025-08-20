@@ -3,11 +3,15 @@ package Sim;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class NodeInfo {
+    private DefaultMutableTreeNode root;
     private DefaultMutableTreeNode posX;
     private DefaultMutableTreeNode posY;
     private DefaultMutableTreeNode velX;
     private DefaultMutableTreeNode velY;
 
+    public void assignRoot(DefaultMutableTreeNode node){
+        root = node;
+    }
 
     public void assignNode(String name, DefaultMutableTreeNode node){
         switch (name){
@@ -38,5 +42,9 @@ public class NodeInfo {
                 return velY;
         }
         return null;
+    }
+
+    public DefaultMutableTreeNode getRoot(){
+        return root;
     }
 }
