@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Follow extends Order{
 
-    public Follow(VCSApp app) {
-        super(app);
+    public Follow(VCSApp app, Entity e) {
+        super(app, e);
     }
 
     Entity findEntity(String trgtname) {
@@ -41,5 +41,10 @@ public class Follow extends Order{
             Vec2int newSpeed = follower.getPos().vectorDiff(target.getPos()).normalize(4);
             follower.setSpeed(newSpeed);
         }
+    }
+
+    @Override
+    protected void actualUpdate() {
+
     }
 }

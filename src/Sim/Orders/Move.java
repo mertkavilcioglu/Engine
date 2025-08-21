@@ -7,8 +7,9 @@ import Vec.Vec2int;
 
 public class Move extends Order{
 
-    public Move(VCSApp app) {
-        super(app);
+    public Move(VCSApp app, Entity e) {
+
+        super(app, e);
     }
 
     public void moveTo(String unitName, Vec2int coordinates){
@@ -24,5 +25,10 @@ public class Move extends Order{
             Vec2int newSpeed = unit.getPos().vectorDiff(coordinates).normalize(4);
             unit.setSpeed(newSpeed);
         }
+    }
+
+    @Override
+    protected void actualUpdate() {
+
     }
 }
