@@ -25,6 +25,14 @@ public class Entity {
         nodeInfo = new NodeInfo();
     }
 
+    public void addOrder(Order order){
+        orders.add(order);
+    }
+
+    public void removeOrder(){
+        orders.poll();
+    }
+
 
     void update(int deltaTime) {
         if(!orders.isEmpty())
