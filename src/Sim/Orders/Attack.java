@@ -44,6 +44,7 @@ public class Attack extends Order{
 
     public void destroy(Entity e){
         app.removeEntity(e);
+        removeOrder();
     }
 
     @Override
