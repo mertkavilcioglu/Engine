@@ -1,12 +1,15 @@
 package Sim;
 
+import Sim.Orders.Order;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Queue;
 
 public class Entity {
-    String id;   //TODO
+    String id;
     String name;
     int side = 0;
     Vec2int pos;
@@ -15,14 +18,17 @@ public class Entity {
     ArrayList<Component> components = new ArrayList<>();
     private final World w;
     private NodeInfo nodeInfo;
+    private Queue<Order> orders = new LinkedList<>();
 
     public Entity(World w) {
         this.w = w;
         nodeInfo = new NodeInfo();
     }
 
-    void update(int deltaTime) {
 
+    void update(int deltaTime) {
+        if(!orders.isEmpty())
+            orders.peek().update();
 
         pos.x += speed.x;
         pos.y += -speed.y;
@@ -68,6 +74,10 @@ public class Entity {
         for (int i = 0; i < components.size(); i++) {
             components.get(i).update(deltaTime);
         }
+    }
+
+    public Queue<Order> getOrders(){
+        return orders;
     }
 
     //To access and change content of Entity from other packages.

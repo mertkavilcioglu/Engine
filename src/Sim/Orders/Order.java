@@ -12,6 +12,14 @@ public abstract class Order {
         this.source = source;
     }
 
+    public void addOrder(Order order){
+        source.getOrders().add(order);
+    }
+
+    public void removeOrder(){
+        source.getOrders().poll();
+    }
+
 
     public void update() {
         actualUpdate();
