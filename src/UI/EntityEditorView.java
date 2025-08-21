@@ -68,6 +68,7 @@ public class EntityEditorView extends VCSPanel {
 
  */
         createButton.addActionListener(e -> {
+            app.attackTest();
             try{
                 String name = eNamePanel.readData();
                 Vec2int pos = ePositionPanel.readData();
