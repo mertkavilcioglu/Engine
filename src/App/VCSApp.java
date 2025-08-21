@@ -81,9 +81,9 @@ public class VCSApp {
         actionPanel = new ActionPanel(this);
         playPausePanel = new PlayPausePanel(this);
         importPanel = new ImportPanel(this);
-        follow = new Follow(this);
-        attack = new Attack(this);
-        move = new Move(this);
+        //follow = new Follow(this);
+        //attack = new Attack(this);
+        //move = new Move(this);
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
