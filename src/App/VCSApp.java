@@ -40,7 +40,7 @@ public class VCSApp {
     private ImportPanel importPanel;
     private ArrayList<JLabel> entityNames = new ArrayList<>();
     public Follow follow;
-    public Attack attack;
+    //public Attack attack;
     public Move move;
 
     public void run() {
@@ -66,8 +66,8 @@ public class VCSApp {
         }
     }
 
-    public void attackTest() {
-        attack.attackEntity(world.entities.get(0), world.entities.get(1));
+    public void attackTest(Entity f, Entity t) {
+        f.addOrder(new Attack(this, f, t));
     }
 
     public void runWithWindow() throws InterruptedException, InvocationTargetException {
@@ -121,7 +121,7 @@ public class VCSApp {
         Entity hasan = world.createEntity("Hasan", 0);
         hierarchyPanel.entityAdded(hasan);
         actionPanel.createNewTargetButton(hasan);
-
+        attackTest(emir, mert);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
