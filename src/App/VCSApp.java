@@ -66,6 +66,10 @@ public class VCSApp {
         }
     }
 
+    public void attackTest() {
+        attack.attackEntity(world.entities.get(0), world.entities.get(1));
+    }
+
     public void runWithWindow() throws InterruptedException, InvocationTargetException {
 
         world = new World();
@@ -131,7 +135,7 @@ public class VCSApp {
                         //isEntitySelected();
                         // render world
                         //w.render();
-                        attack.attackEntity(emir, mert);
+                        //attack.attackEntity(emir, mert);
                         world.entities.removeAll(world.entitiesToRemove);
                         world.entitiesToRemove.clear();
                         renderToWindow();
