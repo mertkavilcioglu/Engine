@@ -130,7 +130,7 @@ public class ActionPanel extends VCSPanel {
     Map<Entity, JButton> enemyButtons = new HashMap<>();
     Entity targetEntity;
     Entity attackerEntity;
-    public void createNewTarget(Entity entity){
+    public void createNewTargetButton(Entity entity){
         newTargetButton = new JButton(entity.getName());
         if (entity.getSide() == 0){
             allyButtons.put(entity, newTargetButton);
@@ -166,7 +166,7 @@ public class ActionPanel extends VCSPanel {
 
     }
 
-    public void deleteTarget(Entity entity){
+    public void deleteTargetButton(Entity entity){
         JButton deletedButton;
         if (entity.getSide() == 0){
             deletedButton = allyButtons.remove(entity);
