@@ -144,7 +144,7 @@ public class ActionPanel extends VCSPanel {
             attackerEntity = selectedEntity;
             currentOrderText.setText(targetEntity.getName() + " selected.");
             if (attackerEntity != null){
-                app.attack.attackEntity(attackerEntity, targetEntity);
+                //app.attack.attackEntity(targetEntity);
                 isAttacing = true;
                 log(attackerEntity.getName() + " going to attack " + targetEntity.getName());
             }
@@ -181,7 +181,7 @@ public class ActionPanel extends VCSPanel {
 
     public void update(int deltaTime){
         if (isAttacing){
-            app.attack.attackEntity(attackerEntity, targetEntity);
+            //app.attack.attackEntity(targetEntity);
         }
         if (isMoving){
             app.move.moveTo(movingUnitName, coordinates);
