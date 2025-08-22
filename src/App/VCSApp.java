@@ -3,6 +3,7 @@ package App;
 import Sim.Orders.Attack;
 import Sim.Orders.Follow;
 import Sim.Orders.Move;
+import Sim.Orders.Order;
 import UI.*;
 import Sim.Entity;
 import Sim.World;
@@ -39,9 +40,9 @@ public class VCSApp {
     private PlayPausePanel playPausePanel;
     private ImportPanel importPanel;
     private ArrayList<JLabel> entityNames = new ArrayList<>();
-    public Follow follow;
+    //public Follow follow;
     //public Attack attack;
-    public Move move;
+    //public Move move;
 
     public void run() {
         System.out.println("App::run");
@@ -131,7 +132,7 @@ public class VCSApp {
                         // update world
                         world.update(1000);
                         hierarchyPanel.update(1000);
-                        actionPanel.update(1000);
+                        //actionPanel.update(1000);
                         //isEntitySelected();
                         // render world
                         //w.render();
