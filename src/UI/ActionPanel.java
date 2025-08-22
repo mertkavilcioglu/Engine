@@ -160,13 +160,17 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void deleteTargetButton(Entity entity){
+        if(entity == null)
+            return;
         JButton deletedButton;
         if (entity.getSide() == 0){
             deletedButton = allyButtons.remove(entity);
-            allyTargetPanel.remove(deletedButton);
+            if(deletedButton != null)
+                allyTargetPanel.remove(deletedButton);
         } else if (entity.getSide() == 1) {
             deletedButton = enemyButtons.remove(entity);
-            enemyTargetPanel.remove(deletedButton);
+            if(deletedButton != null)
+                enemyTargetPanel.remove(deletedButton);
         }
         revalidate();
         repaint();
