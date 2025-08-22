@@ -8,14 +8,18 @@ import Vec.Vec2int;
 public class Move extends Order{
 
     private Vec2int destination;
+
     public Move(VCSApp app, Entity src, Vec2int coordinates) {
 
         super(app, src);
         this.destination = coordinates;
-        moveTo(destination);
+        //moveTo(destination);
+        app.log(source.getName() + " moving to " + destination);
     }
 
     public void moveTo(Vec2int destination){
+        if(destination == null )
+            return;
         double dist = source.getPos().distance(destination);
         if(dist <= 2.0){
             app.log(source.getName() + " reached the target. \n");
@@ -26,11 +30,17 @@ public class Move extends Order{
         else{
             Vec2int newSpeed = source.getPos().vectorDiff(destination).normalize(4);
             source.setSpeed(newSpeed);
+            app.log(source.getName() + " moving to " + destination);
         }
+    }
+
+    public void findSpeed(Vec2int destination){
+        Vec2int newSpeed = source.getPos().vectorDiff(destination).normalize(4);
+        source.setSpeed(newSpeed);
     }
 
     @Override
     protected void actualUpdate() {
-
+        moveTo(destination);
     }
 }

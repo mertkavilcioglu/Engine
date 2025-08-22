@@ -52,13 +52,13 @@ public class ActionPanel extends VCSPanel {
         enemyTargetPanel.setLayout(new BoxLayout(enemyTargetPanel, BoxLayout.Y_AXIS));
         enemyTargetPanel.setBorder(new TitledBorder("Choose Target: "));
 
-        movePanel = new JPanel(new GridLayout(2,1));
-        Vec2intEditor meditor = new Vec2intEditor("Position:");
-        JButton mbutton = new JButton("Move");
-        mbutton.setFocusable(false);
-        //try to make button smaller to good look.
-        movePanel.add(meditor);
-        movePanel.add(mbutton);
+        movePanel = new JPanel(/*new GridLayout(2,1)*/);
+        movePanel.setLayout(new BoxLayout(movePanel, BoxLayout.Y_AXIS));
+        Vec2intEditor moveEditor = new Vec2intEditor("Position:");
+        JButton moveConfirmButton = new JButton("Move");
+        moveConfirmButton.setFocusable(false);
+        movePanel.add(moveEditor);
+        movePanel.add(moveConfirmButton);
 
         currentOrderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
         currentOrderText = new JTextField();
@@ -89,12 +89,12 @@ public class ActionPanel extends VCSPanel {
         });
         moveButton.addActionListener(e -> cardLayout.show(chooseActionPanel, "move"));
 
-        mbutton.addActionListener(e -> {
-            coordinates = meditor.readData();
+        moveConfirmButton.addActionListener(e -> {
+            coordinates = moveEditor.readData();
             currentOrderText.setText("Moving to " + coordinates);
             if (selectedEntity != null){
-                selectedEntity.addOrder(new Move(app, selectedEntity, coordinates));
-                log(selectedEntity.getName() + " moving to " + coordinates);
+                selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinates.x, coordinates.y)));
+
             }
 
         });
