@@ -7,22 +7,24 @@ import Vec.Vec2int;
 
 public class Move extends Order{
 
-    public Move(VCSApp app, Entity e) {
+    private Vec2int destination;
+    public Move(VCSApp app, Entity src, Vec2int coordinates) {
 
-        super(app, e);
+        super(app, src);
+        this.destination = coordinates;
+        moveTo(destination);
     }
 
-    public void moveTo(Vec2int coordinates){
-        double dist = source.getPos().distance(coordinates);
+    public void moveTo(Vec2int destination){
+        double dist = source.getPos().distance(destination);
         if(dist <= 2.0){
             app.log(source.getName() + " reached the target. \n");
             source.setSpeed(new Vec2int(0,0));
-            removeOrder();
-            app.actionPanel.isMoving = false;
+            source.removeOrder();
             return;
         }
         else{
-            Vec2int newSpeed = source.getPos().vectorDiff(coordinates).normalize(4);
+            Vec2int newSpeed = source.getPos().vectorDiff(destination).normalize(4);
             source.setSpeed(newSpeed);
         }
     }
