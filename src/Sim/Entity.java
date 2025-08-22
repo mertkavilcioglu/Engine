@@ -82,6 +82,7 @@ public class Entity {
         for (int i = 0; i < components.size(); i++) {
             components.get(i).update(deltaTime);
         }
+
     }
 
     public Queue<Order> getOrders(){

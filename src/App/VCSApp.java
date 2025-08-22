@@ -122,7 +122,7 @@ public class VCSApp {
         Entity hasan = world.createEntity("Hasan", 0);
         hierarchyPanel.entityAdded(hasan);
         actionPanel.createNewTargetButton(hasan);
-        attackTest(emir, mert);
+        //attackTest(emir, mert);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
