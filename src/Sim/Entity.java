@@ -35,8 +35,6 @@ public class Entity {
 
 
     void update(int deltaTime) {
-        if(!orders.isEmpty())
-            orders.peek().update();
 
         pos.x += speed.x;
         pos.y += -speed.y;
@@ -82,6 +80,9 @@ public class Entity {
         for (int i = 0; i < components.size(); i++) {
             components.get(i).update(deltaTime);
         }
+
+        if(!orders.isEmpty())
+            orders.peek().update();
     }
 
     public Queue<Order> getOrders(){
