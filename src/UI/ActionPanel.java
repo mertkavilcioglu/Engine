@@ -140,7 +140,6 @@ public class ActionPanel extends VCSPanel {
             currentOrderText.setText(targetEntity.getName() + " selected.");
             if (attackerEntity != null){
                 attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
-                log(attackerEntity.getName() + " going to attack " + targetEntity.getName());
             }
         });
 

@@ -7,6 +7,7 @@ import Vec.Vec2int;
 public class Attack extends Order{
 
     private Entity targetEntity;
+    private boolean isExecute = false;
 
     public Attack(VCSApp app, Entity src, Entity target) {
         super(app, src);
@@ -50,8 +51,15 @@ public class Attack extends Order{
         System.out.println("ORDER REMOVED");
     }
 
+    public void printToLog(){
+        if (!isExecute)
+            app.log(source.getName() + " going to attack " + targetEntity.getName());
+        isExecute = true;
+    }
+
     @Override
     protected void actualUpdate() {
         attackEntity(targetEntity);
+        printToLog();
     }
 }
