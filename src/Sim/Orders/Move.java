@@ -8,13 +8,18 @@ import Vec.Vec2int;
 public class Move extends Order{
 
     private Vec2int destination;
+    private boolean isExecute = false;
 
     public Move(VCSApp app, Entity src, Vec2int coordinates) {
 
         super(app, src);
         this.destination = coordinates;
-        //moveTo(destination);
-        app.log(source.getName() + " moving to " + destination);
+    }
+
+    public void printToLog(){
+        if (!isExecute)
+            app.log(source.getName() + " moving to " + destination);
+        isExecute = true;
     }
 
     public void moveTo(Vec2int destination){
@@ -28,9 +33,7 @@ public class Move extends Order{
             return;
         }
         else{
-            Vec2int newSpeed = source.getPos().vectorDiff(destination).normalize(4);
-            source.setSpeed(newSpeed);
-            app.log(source.getName() + " moving to " + destination);
+            findSpeed(destination);
         }
     }
 
@@ -42,5 +45,6 @@ public class Move extends Order{
     @Override
     protected void actualUpdate() {
         moveTo(destination);
+        printToLog();
     }
 }
