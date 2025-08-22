@@ -23,7 +23,7 @@ public class ActionPanel extends VCSPanel {
     private CardLayout cardLayout;
     private JPanel movePanel;
     private JPanel currentOrderPanel;
-    private JTextField currentOrderText;
+    private JTextArea currentOrderText;
     private JLabel mainLabel;
 
     boolean isEnemy = false;
@@ -61,11 +61,16 @@ public class ActionPanel extends VCSPanel {
         movePanel.add(moveConfirmButton);
 
         currentOrderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
-        currentOrderText = new JTextField();
-        currentOrderText.setBorder(new TitledBorder("Current Order"));
+        //currentOrderPanel.setPreferredSize(panel.getPreferredSize());
+        currentOrderText = new JTextArea(10,10);
+        //currentOrderText = new JTextField();
         currentOrderText.setEditable(false);
-        currentOrderText.setPreferredSize(new Dimension(120,220));
-        currentOrderPanel.add(new JScrollPane(currentOrderText));
+        currentOrderText.setCaretColor(Color.white);
+        currentOrderText.setBorder(new TitledBorder("Log:"));
+        JScrollPane scrollPanel = new JScrollPane(currentOrderText);
+        currentOrderText.setBorder(new TitledBorder("Current Order"));
+        //currentOrderText.setPreferredSize(new Dimension(120,220));
+        currentOrderPanel.add(new JScrollPane(scrollPanel));
 
         cardLayout = new CardLayout();
         chooseActionPanel = new JPanel(cardLayout);
@@ -91,7 +96,7 @@ public class ActionPanel extends VCSPanel {
 
         moveConfirmButton.addActionListener(e -> {
             coordinates = moveEditor.readData();
-            currentOrderText.setText("Moving to " + coordinates);
+            currentOrderText.append("Move to " + coordinates + "\n");
             if (selectedEntity != null){
                 selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinates.x, coordinates.y)));
 
@@ -137,7 +142,7 @@ public class ActionPanel extends VCSPanel {
         newTargetButton.addActionListener(e -> {
             targetEntity = entity;
             attackerEntity = selectedEntity;
-            currentOrderText.setText(targetEntity.getName() + " selected.");
+            currentOrderText.append("Attack " + targetEntity.getName() + "\n");
             if (attackerEntity != null){
                 attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
             }
