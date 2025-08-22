@@ -3,6 +3,7 @@ package App;
 import Sim.Orders.Attack;
 import Sim.Orders.Follow;
 import Sim.Orders.Move;
+import Sim.Orders.Order;
 import UI.*;
 import Sim.Entity;
 import Sim.World;
@@ -39,9 +40,9 @@ public class VCSApp {
     private PlayPausePanel playPausePanel;
     private ImportPanel importPanel;
     private ArrayList<JLabel> entityNames = new ArrayList<>();
-    public Follow follow;
-    public Attack attack;
-    public Move move;
+    //public Follow follow;
+    //public Attack attack;
+    //public Move move;
 
     public void run() {
         System.out.println("App::run");
@@ -66,8 +67,8 @@ public class VCSApp {
         }
     }
 
-    public void attackTest() {
-        attack.attackEntity(world.entities.get(0), world.entities.get(1));
+    public void attackTest(Entity f, Entity t) {
+        f.addOrder(new Attack(this, f, t));
     }
 
     public void runWithWindow() throws InterruptedException, InvocationTargetException {
@@ -121,7 +122,7 @@ public class VCSApp {
         Entity hasan = world.createEntity("Hasan", 0);
         hierarchyPanel.entityAdded(hasan);
         actionPanel.createNewTargetButton(hasan);
-
+        attackTest(emir, mert);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -131,7 +132,7 @@ public class VCSApp {
                         // update world
                         world.update(1000);
                         hierarchyPanel.update(1000);
-                        actionPanel.update(1000);
+                        //actionPanel.update(1000);
                         //isEntitySelected();
                         // render world
                         //w.render();

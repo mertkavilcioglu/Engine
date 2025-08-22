@@ -2,6 +2,8 @@ package UI;
 
 import App.VCSApp;
 import Sim.Entity;
+import Sim.Orders.Attack;
+import Sim.Orders.Move;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -25,12 +27,8 @@ public class ActionPanel extends VCSPanel {
     private JLabel mainLabel;
 
     boolean isEnemy = false;
-    String selectedUnitName;
     int side;
-    String movingUnitName;
     Vec2int coordinates;
-    public boolean isAttacing = false;
-    public boolean isMoving = false;
 
     public ActionPanel(VCSApp app){
         super(app);
@@ -94,11 +92,9 @@ public class ActionPanel extends VCSPanel {
         mbutton.addActionListener(e -> {
             coordinates = meditor.readData();
             currentOrderText.setText("Moving to " + coordinates);
-            if (selectedUnitName != null){
-                movingUnitName = selectedUnitName;
-                app.move.moveTo(movingUnitName, coordinates);
-                isMoving = true;
-                log(movingUnitName + " moving to " + coordinates);
+            if (selectedEntity != null){
+                selectedEntity.addOrder(new Move(app, selectedEntity, coordinates));
+                log(selectedEntity.getName() + " moving to " + coordinates);
             }
 
         });
@@ -117,8 +113,7 @@ public class ActionPanel extends VCSPanel {
     Entity selectedEntity;
     public void selectedUnit(Entity entity){
         selectedEntity = entity;
-        this.selectedUnitName = entity.getName();
-        mainLabel.setText("Selected Entity: " + selectedUnitName);
+        mainLabel.setText("Selected Entity: " + selectedEntity.getName());
         this.side = entity.getSide();
         if(side == 1) isEnemy = true;
         else if (side == 0) isEnemy = false;
@@ -144,8 +139,7 @@ public class ActionPanel extends VCSPanel {
             attackerEntity = selectedEntity;
             currentOrderText.setText(targetEntity.getName() + " selected.");
             if (attackerEntity != null){
-                app.attack.attackEntity(attackerEntity, targetEntity);
-                isAttacing = true;
+                attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
                 log(attackerEntity.getName() + " going to attack " + targetEntity.getName());
             }
         });
@@ -180,12 +174,12 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void update(int deltaTime){
-        if (isAttacing){
-            app.attack.attackEntity(attackerEntity, targetEntity);
-        }
-        if (isMoving){
-            app.move.moveTo(movingUnitName, coordinates);
-        }
+//        if (isAttacing){
+//            //app.attack.attackEntity(targetEntity);
+//        }
+//        if (isMoving){
+//            //app.move.moveTo(coordinates);
+//        }
     }
 
     @Override
