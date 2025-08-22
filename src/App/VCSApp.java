@@ -107,7 +107,7 @@ public class VCSApp {
 
         window.setVisible(true);
 
-        Entity mert = world.createEntity("Mert", 0);
+        Entity mert = world.createEntity("Mert", 1);
         hierarchyPanel.entityAdded(mert);
         actionPanel.createNewTargetButton(mert);
 
