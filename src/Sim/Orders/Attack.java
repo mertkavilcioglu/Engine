@@ -32,7 +32,7 @@ public class Attack extends Order{
         double distX = targetEntity.getPos().x - source.getPos().x;
         double distY = targetEntity.getPos().y - source.getPos().y;
         double dist = source.getPos().distance(targetEntity.getPos());
-        if(dist <= 3.0){
+        if(dist <= 4.0){
             app.log(source.getName() + " destroy the target " + targetEntity.getName());
             //follower.setSpeed(new Vec2int(0,0));
             destroy(targetEntity);

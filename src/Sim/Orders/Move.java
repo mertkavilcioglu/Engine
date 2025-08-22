@@ -18,6 +18,8 @@ public class Move extends Order{
     }
 
     public void moveTo(Vec2int destination){
+        if(destination == null )
+            return;
         double dist = source.getPos().distance(destination);
         if(dist <= 2.0){
             app.log(source.getName() + " reached the target. \n");
@@ -39,13 +41,6 @@ public class Move extends Order{
 
     @Override
     protected void actualUpdate() {
-        //moveTo(destination);
-        double dist = source.getPos().distance(destination);
-        if(dist <= 2.0){
-            app.log(source.getName() + " reached the target. \n");
-            source.setSpeed(new Vec2int(0,0));
-            source.removeOrder();
-            return;
-        } else findSpeed(destination);
+        moveTo(destination);
     }
 }

@@ -93,7 +93,7 @@ public class ActionPanel extends VCSPanel {
             coordinates = moveEditor.readData();
             currentOrderText.setText("Moving to " + coordinates);
             if (selectedEntity != null){
-                selectedEntity.addOrder(new Move(app, selectedEntity, coordinates));
+                selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinates.x, coordinates.y)));
 
             }
 
