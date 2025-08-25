@@ -52,13 +52,13 @@ public class ActionPanel extends VCSPanel {
         enemyTargetPanel.setLayout(new BoxLayout(enemyTargetPanel, BoxLayout.Y_AXIS));
         enemyTargetPanel.setBorder(new TitledBorder("Choose Target: "));
 
-        movePanel = new JPanel(new GridLayout(2,1));
-        Vec2intEditor meditor = new Vec2intEditor("Position:");
-        JButton mbutton = new JButton("Move");
-        mbutton.setFocusable(false);
-        //try to make button smaller to good look.
-        movePanel.add(meditor);
-        movePanel.add(mbutton);
+        movePanel = new JPanel(/*new GridLayout(2,1)*/);
+        movePanel.setLayout(new BoxLayout(movePanel, BoxLayout.Y_AXIS));
+        Vec2intEditor moveEditor = new Vec2intEditor("Position:");
+        JButton moveConfirmButton = new JButton("Move");
+        moveConfirmButton.setFocusable(false);
+        movePanel.add(moveEditor);
+        movePanel.add(moveConfirmButton);
 
         currentOrderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
         currentOrderText = new JTextField();
@@ -89,12 +89,12 @@ public class ActionPanel extends VCSPanel {
         });
         moveButton.addActionListener(e -> cardLayout.show(chooseActionPanel, "move"));
 
-        mbutton.addActionListener(e -> {
-            coordinates = meditor.readData();
+        moveConfirmButton.addActionListener(e -> {
+            coordinates = moveEditor.readData();
             currentOrderText.setText("Moving to " + coordinates);
             if (selectedEntity != null){
-                selectedEntity.addOrder(new Move(app, selectedEntity, coordinates));
-                log(selectedEntity.getName() + " moving to " + coordinates);
+                selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinates.x, coordinates.y)));
+
             }
 
         });
@@ -140,7 +140,6 @@ public class ActionPanel extends VCSPanel {
             currentOrderText.setText(targetEntity.getName() + " selected.");
             if (attackerEntity != null){
                 attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
-                log(attackerEntity.getName() + " going to attack " + targetEntity.getName());
             }
         });
 
@@ -161,13 +160,17 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void deleteTargetButton(Entity entity){
+        if(entity == null)
+            return;
         JButton deletedButton;
         if (entity.getSide() == 0){
             deletedButton = allyButtons.remove(entity);
-            allyTargetPanel.remove(deletedButton);
+            if(deletedButton != null)
+                allyTargetPanel.remove(deletedButton);
         } else if (entity.getSide() == 1) {
             deletedButton = enemyButtons.remove(entity);
-            enemyTargetPanel.remove(deletedButton);
+            if(deletedButton != null)
+                enemyTargetPanel.remove(deletedButton);
         }
         revalidate();
         repaint();
