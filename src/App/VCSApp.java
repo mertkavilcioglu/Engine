@@ -1,6 +1,5 @@
 package App;
 
-import Sim.GetInput;
 import Sim.Orders.Attack;
 import Sim.Orders.Follow;
 import Sim.Orders.Move;
@@ -123,14 +122,7 @@ public class VCSApp {
         Entity hasan = world.createEntity("Hasan", 0);
         hierarchyPanel.entityAdded(hasan);
         actionPanel.createNewTargetButton(hasan);
-//<<<<<<< Updated upstream
         //attackTest(emir, mert);
-//=======
-
-        GetInput input = new GetInput();
-        input.readInput("src/Assets/data.txt");
-
-//>>>>>>> Stashed changes
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
