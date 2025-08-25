@@ -7,6 +7,8 @@ import Vec.Vec2int;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 
@@ -31,10 +33,12 @@ public class MapView extends VCSPanel {
         label.setIcon(imageIcon);
 
         add(label);
-/*
+        int[][] allPoints;
+
         for(int y=0; y<bImage.getHeight();y++){
             for(int x=0; x<bImage.getWidth();x++){
                 int pixel = bImage.getRGB(x,y);
+
 
                 int red = (pixel>>16) & 0xff;
                 int green = (pixel>>8) & 0xff;
@@ -42,11 +46,8 @@ public class MapView extends VCSPanel {
                 System.out.printf("Pixel at (%d %d) RGB color ( %d %d %d)",x,y,red,green,blue);
                 System.out.println();
             }
-
         }
 
- */
-        world.map.SetBufferedImage(bImage);
 
         /*
         int x = 400;
@@ -62,6 +63,9 @@ public class MapView extends VCSPanel {
          */
     }
 
+    public void GetColor(BufferedImage img){
+
+    }
 
     @Override
     public void selectedEntityChanged(Entity entity) {

@@ -5,7 +5,6 @@ import Sim.Orders.Attack;
 import Sim.Orders.Follow;
 import Sim.Orders.Move;
 import Sim.Orders.Order;
-import Sim.PixelColor;
 import UI.*;
 import Sim.Entity;
 import Sim.World;
@@ -45,7 +44,6 @@ public class VCSApp {
     //public Follow follow;
     //public Attack attack;
     //public Move move;
-    private PixelColor pixelColor;
 
     public void run() {
         System.out.println("App::run");
@@ -88,7 +86,6 @@ public class VCSApp {
         //follow = new Follow(this);
         //attack = new Attack(this);
         //move = new Move(this);
-        pixelColor = new PixelColor(this);
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
@@ -141,7 +138,6 @@ public class VCSApp {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         // update world
-                        pixelColor.update(1000);
                         world.update(1000);
                         hierarchyPanel.update(1000);
                         //actionPanel.update(1000);

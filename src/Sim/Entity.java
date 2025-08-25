@@ -1,10 +1,8 @@
 package Sim;
 
 import Sim.Orders.Order;
-import Var.RGB;
 import Vec.Vec2int;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -18,11 +16,9 @@ public class Entity {
     Vec2int speed;
     String type;
     ArrayList<Component> components = new ArrayList<>();
-    RGB currentPixelColor;
     private final World w;
     private NodeInfo nodeInfo;
     private Queue<Order> orders = new LinkedList<>();
-    //PixelColor pixelColor = new PixelColor();
 
     public Entity(World w) {
         this.w = w;
@@ -36,6 +32,7 @@ public class Entity {
     public void removeOrder(){
         orders.poll();
     }
+
 
     void update(int deltaTime) {
 
@@ -143,9 +140,6 @@ public class Entity {
     public String getType(){
         return type;
     }
-
-    public void setColor(RGB color)
-    {currentPixelColor = color;}
 
     public String getSideasName(){
         String sideName = "";
