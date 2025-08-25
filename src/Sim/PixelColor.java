@@ -3,7 +3,6 @@ package Sim;
 import App.VCSApp;
 import Var.RGB;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class PixelColor {
@@ -17,6 +16,10 @@ public class PixelColor {
     public RGB PixelColorFind(int x, int y) {
         RGB color = new RGB();
 
+        if (x >= app.world.map.image.getWidth()
+        || y >= app.world.map.image.getHeight()) {
+            return color;
+        }
         int pixel = app.world.map.image.getRGB(x, y);
         int red = (pixel >> 16) & 0xff;
         int green = (pixel >> 8) & 0xff;

@@ -13,7 +13,7 @@ public class AppWindow extends JFrame {
         setResizable(false);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setUndecorated(true);
+        //setUndecorated(true);
         setLayout(new BorderLayout(10,10));
     }
 }

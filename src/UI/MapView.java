@@ -111,6 +111,8 @@ public class MapView extends VCSPanel {
             g.drawString(name, textX, textY);
             //g.fillOval(pos.x-10, pos.y-10, 20, 20);
 
+            g.setColor(Color.GREEN);
+            g.drawRect(pos.x, pos.y, 1,1);
         }
     }
 
