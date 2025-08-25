@@ -107,7 +107,7 @@ public class VCSApp {
 
         window.setVisible(true);
 
-        Entity mert = world.createEntity("Mert", 1);
+        Entity mert = world.createEntity("Mert", 0);
         hierarchyPanel.entityAdded(mert);
         actionPanel.createNewTargetButton(mert);
 
@@ -122,7 +122,7 @@ public class VCSApp {
         Entity hasan = world.createEntity("Hasan", 0);
         hierarchyPanel.entityAdded(hasan);
         actionPanel.createNewTargetButton(hasan);
-        //attackTest(emir, mert);
+        attackTest(emir, mert);
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

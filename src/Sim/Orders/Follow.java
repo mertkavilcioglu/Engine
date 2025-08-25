@@ -8,12 +8,8 @@ import java.util.List;
 
 public class Follow extends Order{
 
-    private Entity targetEntity;
-
-    public Follow(VCSApp app, Entity src, Entity target) {
-        super(app, src);
-        this.targetEntity = target;
-        //followEntity(target);
+    public Follow(VCSApp app, Entity e) {
+        super(app, e);
     }
 
     Entity findEntity(String trgtname) {
@@ -28,25 +24,27 @@ public class Follow extends Order{
         return entity;
     }
 
+    public void followEntity(String followerName, String targetName){
 
-    public void followEntity(Entity target){
+        Entity follower = findEntity(followerName);
+        Entity target = findEntity(targetName);
 
-        double distX = target.getPos().x - source.getPos().x;
-        double distY = target.getPos().y - source.getPos().y;
-        double dist = source.getPos().distance(target.getPos());
-        if(dist <= 3.0){
-            System.out.format("%s reached the target. \n", source.getName());
-            source.setSpeed(new Vec2int(0,0));
+        double distX = target.getPos().x - follower.getPos().x;
+        double distY = target.getPos().y - follower.getPos().y;
+        double dist = follower.getPos().distance(target.getPos());
+        if(dist <= 5.0){
+            System.out.format("%s reached the target. \n", follower.getName());
+            follower.setSpeed(new Vec2int(0,0));
             return;
         }
         else{
-            Vec2int newSpeed = source.getPos().vectorDiff(target.getPos()).normalize(4);
-            source.setSpeed(newSpeed);
+            Vec2int newSpeed = follower.getPos().vectorDiff(target.getPos()).normalize(4);
+            follower.setSpeed(newSpeed);
         }
     }
 
     @Override
     protected void actualUpdate() {
-        followEntity(targetEntity);
+
     }
 }

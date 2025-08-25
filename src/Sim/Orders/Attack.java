@@ -7,12 +7,11 @@ import Vec.Vec2int;
 public class Attack extends Order{
 
     private Entity targetEntity;
-    private boolean isExecute = false;
 
     public Attack(VCSApp app, Entity src, Entity target) {
         super(app, src);
         this.targetEntity = target;
-        //attackEntity(target);
+        attackEntity(target);
     }
 
     Entity findEntity(String trgtname) {
@@ -33,7 +32,7 @@ public class Attack extends Order{
         double distX = targetEntity.getPos().x - source.getPos().x;
         double distY = targetEntity.getPos().y - source.getPos().y;
         double dist = source.getPos().distance(targetEntity.getPos());
-        if(dist <= 4.0){
+        if(dist <= 3.0){
             app.log(source.getName() + " destroy the target " + targetEntity.getName());
             //follower.setSpeed(new Vec2int(0,0));
             destroy(targetEntity);
@@ -51,15 +50,21 @@ public class Attack extends Order{
         System.out.println("ORDER REMOVED");
     }
 
-    public void printToLog(){
-        if (!isExecute)
-            app.log(source.getName() + " going to attack " + targetEntity.getName());
-        isExecute = true;
-    }
-
     @Override
     protected void actualUpdate() {
-        attackEntity(targetEntity);
-        printToLog();
+        if(targetEntity == null )
+            return;
+        double distX = targetEntity.getPos().x - source.getPos().x;
+        double distY = targetEntity.getPos().y - source.getPos().y;
+        double dist = source.getPos().distance(targetEntity.getPos());
+        if(dist <= 3.0){
+            System.out.format("%s reached the target. \n", source.getName());
+            //follower.setSpeed(new Vec2int(0,0));
+            destroy(targetEntity);
+        }
+        else{
+            Vec2int newSpeed = source.getPos().vectorDiff(targetEntity.getPos()).normalize(8);
+            source.setSpeed(newSpeed);
+        }
     }
 }
