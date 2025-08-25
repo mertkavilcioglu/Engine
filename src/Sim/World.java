@@ -1,11 +1,14 @@
 package Sim;
 
+import UI.MapView;
 import Vec.Vec2int;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class World{
     public WorldMap map = new WorldMap();
+
     public ArrayList<Entity> entities = new ArrayList<>();
     public ArrayList<Entity> entitiesToRemove = new ArrayList<>();
 
@@ -35,6 +38,9 @@ public class World{
         ent.setSpeed(new Vec2int(speed.x, speed.y));
 
         ent.setType(type);
+
+        //PixelColor color = new PixelColor(ent, entities);
+        //color.CanMove(color.PixelColorFind(ent.getPos().x, ent.getPos().y, map));
 
         Radar r = new Radar(ent, entities);
         r.setRange(range);
