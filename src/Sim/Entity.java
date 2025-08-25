@@ -39,8 +39,10 @@ public class Entity {
 
     void update(int deltaTime) {
 
-        pos.x += speed.x;
-        pos.y += -speed.y;
+        if(CanMove(currentPixelColor)){
+            pos.x += speed.x;
+            pos.y += -speed.y;
+        }
 
         if(pos.x <= 0){
             pos.x = 0;
@@ -87,7 +89,13 @@ public class Entity {
         if(!orders.isEmpty())
             orders.peek().update();
     }
+    public boolean CanMove(RGB rgb) {
+        if(rgb.r == 93 && rgb.g == 94 && rgb.b == 97){
+            return true;
 
+        }
+        return false;
+    }
     public Queue<Order> getOrders(){
         return orders;
     }
@@ -146,6 +154,14 @@ public class Entity {
 
     public void setColor(RGB color)
     {currentPixelColor = color;}
+
+    public ArrayList<Integer> getColor(){
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(currentPixelColor.r);
+        list.add(currentPixelColor.g);
+        list.add(currentPixelColor.b);
+        return list;
+    }
 
     public String getSideasName(){
         String sideName = "";

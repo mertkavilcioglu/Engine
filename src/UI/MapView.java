@@ -18,10 +18,10 @@ public class MapView extends VCSPanel {
         this.world = app.world;
         setBackground(Color.WHITE);
 
-        //GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        //GraphicsDevice defaultScreen = env.getDefaultScreenDevice();
+      //  GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+       // GraphicsDevice defaultScreen = env.getDefaultScreenDevice();
 
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon("C://Users//stj.hbiseri//Downloads//map3.png").getImage().getScaledInstance(app.world.map.maxX, app.world.map.maxY,Image.SCALE_DEFAULT));
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Assets/map3.png").getImage().getScaledInstance(app.world.map.maxX, app.world.map.maxY,Image.SCALE_DEFAULT));
         Image img = imageIcon.getImage();
         BufferedImage bImage = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bImage.createGraphics();

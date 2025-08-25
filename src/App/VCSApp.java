@@ -141,6 +141,7 @@ public class VCSApp {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         // update world
+
                         pixelColor.update(1000);
                         world.update(1000);
                         hierarchyPanel.update(1000);
