@@ -2,7 +2,6 @@ package Sim.Orders;
 
 import App.VCSApp;
 import Sim.Entity;
-import UI.Vec2intEditor;
 import Vec.Vec2int;
 
 public class Move extends Order{
@@ -12,7 +11,6 @@ public class Move extends Order{
 
     public Move(VCSApp app, Entity src, Vec2int coordinates) {
         super(app, src);
-        super.orderType = "Move";
         this.destination = coordinates;
     }
 
@@ -46,5 +44,10 @@ public class Move extends Order{
     protected void actualUpdate() {
         moveTo(destination);
         printToLog();
+    }
+
+    @Override
+    public String createTextToPrint() {
+        return String.format("Move %s\n", destination.toString());
     }
 }

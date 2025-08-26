@@ -11,7 +11,6 @@ public class Attack extends Order{
 
     public Attack(VCSApp app, Entity src, Entity target) {
         super(app, src);
-        super.orderType = "Attack";
         this.targetEntity = target;
         //attackEntity(target);
     }
@@ -62,5 +61,10 @@ public class Attack extends Order{
     protected void actualUpdate() {
         attackEntity(targetEntity);
         printToLog();
+    }
+
+    @Override
+    public String createTextToPrint() {
+        return String.format("Attack %s\n", targetEntity.toString());
     }
 }
