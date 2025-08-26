@@ -5,7 +5,6 @@ import Sim.Entity;
 
 public abstract class Order {
     public final VCSApp app;
-    String orderType = "";
 
     public final Entity source;
     protected Order(VCSApp app, Entity source) {
@@ -26,9 +25,8 @@ public abstract class Order {
         actualUpdate();
     }
 
-    public String getOrderType(){
-        return orderType;
-    }
 
     protected abstract void actualUpdate();
+    public abstract String createTextToPrint();
+
 }

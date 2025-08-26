@@ -4,15 +4,12 @@ import App.VCSApp;
 import Sim.Entity;
 import Vec.Vec2int;
 
-import java.util.List;
-
 public class Follow extends Order{
 
     private Entity targetEntity;
 
     public Follow(VCSApp app, Entity src, Entity target) {
         super(app, src);
-        super.orderType = "Follow";
         this.targetEntity = target;
         //followEntity(target);
     }
@@ -49,5 +46,10 @@ public class Follow extends Order{
     @Override
     protected void actualUpdate() {
         followEntity(targetEntity);
+    }
+
+    @Override
+    public String createTextToPrint() {
+        return String.format("Follow %s\n", targetEntity.getName());
     }
 }
