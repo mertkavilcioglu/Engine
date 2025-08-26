@@ -5,8 +5,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Vec2intEditor extends JPanel{
     private Vec2int data = new Vec2int();
@@ -16,7 +16,7 @@ public class Vec2intEditor extends JPanel{
     private JTextField txtX;
     private JTextField txtY;
     Border defaultBorder;
-    private String[] numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
     public Vec2intEditor(String label){
         nameLbl = new JLabel(label);
@@ -56,15 +56,15 @@ public class Vec2intEditor extends JPanel{
         int x,y;
 
         for(char c : txtX.getText().toCharArray()){
-            if(!Arrays.stream(numbers).toList().contains(new String(String.format("%s",c)).trim())
-            || txtX.getText().trim().isBlank() || txtX.getText().trim().isEmpty() || txtX.getText() == nulls){
+            System.out.println(txtX.getText());
+            if(!numbers.contains(c) || txtX.getText().trim().isBlank()){
                 System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblX.getText());
                 txtX.setBorder(new LineBorder(Color.RED, 2));
             }
         }
 
         for(char c :txtY.getText().toCharArray()){
-            if(!Arrays.stream(numbers).toList().contains(c)){
+            if(!numbers.contains(c)){
                 System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblY.getText());
                 txtY.setBorder(new LineBorder(Color.RED, 2));
             }
