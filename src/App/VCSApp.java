@@ -19,16 +19,27 @@ import java.util.ArrayList;
 
 public class VCSApp {
     //TODO paneller icin selected
-    //TODO ekrana logu bastırma
+    //TODO ekrana logu bastırma //DONE
     //TODO PLAY PAUSE BIRLIKTE, TEK GIRME
 
     //TODO ilk başta her birim target olsun //DONE
-    //TODO entitylere taraf ekle, hem sağ panele hem de renge göre order düzenle
+    //TODO entitylere taraf ekle, hem sağ panele hem de renge göre order düzenle //DONE
 
     //TODO hierarchyde pozisyonlar güncellenecek //DONE
     //TODO hız değiştiği zaman, tree'de hız da güncellenmesi lazım  //DONE
 
-    //TODO radar componentini create'e bağla
+    //TODO radar componentini create'e bağla //DONE
+
+    //TODO 25.08.2.25
+    //TODO gemi karaya spawn edilemesin izin vermesin panel
+    //TODO imlecin bulunduğu pikseli tutabilelim, belki ileride add remove falan bağlarız
+    //TODO imleçle haritadaki entityleri seçebilmek falan da yapılabilse iyi olur
+    //TODO sınırdan çıkma kontrolü için, bir sonraki pikseli (sonraki update konumuna göre) hesap etme işini düşün
+    //TODO remove order butonları ekle alt panele
+    //TODO exit butonu
+    //TODO followu bağla
+    //TODO haritanın arka planı olsun ve çözünürlüğü düşürülebilir
+    //TODO play pause zamanı çıtırdan yaklaşıyor
 
 
     // VIRTUAL COMBAT SYSTEM (VCS)
@@ -126,14 +137,12 @@ public class VCSApp {
         Entity hasan = world.createEntity("Hasan", 0);
         hierarchyPanel.entityAdded(hasan);
         actionPanel.createNewTargetButton(hasan);
-//<<<<<<< Updated upstream
+
         //attackTest(emir, mert);
-//=======
 
         GetInput input = new GetInput();
         input.readInput("src/Assets/data.txt");
 
-//>>>>>>> Stashed changes
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
