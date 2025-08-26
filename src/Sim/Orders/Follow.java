@@ -12,6 +12,7 @@ public class Follow extends Order{
 
     public Follow(VCSApp app, Entity src, Entity target) {
         super(app, src);
+        super.orderType = "Follow";
         this.targetEntity = target;
         //followEntity(target);
     }

@@ -40,13 +40,6 @@ public class PixelColor {
         }
     }
 
-    public boolean CanMove(ArrayList<Integer> rgb) {
-        if(rgb.get(0) == 93 && rgb.get(1) == 94 && rgb.get(2) == 97){
-            return true;
-
-        }
-        return false;
-    }
     
     public boolean isLocationValidForType(String type, Vec2int pos) {
         RGB currentColor = PixelColorFind(pos.x, pos.y);

@@ -11,8 +11,8 @@ public class Move extends Order{
     private boolean isExecute = false;
 
     public Move(VCSApp app, Entity src, Vec2int coordinates) {
-
         super(app, src);
+        super.orderType = "Move";
         this.destination = coordinates;
     }
 

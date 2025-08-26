@@ -42,7 +42,7 @@ public class Entity {
 
     void update(int deltaTime) {
 
-        if(CanMove(currentPixelColor)){
+        if(CanMove(currentPixelColor,type)){
             pos.x += speed.x;
             pos.y += -speed.y;
         }
@@ -92,10 +92,16 @@ public class Entity {
         if(!orders.isEmpty())
             orders.peek().update();
     }
-    public boolean CanMove(RGB rgb) {
-        if(rgb.r == 93 && rgb.g == 94 && rgb.b == 97){
-            return true;
+    public boolean CanMove(RGB rgb, String type) {
 
+        if((rgb.r == 93 && rgb.g == 94 && rgb.b == 97) && (Objects.equals(type, "Tank"))){
+            return true;
+        }
+        if((rgb.r == 0 && rgb.g == 0 && rgb.b == 0) && (Objects.equals(type, "Ship"))){
+            return true;
+        }
+        if(Objects.equals(type, "Plane")){
+            return true;
         }
         return false;
     }
