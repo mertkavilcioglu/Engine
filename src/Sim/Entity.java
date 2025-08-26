@@ -4,14 +4,12 @@ import Sim.Orders.Order;
 import Var.RGB;
 import Vec.Vec2int;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
 
 public class Entity {
-    String id;
     String name;
     int side = 0;
     Vec2int pos;
@@ -22,7 +20,7 @@ public class Entity {
     private final World w;
     private NodeInfo nodeInfo;
     private Queue<Order> orders = new LinkedList<>();
-    //PixelColor pixelColor = new PixelColor();
+    private Order currentOrder = null;
 
     //TODO current order tutulsun
     //TODO entity içinde orderda kullanılan değişkenleri tut
@@ -33,10 +31,13 @@ public class Entity {
     }
 
     public void addOrder(Order order){
+        if(orders.isEmpty()){
+            currentOrder = order;
+        }
         orders.add(order);
     }
 
-    public void removeOrder(){
+    public void completeCurrentOrder(){
         orders.poll();
     }
 
@@ -135,14 +136,6 @@ public class Entity {
 
     public void addComponents(Component c) {
         this.components.add(c);
-    }
-
-    public void setId(String id){
-        this.id = id;
-    }
-
-    public String getId(){
-        return id;
     }
 
     public void setSide(int side){

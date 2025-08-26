@@ -36,8 +36,9 @@ public class Vec2int {
         return this;
     }
 
-    public double hypotenuse() {
-        return sqrt((this.x * this.x) + (this.y * this.y));
+    public int getHypotenuseAsInt() {
+        double h = sqrt((this.x * this.x) + (this.y * this.y));
+        return (int) (h + 0.5);
     }
 
     public static Vec2int getRandom(int maxX, int maxY) {

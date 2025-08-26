@@ -40,14 +40,14 @@ public class Attack extends Order{
 
         }
         else{
-            Vec2int newSpeed = source.getPos().vectorDiff(targetEntity.getPos()).normalize(8);
+            Vec2int newSpeed = source.getPos().vectorDiff(targetEntity.getPos()).normalize(source.getSpeed().getHypotenuseAsInt());
             source.setSpeed(newSpeed);
         }
     }
 
     public void destroy(Entity e){
         app.removeEntity(e);
-        source.removeOrder();
+        source.completeCurrentOrder();
         System.out.println("ORDER REMOVED");
     }
 
