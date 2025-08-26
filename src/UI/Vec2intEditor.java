@@ -60,7 +60,6 @@ public class Vec2intEditor extends JPanel{
         }
         else{
             for(char c : txtX.getText().trim().toCharArray()){
-                System.out.println(txtX.getText());
                 if(!numbers.contains(c)){
                     System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblX.getText());
                     txtX.setBorder(new LineBorder(Color.RED, 2));
@@ -74,7 +73,6 @@ public class Vec2intEditor extends JPanel{
         }
         else{
             for(char c : txtY.getText().trim().toCharArray()){
-                System.out.println(txtY.getText());
                 if(!numbers.contains(c)){
                     System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblY.getText());
                     txtY.setBorder(new LineBorder(Color.RED, 2));

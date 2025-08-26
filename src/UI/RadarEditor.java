@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class RadarEditor extends JPanel {
     private int data;
@@ -13,6 +15,9 @@ public class RadarEditor extends JPanel {
     private JLabel lbl;
     private JTextField txt;
     Border defaultBorder;
+    private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+
+
     //TODO radar comp. eklenmemişse radarsız oluştur, radar varsa ama invalidse kırmızı yap
     public RadarEditor(String label, EntityEditorView editor){
         nameLbl = new JLabel(label);
@@ -48,22 +53,22 @@ public class RadarEditor extends JPanel {
         return null;
     }
 
-    //TODO 2 kere catch yapma günah
+    // 2 kere catch yapma günah
 
     public void dataValidate(){
-        int r;
-        try {
-            r = Integer.parseInt(txt.getText());
-            if(Integer.parseInt(txt.getText()) == 0){
-                System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lbl.getText());
-                txt.setBorder(new LineBorder(Color.RED, 2));
-            }
-        }
-        catch (NumberFormatException e) {
-            System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lbl.getText());
+
+        if(txt.getText().isBlank() || txt.getText() == null){
+            System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), txt.getText());
             txt.setBorder(new LineBorder(Color.RED, 2));
         }
-
+        else{
+            for(char c : txt.getText().trim().toCharArray()){
+                if(!numbers.contains(c)){
+                    System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lbl.getText());
+                    txt.setBorder(new LineBorder(Color.RED, 2));
+                }
+            }
+        }
 
         new Thread(()->{
             try {

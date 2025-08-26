@@ -24,6 +24,9 @@ public class Entity {
     private Queue<Order> orders = new LinkedList<>();
     //PixelColor pixelColor = new PixelColor();
 
+    //TODO current order tutulsun
+    //TODO entity içinde orderda kullanılan değişkenleri tut
+
     public Entity(World w) {
         this.w = w;
         nodeInfo = new NodeInfo();
