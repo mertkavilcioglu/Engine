@@ -50,23 +50,35 @@ public class Vec2intEditor extends JPanel{
         return data;
     }
 
-    //TODO 2 kere catch yapma günah
+    // 2 kere catch yapma günah
 
     public void dataValidate(){
-        int x,y;
-
-        for(char c : txtX.getText().toCharArray()){
-            System.out.println(txtX.getText());
-            if(!numbers.contains(c) || txtX.getText().trim().isBlank()){
-                System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblX.getText());
-                txtX.setBorder(new LineBorder(Color.RED, 2));
+        //int x,y;
+        if(txtX.getText().isBlank() || txtX.getText() == null){
+            System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblX.getText());
+            txtX.setBorder(new LineBorder(Color.RED, 2));
+        }
+        else{
+            for(char c : txtX.getText().trim().toCharArray()){
+                System.out.println(txtX.getText());
+                if(!numbers.contains(c)){
+                    System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblX.getText());
+                    txtX.setBorder(new LineBorder(Color.RED, 2));
+                }
             }
         }
 
-        for(char c :txtY.getText().toCharArray()){
-            if(!numbers.contains(c)){
-                System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblY.getText());
-                txtY.setBorder(new LineBorder(Color.RED, 2));
+        if(txtY.getText().isBlank() || txtY.getText() == null){
+            System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblY.getText());
+            txtY.setBorder(new LineBorder(Color.RED, 2));
+        }
+        else{
+            for(char c : txtY.getText().trim().toCharArray()){
+                System.out.println(txtY.getText());
+                if(!numbers.contains(c)){
+                    System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblY.getText());
+                    txtY.setBorder(new LineBorder(Color.RED, 2));
+                }
             }
         }
 
