@@ -5,6 +5,7 @@ import Sim.Entity;
 
 public abstract class Order {
     public final VCSApp app;
+    String orderType = "";
 
     public final Entity source;
     protected Order(VCSApp app, Entity source) {
@@ -23,6 +24,10 @@ public abstract class Order {
 
     public void update() {
         actualUpdate();
+    }
+
+    public String getOrderType(){
+        return orderType;
     }
 
     protected abstract void actualUpdate();

@@ -131,7 +131,10 @@ public class HierarchyView extends VCSPanel {
             return (Entity) nodeInfo;
         }else {
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
-            if (parent == null) return null;
+            if (node.isRoot()){
+                app.actionPanel.whenRootSelected(nodeInfo);
+                return null;
+            }
             return searchForEntity(parent);
         }
     }

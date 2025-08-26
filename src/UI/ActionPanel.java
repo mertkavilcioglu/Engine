@@ -4,6 +4,7 @@ import App.VCSApp;
 import Sim.Entity;
 import Sim.Orders.Attack;
 import Sim.Orders.Move;
+import Sim.Orders.Order;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
 
 public class ActionPanel extends VCSPanel {
     private JPanel giveOrderPanel;
@@ -27,6 +29,7 @@ public class ActionPanel extends VCSPanel {
     private JLabel mainLabel;
 
     boolean isEnemy = false;
+    boolean isRootSelected = true;
     int side;
     Vec2int coordinates;
 
@@ -40,6 +43,9 @@ public class ActionPanel extends VCSPanel {
         giveOrderPanel = new JPanel(new GridLayout(5,1));
         attackButton = new JButton("Attack");
         moveButton = new JButton("Move");
+
+        attackButton.setEnabled(false);
+        moveButton.setEnabled(false);
 
         giveOrderPanel.add(attackButton);
         giveOrderPanel.add(moveButton);
@@ -61,15 +67,11 @@ public class ActionPanel extends VCSPanel {
         movePanel.add(moveConfirmButton);
 
         currentOrderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
-        //currentOrderPanel.setPreferredSize(panel.getPreferredSize());
         currentOrderText = new JTextArea(10,10);
-        //currentOrderText = new JTextField();
         currentOrderText.setEditable(false);
         currentOrderText.setCaretColor(Color.white);
-        currentOrderText.setBorder(new TitledBorder("Log:"));
-        JScrollPane scrollPanel = new JScrollPane(currentOrderText);
         currentOrderText.setBorder(new TitledBorder("Current Order"));
-        //currentOrderText.setPreferredSize(new Dimension(120,220));
+        JScrollPane scrollPanel = new JScrollPane(currentOrderText);
         currentOrderPanel.add(new JScrollPane(scrollPanel));
 
         cardLayout = new CardLayout();
@@ -118,12 +120,36 @@ public class ActionPanel extends VCSPanel {
     Entity selectedEntity;
     public void selectedUnit(Entity entity){
         selectedEntity = entity;
+        isRootSelected = false;
         mainLabel.setText("Selected Entity: " + selectedEntity.getName());
         this.side = entity.getSide();
         if(side == 1) isEnemy = true;
         else if (side == 0) isEnemy = false;
 
+        attackButton.setEnabled(true);
+        moveButton.setEnabled(true);
+
+//        Queue<Order> currentOrders = entity.getOrders();
+//        for (Order order : currentOrders){
+//            if (order.getOrderType().equals("Attack")){
+//                currentOrderText.append("Attack " + targetEntity);
+//            } else if (order.getOrderType().equals("Move")) {
+//                currentOrderText.append("Move to " + coordinates);
+//            }
+//        }
+
         cardLayout.show(chooseActionPanel, "empty");
+    }
+
+    public void whenRootSelected(Object rootObjectInfo){
+        if (rootObjectInfo.equals("Hierarchy")){
+            selectedEntity = null;
+            mainLabel.setText("No unit selected.");
+            attackButton.setEnabled(false);
+            moveButton.setEnabled(false);
+            cardLayout.show(chooseActionPanel, "empty");
+            isRootSelected = true;
+        }else isRootSelected = false;
     }
 
     Map<Entity, JButton> allyButtons = new HashMap<>();
