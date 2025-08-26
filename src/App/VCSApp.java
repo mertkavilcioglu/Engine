@@ -56,7 +56,7 @@ public class VCSApp {
     //public Follow follow;
     //public Attack attack;
     //public Move move;
-    private PixelColor pixelColor;
+    public PixelColor pixelColor;
 
     public void run() {
         System.out.println("App::run");

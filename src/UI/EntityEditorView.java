@@ -78,8 +78,14 @@ public class EntityEditorView extends VCSPanel {
                     range = radarPanel.readData();
                 int side = addSideBox.getSelectedIndex();
                 type = (String) addTypeBox.getSelectedItem();
-                app.createEntity(name, side, pos, speed, range, type);
-                log("New unit named " + name + " created.");
+                //if(app.pixelColor.isLocationValidForType(type, pos)){
+                    app.createEntity(name, side, pos, speed, range, type);
+                    log("New unit named " + name + " created.");
+                //}
+                //else if(app.pixelColor.isTypeValid(type, pos) == false){
+                //    ePositionPanel.error();
+                //}
+
             }
             catch (Exception ex){
                //TODO eNamePanel.dataV düzgün bir validate yapmaya çalış
