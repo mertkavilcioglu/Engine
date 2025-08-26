@@ -55,7 +55,7 @@ public class Entity {
             speed.x = 0;
             speed.y = 0;
         }
-
+/*
         if(Objects.equals(type, "Ship") && pos.y >= w.map.midY){
             pos.y = w.map.midY;
             speed.x = 0;
@@ -67,7 +67,7 @@ public class Entity {
             speed.x = 0;
             speed.y = 0;
         }
-
+*/
         if(pos.y <= 0){
             pos.y = 0;
             speed.x = 0;
