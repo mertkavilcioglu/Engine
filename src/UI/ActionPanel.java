@@ -15,18 +15,37 @@ import java.util.Map;
 import java.util.Queue;
 
 public class ActionPanel extends VCSPanel {
+    //left panel
     private JPanel giveOrderPanel;
     private JButton attackButton;
     private JButton moveButton;
+
+    //middle panel
+    private JPanel chooseActionPanel;
+
+    //attack part of middle panel
     private JPanel allyTargetPanel;
     private JPanel enemyTargetPanel;
     private JButton newTargetButton;
-    private JPanel chooseActionPanel;
-    private CardLayout cardLayout;
+    private Map<Entity, JButton> allyButtons = new HashMap<>();
+    private Map<Entity, JButton> enemyButtons = new HashMap<>();
+    private Entity targetEntity;
+    private Entity attackerEntity;
+
+    //move part of middle panel
     private JPanel movePanel;
+
+    //right panel
     private JPanel currentOrderPanel;
     private JTextArea currentOrderText;
+
+    //main label of whole panel
     private JLabel mainLabel;
+
+    //layout for middle panel
+    private CardLayout chooseActionLayout;
+
+    private Entity selectedEntity;
 
     boolean isEnemy = false;
     boolean isRootSelected = true;
@@ -43,12 +62,12 @@ public class ActionPanel extends VCSPanel {
         giveOrderPanel = new JPanel(new GridLayout(5,1));
         attackButton = new JButton("Attack");
         moveButton = new JButton("Move");
-
         attackButton.setEnabled(false);
         moveButton.setEnabled(false);
-
         giveOrderPanel.add(attackButton);
         giveOrderPanel.add(moveButton);
+        giveOrderPanel.setPreferredSize(new Dimension(120,220));
+        giveOrderPanel.setBorder(new TitledBorder("Give Order"));
 
         allyTargetPanel = new JPanel();
         allyTargetPanel.setLayout(new BoxLayout(allyTargetPanel, BoxLayout.Y_AXIS));
@@ -66,62 +85,61 @@ public class ActionPanel extends VCSPanel {
         movePanel.add(moveEditor);
         movePanel.add(moveConfirmButton);
 
-        currentOrderPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
-        currentOrderText = new JTextArea(10,10);
-        currentOrderText.setEditable(false);
-        currentOrderText.setCaretColor(Color.white);
-        currentOrderText.setBorder(new TitledBorder("Current Order"));
-        JScrollPane scrollPanel = new JScrollPane(currentOrderText);
-        currentOrderPanel.add(new JScrollPane(scrollPanel));
-
-        cardLayout = new CardLayout();
-        chooseActionPanel = new JPanel(cardLayout);
+        chooseActionLayout = new CardLayout();
+        chooseActionPanel = new JPanel(chooseActionLayout);
         chooseActionPanel.add(new JPanel(), "empty");
         chooseActionPanel.add(allyTargetPanel, "ally");
         chooseActionPanel.add(enemyTargetPanel, "enemy");
         chooseActionPanel.add(movePanel, "move");
-
-        giveOrderPanel.setPreferredSize(new Dimension(120,220));
-        giveOrderPanel.setBorder(new TitledBorder("Give Order"));;
         chooseActionPanel.setPreferredSize(new Dimension(120,220));
-        chooseActionPanel.setBorder(new TitledBorder(""));;
+        chooseActionPanel.setBorder(new TitledBorder(""));
+
+
+        currentOrderPanel = new JPanel(new BorderLayout());
+        currentOrderText = new JTextArea(10,10);
+        currentOrderText.setEditable(false);
+        currentOrderText.setCaretColor(Color.white);
+        currentOrderText.setBorder(new TitledBorder("Current Order"));
+        currentOrderPanel.add(new JScrollPane(currentOrderText), BorderLayout.CENTER);
         currentOrderPanel.setPreferredSize(new Dimension(120,220));
 
+        //action listeners for open specific middle panel
         attackButton.addActionListener(e -> {
             if (isEnemy){
-                cardLayout.show(chooseActionPanel, "ally");
+                chooseActionLayout.show(chooseActionPanel, "ally");
             }else {
-                cardLayout.show(chooseActionPanel, "enemy");
+                chooseActionLayout.show(chooseActionPanel, "enemy");
             }
         });
-        moveButton.addActionListener(e -> cardLayout.show(chooseActionPanel, "move"));
+        moveButton.addActionListener(e -> chooseActionLayout.show(chooseActionPanel, "move"));
 
+        //action listener for create move order
         moveConfirmButton.addActionListener(e -> {
             coordinates = moveEditor.readData();
-            currentOrderText.append("Move to " + coordinates + "\n");
+            //currentOrderText.append("Move to " + coordinates + "\n");
             if (selectedEntity != null){
                 selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinates.x, coordinates.y)));
-
+                refreshCurrentOrderPanel();
             }
 
         });
 
+        //merge left, middle and right panels into one
         panel.add(giveOrderPanel);
         panel.add(chooseActionPanel);
         panel.add(currentOrderPanel);
 
-        this.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
         this.add(mainLabel, BorderLayout.NORTH);
         this.add(panel, BorderLayout.CENTER);
+        this.setBorder(BorderFactory.createLineBorder(Color.black,1));
 
     }
 
-    Entity selectedEntity;
+    //find the selected entity from hierarchy panel for give order
     public void selectedUnit(Entity entity){
-        selectedEntity = entity;
-        isRootSelected = false;
-        mainLabel.setText("Selected Entity: " + selectedEntity.getName());
+        this.selectedEntity = entity;
+        this.isRootSelected = false;
+
         this.side = entity.getSide();
         if(side == 1) isEnemy = true;
         else if (side == 0) isEnemy = false;
@@ -129,33 +147,25 @@ public class ActionPanel extends VCSPanel {
         attackButton.setEnabled(true);
         moveButton.setEnabled(true);
 
-//        Queue<Order> currentOrders = entity.getOrders();
-//        for (Order order : currentOrders){
-//            if (order.getOrderType().equals("Attack")){
-//                currentOrderText.append("Attack " + targetEntity);
-//            } else if (order.getOrderType().equals("Move")) {
-//                currentOrderText.append("Move to " + coordinates);
-//            }
-//        }
-
-        cardLayout.show(chooseActionPanel, "empty");
+        mainLabel.setText("Selected Entity: " + selectedEntity.getName());
+        refreshCurrentOrderPanel();
+        chooseActionLayout.show(chooseActionPanel, "empty");
     }
 
+    //if hierarchy(not an entity) selected from hierarchy panel
     public void whenRootSelected(Object rootObjectInfo){
         if (rootObjectInfo.equals("Hierarchy")){
             selectedEntity = null;
             mainLabel.setText("No unit selected.");
             attackButton.setEnabled(false);
             moveButton.setEnabled(false);
-            cardLayout.show(chooseActionPanel, "empty");
+            chooseActionLayout.show(chooseActionPanel, "empty");
             isRootSelected = true;
+            clearCurrentOrders();
         }else isRootSelected = false;
     }
 
-    Map<Entity, JButton> allyButtons = new HashMap<>();
-    Map<Entity, JButton> enemyButtons = new HashMap<>();
-    Entity targetEntity;
-    Entity attackerEntity;
+    //for creating new button for each available targets based on their assigned sides
     public void createNewTargetButton(Entity entity){
         newTargetButton = new JButton(entity.getName());
         if (entity.getSide() == 0){
@@ -165,12 +175,14 @@ public class ActionPanel extends VCSPanel {
             enemyButtons.put(entity, newTargetButton);
             enemyTargetPanel.add(newTargetButton);
         }
+        //action litsener for create attack order
         newTargetButton.addActionListener(e -> {
             targetEntity = entity;
             attackerEntity = selectedEntity;
-            currentOrderText.append("Attack " + targetEntity.getName() + "\n");
+            //currentOrderText.append("Attack " + targetEntity.getName() + "\n");
             if (attackerEntity != null){
                 attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
+                refreshCurrentOrderPanel();
             }
         });
 
@@ -190,6 +202,7 @@ public class ActionPanel extends VCSPanel {
 
     }
 
+    //for deleting target button if it's entity destroyed with attack order
     public void deleteTargetButton(Entity entity){
         if(entity == null)
             return;
@@ -205,6 +218,29 @@ public class ActionPanel extends VCSPanel {
         }
         revalidate();
         repaint();
+    }
+
+    //change the current order panel based on the selected entity
+    private void refreshCurrentOrderPanel(){
+        if (selectedEntity.equals(null)){
+            clearCurrentOrders();
+            return;
+        }
+        StringBuilder orderString = new StringBuilder();
+
+        Queue<Order> currentOrders = selectedEntity.getOrders();
+        for (Order order : currentOrders){
+            orderString.append(order.createTextToPrint());
+        }
+        currentOrderText.setText(orderString.toString());
+        currentOrderText.setCaretPosition(currentOrderText.getDocument().getLength());
+        currentOrderText.repaint();
+    }
+
+    //clear the current order panel for each new selected entity and root
+    private void clearCurrentOrders(){
+        currentOrderText.setText("");
+        currentOrderText.repaint();
     }
 
     public void update(int deltaTime){
