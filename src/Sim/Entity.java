@@ -4,10 +4,7 @@ import Sim.Orders.Order;
 import Var.RGB;
 import Vec.Vec2int;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Objects;
-import java.util.Queue;
+import java.util.*;
 
 public class Entity {
     String name;
@@ -21,6 +18,7 @@ public class Entity {
     private NodeInfo nodeInfo;
     private Queue<Order> orders = new LinkedList<>();
     private Order currentOrder = null;
+    public int maxSpeed;
 
     //TODO current order tutulsun
     //TODO entity içinde orderda kullanılan değişkenleri tut
@@ -37,12 +35,23 @@ public class Entity {
         orders.add(order);
     }
 
+    public void removeOrder(ArrayList<Order> orderList){
+        //TODO: remove order ekle, ayrıca (burası icin degil) peak ile current'e
+        // ulaşmak yerine direk currentOrder'ı kullan
+        for(Order o : orderList){
+            orders.remove(o);
+        }
+        currentOrder = orders.peek();
+    }
+
     public void completeCurrentOrder(){
         orders.poll();
+            currentOrder = orders.peek();
     }
 
     void update(int deltaTime) {
-
+        if(maxSpeed == 0)
+            maxSpeed = speed.getHypotenuseAsInt();
         if(CanMove(currentPixelColor,type)){
             pos.x += speed.x;
             pos.y += -speed.y;
@@ -90,8 +99,8 @@ public class Entity {
             components.get(i).update(deltaTime);
         }
 
-        if(!orders.isEmpty())
-            orders.peek().update();
+        if(!orders.isEmpty() && currentOrder != null)
+            currentOrder.update();
     }
     public boolean CanMove(RGB rgb, String type) {
 

@@ -38,7 +38,7 @@ public class Follow extends Order{
             return;
         }
         else{
-            Vec2int newSpeed = source.getPos().vectorDiff(target.getPos()).normalize(source.getSpeed().getHypotenuseAsInt());
+            Vec2int newSpeed = source.getPos().vectorDiff(target.getPos()).normalize(source.maxSpeed);
             source.setSpeed(newSpeed);
         }
     }
