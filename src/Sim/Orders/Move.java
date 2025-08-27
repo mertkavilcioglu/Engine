@@ -36,7 +36,7 @@ public class Move extends Order{
     }
 
     public void updateSpeedToMovePosition(Vec2int destination){
-        Vec2int newSpeed = source.getPos().vectorDiff(destination).normalize(source.getSpeed().getHypotenuseAsInt());
+        Vec2int newSpeed = source.getPos().vectorDiff(destination).normalize(source.maxSpeed);
         source.setSpeed(newSpeed);
     }
 
