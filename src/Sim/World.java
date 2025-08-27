@@ -20,6 +20,7 @@ public class World{
         ent.setSpeed(Vec2int.getRandom(0,4,0,4));
         Radar r = new Radar(ent,entities);
         ent.addComponents(r);
+        ent.type = "Plane";
         entities.add(ent);
         return ent;
     }
