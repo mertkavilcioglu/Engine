@@ -1,10 +1,6 @@
 package App;
 
 import Sim.GetInput;
-import Sim.Orders.Attack;
-import Sim.Orders.Follow;
-import Sim.Orders.Move;
-import Sim.Orders.Order;
 import Sim.PixelColor;
 import UI.*;
 import Sim.Entity;
@@ -52,10 +48,8 @@ public class VCSApp {
     private LogPanel logPanel;
     private PlayPausePanel playPausePanel;
     private ImportPanel importPanel;
+    public MapPixelPosPanel mapPixelPosPanel;
     private ArrayList<JLabel> entityNames = new ArrayList<>();
-    //public Follow follow;
-    //public Attack attack;
-    //public Move move;
     public PixelColor pixelColor;
 
     public void run() {
@@ -81,9 +75,6 @@ public class VCSApp {
         }
     }
 
-    public void attackTest(Entity f, Entity t) {
-        f.addOrder(new Attack(this, f, t));
-    }
 
     public void runWithWindow() throws InterruptedException, InvocationTargetException {
 
@@ -96,9 +87,7 @@ public class VCSApp {
         actionPanel = new ActionPanel(this);
         playPausePanel = new PlayPausePanel(this);
         importPanel = new ImportPanel(this);
-        //follow = new Follow(this);
-        //attack = new Attack(this);
-        //move = new Move(this);
+        mapPixelPosPanel = new MapPixelPosPanel(this);
         pixelColor = new PixelColor(this);
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
@@ -109,6 +98,7 @@ public class VCSApp {
         JPanel mergeNorthPanel = new JPanel(new BorderLayout());
         mergeNorthPanel.add(importPanel, BorderLayout.WEST);
         mergeNorthPanel.add(playPausePanel, BorderLayout.CENTER);
+        mergeNorthPanel.add(mapPixelPosPanel, BorderLayout.EAST);
 
         JScrollPane hierarchyScroll = new JScrollPane(hierarchyPanel);
         hierarchyScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);

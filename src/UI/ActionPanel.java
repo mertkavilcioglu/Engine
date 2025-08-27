@@ -39,11 +39,12 @@ public class ActionPanel extends VCSPanel {
     //right panel
     private JPanel currentOrderPanel;
     private JPanel currentOrderListPanel;
-    private JButton deleteSelectedOrderButton;
-    private JTextArea currentOrderText;
+    private JButton selectedOrderDeleteButton;
+    ArrayList <JCheckBox> currentOrders = new ArrayList<>();
+    ArrayList <Order> currentOrdersOfEntity = new ArrayList<>();
 
     //main label of whole panel
-    private JLabel mainLabel;
+    private JLabel selectedUnitLabel;
 
     //layout for middle panel
     private CardLayout chooseActionLayout;
@@ -59,8 +60,8 @@ public class ActionPanel extends VCSPanel {
         super(app);
         this.setLayout(new BorderLayout());
 
-        mainLabel = new JLabel("No unit selected.", SwingConstants.CENTER);
-        JPanel panel = new JPanel(new GridLayout(1,3,0,0));
+        selectedUnitLabel = new JLabel("No unit selected.", SwingConstants.CENTER);
+        JPanel mergePanel = new JPanel(new GridLayout(1,3,0,0));
 
         giveOrderPanel = new JPanel(new GridLayout(5,1));
         attackButton = new JButton("Attack");
@@ -103,18 +104,15 @@ public class ActionPanel extends VCSPanel {
         currentOrderListPanel.setLayout(new BoxLayout(currentOrderListPanel, BoxLayout.Y_AXIS));
         JScrollPane currentOrderScroll = new JScrollPane(currentOrderListPanel);
         currentOrderScroll.setBorder(new TitledBorder("Current Order"));
-//        currentOrderText = new JTextArea(10,10);
-//        currentOrderText.setEditable(false);
-//        currentOrderText.setCaretColor(Color.white);
-//        currentOrderText.setBorder(new TitledBorder("Current Order"));
-        deleteSelectedOrderButton = new JButton("Delete");
-        deleteSelectedOrderButton.setEnabled(false);
-        deleteSelectedOrderButton.addActionListener(e -> {
+
+        selectedOrderDeleteButton = new JButton("Delete");
+        selectedOrderDeleteButton.setEnabled(false);
+        selectedOrderDeleteButton.addActionListener(e -> {
             deleteSelectedOrders();
         });
 
         currentOrderPanel.add(currentOrderScroll, BorderLayout.CENTER);
-        currentOrderPanel.add(deleteSelectedOrderButton, BorderLayout.SOUTH);
+        currentOrderPanel.add(selectedOrderDeleteButton, BorderLayout.SOUTH);
         currentOrderPanel.setPreferredSize(new Dimension(120,220));
 
         //action listeners for open specific middle panel
@@ -139,17 +137,17 @@ public class ActionPanel extends VCSPanel {
         });
 
         //merge left, middle and right panels into one
-        panel.add(giveOrderPanel);
-        panel.add(chooseActionPanel);
-        panel.add(currentOrderPanel);
+        mergePanel.add(giveOrderPanel);
+        mergePanel.add(chooseActionPanel);
+        mergePanel.add(currentOrderPanel);
 
-        this.add(mainLabel, BorderLayout.NORTH);
-        this.add(panel, BorderLayout.CENTER);
+        this.add(selectedUnitLabel, BorderLayout.NORTH);
+        this.add(mergePanel, BorderLayout.CENTER);
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
 
     }
 
-    //find the selected entity from hierarchy panel for give order
+    //find the selected entity from hierarchy panel to give order
     public void selectedUnit(Entity entity){
         this.selectedEntity = entity;
         this.isRootSelected = false;
@@ -161,8 +159,7 @@ public class ActionPanel extends VCSPanel {
         attackButton.setEnabled(true);
         moveButton.setEnabled(true);
 
-        mainLabel.setText("Selected Entity: " + selectedEntity.getName());
-        deleteSelectedOrderButton.setEnabled(false);
+        selectedUnitLabel.setText("Selected Entity: " + selectedEntity.getName());
         refreshCurrentOrderPanel();
         chooseActionLayout.show(chooseActionPanel, "empty");
     }
@@ -171,7 +168,7 @@ public class ActionPanel extends VCSPanel {
     public void whenRootSelected(Object rootObjectInfo){
         if (rootObjectInfo.equals("Hierarchy")){
             selectedEntity = null;
-            mainLabel.setText("No unit selected.");
+            selectedUnitLabel.setText("No unit selected.");
             attackButton.setEnabled(false);
             moveButton.setEnabled(false);
             chooseActionLayout.show(chooseActionPanel, "empty");
@@ -190,11 +187,10 @@ public class ActionPanel extends VCSPanel {
             enemyButtons.put(entity, newTargetButton);
             enemyTargetPanel.add(newTargetButton);
         }
-        //action litsener for create attack order
+        //action listener for create attack order
         newTargetButton.addActionListener(e -> {
             targetEntity = entity;
             attackerEntity = selectedEntity;
-            //currentOrderText.append("Attack " + targetEntity.getName() + "\n");
             if (attackerEntity != null){
                 attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
                 refreshCurrentOrderPanel();
@@ -220,60 +216,47 @@ public class ActionPanel extends VCSPanel {
         repaint();
     }
 
-    ArrayList <JCheckBox> currentOrderBoxes = new ArrayList<>();
-    ArrayList <Order> currentOrderArray = new ArrayList<>();
     //change the current order panel based on the selected entity
     private void refreshCurrentOrderPanel(){
-        //StringBuilder orderString = new StringBuilder();
-        currentOrderBoxes.clear();
-        currentOrderArray.clear();
+        currentOrders.clear();
+        currentOrdersOfEntity.clear();
         currentOrderListPanel.removeAll();
         if (selectedEntity != null){
             Queue<Order> currentOrders = selectedEntity.getOrders();
             for (Order order : currentOrders){
-                //orderString.append(order.createTextToPrint());
                 JCheckBox box = new JCheckBox(order.createTextToPrint());
-                //JLabel text = new JLabel(order.createTextToPrint());
-
-                //JPanel row = new JPanel();
-                //row.add();
                 box.addItemListener(l -> updateDeleteButtonState());
 
-                currentOrderBoxes.add(box);
-                currentOrderArray.add(order);
+                this.currentOrders.add(box);
+                currentOrdersOfEntity.add(order);
                 currentOrderListPanel.add(box);
             }
         }
-
         currentOrderListPanel.revalidate();
         currentOrderListPanel.repaint();
         updateDeleteButtonState();
-
-//        currentOrderText.setText(orderString.toString());
-//        currentOrderText.setCaretPosition(currentOrderText.getDocument().getLength());
-//        currentOrderText.repaint();
     }
 
     private void updateDeleteButtonState(){
         if (selectedEntity.equals(null)){
-            deleteSelectedOrderButton.setEnabled(false);
+            selectedOrderDeleteButton.setEnabled(false);
             return;
         }
         boolean anySelected = false;
-        for (JCheckBox cb : currentOrderBoxes){
+        for (JCheckBox cb : currentOrders){
             if (cb.isSelected()){
                 anySelected = true;
                 break;
             }
         }
-        deleteSelectedOrderButton.setEnabled(anySelected);
+        selectedOrderDeleteButton.setEnabled(anySelected);
     }
 
 
     //clear the current order panel for each new selected entity and root
     private void clearCurrentOrderPanel(){
-        currentOrderArray.clear();
-        currentOrderBoxes.clear();
+        currentOrdersOfEntity.clear();
+        currentOrders.clear();
         currentOrderListPanel.removeAll();
         currentOrderListPanel.revalidate();
         currentOrderListPanel.repaint();
@@ -283,9 +266,9 @@ public class ActionPanel extends VCSPanel {
     private void deleteSelectedOrders(){
         ArrayList<Order> ordersToDelete = new ArrayList<>();
         if (selectedEntity.equals(null)) return;
-        for (int i = currentOrderBoxes.size()-1 ; i >= 0; i--){
-            if (currentOrderBoxes.get(i).isSelected()){
-                Order delete = currentOrderArray.get(i);
+        for (int i = currentOrders.size()-1; i >= 0; i--){
+            if (currentOrders.get(i).isSelected()){
+                Order delete = currentOrdersOfEntity.get(i);
                 ordersToDelete.add(delete);
             }
         }
