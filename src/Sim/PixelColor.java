@@ -2,8 +2,10 @@ package Sim;
 
 import App.VCSApp;
 import Var.RGB;
+import Vec.Vec2int;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PixelColor {
     public final VCSApp app;
@@ -38,10 +40,17 @@ public class PixelColor {
         }
     }
 
-    public boolean CanMove(ArrayList<Integer> rgb) {
-        if(rgb.get(0) == 93 && rgb.get(1) == 94 && rgb.get(2) == 97){
+    
+    public boolean isLocationValidForType(String type, Vec2int pos) {
+        RGB currentColor = PixelColorFind(pos.x, pos.y);
+        if(Objects.equals(type, "Tank") && (currentColor.r==93 && currentColor.g == 94 && currentColor.b == 97)){
             return true;
-
+        }
+        if(Objects.equals(type, "Ship") && (currentColor.r==0 && currentColor.g == 0 && currentColor.b == 0)){
+            return true;
+        }
+        if(Objects.equals(type, "Plane")){
+            return true;
         }
         return false;
     }

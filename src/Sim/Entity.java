@@ -4,14 +4,12 @@ import Sim.Orders.Order;
 import Var.RGB;
 import Vec.Vec2int;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
 
 public class Entity {
-    String id;
     String name;
     int side = 0;
     Vec2int pos;
@@ -22,7 +20,10 @@ public class Entity {
     private final World w;
     private NodeInfo nodeInfo;
     private Queue<Order> orders = new LinkedList<>();
-    //PixelColor pixelColor = new PixelColor();
+    private Order currentOrder = null;
+
+    //TODO current order tutulsun
+    //TODO entity içinde orderda kullanılan değişkenleri tut
 
     public Entity(World w) {
         this.w = w;
@@ -30,16 +31,19 @@ public class Entity {
     }
 
     public void addOrder(Order order){
+        if(orders.isEmpty()){
+            currentOrder = order;
+        }
         orders.add(order);
     }
 
-    public void removeOrder(){
+    public void completeCurrentOrder(){
         orders.poll();
     }
 
     void update(int deltaTime) {
 
-        if(CanMove(currentPixelColor)){
+        if(CanMove(currentPixelColor,type)){
             pos.x += speed.x;
             pos.y += -speed.y;
         }
@@ -89,10 +93,16 @@ public class Entity {
         if(!orders.isEmpty())
             orders.peek().update();
     }
-    public boolean CanMove(RGB rgb) {
-        if(rgb.r == 93 && rgb.g == 94 && rgb.b == 97){
-            return true;
+    public boolean CanMove(RGB rgb, String type) {
 
+        if((rgb.r == 93 && rgb.g == 94 && rgb.b == 97) && (Objects.equals(type, "Tank"))){
+            return true;
+        }
+        if((rgb.r == 0 && rgb.g == 0 && rgb.b == 0) && (Objects.equals(type, "Ship"))){
+            return true;
+        }
+        if(Objects.equals(type, "Plane")){
+            return true;
         }
         return false;
     }
@@ -126,14 +136,6 @@ public class Entity {
 
     public void addComponents(Component c) {
         this.components.add(c);
-    }
-
-    public void setId(String id){
-        this.id = id;
-    }
-
-    public String getId(){
-        return id;
     }
 
     public void setSide(int side){

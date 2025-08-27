@@ -27,16 +27,16 @@ public class Move extends Order{
         if(dist <= 2.0){
             app.log(source.getName() + " reached the target. \n");
             source.setSpeed(new Vec2int(0,0));
-            source.removeOrder();
+            source.completeCurrentOrder();
             return;
         }
         else{
-            findSpeed(destination);
+            updateSpeedToMovePosition(destination);
         }
     }
 
-    public void findSpeed(Vec2int destination){
-        Vec2int newSpeed = source.getPos().vectorDiff(destination).normalize(4);
+    public void updateSpeedToMovePosition(Vec2int destination){
+        Vec2int newSpeed = source.getPos().vectorDiff(destination).normalize(source.getSpeed().getHypotenuseAsInt());
         source.setSpeed(newSpeed);
     }
 

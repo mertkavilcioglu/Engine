@@ -5,6 +5,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class Vec2intEditor extends JPanel{
     private Vec2int data = new Vec2int();
@@ -14,6 +16,7 @@ public class Vec2intEditor extends JPanel{
     private JTextField txtX;
     private JTextField txtY;
     Border defaultBorder;
+    private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
     public Vec2intEditor(String label){
         nameLbl = new JLabel(label);
@@ -47,26 +50,36 @@ public class Vec2intEditor extends JPanel{
         return data;
     }
 
-    //TODO 2 kere catch yapma günah
+    // 2 kere catch yapma günah
 
     public void dataValidate(){
-        int x,y;
-
-        try {
-            x = Integer.parseInt(txtX.getText());
-        }
-        catch (NumberFormatException e) {
+        //int x,y;
+        if(txtX.getText().isBlank() || txtX.getText() == null){
             System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblX.getText());
             txtX.setBorder(new LineBorder(Color.RED, 2));
         }
-
-        try {
-            y = Integer.parseInt(txtY.getText());
+        else{
+            for(char c : txtX.getText().trim().toCharArray()){
+                if(!numbers.contains(c)){
+                    System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblX.getText());
+                    txtX.setBorder(new LineBorder(Color.RED, 2));
+                }
+            }
         }
-        catch (NumberFormatException e) {
+
+        if(txtY.getText().isBlank() || txtY.getText() == null){
             System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblY.getText());
             txtY.setBorder(new LineBorder(Color.RED, 2));
         }
+        else{
+            for(char c : txtY.getText().trim().toCharArray()){
+                if(!numbers.contains(c)){
+                    System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblY.getText());
+                    txtY.setBorder(new LineBorder(Color.RED, 2));
+                }
+            }
+        }
+
         new Thread(()->{
             try {
                 Thread.sleep(1000);
@@ -78,6 +91,49 @@ public class Vec2intEditor extends JPanel{
             }
         }).start();
 
+
+//        try {
+//            x = Integer.parseInt(txtX.getText());
+//        }
+//        catch (NumberFormatException e) {
+//            System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblX.getText());
+//            txtX.setBorder(new LineBorder(Color.RED, 2));
+//        }
+//
+//        try {
+//            y = Integer.parseInt(txtY.getText());
+//        }
+//        catch (NumberFormatException e) {
+//            System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblY.getText());
+//            txtY.setBorder(new LineBorder(Color.RED, 2));
+//        }
+//        new Thread(()->{
+//            try {
+//                Thread.sleep(1000);
+//                //txt.setBackground(Color.WHITE);
+//                txtX.setBorder(defaultBorder);
+//                txtY.setBorder(defaultBorder);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }).start();
+
+    }
+
+    public void error(){
+        txtX.setBorder(new LineBorder(Color.RED, 2));
+        txtY.setBorder(new LineBorder(Color.RED, 2));
+
+        new Thread(()->{
+            try {
+                Thread.sleep(1000);
+                //txt.setBackground(Color.WHITE);
+                txtX.setBorder(defaultBorder);
+                txtY.setBorder(defaultBorder);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 
 }
