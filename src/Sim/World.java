@@ -21,6 +21,11 @@ public class World{
         Radar r = new Radar(ent,entities);
         ent.addComponents(r);
         ent.type = "Plane";
+
+        ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
+        if(ent.maxSpeed == 0)
+            ent.maxSpeed = 4;
+
         entities.add(ent);
         return ent;
     }
@@ -39,6 +44,11 @@ public class World{
         ent.setSpeed(new Vec2int(speed.x, speed.y));
 
         ent.setType(type);
+        
+        ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
+        if(ent.maxSpeed == 0)
+            ent.maxSpeed = 4;
+
 
         //PixelColor color = new PixelColor(ent, entities);
         //color.CanMove(color.PixelColorFind(ent.getPos().x, ent.getPos().y, map));

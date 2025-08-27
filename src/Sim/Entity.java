@@ -50,8 +50,6 @@ public class Entity {
     }
 
     void update(int deltaTime) {
-        if(maxSpeed == 0)
-            maxSpeed = speed.getHypotenuseAsInt();
         if(CanMove(currentPixelColor,type)){
             pos.x += speed.x;
             pos.y += -speed.y;
