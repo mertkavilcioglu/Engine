@@ -44,7 +44,7 @@ public class World{
         ent.setSpeed(new Vec2int(speed.x, speed.y));
 
         ent.setType(type);
-        
+
         ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
         if(ent.maxSpeed == 0)
             ent.maxSpeed = 4;

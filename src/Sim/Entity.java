@@ -50,6 +50,9 @@ public class Entity {
     }
 
     void update(int deltaTime) {
+        if(!orders.isEmpty() && currentOrder != null)
+            currentOrder.update();
+
         if(CanMove(currentPixelColor,type)){
             pos.x += speed.x;
             pos.y += -speed.y;
@@ -97,8 +100,8 @@ public class Entity {
             components.get(i).update(deltaTime);
         }
 
-        if(!orders.isEmpty() && currentOrder != null)
-            currentOrder.update();
+//        if(!orders.isEmpty() && currentOrder != null)
+//            currentOrder.update();
     }
     public boolean CanMove(RGB rgb, String type) {
 
