@@ -15,23 +15,14 @@ import java.util.ArrayList;
 
 public class VCSApp {
     //TODO paneller icin selected
-    //TODO ekrana logu bastırma //DONE
     //TODO PLAY PAUSE BIRLIKTE, TEK GIRME
 
-    //TODO ilk başta her birim target olsun //DONE
-    //TODO entitylere taraf ekle, hem sağ panele hem de renge göre order düzenle //DONE
-
-    //TODO hierarchyde pozisyonlar güncellenecek //DONE
-    //TODO hız değiştiği zaman, tree'de hız da güncellenmesi lazım  //DONE
-
-    //TODO radar componentini create'e bağla //DONE
 
     //TODO 25.08.2.25
-    //TODO gemi karaya spawn edilemesin izin vermesin panel
-    //TODO imlecin bulunduğu pikseli tutabilelim, belki ileride add remove falan bağlarız
+    //imlecin bulunduğu pikseli tutabilelim, belki ileride add remove falan bağlarız
     //TODO imleçle haritadaki entityleri seçebilmek falan da yapılabilse iyi olur
     //TODO sınırdan çıkma kontrolü için, bir sonraki pikseli (sonraki update konumuna göre) hesap etme işini düşün
-    //TODO remove order butonları ekle alt panele
+    //remove order butonları ekle alt panele
     //TODO exit butonu
     //TODO followu bağla
     //TODO haritanın arka planı olsun ve çözünürlüğü düşürülebilir

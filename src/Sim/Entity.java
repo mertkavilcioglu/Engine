@@ -19,6 +19,7 @@ public class Entity {
     private Queue<Order> orders = new LinkedList<>();
     private Order currentOrder = null;
     public int maxSpeed;
+    private Vec2int nextPos;
 
     //TODO current order tutulsun
     //TODO entity içinde orderda kullanılan değişkenleri tut
@@ -52,10 +53,13 @@ public class Entity {
     void update(int deltaTime) {
         if(!orders.isEmpty() && currentOrder != null)
             currentOrder.update();
-
+        nextPos = new Vec2int(pos.x + speed.x , pos.y - speed.y);
         if(CanMove(currentPixelColor,type)){
-            pos.x += speed.x;
-            pos.y += -speed.y;
+            pos = nextPos;
+        }
+        else
+        {
+
         }
 
         if(pos.x <= 0){
@@ -136,6 +140,10 @@ public class Entity {
 
     public void setPos(Vec2int pos) {
         this.pos = pos;
+    }
+
+    public Vec2int getNextPos(){
+        return nextPos;
     }
 
     public void setSpeed(Vec2int speed) {
