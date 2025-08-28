@@ -20,7 +20,6 @@ import java.util.Map;
 public class MapView extends VCSPanel {
     private World world;
     Map<String, RGB> allPixelColors;
-    //private MapPixelPosPanel mapPixelPosPanel;
 
     Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
     Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
@@ -30,45 +29,30 @@ public class MapView extends VCSPanel {
     Image enemySea = new ImageIcon("src/Assets/Symbols/nato_enemy_sea.png").getImage();
     int targetWidth = 19;
 
-
     public MapView(VCSApp app) {
         super(app);
         this.world = app.world;
         setBackground(Color.WHITE);
 
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Assets/map3.png").getImage().getScaledInstance(app.world.map.maxX, app.world.map.maxY,Image.SCALE_DEFAULT));
-        Image img = imageIcon.getImage();
+        ImageIcon mapImage = new ImageIcon(new ImageIcon("src/Assets/map3.png").getImage().getScaledInstance(app.world.map.maxX, app.world.map.maxY,Image.SCALE_DEFAULT));
+        Image img = mapImage.getImage();
         BufferedImage bImage = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bImage.createGraphics();
         g.drawImage(img,0,0,null);
         g.dispose();
         JLabel label = new JLabel();
-        label.setIcon(imageIcon);
+        label.setIcon(mapImage);
 
         add(label);
 
         world.map.SetBufferedImage(bImage);
 
-        Vec2int pos;
-        RGB color ;
+        Vec2int pos = new Vec2int();
+        RGB color = new RGB();
         allPixelColors = new HashMap<>();
 
-        for(int y=0; y < bImage.getHeight(); y++) {
-            for (int x = 0; x < bImage.getWidth(); x++) {
-                pos = new Vec2int(x,y);
-                int pixel = bImage.getRGB(pos.x, pos.y);
-                color = new RGB();
+        //locateAllPixels(bImage, pos, color);
 
-                color.r = (pixel >> 16) & 0xff;
-                color.g = (pixel >> 8) & 0xff;
-                color.b = (pixel) & 0xff;
-
-                allPixelColors.put(pos.toString(), color);
-                System.out.println((allPixelColors.get(pos.toString()).toString()));
-                System.out.printf("Pixel at (%d %d) RGB color ( %d %d %d)", pos.x, pos.y, color.r, color.g, color.b);
-                System.out.println();
-            }
-        }
 /*
         Example usage of getting desired pixel color:
 
@@ -155,6 +139,25 @@ public class MapView extends VCSPanel {
                 / img.getWidth(null) * targetWidth);
         g.drawImage(img, pos.x - targetWidth/2, pos.y - targetHeight/2,
                 targetWidth, targetHeight, this);
+    }
+
+    public void locateAllPixels(BufferedImage bImage, Vec2int pos, RGB color){
+        for(int y=0; y < bImage.getHeight(); y++) {
+            for (int x = 0; x < bImage.getWidth(); x++) {
+                pos = new Vec2int(x,y);
+                int pixel = bImage.getRGB(pos.x, pos.y);
+                color = new RGB();
+
+                color.r = (pixel >> 16) & 0xff;
+                color.g = (pixel >> 8) & 0xff;
+                color.b = (pixel) & 0xff;
+
+                allPixelColors.put(pos.toString(), color);
+                System.out.println((allPixelColors.get(pos.toString()).toString()));
+                System.out.printf("Pixel at (%d %d) RGB color ( %d %d %d)", pos.x, pos.y, color.r, color.g, color.b);
+                System.out.println();
+            }
+        }
     }
 
 }
