@@ -21,6 +21,16 @@ public class MapView extends VCSPanel {
     private World world;
     Map<String, RGB> allPixelColors;
     //private MapPixelPosPanel mapPixelPosPanel;
+
+    Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
+    Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
+    Image friendlySea = new ImageIcon("src/Assets/Symbols/nato_friendly_sea.png").getImage();
+    Image enemyAir = new ImageIcon("src/Assets/Symbols/nato_enemy_air.png").getImage();
+    Image enemyLand = new ImageIcon("src/Assets/Symbols/nato_enemy_land.png").getImage();
+    Image enemySea = new ImageIcon("src/Assets/Symbols/nato_enemy_sea.png").getImage();
+    int targetWidth = 19;
+
+
     public MapView(VCSApp app) {
         super(app);
         this.world = app.world;
@@ -110,13 +120,41 @@ public class MapView extends VCSPanel {
             else if (e.getSide() == 1)
                 g.setColor(Color.red);
 
-            g.drawOval(pos.x-10, pos.y-10, 20, 20);
+            //g.drawOval(pos.x-10, pos.y-10, 20, 20);
+
+            if(e.getSide() == 0){
+                if(e.getType().equals("Plane"))
+                    drawNormalizedImageByWidth(g, friendlyAir, pos, targetWidth);
+                else if(e.getType().equals("Tank"))
+                    drawNormalizedImageByWidth(g, friendlyLand, pos, targetWidth+2);
+                else if(e.getType().equals("Ship"))
+                    drawNormalizedImageByWidth(g, friendlySea, pos, targetWidth);
+
+            }
+
+            else if(e.getSide() == 1){
+                if(e.getType().equals("Plane"))
+                    drawNormalizedImageByWidth(g, enemyAir, pos, targetWidth);
+                else if(e.getType().equals("Tank"))
+                    drawNormalizedImageByWidth(g, enemyLand, pos, targetWidth + 2);
+                else if(e.getType().equals("Ship"))
+                    drawNormalizedImageByWidth(g, enemySea, pos, targetWidth);
+            }
+
 
             g.setFont(new Font("Times New Roman", Font.PLAIN, 10 ));
             g.drawString(name, textX, textY);
 
-            g.setColor(Color.GREEN);
-            g.drawRect(pos.x, pos.y, 1,1);
+            //g.setColor(Color.GREEN);
+            //g.drawRect(pos.x, pos.y, 1,1);
         }
     }
+
+    public void drawNormalizedImageByWidth(Graphics g, Image img, Vec2int pos, int targetWidth){
+        int targetHeight = (int) ((double) img.getHeight(null)
+                / img.getWidth(null) * targetWidth);
+        g.drawImage(img, pos.x - targetWidth/2, pos.y - targetHeight/2,
+                targetWidth, targetHeight, this);
+    }
+
 }
