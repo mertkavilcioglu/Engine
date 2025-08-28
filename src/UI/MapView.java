@@ -51,7 +51,7 @@ public class MapView extends VCSPanel {
         RGB color = new RGB();
         allPixelColors = new HashMap<>();
 
-        //locateAllPixels(bImage, pos, color);
+        locateAllPixels(bImage, pos, color);
 
 /*
         Example usage of getting desired pixel color:
