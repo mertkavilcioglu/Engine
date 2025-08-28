@@ -7,14 +7,13 @@ import Var.RGB;
 import Vec.Vec2int;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.time.Year;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class MapView extends VCSPanel {
@@ -28,6 +27,9 @@ public class MapView extends VCSPanel {
     Image enemyLand = new ImageIcon("src/Assets/Symbols/nato_enemy_land.png").getImage();
     Image enemySea = new ImageIcon("src/Assets/Symbols/nato_enemy_sea.png").getImage();
     int targetWidth = 19;
+
+    private Vec2int pixPos;
+    private Queue<Entity> hoveredEntities = new LinkedList<>();
 
     public MapView(VCSApp app) {
         super(app);
@@ -51,7 +53,7 @@ public class MapView extends VCSPanel {
         RGB color = new RGB();
         allPixelColors = new HashMap<>();
 
-        locateAllPixels(bImage, pos, color);
+       // locateAllPixels(bImage, pos, color);
 
 /*
         Example usage of getting desired pixel color:
@@ -67,14 +69,40 @@ public class MapView extends VCSPanel {
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                Vec2int pixPos = new Vec2int(e.getX(), e.getY());
+                pixPos = new Vec2int(e.getX(), e.getY());
                 app.mapPixelPosPanel.showPixel(pixPos);
+                for(Entity ent : app.world.entities){
+                    if(ent.getPos().distance(pixPos) < targetWidth/2){
+                        if(!hoveredEntities.contains(ent))
+                            hoveredEntities.add(ent);
+                    }
+                    else
+                        hoveredEntities.remove(ent);
+                }
             }
         });
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
                 app.mapPixelPosPanel.nullPixel();
+            }
+        });
+        addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(!hoveredEntities.isEmpty()){
+                    Entity topEntity = hoveredEntities.peek();
+                    app.actionPanel.selectedUnit(topEntity);
+                    hoveredEntities.remove(topEntity);
+                    hoveredEntities.add(topEntity);
+
+                    app.hierarchyPanel.selectNode(topEntity);
+
+                }
+                else{
+                    app.actionPanel.disablePanel();
+                    app.hierarchyPanel.clearSelectionInTree();
+                }
             }
         });
     }
