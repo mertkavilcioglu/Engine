@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class MapView extends VCSPanel {
     private World world;
-    Map<String, RGB> allPixelColors;
+    public Map<String, RGB> allPixelColors;
     //private MapPixelPosPanel mapPixelPosPanel;
     public MapView(VCSApp app) {
         super(app);

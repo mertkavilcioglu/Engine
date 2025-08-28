@@ -32,7 +32,7 @@ public class VCSApp {
     // VIRTUAL COMBAT SYSTEM (VCS)
     public World world;
     private JFrame window;
-    private MapView mapView;
+    public MapView mapView;
     private EntityEditorView editorPanel;
     private HierarchyView hierarchyPanel;
     public ActionPanel actionPanel;
@@ -69,7 +69,7 @@ public class VCSApp {
 
     public void runWithWindow() throws InterruptedException, InvocationTargetException {
 
-        world = new World();
+        world = new World(this);
         window = new AppWindow(this);
         mapView = new MapView(this);
         editorPanel = new EntityEditorView(this);

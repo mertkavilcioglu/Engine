@@ -21,6 +21,7 @@ public class Entity {
     public int maxSpeed;
     private Vec2int nextPos;
 
+    private RGB nextPosPixelColor;
     //TODO current order tutulsun
     //TODO entity içinde orderda kullanılan değişkenleri tut
 
@@ -54,14 +55,21 @@ public class Entity {
         if(!orders.isEmpty() && currentOrder != null)
             currentOrder.update();
         nextPos = new Vec2int(pos.x + speed.x , pos.y - speed.y);
-        if(CanMove(currentPixelColor,type)){
+        nextPosPixelColor = w.app.mapView.allPixelColors.get(nextPos.toString());
+        if(CanMove(nextPosPixelColor,type)){
             pos = nextPos;
+        }else {
+            speed.x=0;
+            speed.y=0;
         }
-        else
-        {
+
+
+        /*
+        if(CanMove(currentPixelColor,type)){
 
         }
 
+         */
         if(pos.x <= 0){
             pos.x = 0;
             speed.x = 0;
