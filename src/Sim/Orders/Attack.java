@@ -16,7 +16,6 @@ public class Attack extends Order{
     }
 
     Entity findEntity(String trgtname) {
-        System.out.println("Attack: : findEntity function");
         Entity entity = null;
         for (int i = 0; i < app.world.entities.size(); i++) {
             Entity e = app.world.entities.get(i);
@@ -35,7 +34,6 @@ public class Attack extends Order{
         double dist = source.getPos().distance(targetEntity.getPos());
         if(dist <= 4.0){
             app.log(source.getName() + " destroy the target " + targetEntity.getName());
-            //follower.setSpeed(new Vec2int(0,0));
             destroy(targetEntity);
 
         }
@@ -53,10 +51,10 @@ public class Attack extends Order{
     public void destroy(Entity e){
         app.removeEntity(e);
         source.completeCurrentOrder();
-        System.out.println("ORDER REMOVED");
     }
 
-    public void printToLog(){
+    @Override
+    protected void printToLog(){
         if (!isExecute)
             app.log(source.getName() + " going to attack " + targetEntity.getName());
         isExecute = true;

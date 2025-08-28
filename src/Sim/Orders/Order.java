@@ -25,7 +25,7 @@ public abstract class Order {
         actualUpdate();
     }
 
-
+    protected abstract void printToLog();
     protected abstract void actualUpdate();
     public abstract String createTextToPrint();
 
