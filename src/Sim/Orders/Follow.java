@@ -8,10 +8,13 @@ public class Follow extends Order{
 
     private Entity targetEntity;
     private boolean isExecute = false;
+    private int numOfUpdate = 0;
+    private int followTime;
 
-    public Follow(VCSApp app, Entity src, Entity target) {
+    public Follow(VCSApp app, Entity src, Entity target, int time) {
         super(app, src);
         this.targetEntity = target;
+        this.followTime = time;
     }
 
     Entity findEntity(String trgtname) {
@@ -30,26 +33,43 @@ public class Follow extends Order{
         double distX = target.getPos().x - source.getPos().x;
         double distY = target.getPos().y - source.getPos().y;
         double dist = source.getPos().distance(target.getPos());
-        if(dist <= 3.0){
-            System.out.format("%s reached the target. \n", source.getName());
-            source.setSpeed(new Vec2int(0,0));
-            return;
+        if (followTime > numOfUpdate){
+            if(dist <= 3.0){
+                int time = followTime - numOfUpdate;
+                String reachString = String.format("%s has reached the target and will continue tracking for %d seconds. \n", source.getName(), time);
+                app.log(reachString);
+                //source.setSpeed(new Vec2int(0,0));
+            }
+            else{
+                int targetSpeed;
+                if(source.maxSpeed <= targetEntity.maxSpeed)
+                    targetSpeed = targetEntity.maxSpeed*2;
+                else
+                    targetSpeed = source.maxSpeed*2;
+                Vec2int newSpeed = source.getPos().vectorDiff(target.getPos()).normalize(targetSpeed);
+                source.setSpeed(newSpeed);
+            }
         }
-        else{
-            int targetSpeed;
-            if(source.maxSpeed <= targetEntity.maxSpeed)
-                targetSpeed = targetEntity.maxSpeed*2;
-            else
-                targetSpeed = source.maxSpeed*2;
-            Vec2int newSpeed = source.getPos().vectorDiff(target.getPos()).normalize(targetSpeed);
-            source.setSpeed(newSpeed);
+        else if (followTime == numOfUpdate){
+            if(dist <= 3.0){
+                String reachString = String.format("%s has reached the target. \n", source.getName());
+                app.log(reachString);
+                source.setSpeed(new Vec2int(0,0));
+                source.completeCurrentOrder();
+            }
+            else{
+                String timeOutString = String.format("%s stopped following the target %s because time was out. \n", source.getName(), target.getName());
+                app.log(timeOutString);
+            }
         }
+
     }
 
     @Override
     protected void printToLog(){
+        String followString = String.format("%s is following %s. \n",source.getName(), targetEntity.getName());
         if (!isExecute)
-            app.log(source.getName() + " is following " + targetEntity.getName());
+            app.log(followString);
         isExecute = true;
     }
 
@@ -57,6 +77,7 @@ public class Follow extends Order{
     protected void actualUpdate() {
         followEntity(targetEntity);
         printToLog();
+        numOfUpdate++;
     }
 
     @Override
