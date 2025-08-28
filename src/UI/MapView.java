@@ -3,6 +3,7 @@ package UI;
 import App.VCSApp;
 import Sim.Entity;
 import Sim.World;
+import Var.RGB;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -11,10 +12,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+import java.time.Year;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MapView extends VCSPanel {
     private World world;
+    Map<String, RGB> allPixelColors;
     //private MapPixelPosPanel mapPixelPosPanel;
     public MapView(VCSApp app) {
         super(app);
@@ -33,6 +38,38 @@ public class MapView extends VCSPanel {
         add(label);
 
         world.map.SetBufferedImage(bImage);
+
+        Vec2int pos;
+        RGB color ;
+        allPixelColors = new HashMap<>();
+
+        for(int y=0; y < bImage.getHeight(); y++) {
+            for (int x = 0; x < bImage.getWidth(); x++) {
+                pos = new Vec2int(x,y);
+                int pixel = bImage.getRGB(pos.x, pos.y);
+                color = new RGB();
+
+                color.r = (pixel >> 16) & 0xff;
+                color.g = (pixel >> 8) & 0xff;
+                color.b = (pixel) & 0xff;
+
+                allPixelColors.put(pos.toString(), color);
+                System.out.println((allPixelColors.get(pos.toString()).toString()));
+                System.out.printf("Pixel at (%d %d) RGB color ( %d %d %d)", pos.x, pos.y, color.r, color.g, color.b);
+                System.out.println();
+            }
+        }
+/*
+        Example usage of getting desired pixel color:
+
+        Vec2int desired = new Vec2int();
+        desired.x = 948;
+        desired.y = 435;
+        System.out.println( allPixelColors.get(desired.toString()));
+
+ */
+
+
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
