@@ -3,6 +3,7 @@ package UI;
 import App.VCSApp;
 import Sim.Entity;
 import Sim.Orders.Attack;
+import Sim.Orders.Follow;
 import Sim.Orders.Move;
 import Sim.Orders.Order;
 import Vec.Vec2int;
@@ -20,6 +21,7 @@ public class ActionPanel extends VCSPanel {
     private JPanel giveOrderPanel;
     private JButton attackButton;
     private JButton moveButton;
+    private JButton followButton;
 
     //middle panel
     private JPanel chooseActionPanel;
@@ -35,6 +37,11 @@ public class ActionPanel extends VCSPanel {
 
     //move part of middle panel
     private JPanel movePanel;
+
+    //follow part of middle panel
+    private JPanel followPanel;
+    private Map<Entity, JButton> allUnitsButtons = new HashMap<>();
+    private ArrayList<Entity> allCreatedEntites = new ArrayList<>();
 
     //right panel
     private JPanel currentOrderPanel;
@@ -53,6 +60,7 @@ public class ActionPanel extends VCSPanel {
 
     boolean isEnemy = false;
     boolean isRootSelected = true;
+    boolean isAttack = false;
     int side;
     Vec2int coordinates;
 
@@ -66,10 +74,11 @@ public class ActionPanel extends VCSPanel {
         giveOrderPanel = new JPanel(new GridLayout(5,1));
         attackButton = new JButton("Attack");
         moveButton = new JButton("Move");
-        attackButton.setEnabled(false);
-        moveButton.setEnabled(false);
+        followButton = new JButton("Follow");
+        updateOrderButtonsState(false);
         giveOrderPanel.add(attackButton);
         giveOrderPanel.add(moveButton);
+        giveOrderPanel.add(followButton);
         giveOrderPanel.setPreferredSize(new Dimension(120,220));
         giveOrderPanel.setBorder(new TitledBorder("Give Order"));
 
@@ -89,12 +98,17 @@ public class ActionPanel extends VCSPanel {
         movePanel.add(moveEditor);
         movePanel.add(moveConfirmButton);
 
+        followPanel = new JPanel();
+        followPanel.setLayout(new BoxLayout(followPanel, BoxLayout.Y_AXIS));
+        followPanel.setBorder(new TitledBorder("Choose Unit to Follow: "));
+
         chooseActionLayout = new CardLayout();
         chooseActionPanel = new JPanel(chooseActionLayout);
         chooseActionPanel.add(new JPanel(), "empty");
         chooseActionPanel.add(allyTargetPanel, "ally");
         chooseActionPanel.add(enemyTargetPanel, "enemy");
         chooseActionPanel.add(movePanel, "move");
+        chooseActionPanel.add(followPanel, "follow");
         chooseActionPanel.setPreferredSize(new Dimension(120,220));
         chooseActionPanel.setBorder(new TitledBorder(""));
 
@@ -117,13 +131,27 @@ public class ActionPanel extends VCSPanel {
 
         //action listeners for open specific middle panel
         attackButton.addActionListener(e -> {
+            isAttack = true;
             if (isEnemy){
                 chooseActionLayout.show(chooseActionPanel, "ally");
             }else {
                 chooseActionLayout.show(chooseActionPanel, "enemy");
             }
         });
+
         moveButton.addActionListener(e -> chooseActionLayout.show(chooseActionPanel, "move"));
+
+        followButton.addActionListener(e -> {
+            isAttack = false;
+            chooseActionLayout.show(chooseActionPanel, "follow");
+            for (int i = 0; i <= allCreatedEntites.size(); i++ ){
+                if (selectedEntity != allCreatedEntites.get(i)){
+                    followPanel.add(allUnitsButtons.get(allCreatedEntites.get(i)));
+                } else if (selectedEntity == allCreatedEntites.get(i)) {
+                    followPanel.remove(allUnitsButtons.get(allCreatedEntites.get(i)));
+                }
+            }
+        });
 
         //action listener for create move order
         moveConfirmButton.addActionListener(e -> {
@@ -156,8 +184,8 @@ public class ActionPanel extends VCSPanel {
         if(side == 1) isEnemy = true;
         else if (side == 0) isEnemy = false;
 
-        attackButton.setEnabled(true);
-        moveButton.setEnabled(true);
+
+        updateOrderButtonsState(true);
 
         selectedUnitLabel.setText("Selected Entity: " + selectedEntity.getName());
         refreshCurrentOrderPanel();
@@ -169,17 +197,26 @@ public class ActionPanel extends VCSPanel {
         if (rootObjectInfo.equals("Hierarchy")){
             selectedEntity = null;
             selectedUnitLabel.setText("No unit selected.");
-            attackButton.setEnabled(false);
-            moveButton.setEnabled(false);
+            updateOrderButtonsState(false);
             chooseActionLayout.show(chooseActionPanel, "empty");
             isRootSelected = true;
             clearCurrentOrderPanel();
         }else isRootSelected = false;
     }
 
+    public void disablePanel(){
+        selectedEntity = null;
+        selectedUnitLabel.setText("No unit selected.");
+        updateOrderButtonsState(false);
+        chooseActionLayout.show(chooseActionPanel, "empty");
+        isRootSelected = true;
+        clearCurrentOrderPanel();
+    }
+
     //for creating new button for each available targets based on their assigned sides
     public void createNewTargetButton(Entity entity){
         newTargetButton = new JButton(entity.getName());
+        createFollowButtonList(entity);
         if (entity.getSide() == 0){
             allyButtons.put(entity, newTargetButton);
             allyTargetPanel.add(newTargetButton);
@@ -191,10 +228,30 @@ public class ActionPanel extends VCSPanel {
         newTargetButton.addActionListener(e -> {
             targetEntity = entity;
             attackerEntity = selectedEntity;
-            if (attackerEntity != null){
-                attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
-                refreshCurrentOrderPanel();
+            if (isAttack){
+                if (attackerEntity != null){
+                    attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
+                    refreshCurrentOrderPanel();
+                }
             }
+//            else if (!isAttack) {
+//                if (attackerEntity != null){
+//                    attackerEntity.addOrder(new Follow(app, attackerEntity, targetEntity));
+//                    refreshCurrentOrderPanel();
+//                }
+//            }
+        });
+    }
+
+    private void createFollowButtonList(Entity entity){
+        JButton entityButton = new JButton(entity.getName());
+        allCreatedEntites.add(entity);
+        allUnitsButtons.put(entity, entityButton);
+        entityButton.addActionListener(e -> {
+            targetEntity = entity;
+            Entity followerEntity = selectedEntity;
+            followerEntity.addOrder(new Follow(app, followerEntity, targetEntity));
+            refreshCurrentOrderPanel();
         });
     }
 
@@ -212,6 +269,8 @@ public class ActionPanel extends VCSPanel {
             if(deletedButton != null)
                 enemyTargetPanel.remove(deletedButton);
         }
+        deletedButton = allUnitsButtons.remove(entity);
+        followPanel.remove(deletedButton);
         revalidate();
         repaint();
     }
@@ -237,8 +296,14 @@ public class ActionPanel extends VCSPanel {
         updateDeleteButtonState();
     }
 
+    private void updateOrderButtonsState(boolean state){
+        attackButton.setEnabled(state);
+        moveButton.setEnabled(state);
+        followButton.setEnabled(state);
+    }
+
     private void updateDeleteButtonState(){
-        if (selectedEntity.equals(null)){
+        if (selectedEntity == null){
             selectedOrderDeleteButton.setEnabled(false);
             return;
         }

@@ -34,7 +34,7 @@ public class VCSApp {
     private JFrame window;
     public MapView mapView;
     private EntityEditorView editorPanel;
-    private HierarchyView hierarchyPanel;
+    public HierarchyView hierarchyPanel;
     public ActionPanel actionPanel;
     private LogPanel logPanel;
     private PlayPausePanel playPausePanel;

@@ -7,15 +7,14 @@ import Vec.Vec2int;
 public class Follow extends Order{
 
     private Entity targetEntity;
+    private boolean isExecute = false;
 
     public Follow(VCSApp app, Entity src, Entity target) {
         super(app, src);
         this.targetEntity = target;
-        //followEntity(target);
     }
 
     Entity findEntity(String trgtname) {
-        System.out.println("Follow: : findEntity function");
         Entity entity = null;
         for (int i = 0; i < app.world.entities.size(); i++) {
             Entity e = app.world.entities.get(i);
@@ -28,7 +27,6 @@ public class Follow extends Order{
 
 
     public void followEntity(Entity target){
-
         double distX = target.getPos().x - source.getPos().x;
         double distY = target.getPos().y - source.getPos().y;
         double dist = source.getPos().distance(target.getPos());
@@ -49,8 +47,16 @@ public class Follow extends Order{
     }
 
     @Override
+    protected void printToLog(){
+        if (!isExecute)
+            app.log(source.getName() + " is following " + targetEntity.getName());
+        isExecute = true;
+    }
+
+    @Override
     protected void actualUpdate() {
         followEntity(targetEntity);
+        printToLog();
     }
 
     @Override

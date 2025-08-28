@@ -14,11 +14,6 @@ public class Move extends Order{
         this.destination = coordinates;
     }
 
-    public void printToLog(){
-        if (!isExecute)
-            app.log(source.getName() + " moving to " + destination);
-        isExecute = true;
-    }
 
     public void moveTo(Vec2int destination){
         if(destination == null )
@@ -46,6 +41,13 @@ public class Move extends Order{
         else
             newSpeed = source.getPos().vectorDiff(destination).normalize(source.maxSpeed);
         source.setSpeed(newSpeed);
+    }
+
+    @Override
+    protected void printToLog(){
+        if (!isExecute)
+            app.log(source.getName() + " moving to " + destination);
+        isExecute = true;
     }
 
     @Override
