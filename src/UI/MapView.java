@@ -7,6 +7,7 @@ import Var.RGB;
 import Vec.Vec2int;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -14,13 +15,25 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.time.Year;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 
 public class MapView extends VCSPanel {
     private World world;
     public Map<String, RGB> allPixelColors;
-    //private MapPixelPosPanel mapPixelPosPanel;
+    Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
+    Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
+    Image friendlySea = new ImageIcon("src/Assets/Symbols/nato_friendly_sea.png").getImage();
+    Image enemyAir = new ImageIcon("src/Assets/Symbols/nato_enemy_air.png").getImage();
+    Image enemyLand = new ImageIcon("src/Assets/Symbols/nato_enemy_land.png").getImage();
+    Image enemySea = new ImageIcon("src/Assets/Symbols/nato_enemy_sea.png").getImage();
+    int targetWidth = 19;
+
+    private Vec2int pixPos;
+    private Queue<Entity> hoveredEntities = new LinkedList<>();
+
     public MapView(VCSApp app) {
         super(app);
         this.world = app.world;
@@ -39,26 +52,11 @@ public class MapView extends VCSPanel {
 
         world.map.SetBufferedImage(bImage);
 
-        Vec2int pos;
-        RGB color ;
+        Vec2int pos = new Vec2int();
+        RGB color = new RGB();
         allPixelColors = new HashMap<>();
 
-        for(int y=0; y < bImage.getHeight(); y++) {
-            for (int x = 0; x < bImage.getWidth(); x++) {
-                pos = new Vec2int(x,y);
-                int pixel = bImage.getRGB(pos.x, pos.y);
-                color = new RGB();
-
-                color.r = (pixel >> 16) & 0xff;
-                color.g = (pixel >> 8) & 0xff;
-                color.b = (pixel) & 0xff;
-
-                allPixelColors.put(pos.toString(), color);
-                System.out.println((allPixelColors.get(pos.toString()).toString()));
-                System.out.printf("Pixel at (%d %d) RGB color ( %d %d %d)", pos.x, pos.y, color.r, color.g, color.b);
-                System.out.println();
-            }
-        }
+        locateAllPixels(bImage, pos, color);
 /*
         Example usage of getting desired pixel color:
 
@@ -73,14 +71,44 @@ public class MapView extends VCSPanel {
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                Vec2int pixPos = new Vec2int(e.getX(), e.getY());
+                pixPos = new Vec2int(e.getX(), e.getY());
                 app.mapPixelPosPanel.showPixel(pixPos);
+
+                ///////////////////////////////////////////////////////////
+                //TODO: burası böyle kalmasın
+                for(Entity ent : app.world.entities){
+                    if(ent.getPos().distance(pixPos) < targetWidth/2){
+                        if(!hoveredEntities.contains(ent))
+                            hoveredEntities.add(ent);
+                    }
+                    else
+                        hoveredEntities.remove(ent);
+                }
             }
         });
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
                 app.mapPixelPosPanel.nullPixel();
+            }
+        });
+
+        addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(!hoveredEntities.isEmpty()){
+                    Entity topEntity = hoveredEntities.peek();
+                    app.actionPanel.selectedUnit(topEntity);
+                    hoveredEntities.remove(topEntity);
+                    hoveredEntities.add(topEntity);
+
+                    app.hierarchyPanel.selectNode(topEntity);
+
+                }
+                else{
+                    app.actionPanel.disablePanel();
+                    app.hierarchyPanel.clearSelectionInTree();
+                }
             }
         });
     }
@@ -110,13 +138,58 @@ public class MapView extends VCSPanel {
             else if (e.getSide() == 1)
                 g.setColor(Color.red);
 
-            g.drawOval(pos.x-10, pos.y-10, 20, 20);
+            //g.drawOval(pos.x-10, pos.y-10, 20, 20);
+            if(e.getSide() == 0){
+                if(e.getType().equals("Plane"))
+                    drawNormalizedImageByWidth(g, friendlyAir, pos, targetWidth);
+                else if(e.getType().equals("Tank"))
+                    drawNormalizedImageByWidth(g, friendlyLand, pos, targetWidth+2);
+                else if(e.getType().equals("Ship"))
+                    drawNormalizedImageByWidth(g, friendlySea, pos, targetWidth);
+
+            }
+
+            else if(e.getSide() == 1){
+                if(e.getType().equals("Plane"))
+                    drawNormalizedImageByWidth(g, enemyAir, pos, targetWidth);
+                else if(e.getType().equals("Tank"))
+                    drawNormalizedImageByWidth(g, enemyLand, pos, targetWidth + 2);
+                else if(e.getType().equals("Ship"))
+                    drawNormalizedImageByWidth(g, enemySea, pos, targetWidth);
+            }
+
 
             g.setFont(new Font("Times New Roman", Font.PLAIN, 10 ));
             g.drawString(name, textX, textY);
 
-            g.setColor(Color.GREEN);
-            g.drawRect(pos.x, pos.y, 1,1);
+            //g.setColor(Color.GREEN);
+            //g.drawRect(pos.x, pos.y, 1,1);
+        }
+    }
+
+    public void drawNormalizedImageByWidth(Graphics g, Image img, Vec2int pos, int targetWidth){
+        int targetHeight = (int) ((double) img.getHeight(null)
+                / img.getWidth(null) * targetWidth);
+        g.drawImage(img, pos.x - targetWidth/2, pos.y - targetHeight/2,
+                targetWidth, targetHeight, this);
+    }
+
+    public void locateAllPixels(BufferedImage bImage, Vec2int pos, RGB color){
+        for(int y=0; y < bImage.getHeight(); y++) {
+            for (int x = 0; x < bImage.getWidth(); x++) {
+                pos = new Vec2int(x,y);
+                int pixel = bImage.getRGB(pos.x, pos.y);
+                color = new RGB();
+
+                color.r = (pixel >> 16) & 0xff;
+                color.g = (pixel >> 8) & 0xff;
+                color.b = (pixel) & 0xff;
+
+                allPixelColors.put(pos.toString(), color);
+                System.out.println((allPixelColors.get(pos.toString()).toString()));
+                System.out.printf("Pixel at (%d %d) RGB color ( %d %d %d)", pos.x, pos.y, color.r, color.g, color.b);
+                System.out.println();
+            }
         }
     }
 }
