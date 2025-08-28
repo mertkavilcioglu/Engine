@@ -1,12 +1,17 @@
 package Sim;
 
+import App.VCSApp;
 import UI.MapView;
 import Vec.Vec2int;
-
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class World{
+    public final VCSApp app;
+
+    public World(VCSApp app) {
+        this.app = app;
+    }
     public WorldMap map = new WorldMap();
 
     public ArrayList<Entity> entities = new ArrayList<>();
