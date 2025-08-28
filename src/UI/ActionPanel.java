@@ -204,6 +204,15 @@ public class ActionPanel extends VCSPanel {
         }else isRootSelected = false;
     }
 
+    public void disablePanel(){
+        selectedEntity = null;
+        selectedUnitLabel.setText("No unit selected.");
+        updateOrderButtonsState(false);
+        chooseActionLayout.show(chooseActionPanel, "empty");
+        isRootSelected = true;
+        clearCurrentOrderPanel();
+    }
+
     //for creating new button for each available targets based on their assigned sides
     public void createNewTargetButton(Entity entity){
         newTargetButton = new JButton(entity.getName());
@@ -294,7 +303,7 @@ public class ActionPanel extends VCSPanel {
     }
 
     private void updateDeleteButtonState(){
-        if (selectedEntity.equals(null)){
+        if (selectedEntity == null){
             selectedOrderDeleteButton.setEnabled(false);
             return;
         }

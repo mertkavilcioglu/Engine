@@ -13,6 +13,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.util.HashMap;
 
@@ -154,11 +155,23 @@ public class HierarchyView extends VCSPanel {
 
     }
 
+    public void selectNode(Entity key){
+        if(key != null){
+            TreePath path = new TreePath(leaves.get(key).getRoot().getPath());
+            tree.setSelectionPath(path);
+        }
+    }
+
+    public void clearSelectionInTree(){
+        tree.clearSelection();
+    }
+
     @Override
     public void selectedEntityChanged(Entity entity) {
         System.out.println("EditorView::selectedEntityChanged");
     }
 }
+
 
 //DefaultMutableTreeNode Mert = new DefaultMutableTreeNode("Mert");
 //DefaultMutableTreeNode Emir = new DefaultMutableTreeNode("Emir");
