@@ -108,7 +108,7 @@ public class Entity {
         }
 
 
-        System.out.format("Entity::update - %s - time: %d\n", this, deltaTime);
+        //System.out.format("Entity::update - %s - time: %d\n", this, deltaTime);
         for (int i = 0; i < components.size(); i++) {
             components.get(i).update(deltaTime);
         }

@@ -129,7 +129,9 @@ public class VCSApp {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                int delta = 2000;
+                int delta = 1000;
+                int x = 0;
+
                 Timer timer = new Timer(delta, new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -149,6 +151,15 @@ public class VCSApp {
                     }
                 });
                 timer.start();
+
+                Timer timer2 = new Timer(500, new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                        System.out.println(Thread.currentThread().getName());
+                    }
+                });
+                //timer2.start();
             }
         });
     }

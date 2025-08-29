@@ -26,14 +26,14 @@ public class Radar extends Component {
             Vec2int p = entities.get(i).pos;
             double dist = parentEntity.pos.distance(p);
             if(dist <= range) {
-                System.out.format("ComponentRadar::update Unit %s has detected unit %s - distance: %.2f.\n",
-                        parentEntity.name.toUpperCase(), entities.get(i).name.toUpperCase(),
-                        dist);
+                //System.out.format("ComponentRadar::update Unit %s has detected unit %s - distance: %.2f.\n",
+                //        parentEntity.name.toUpperCase(), entities.get(i).name.toUpperCase(),
+                //        dist);
                 hasVisual = true;
             }
         }
-        if(!hasVisual)
-            System.out.format("ComponentRadar::update Unit %s has no detection.\n", parentEntity.name.toUpperCase());
+        if(!hasVisual);
+            //System.out.format("ComponentRadar::update Unit %s has no detection.\n", parentEntity.name.toUpperCase());
     }
 
     @Override

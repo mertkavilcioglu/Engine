@@ -36,7 +36,7 @@ public class PixelColor {
     public void update(int deltaTime){
         for(Entity e : app.world.entities){
             e.setColor(PixelColorFind(e.getPos().x, e.getPos().y));
-            System.out.println(e.getColor());
+            //System.out.println(e.getColor());
         }
     }
 
