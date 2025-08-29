@@ -198,7 +198,7 @@ public class MapView extends VCSPanel {
                 //g.drawString("HOVERED", pos.x, pos.y);
                 g.drawOval(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
             }
-            else if(isHovered || selectedEntity == e){
+            else if(selectedEntity == e){
                 g.drawRect(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
             }
 

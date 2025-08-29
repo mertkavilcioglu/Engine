@@ -55,7 +55,7 @@ public class HierarchyView extends VCSPanel {
     private DefaultMutableTreeNode createNode(Entity e){
         DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(e.getName());
 
-        DefaultMutableTreeNode sideNode = new DefaultMutableTreeNode(e.getSideasName());
+        DefaultMutableTreeNode sideNode = new DefaultMutableTreeNode(e.getSideAsName());
         DefaultMutableTreeNode posNode = new DefaultMutableTreeNode("Pos:");
         DefaultMutableTreeNode posXnode = new DefaultMutableTreeNode("X: " + e.getPos().x);
         DefaultMutableTreeNode posYnode = new DefaultMutableTreeNode("Y: " + e.getPos().y);
@@ -135,6 +135,8 @@ public class HierarchyView extends VCSPanel {
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
             if (node.isRoot()){
                 app.actionPanel.whenRootSelected(nodeInfo);
+                app.mapView.setSelectedEntity(null);
+
                 return null;
             }
             return searchForEntity(parent);
