@@ -18,9 +18,11 @@ public class Entity {
     private NodeInfo nodeInfo;
     private Queue<Order> orders = new LinkedList<>();
     private Order currentOrder = null;
+    private boolean isCurrentOrderDone = false;
     public int maxSpeed;
     private Vec2int nextPos;
     private RGB nextPosPixelColor = new RGB();
+    private RGB posPixelColor = new RGB();
     //TODO current order tutulsun
     //TODO entity içinde orderda kullanılan değişkenleri tut
 
@@ -47,30 +49,59 @@ public class Entity {
 
     public void completeCurrentOrder(){
         orders.poll();
-            currentOrder = orders.peek();
+        currentOrder = orders.peek();
+        isCurrentOrderDone = true;
     }
+    //TODO
+    public Vec2int nextStep(Vec2int pos){
+        posPixelColor =w.app.mapView.allPixelColors.get(pos.toString());
+        Vec2int newPos = new Vec2int(pos.x,pos.y);
 
+        if(!(posPixelColor != null &&CanMove(posPixelColor,type))){
+            speed.x = 0;
+            speed.y=0;
+
+        }else {
+
+            for (int i = 1; i < 100; i++) {
+                newPos.x += 1;
+
+                newPos.y += 1;
+
+                posPixelColor = w.app.mapView.allPixelColors.get(newPos.toString());
+
+                if (!(posPixelColor != null && CanMove(posPixelColor, type))) {
+                    break;
+                }
+
+
+            }
+        }
+
+        return newPos;
+    }
     void update(int deltaTime) {
         if(!orders.isEmpty() && currentOrder != null)
             currentOrder.update();
         nextPos = new Vec2int(pos.x + speed.x , pos.y - speed.y);
-        pos = nextPos;
-        /*
+
         nextPosPixelColor = w.app.mapView.allPixelColors.get(nextPos.toString());
         if(nextPosPixelColor != null && CanMove(nextPosPixelColor,type)){
             pos = nextPos;
         }else {
-            speed.x=0;
-            speed.y=0;
-        }
-*/
+            pos = nextStep(pos);
 
-        /*
+        }
+
+
+/*
         if(CanMove(currentPixelColor,type)){
 
         }
 
-         */
+ */
+
+
         if(pos.x <= 0){
             pos.x = 0;
             speed.x = 0;
@@ -112,10 +143,8 @@ public class Entity {
         for (int i = 0; i < components.size(); i++) {
             components.get(i).update(deltaTime);
         }
-
-//        if(!orders.isEmpty() && currentOrder != null)
-//            currentOrder.update();
     }
+
     public boolean CanMove(RGB rgb, String type) {
 
         if((rgb.r == 93 && rgb.g == 94 && rgb.b == 97) && (Objects.equals(type, "Tank"))){
@@ -129,10 +158,14 @@ public class Entity {
         }
         return false;
     }
+    
     public Queue<Order> getOrders(){
         return orders;
     }
 
+    public boolean getCurrentOrderState(){
+        return isCurrentOrderDone;
+    }
     //To access and change content of Entity from other packages.
 
     public String getName(){
@@ -192,7 +225,7 @@ public class Entity {
         return list;
     }
 
-    public String getSideasName(){
+    public String getSideAsName(){
         String sideName = "";
         if (side == 0) {
             sideName = "Ally";

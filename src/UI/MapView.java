@@ -204,8 +204,8 @@ public class MapView extends VCSPanel {
     }
 
     public void locateAllPixels(BufferedImage bImage, Vec2int pos, RGB color){
-        return;
-        /*
+        //return;
+
         for(int y=0; y < bImage.getHeight(); y++) {
             for (int x = 0; x < bImage.getWidth(); x++) {
                 pos = new Vec2int(x,y);
@@ -222,6 +222,6 @@ public class MapView extends VCSPanel {
                 System.out.println();
             }
         }
-        */
+
     }
 }
