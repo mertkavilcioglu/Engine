@@ -28,7 +28,7 @@ public class MapView extends VCSPanel {
     Image enemySea = new ImageIcon("src/Assets/Symbols/nato_enemy_sea.png").getImage();
     int targetWidth = 19;
 
-    private Vec2int pixPos;
+    private Vec2int pixPos = new Vec2int();
     private Queue<Entity> hoveredEntities = new LinkedList<>();
 
     public MapView(VCSApp app) {
