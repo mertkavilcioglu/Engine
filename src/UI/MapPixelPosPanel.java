@@ -28,24 +28,17 @@ public class MapPixelPosPanel extends VCSPanel{
         this.setPreferredSize(new Dimension(80,20));
     }
 
-//    public void setPixelPos(Vec2int p){
-//        this.pixelPos = p;
-//    }
-
-    // TODO accept null??
-    public void showPixel(Vec2int p){
+    public void showPixelPosOfCursor(Vec2int p){
         this.pixelPos = p;
-        if (pixelPos.equals(null)) return;
-        labelX.setText(" x: " + pixelPos.x);
-        labelY.setText(" y: " + pixelPos.y);
-    }
+        if (pixelPos == null){
+            labelX.setText("x: ");
+            labelY.setText("y: ");
+        }else {
+            labelX.setText(" x: " + pixelPos.x);
+            labelY.setText(" y: " + pixelPos.y);
+        }
 
-    // TODO yok ol
-    public void nullPixel(){
-        labelX.setText("x: ");
-        labelY.setText("y: ");
     }
-
 
     @Override
     public void selectedEntityChanged(Entity entity) {
