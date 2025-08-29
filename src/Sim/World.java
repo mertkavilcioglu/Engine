@@ -5,6 +5,7 @@ import UI.MapView;
 import Vec.Vec2int;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class World{
     public final VCSApp app;
@@ -17,12 +18,31 @@ public class World{
     public ArrayList<Entity> entities = new ArrayList<>();
     public ArrayList<Entity> entitiesToRemove = new ArrayList<>();
 
+    public Entity createEntity2(String name, int side) {
+        Entity ent = new Entity(this);
+        ent.setName(name);
+        ent.setSide(side);
+        ent.setPos(new Vec2int(100,100));
+        Vec2int speed = ThreadLocalRandom.current().nextInt() % 2 == 0 ? new Vec2int(4,4) : new Vec2int(-4,-4);
+        ent.setSpeed(speed);
+        Radar r = new Radar(ent,entities);
+        ent.addComponents(r);
+        ent.type = "Plane";
+
+        ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
+        if(ent.maxSpeed == 0)
+            ent.maxSpeed = 4;
+
+        entities.add(ent);
+        return ent;
+    }
+
     public Entity createEntity(String name, int side) {
         Entity ent = new Entity(this);
         ent.setName(name);
         ent.setSide(side);
         ent.setPos(Vec2int.getRandom(map.maxX / 8 ,map.maxY / 6));
-        ent.setSpeed(Vec2int.getRandom(0,4,0,4));
+        ent.setSpeed(Vec2int.getRandom(-4,4,-4,4));
         Radar r = new Radar(ent,entities);
         ent.addComponents(r);
         ent.type = "Plane";
@@ -67,7 +87,7 @@ public class World{
     }
 
     public void update(int deltaTime) {
-        System.out.println(Thread.currentThread().getName());
+        System.out.println("World::update - THREAD : " + Thread.currentThread().getName());
         //System.out.println("Sim.World::update");
         for (int i = 0; i < entities.size(); i++) {
             entities.get(i).update(deltaTime);

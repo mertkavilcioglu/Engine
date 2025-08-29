@@ -103,19 +103,19 @@ public class VCSApp {
 
         window.setVisible(true);
 
-        Entity mert = world.createEntity("Mert", 1);
+        Entity mert = world.createEntity2("Mert", 1);
         hierarchyPanel.entityAdded(mert);
         actionPanel.createNewTargetButton(mert);
 
-        Entity emir = world.createEntity("Emir", 0);
+        Entity emir = world.createEntity2("Emir", 0);
         hierarchyPanel.entityAdded(emir);
         actionPanel.createNewTargetButton(emir);
 
-        Entity seda = world.createEntity("Seda", 0);
+        Entity seda = world.createEntity2("Seda", 0);
         hierarchyPanel.entityAdded(seda);
         actionPanel.createNewTargetButton(seda);
 
-        Entity hasan = world.createEntity("Hasan", 0);
+        Entity hasan = world.createEntity2("Hasan", 0);
         hierarchyPanel.entityAdded(hasan);
         actionPanel.createNewTargetButton(hasan);
 
@@ -124,17 +124,20 @@ public class VCSApp {
         GetInput input = new GetInput();
         input.readInput("src/Assets/data.txt");
 
+        // TODO niye tüm threadler aynı bi düsün
+        // TODO Bunu direk Thread olarak calıstırırsak ne olur?
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Timer timer = new Timer(1000, new AbstractAction() {
+                int delta = 2000;
+                Timer timer = new Timer(delta, new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        System.out.println("Timer::update - THREAD : " + Thread.currentThread().getName());
                         // update world
-
-                        pixelColor.update(1000);
-                        world.update(1000);
-                        hierarchyPanel.update(1000);
+                        world.update(delta);
+                        pixelColor.update(delta);
+                        hierarchyPanel.update(delta);
                         //actionPanel.update(1000);
                         //isEntitySelected();
                         // render world

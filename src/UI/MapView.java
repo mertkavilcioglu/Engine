@@ -68,27 +68,26 @@ public class MapView extends VCSPanel {
  */
 
 
+        // TODO add enter listener (niye gerekir bi dusunelim)
+
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
+                System.out.println("MapView::mouseMoved - THREAD : " + Thread.currentThread().getName());
                 pixPos = new Vec2int(e.getX(), e.getY());
                 app.mapPixelPosPanel.showPixel(pixPos);
 
                 ///////////////////////////////////////////////////////////
                 //TODO: burası böyle kalmasın
-                for(Entity ent : app.world.entities){
-                    if(ent.getPos().distance(pixPos) < targetWidth/2){
-                        if(!hoveredEntities.contains(ent))
-                            hoveredEntities.add(ent);
-                    }
-                    else
-                        hoveredEntities.remove(ent);
-                }
+
+
+
             }
         });
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
+                System.out.println("MapView::mouseExited - THREAD : " + Thread.currentThread().getName());
                 app.mapPixelPosPanel.nullPixel();
             }
         });
@@ -96,10 +95,10 @@ public class MapView extends VCSPanel {
         addMouseListener(new MouseInputAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                System.out.println("MapView::mousePressed - THREAD : " + Thread.currentThread().getName());
                 if(!hoveredEntities.isEmpty()){
-                    Entity topEntity = hoveredEntities.peek();
+                    Entity topEntity = hoveredEntities.poll();
                     app.actionPanel.selectedUnit(topEntity);
-                    hoveredEntities.remove(topEntity);
                     hoveredEntities.add(topEntity);
 
                     app.hierarchyPanel.selectNode(topEntity);
@@ -123,10 +122,28 @@ public class MapView extends VCSPanel {
     public void paint(Graphics g) {
         super.paint(g);
 
+        System.out.println("MapView::paint - THREAD : " + Thread.currentThread().getName());
+
+        hoveredEntities.clear();
+        for(Entity ent : app.world.entities){
+            if(ent.getPos().distance(pixPos) < targetWidth/2){
+                //if(!hoveredEntities.contains(ent))
+                hoveredEntities.add(ent);
+            }
+            //else
+            //    hoveredEntities.remove(ent);
+        }
+
         for (int i = 0; i < world.entities.size(); i++) {
+
             Entity e = world.entities.get(i);
+            boolean isHovered = hoveredEntities.contains(e);
             Vec2int pos = e.getPos();
             String name = e.getName();
+
+            int half = targetWidth / 2;
+            g.setColor(Color.GREEN);
+            g.fillRect(pos.x - half, pos.y - half, targetWidth, targetWidth);
 
             FontMetrics fontMetric = g.getFontMetrics();
             int textLength = fontMetric.stringWidth(name);
@@ -158,9 +175,15 @@ public class MapView extends VCSPanel {
                     drawNormalizedImageByWidth(g, enemySea, pos, targetWidth);
             }
 
-
+// TODO reuse font instance
             g.setFont(new Font("Times New Roman", Font.PLAIN, 10 ));
             g.drawString(name, textX, textY);
+
+            if (isHovered) {
+                //g.drawString("HOVERED", pos.x, pos.y);
+                g.drawOval(pos.x, pos.y, targetWidth,targetWidth);
+            }
+
 
             //g.setColor(Color.GREEN);
             //g.drawRect(pos.x, pos.y, 1,1);
@@ -175,6 +198,8 @@ public class MapView extends VCSPanel {
     }
 
     public void locateAllPixels(BufferedImage bImage, Vec2int pos, RGB color){
+        return;
+        /*
         for(int y=0; y < bImage.getHeight(); y++) {
             for (int x = 0; x < bImage.getWidth(); x++) {
                 pos = new Vec2int(x,y);
@@ -191,5 +216,6 @@ public class MapView extends VCSPanel {
                 System.out.println();
             }
         }
+        */
     }
 }

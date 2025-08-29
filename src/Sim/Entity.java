@@ -54,6 +54,8 @@ public class Entity {
         if(!orders.isEmpty() && currentOrder != null)
             currentOrder.update();
         nextPos = new Vec2int(pos.x + speed.x , pos.y - speed.y);
+        pos = nextPos;
+        /*
         nextPosPixelColor = w.app.mapView.allPixelColors.get(nextPos.toString());
         if(nextPosPixelColor != null && CanMove(nextPosPixelColor,type)){
             pos = nextPos;
@@ -61,7 +63,7 @@ public class Entity {
             speed.x=0;
             speed.y=0;
         }
-
+*/
 
         /*
         if(CanMove(currentPixelColor,type)){
