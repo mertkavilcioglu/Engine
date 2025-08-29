@@ -30,6 +30,7 @@ public class MapView extends VCSPanel {
     Image enemySea = new ImageIcon("src/Assets/Symbols/nato_enemy_sea.png").getImage();
     int targetWidth = 19;
     Font timesNewRoman = new Font("Times New Roman", Font.PLAIN, 10 );
+    boolean isMouseEntered = false;
 
     private Vec2int pixPos = new Vec2int();
     private Queue<Entity> hoveredEntities = new LinkedList<>();
@@ -70,41 +71,50 @@ public class MapView extends VCSPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                //when mouse moved around the map
-                addMouseMotionListener(new MouseMotionAdapter() {
-                    @Override
-                    public void mouseMoved(MouseEvent e) {
-                        System.out.println("MapView::mouseMoved - THREAD : " + Thread.currentThread().getName());
-                        pixPos = new Vec2int(e.getX(), e.getY());
-                        app.mapPixelPosPanel.showPixelPosOfCursor(pixPos);
-                    }
-                });
-                //when mouse click an entity
-                addMouseListener(new MouseInputAdapter() {
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        System.out.println("MapView::mousePressed - THREAD : " + Thread.currentThread().getName());
-                        if (!hoveredEntities.isEmpty()) {
-                            Entity topEntity = hoveredEntities.poll();
-                            app.actionPanel.selectedUnit(topEntity);
-                            hoveredEntities.add(topEntity);
+                isMouseEntered = true;
+            }
+        });
 
-                            app.hierarchyPanel.selectNode(topEntity);
+        //when mouse moved around the map
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                if (isMouseEntered){
+                    System.out.println("MapView::mouseMoved - THREAD : " + Thread.currentThread().getName());
+                    pixPos = new Vec2int(e.getX(), e.getY());
+                    app.mapPixelPosPanel.showPixelPosOfCursor(pixPos);
+                }
+            }
+        });
+        //when mouse click an entity
+        addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (isMouseEntered){
+                    System.out.println("MapView::mousePressed - THREAD : " + Thread.currentThread().getName());
+                    if (!hoveredEntities.isEmpty()) {
+                        Entity topEntity = hoveredEntities.poll();
+                        app.actionPanel.selectedUnit(topEntity);
+                        hoveredEntities.add(topEntity);
 
-                        } else {
-                            app.actionPanel.disablePanel();
-                            app.hierarchyPanel.clearSelectionInTree();
-                        }
+                        app.hierarchyPanel.selectNode(topEntity);
+
+                    } else {
+                        app.actionPanel.disablePanel();
+                        app.hierarchyPanel.clearSelectionInTree();
                     }
-                });
-                //when mouse exit the map
-                addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-                        System.out.println("MapView::mouseExited - THREAD : " + Thread.currentThread().getName());
-                        app.mapPixelPosPanel.showPixelPosOfCursor(null);
-                    }
-                });
+                }
+            }
+        });
+        //when mouse exit the map
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (isMouseEntered){
+                    System.out.println("MapView::mouseExited - THREAD : " + Thread.currentThread().getName());
+                    app.mapPixelPosPanel.showPixelPosOfCursor(null);
+                    isMouseEntered = false;
+                }
             }
         });
 
