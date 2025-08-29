@@ -237,4 +237,9 @@ public class MapView extends VCSPanel {
         }
         */
     }
+
+    public void setSelectedEntity(Entity e){
+        selectedEntity = e;
+        repaint();
+    }
 }

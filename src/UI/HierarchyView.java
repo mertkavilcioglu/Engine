@@ -46,6 +46,7 @@ public class HierarchyView extends VCSPanel {
                 if (entityFound == null) return;
 
                 app.actionPanel.selectedUnit(entityFound);
+                app.mapView.setSelectedEntity(entityFound);
             }
         });
         add(tree, BorderLayout.CENTER);
