@@ -35,6 +35,8 @@ public class MapView extends VCSPanel {
     private Vec2int pixPos = new Vec2int();
     private Queue<Entity> hoveredEntities = new LinkedList<>();
 
+    private Entity selectedEntity;
+
     public MapView(VCSApp app) {
         super(app);
         this.world = app.world;
@@ -83,6 +85,7 @@ public class MapView extends VCSPanel {
                     System.out.println("MapView::mouseMoved - THREAD : " + Thread.currentThread().getName());
                     pixPos = new Vec2int(e.getX(), e.getY());
                     app.mapPixelPosPanel.showPixelPosOfCursor(pixPos);
+                    repaint();
                 }
             }
         });
@@ -95,6 +98,7 @@ public class MapView extends VCSPanel {
                     if (!hoveredEntities.isEmpty()) {
                         Entity topEntity = hoveredEntities.poll();
                         app.actionPanel.selectedUnit(topEntity);
+                        selectedEntity = topEntity;
                         hoveredEntities.add(topEntity);
 
                         app.hierarchyPanel.selectNode(topEntity);
@@ -102,7 +106,9 @@ public class MapView extends VCSPanel {
                     } else {
                         app.actionPanel.disablePanel();
                         app.hierarchyPanel.clearSelectionInTree();
+                        selectedEntity = null;
                     }
+                    repaint();
                 }
             }
         });
@@ -129,17 +135,16 @@ public class MapView extends VCSPanel {
     public void paint(Graphics g) {
         super.paint(g);
 
-        System.out.println("MapView::paint - THREAD : " + Thread.currentThread().getName());
-
-        hoveredEntities.clear();
         for(Entity ent : app.world.entities){
-            if(ent.getPos().distance(pixPos) < targetWidth/2){
-                //if(!hoveredEntities.contains(ent))
-                hoveredEntities.add(ent);
+            if(ent.getPos().distance(pixPos) < targetWidth-targetWidth/3){
+                if(!hoveredEntities.contains(ent))
+                    hoveredEntities.add(ent);
             }
-            //else
-            //    hoveredEntities.remove(ent);
+            else
+                hoveredEntities.remove(ent);
         }
+
+        System.out.println("MapView::paint - THREAD : " + Thread.currentThread().getName());
 
         for (int i = 0; i < world.entities.size(); i++) {
 
@@ -148,9 +153,9 @@ public class MapView extends VCSPanel {
             Vec2int pos = e.getPos();
             String name = e.getName();
 
-            int half = targetWidth / 2;
-            g.setColor(Color.GREEN);
-            g.fillRect(pos.x - half, pos.y - half, targetWidth, targetWidth);
+//            int half = targetWidth / 2;
+//            g.setColor(Color.GREEN);
+//            g.fillRect(pos.x - half, pos.y - half, targetWidth, targetWidth);
 
             FontMetrics fontMetric = g.getFontMetrics();
             int textLength = fontMetric.stringWidth(name);
@@ -185,10 +190,18 @@ public class MapView extends VCSPanel {
             g.setFont(timesNewRoman);
             g.drawString(name, textX, textY);
 
-            if (isHovered) {
+            int targetWidthForHover = targetWidth + targetWidth*11/16;
+            int half = targetWidthForHover / 2;
+
+
+            if (isHovered && (selectedEntity == null || selectedEntity != e)) {
                 //g.drawString("HOVERED", pos.x, pos.y);
-                g.drawOval(pos.x, pos.y, targetWidth,targetWidth);
+                g.drawOval(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
             }
+            else if(isHovered || selectedEntity == e){
+                g.drawRect(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
+            }
+
 
 
             //g.setColor(Color.GREEN);
