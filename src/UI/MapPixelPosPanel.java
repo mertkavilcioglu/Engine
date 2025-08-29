@@ -32,6 +32,7 @@ public class MapPixelPosPanel extends VCSPanel{
 //        this.pixelPos = p;
 //    }
 
+    // TODO accept null??
     public void showPixel(Vec2int p){
         this.pixelPos = p;
         if (pixelPos.equals(null)) return;
@@ -39,6 +40,7 @@ public class MapPixelPosPanel extends VCSPanel{
         labelY.setText(" y: " + pixelPos.y);
     }
 
+    // TODO yok ol
     public void nullPixel(){
         labelX.setText("x: ");
         labelY.setText("y: ");

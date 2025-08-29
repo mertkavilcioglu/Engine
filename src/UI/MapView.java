@@ -13,13 +13,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.time.Year;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
 
 
 public class MapView extends VCSPanel {
     private World world;
-    Map<String, RGB> allPixelColors;
-
+    public Map<String, RGB> allPixelColors;
     Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
     Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
     Image friendlySea = new ImageIcon("src/Assets/Symbols/nato_friendly_sea.png").getImage();
@@ -36,14 +39,14 @@ public class MapView extends VCSPanel {
         this.world = app.world;
         setBackground(Color.WHITE);
 
-        ImageIcon mapImage = new ImageIcon(new ImageIcon("src/Assets/map3.png").getImage().getScaledInstance(app.world.map.maxX, app.world.map.maxY,Image.SCALE_DEFAULT));
-        Image img = mapImage.getImage();
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Assets/map3.png").getImage().getScaledInstance(app.world.map.maxX, app.world.map.maxY,Image.SCALE_DEFAULT));
+        Image img = imageIcon.getImage();
         BufferedImage bImage = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bImage.createGraphics();
         g.drawImage(img,0,0,null);
         g.dispose();
         JLabel label = new JLabel();
-        label.setIcon(mapImage);
+        label.setIcon(imageIcon);
 
         add(label);
 
@@ -53,8 +56,7 @@ public class MapView extends VCSPanel {
         RGB color = new RGB();
         allPixelColors = new HashMap<>();
 
-       // locateAllPixels(bImage, pos, color);
-
+        locateAllPixels(bImage, pos, color);
 /*
         Example usage of getting desired pixel color:
 
@@ -66,34 +68,37 @@ public class MapView extends VCSPanel {
  */
 
 
+        // TODO add enter listener (niye gerekir bi dusunelim)
+
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
+                System.out.println("MapView::mouseMoved - THREAD : " + Thread.currentThread().getName());
                 pixPos = new Vec2int(e.getX(), e.getY());
                 app.mapPixelPosPanel.showPixel(pixPos);
-                for(Entity ent : app.world.entities){
-                    if(ent.getPos().distance(pixPos) < targetWidth/2){
-                        if(!hoveredEntities.contains(ent))
-                            hoveredEntities.add(ent);
-                    }
-                    else
-                        hoveredEntities.remove(ent);
-                }
+
+                ///////////////////////////////////////////////////////////
+                //TODO: burası böyle kalmasın
+
+
+
             }
         });
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
+                System.out.println("MapView::mouseExited - THREAD : " + Thread.currentThread().getName());
                 app.mapPixelPosPanel.nullPixel();
             }
         });
+
         addMouseListener(new MouseInputAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                System.out.println("MapView::mousePressed - THREAD : " + Thread.currentThread().getName());
                 if(!hoveredEntities.isEmpty()){
-                    Entity topEntity = hoveredEntities.peek();
+                    Entity topEntity = hoveredEntities.poll();
                     app.actionPanel.selectedUnit(topEntity);
-                    hoveredEntities.remove(topEntity);
                     hoveredEntities.add(topEntity);
 
                     app.hierarchyPanel.selectNode(topEntity);
@@ -117,10 +122,28 @@ public class MapView extends VCSPanel {
     public void paint(Graphics g) {
         super.paint(g);
 
+        System.out.println("MapView::paint - THREAD : " + Thread.currentThread().getName());
+
+        hoveredEntities.clear();
+        for(Entity ent : app.world.entities){
+            if(ent.getPos().distance(pixPos) < targetWidth/2){
+                //if(!hoveredEntities.contains(ent))
+                hoveredEntities.add(ent);
+            }
+            //else
+            //    hoveredEntities.remove(ent);
+        }
+
         for (int i = 0; i < world.entities.size(); i++) {
+
             Entity e = world.entities.get(i);
+            boolean isHovered = hoveredEntities.contains(e);
             Vec2int pos = e.getPos();
             String name = e.getName();
+
+            int half = targetWidth / 2;
+            g.setColor(Color.GREEN);
+            g.fillRect(pos.x - half, pos.y - half, targetWidth, targetWidth);
 
             FontMetrics fontMetric = g.getFontMetrics();
             int textLength = fontMetric.stringWidth(name);
@@ -133,7 +156,6 @@ public class MapView extends VCSPanel {
                 g.setColor(Color.red);
 
             //g.drawOval(pos.x-10, pos.y-10, 20, 20);
-
             if(e.getSide() == 0){
                 if(e.getType().equals("Plane"))
                     drawNormalizedImageByWidth(g, friendlyAir, pos, targetWidth);
@@ -153,9 +175,15 @@ public class MapView extends VCSPanel {
                     drawNormalizedImageByWidth(g, enemySea, pos, targetWidth);
             }
 
-
+// TODO reuse font instance
             g.setFont(new Font("Times New Roman", Font.PLAIN, 10 ));
             g.drawString(name, textX, textY);
+
+            if (isHovered) {
+                //g.drawString("HOVERED", pos.x, pos.y);
+                g.drawOval(pos.x, pos.y, targetWidth,targetWidth);
+            }
+
 
             //g.setColor(Color.GREEN);
             //g.drawRect(pos.x, pos.y, 1,1);
@@ -170,6 +198,8 @@ public class MapView extends VCSPanel {
     }
 
     public void locateAllPixels(BufferedImage bImage, Vec2int pos, RGB color){
+        return;
+        /*
         for(int y=0; y < bImage.getHeight(); y++) {
             for (int x = 0; x < bImage.getWidth(); x++) {
                 pos = new Vec2int(x,y);
@@ -186,6 +216,6 @@ public class MapView extends VCSPanel {
                 System.out.println();
             }
         }
+        */
     }
-
 }
