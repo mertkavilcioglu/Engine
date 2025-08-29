@@ -13,7 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.time.Year;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -30,6 +29,7 @@ public class MapView extends VCSPanel {
     Image enemyLand = new ImageIcon("src/Assets/Symbols/nato_enemy_land.png").getImage();
     Image enemySea = new ImageIcon("src/Assets/Symbols/nato_enemy_sea.png").getImage();
     int targetWidth = 19;
+    Font timesNewRoman = new Font("Times New Roman", Font.PLAIN, 10 );
 
     private Vec2int pixPos = new Vec2int();
     private Queue<Entity> hoveredEntities = new LinkedList<>();
@@ -39,11 +39,11 @@ public class MapView extends VCSPanel {
         this.world = app.world;
         setBackground(Color.WHITE);
 
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Assets/map3.png").getImage().getScaledInstance(app.world.map.maxX, app.world.map.maxY,Image.SCALE_DEFAULT));
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Assets/map3.png").getImage().getScaledInstance(app.world.map.maxX, app.world.map.maxY, Image.SCALE_DEFAULT));
         Image img = imageIcon.getImage();
-        BufferedImage bImage = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_INT_RGB);
+        BufferedImage bImage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bImage.createGraphics();
-        g.drawImage(img,0,0,null);
+        g.drawImage(img, 0, 0, null);
         g.dispose();
         JLabel label = new JLabel();
         label.setIcon(imageIcon);
@@ -67,51 +67,48 @@ public class MapView extends VCSPanel {
 
  */
 
-
-        // TODO add enter listener (niye gerekir bi dusunelim)
-
-        addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                System.out.println("MapView::mouseMoved - THREAD : " + Thread.currentThread().getName());
-                pixPos = new Vec2int(e.getX(), e.getY());
-                app.mapPixelPosPanel.showPixel(pixPos);
-
-                ///////////////////////////////////////////////////////////
-                //TODO: burası böyle kalmasın
-
-
-
-            }
-        });
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseExited(MouseEvent e) {
-                System.out.println("MapView::mouseExited - THREAD : " + Thread.currentThread().getName());
-                app.mapPixelPosPanel.nullPixel();
+            public void mouseEntered(MouseEvent e) {
+                //when mouse moved around the map
+                addMouseMotionListener(new MouseMotionAdapter() {
+                    @Override
+                    public void mouseMoved(MouseEvent e) {
+                        System.out.println("MapView::mouseMoved - THREAD : " + Thread.currentThread().getName());
+                        pixPos = new Vec2int(e.getX(), e.getY());
+                        app.mapPixelPosPanel.showPixelPosOfCursor(pixPos);
+                    }
+                });
+                //when mouse click an entity
+                addMouseListener(new MouseInputAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        System.out.println("MapView::mousePressed - THREAD : " + Thread.currentThread().getName());
+                        if (!hoveredEntities.isEmpty()) {
+                            Entity topEntity = hoveredEntities.poll();
+                            app.actionPanel.selectedUnit(topEntity);
+                            hoveredEntities.add(topEntity);
+
+                            app.hierarchyPanel.selectNode(topEntity);
+
+                        } else {
+                            app.actionPanel.disablePanel();
+                            app.hierarchyPanel.clearSelectionInTree();
+                        }
+                    }
+                });
+                //when mouse exit the map
+                addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        System.out.println("MapView::mouseExited - THREAD : " + Thread.currentThread().getName());
+                        app.mapPixelPosPanel.showPixelPosOfCursor(null);
+                    }
+                });
             }
         });
 
-        addMouseListener(new MouseInputAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                System.out.println("MapView::mousePressed - THREAD : " + Thread.currentThread().getName());
-                if(!hoveredEntities.isEmpty()){
-                    Entity topEntity = hoveredEntities.poll();
-                    app.actionPanel.selectedUnit(topEntity);
-                    hoveredEntities.add(topEntity);
-
-                    app.hierarchyPanel.selectNode(topEntity);
-
-                }
-                else{
-                    app.actionPanel.disablePanel();
-                    app.hierarchyPanel.clearSelectionInTree();
-                }
-            }
-        });
     }
-
 
     @Override
     public void selectedEntityChanged(Entity entity) {
@@ -174,9 +171,8 @@ public class MapView extends VCSPanel {
                 else if(e.getType().equals("Ship"))
                     drawNormalizedImageByWidth(g, enemySea, pos, targetWidth);
             }
-
-// TODO reuse font instance
-            g.setFont(new Font("Times New Roman", Font.PLAIN, 10 ));
+            
+            g.setFont(timesNewRoman);
             g.drawString(name, textX, textY);
 
             if (isHovered) {
