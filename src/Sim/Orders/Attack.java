@@ -70,4 +70,9 @@ public class Attack extends Order{
     public String createTextToPrint() {
         return String.format("Attack %s\n", targetEntity.toString());
     }
+
+    @Override
+    public String toString(){
+        return String.format("Attack order");
+    }
 }

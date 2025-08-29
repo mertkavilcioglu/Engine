@@ -10,6 +10,7 @@ import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,8 +41,14 @@ public class ActionPanel extends VCSPanel {
 
     //follow part of middle panel
     private JPanel followPanel;
+    private JComboBox<String> followTargetBox;
+    private DefaultComboBoxModel<String> followTargetData;
+    private JLabel followTimeLabel;
+    private JTextField followTimeText;
+    private JButton followCreateButton;
     private Map<Entity, JButton> allUnitsButtons = new HashMap<>();
     private ArrayList<Entity> allCreatedEntites = new ArrayList<>();
+    private ArrayList<Entity> followEntityList = new ArrayList<>();
 
     //right panel
     private JPanel currentOrderPanel;
@@ -101,6 +108,43 @@ public class ActionPanel extends VCSPanel {
         followPanel = new JPanel();
         followPanel.setLayout(new BoxLayout(followPanel, BoxLayout.Y_AXIS));
         followPanel.setBorder(new TitledBorder("Choose Unit to Follow: "));
+        JPanel comboPanel = new JPanel(new BorderLayout());
+        followTargetData = new DefaultComboBoxModel<>();
+        followTargetBox = new JComboBox<>(followTargetData);
+        comboPanel.add(new JLabel("Target: "), BorderLayout.WEST);
+        comboPanel.add(followTargetBox, BorderLayout.CENTER);
+        JPanel timePanel = new JPanel(new FlowLayout());
+        followTimeLabel = new JLabel("Follow Time(s):");
+        followTimeText = new JTextField(10);
+        timePanel.add(followTimeLabel);
+        timePanel.add(followTimeText);
+        JPanel createButtonPanel = new JPanel();
+        followCreateButton = new JButton("Follow");
+        followCreateButton.setFocusable(false);
+        followCreateButton.addActionListener(e -> {
+            if (selectedEntity == null) return;
+
+            int followIndex = followTargetBox.getSelectedIndex();
+            if ((followIndex < 0 && followIndex >= followEntityList.size())) return;
+
+            Entity choosenEntity = followEntityList.get(followIndex);
+
+            int followTime;
+            try {
+                followTime = Integer.parseInt(followTimeText.getText().trim());
+                if (followTime < 0){ followTime = 0; }
+            } catch (NumberFormatException ex) {
+                followTime = 0;
+            }
+            selectedEntity.addOrder(new Follow(app, selectedEntity, choosenEntity, followTime));
+            refreshCurrentOrderPanel();
+        });
+        createButtonPanel.add(followCreateButton);
+        followPanel.add(comboPanel);
+        followPanel.add(Box.createVerticalStrut(8));
+        followPanel.add(timePanel);
+        followPanel.add(Box.createVerticalStrut(8));
+        followPanel.add(createButtonPanel);
 
         chooseActionLayout = new CardLayout();
         chooseActionPanel = new JPanel(chooseActionLayout);
@@ -144,13 +188,21 @@ public class ActionPanel extends VCSPanel {
         followButton.addActionListener(e -> {
             isAttack = false;
             chooseActionLayout.show(chooseActionPanel, "follow");
-            for (int i = 0; i <= allCreatedEntites.size(); i++ ){
-                if (selectedEntity != allCreatedEntites.get(i)){
-                    followPanel.add(allUnitsButtons.get(allCreatedEntites.get(i)));
-                } else if (selectedEntity == allCreatedEntites.get(i)) {
-                    followPanel.remove(allUnitsButtons.get(allCreatedEntites.get(i)));
+            followTargetData.removeAllElements();
+            followEntityList.clear();
+            if (selectedEntity != null){
+                for (int i = 0; i < allCreatedEntites.size(); i++ ){
+                    if (selectedEntity != allCreatedEntites.get(i)){
+                        Entity ent = allCreatedEntites.get(i);
+                        followEntityList.add(ent);
+                        followTargetData.addElement(ent.getName());
+                        //followPanel.add(allUnitsButtons.get(allCreatedEntites.get(i)));
+                    } //else if (selectedEntity == allCreatedEntites.get(i)) {
+                      //  followPanel.remove(allUnitsButtons.get(allCreatedEntites.get(i)));
+                    //}
                 }
             }
+            followCreateButton.setEnabled((followTargetData.getSize() > 0 && selectedEntity != null));
         });
 
         //action listener for create move order
@@ -216,7 +268,8 @@ public class ActionPanel extends VCSPanel {
     //for creating new button for each available targets based on their assigned sides
     public void createNewTargetButton(Entity entity){
         newTargetButton = new JButton(entity.getName());
-        createFollowButtonList(entity);
+        allCreatedEntites.add(entity);
+        //createFollowButtonList(entity);
         if (entity.getSide() == 0){
             allyButtons.put(entity, newTargetButton);
             allyTargetPanel.add(newTargetButton);
@@ -243,17 +296,17 @@ public class ActionPanel extends VCSPanel {
         });
     }
 
-    private void createFollowButtonList(Entity entity){
-        JButton entityButton = new JButton(entity.getName());
-        allCreatedEntites.add(entity);
-        allUnitsButtons.put(entity, entityButton);
-        entityButton.addActionListener(e -> {
-            targetEntity = entity;
-            Entity followerEntity = selectedEntity;
-            followerEntity.addOrder(new Follow(app, followerEntity, targetEntity));
-            refreshCurrentOrderPanel();
-        });
-    }
+//    private void createFollowButtonList(Entity entity){
+//        JButton entityButton = new JButton(entity.getName());
+//        allCreatedEntites.add(entity);
+//        allUnitsButtons.put(entity, entityButton);
+//        entityButton.addActionListener(e -> {
+//            targetEntity = entity;
+//            Entity followerEntity = selectedEntity;
+//            followerEntity.addOrder(new Follow(app, followerEntity, targetEntity));
+//            refreshCurrentOrderPanel();
+//        });
+//    }
 
     //for deleting target button if it's entity destroyed with attack order
     public void deleteTargetButton(Entity entity){
@@ -270,7 +323,7 @@ public class ActionPanel extends VCSPanel {
                 enemyTargetPanel.remove(deletedButton);
         }
         deletedButton = allUnitsButtons.remove(entity);
-        followPanel.remove(deletedButton);
+        //followPanel.remove(deletedButton);
         revalidate();
         repaint();
     }
@@ -330,11 +383,13 @@ public class ActionPanel extends VCSPanel {
 
     private void deleteSelectedOrders(){
         ArrayList<Order> ordersToDelete = new ArrayList<>();
-        if (selectedEntity.equals(null)) return;
+        if (selectedEntity == null) return;
         for (int i = currentOrders.size()-1; i >= 0; i--){
             if (currentOrders.get(i).isSelected()){
                 Order delete = currentOrdersOfEntity.get(i);
                 ordersToDelete.add(delete);
+                String deleteLog = String.format("%s is deleted.", delete.toString());
+                app.log(deleteLog);
             }
         }
         selectedEntity.removeOrder(ordersToDelete);

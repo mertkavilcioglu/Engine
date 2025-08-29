@@ -60,4 +60,9 @@ public class Move extends Order{
     public String createTextToPrint() {
         return String.format("Move %s\n", destination.toString());
     }
+
+    @Override
+    public String toString(){
+        return String.format("Move order");
+    }
 }

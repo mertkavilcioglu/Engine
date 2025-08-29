@@ -15,6 +15,12 @@ public class Follow extends Order{
         super(app, src);
         this.targetEntity = target;
         this.followTime = time;
+        if (followTime == 0){
+            app.log(source.getName() + "'s follow order not started due to time problems.\n");
+            isExecute = true;
+            source.completeCurrentOrder();
+            return;
+        }
     }
 
     Entity findEntity(String trgtname) {
@@ -56,10 +62,13 @@ public class Follow extends Order{
                 app.log(reachString);
                 source.setSpeed(new Vec2int(0,0));
                 source.completeCurrentOrder();
+                return;
             }
             else{
                 String timeOutString = String.format("%s stopped following the target %s because time was out. \n", source.getName(), target.getName());
                 app.log(timeOutString);
+                source.completeCurrentOrder();
+                return;
             }
         }
 
@@ -75,13 +84,18 @@ public class Follow extends Order{
 
     @Override
     protected void actualUpdate() {
-        followEntity(targetEntity);
-        printToLog();
         numOfUpdate++;
+        printToLog();
+        followEntity(targetEntity);
     }
 
     @Override
     public String createTextToPrint() {
         return String.format("Follow %s\n", targetEntity.getName());
+    }
+
+    @Override
+    public String toString(){
+        return String.format("Follow order");
     }
 }
