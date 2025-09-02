@@ -43,6 +43,12 @@ public class VCSApp {
     private ArrayList<JLabel> entityNames = new ArrayList<>();
     public PixelColor pixelColor;
 
+    public Timer simTimer;
+    //TODO: mouse hareket ettikçe world render oluyor, bu render oyun durmuşken de mouse hareketinde
+    // devam ediyor. mouse hareketine gerek kalmadan, pause olunda da dünya render edilsin ki create
+    // entityler gözüksün anında.
+    // eğer düzgün çalışmazsa world render ile engine render'ı ayırman gerekebilir belki
+
     public void run() {
         System.out.println("App::run");
         boolean isWorking = true;
@@ -150,7 +156,9 @@ public class VCSApp {
                         renderToWindow();
                     }
                 });
-                timer.start();
+//                timer.start();
+                simTimer = timer;
+//                simTimer.start();
 
                 Timer timer2 = new Timer(500, new AbstractAction() {
                     @Override
