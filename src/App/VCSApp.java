@@ -138,7 +138,7 @@ public class VCSApp {
                 int delta = 1000;
                 int x = 0;
 
-                Timer timer = new Timer(delta, new AbstractAction() {
+                simTimer = new Timer(delta, new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         System.out.println("Timer::update - THREAD : " + Thread.currentThread().getName());
@@ -156,8 +156,8 @@ public class VCSApp {
                         renderToWindow();
                     }
                 });
-//                timer.start();
-                simTimer = timer;
+//                simTimer.start();
+                //simTimer = timer;
 //                simTimer.start();
 
                 Timer timer2 = new Timer(500, new AbstractAction() {
@@ -187,6 +187,7 @@ public class VCSApp {
         actionPanel.createNewTargetButton(ent);
         // diğer panellere bu entity'yi dağıt
         // log, attack vs.
+        mapView.repaint();
     }
 
     public void removeEntity(Entity e){

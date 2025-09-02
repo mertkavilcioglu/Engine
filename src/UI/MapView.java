@@ -70,7 +70,16 @@ public class MapView extends VCSPanel {
         desired.y = 435;
         System.out.println( allPixelColors.get(desired.toString()));
 
- */
+ */     JMenuItem ally = new JMenuItem("Ally");
+
+        JPopupMenu rightClickPopUpMenu = new JPopupMenu();
+        JMenuItem createEntity = new JMenuItem("Create Entity");
+        createEntity.addActionListener(e -> {
+            //TODO: CREATE ENTİTY /////////////////////////////////////////
+            createEntity.add(ally);
+        });
+        rightClickPopUpMenu.add(createEntity);
+
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -109,6 +118,10 @@ public class MapView extends VCSPanel {
                         app.actionPanel.disablePanel();
                         app.hierarchyPanel.clearSelectionInTree();
                         selectedEntity = null;
+                    }
+
+                    if(e.getButton() == MouseEvent.BUTTON3){
+                        rightClickPopUpMenu.show(e.getComponent(),e.getX(),e.getY());
                     }
                     repaint();
                 }
