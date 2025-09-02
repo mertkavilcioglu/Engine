@@ -53,28 +53,40 @@ public class Entity {
         isCurrentOrderDone = true;
     }
     //TODO
-    public Vec2int nextStep(Vec2int pos){
+    public Vec2int nextStep(Vec2int pos, Vec2int nextPos){
         posPixelColor =w.app.mapView.allPixelColors.get(pos.toString());
         Vec2int newPos = new Vec2int(pos.x,pos.y);
 
         if(!(posPixelColor != null &&CanMove(posPixelColor,type))){
             speed.x = 0;
-            speed.y=0;
+            speed.y = 0;
 
         }else {
 
             for (int i = 1; i < 100; i++) {
-                newPos.x += 1;
+                if(nextPos.x - pos.x < 0 && nextPos.y - pos.y < 0){
+                    newPos.x -= 1;
+                    newPos.y -= 1;
+                }
+                if(nextPos.x - pos.x > 0 && nextPos.y - pos.y < 0){
+                    newPos.x += 1;
+                    newPos.y -= 1;
+                }
+                if(nextPos.x - pos.x < 0 && nextPos.y - pos.y > 0){
+                    newPos.x -= 1;
+                    newPos.y += 1;
+                }
+                if(nextPos.x - pos.x > 0 && nextPos.y - pos.y > 0){
+                    newPos.x += 1;
+                    newPos.y += 1;
+                }
 
-                newPos.y += 1;
 
                 posPixelColor = w.app.mapView.allPixelColors.get(newPos.toString());
 
                 if (!(posPixelColor != null && CanMove(posPixelColor, type))) {
                     break;
                 }
-
-
             }
         }
 
@@ -89,7 +101,7 @@ public class Entity {
         if(nextPosPixelColor != null && CanMove(nextPosPixelColor,type)){
             pos = nextPos;
         }else {
-            pos = nextStep(pos);
+            pos = nextStep(pos, nextPos);
 
         }
 
@@ -158,7 +170,7 @@ public class Entity {
         }
         return false;
     }
-    
+
     public Queue<Order> getOrders(){
         return orders;
     }
