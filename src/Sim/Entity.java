@@ -22,6 +22,7 @@ public class Entity {
     public int maxSpeed;
     private Vec2int nextPos;
     private RGB nextPosPixelColor = new RGB();
+    private RGB posPixelColor = new RGB();
     //TODO current order tutulsun
     //TODO entity içinde orderda kullanılan değişkenleri tut
 
@@ -51,28 +52,68 @@ public class Entity {
         currentOrder = orders.peek();
         isCurrentOrderDone = true;
     }
+    //TODO
+    public Vec2int nextStep(Vec2int pos, Vec2int nextPos){
+        posPixelColor =w.app.mapView.allPixelColors.get(pos.toString());
+        Vec2int newPos = new Vec2int(pos.x,pos.y);
 
+        if(!(posPixelColor != null &&CanMove(posPixelColor,type))){
+            speed.x = 0;
+            speed.y = 0;
+
+        }else {
+
+            for (int i = 1; i < 100; i++) {
+                if(nextPos.x - pos.x < 0 && nextPos.y - pos.y < 0){
+                    newPos.x -= 1;
+                    newPos.y -= 1;
+                }
+                if(nextPos.x - pos.x > 0 && nextPos.y - pos.y < 0){
+                    newPos.x += 1;
+                    newPos.y -= 1;
+                }
+                if(nextPos.x - pos.x < 0 && nextPos.y - pos.y > 0){
+                    newPos.x -= 1;
+                    newPos.y += 1;
+                }
+                if(nextPos.x - pos.x > 0 && nextPos.y - pos.y > 0){
+                    newPos.x += 1;
+                    newPos.y += 1;
+                }
+
+
+                posPixelColor = w.app.mapView.allPixelColors.get(newPos.toString());
+
+                if (!(posPixelColor != null && CanMove(posPixelColor, type))) {
+                    break;
+                }
+            }
+        }
+
+        return newPos;
+    }
     void update(int deltaTime) {
         if(!orders.isEmpty() && currentOrder != null)
             currentOrder.update();
         nextPos = new Vec2int(pos.x + speed.x , pos.y - speed.y);
-        pos = nextPos;
-        /*
+
         nextPosPixelColor = w.app.mapView.allPixelColors.get(nextPos.toString());
         if(nextPosPixelColor != null && CanMove(nextPosPixelColor,type)){
             pos = nextPos;
         }else {
-            speed.x=0;
-            speed.y=0;
-        }
-*/
+            pos = nextStep(pos, nextPos);
 
-        /*
+        }
+
+
+/*
         if(CanMove(currentPixelColor,type)){
 
         }
 
-         */
+ */
+
+
         if(pos.x <= 0){
             pos.x = 0;
             speed.x = 0;
@@ -137,7 +178,6 @@ public class Entity {
     public boolean getCurrentOrderState(){
         return isCurrentOrderDone;
     }
-
     //To access and change content of Entity from other packages.
 
     public String getName(){
