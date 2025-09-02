@@ -46,6 +46,7 @@ public class HierarchyView extends VCSPanel {
                 if (entityFound == null) return;
 
                 app.actionPanel.selectedUnit(entityFound);
+                app.mapView.setSelectedEntity(entityFound);
             }
         });
         add(tree, BorderLayout.CENTER);
@@ -134,6 +135,8 @@ public class HierarchyView extends VCSPanel {
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
             if (node.isRoot()){
                 app.actionPanel.whenRootSelected(nodeInfo);
+                app.mapView.setSelectedEntity(null);
+
                 return null;
             }
             return searchForEntity(parent);
