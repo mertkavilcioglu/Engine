@@ -18,6 +18,7 @@ public class Entity {
     private NodeInfo nodeInfo;
     private Queue<Order> orders = new LinkedList<>();
     private Order currentOrder = null;
+    private boolean isCurrentOrderDone = false;
     public int maxSpeed;
     private Vec2int nextPos;
     private RGB nextPosPixelColor = new RGB();
@@ -47,7 +48,8 @@ public class Entity {
 
     public void completeCurrentOrder(){
         orders.poll();
-            currentOrder = orders.peek();
+        currentOrder = orders.peek();
+        isCurrentOrderDone = true;
     }
 
     void update(int deltaTime) {
@@ -112,10 +114,8 @@ public class Entity {
         for (int i = 0; i < components.size(); i++) {
             components.get(i).update(deltaTime);
         }
-
-//        if(!orders.isEmpty() && currentOrder != null)
-//            currentOrder.update();
     }
+
     public boolean CanMove(RGB rgb, String type) {
 
         if((rgb.r == 93 && rgb.g == 94 && rgb.b == 97) && (Objects.equals(type, "Tank"))){
@@ -129,8 +129,13 @@ public class Entity {
         }
         return false;
     }
+
     public Queue<Order> getOrders(){
         return orders;
+    }
+
+    public boolean getCurrentOrderState(){
+        return isCurrentOrderDone;
     }
 
     //To access and change content of Entity from other packages.
@@ -192,7 +197,7 @@ public class Entity {
         return list;
     }
 
-    public String getSideasName(){
+    public String getSideAsName(){
         String sideName = "";
         if (side == 0) {
             sideName = "Ally";
