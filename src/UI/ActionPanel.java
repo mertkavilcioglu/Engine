@@ -67,6 +67,7 @@ public class ActionPanel extends VCSPanel {
     boolean isRootSelected = true;
     boolean isAttack = false;
     int side;
+    String type;
     Vec2int coordinates;
 
     //to update current order panel when an order is completed.
@@ -174,6 +175,7 @@ public class ActionPanel extends VCSPanel {
 
         //action listeners for open specific middle panel
         attackButton.addActionListener(e -> {
+            hideTargetButtons(selectedEntity);
             isAttack = true;
             if (isEnemy){
                 chooseActionLayout.show(chooseActionPanel, "ally");
@@ -217,30 +219,11 @@ public class ActionPanel extends VCSPanel {
 
     }
 
-    public void setFollowTargets(){
-        if (selectedEntity != null){
-            for (int i = 0; i < allCreatedEntites.size(); i++ ){
-                if (selectedEntity != allCreatedEntites.get(i)){
-                    Entity ent = allCreatedEntites.get(i);
-                    followEntityList.add(ent);
-                    followTargetData.addElement(ent.getName());
-                }
-            }
-        }
-    }
-
-    public void orderRefresher(){
-        boolean isDone = selectedEntity.getCurrentOrderState();
-        if (isDone){
-            refreshCurrentOrderPanel();
-            isDone = false;
-        }
-    }
-
     //find the selected entity from hierarchy panel to give order
     public void selectedUnit(Entity entity){
         this.selectedEntity = entity;
         this.isRootSelected = false;
+        this.type = entity.getType();
 
         this.side = entity.getSide();
         if(side == 1) isEnemy = true;
@@ -302,6 +285,77 @@ public class ActionPanel extends VCSPanel {
         });
     }
 
+    public void hideTargetButtons(Entity selectedOne){
+        String typeOfSelected = selectedOne.getType();
+        allyTargetPanel.removeAll();
+        enemyTargetPanel.removeAll();
+        int sideOfSelected = selectedOne.getSide();
+        if (typeOfSelected.equals("Plane")){
+            if (sideOfSelected == 0){
+                for (Entity keyEntity : enemyButtons.keySet()){
+                    enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                }
+            } else {
+                for (Entity keyEntity : allyButtons.keySet()){
+                    allyTargetPanel.add(allyButtons.get(keyEntity));
+                }
+            }
+        } else if (typeOfSelected.equals("Ship")) {
+            if (sideOfSelected == 1){
+                for (Entity keyEntity : allyButtons.keySet()){
+                    if (keyEntity.getType().equals("Ship")){
+                        allyTargetPanel.add(allyButtons.get(keyEntity));
+                    }
+                }
+            } else {
+                for (Entity keyEntity : enemyButtons.keySet()){
+                    if (keyEntity.getType().equals("Ship")){
+                        enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                    }
+                }
+            }
+        } else if (typeOfSelected.equals("Tank")) {
+            if (sideOfSelected == 1){
+                for (Entity keyEntity : allyButtons.keySet()){
+                    if (keyEntity.getType().equals("Tank")){
+                        allyTargetPanel.add(allyButtons.get(keyEntity));
+                    }
+                }
+            } else {
+                for (Entity keyEntity : enemyButtons.keySet()){
+                    if (keyEntity.getType().equals("Tank")){
+                        enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                    }
+                }
+            }
+        }
+        allyTargetPanel.revalidate();
+        allyTargetPanel.repaint();
+        enemyTargetPanel.revalidate();
+        enemyTargetPanel.repaint();
+
+
+//        if (sideOfSelected == 0){
+//            allyTargetPanel.removeAll();
+//            for (Entity mapEntity : allyButtons.keySet()){
+//                if (typeOfSelected.equals("Plane")){
+//                    allyTargetPanel.add(allyButtons.get(mapEntity));
+//                } else if (typeOfSelected.equals(mapEntity.getType())) {
+//                    allyTargetPanel.add(allyButtons.get(mapEntity));
+//                }
+//            }
+//        } else if (sideOfSelected == 1){
+//            enemyTargetPanel.removeAll();
+//            for (Entity mapEntity : enemyButtons.keySet()){
+//                if (typeOfSelected.equals("Plane")){
+//                    enemyTargetPanel.add(enemyButtons.get(mapEntity));
+//                } else if (typeOfSelected.equals(mapEntity.getType())){
+//                    enemyTargetPanel.add(enemyButtons.get(mapEntity));
+//                }
+//            }
+//        }
+    }
+
     //for deleting target button if it's entity destroyed with attack order
     public void deleteTargetButton(Entity entity){
         if(entity == null)
@@ -329,6 +383,26 @@ public class ActionPanel extends VCSPanel {
 
         revalidate();
         repaint();
+    }
+
+    public void setFollowTargets(){
+        if (selectedEntity != null){
+            for (int i = 0; i < allCreatedEntites.size(); i++ ){
+                if (selectedEntity != allCreatedEntites.get(i)){
+                    Entity ent = allCreatedEntites.get(i);
+                    followEntityList.add(ent);
+                    followTargetData.addElement(ent.getName());
+                }
+            }
+        }
+    }
+
+    public void orderRefresher(){
+        boolean isDone = selectedEntity.getCurrentOrderState();
+        if (isDone){
+            refreshCurrentOrderPanel();
+            isDone = false;
+        }
     }
 
     //change the current order panel based on the selected entity
