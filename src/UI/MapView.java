@@ -39,6 +39,8 @@ public class MapView extends VCSPanel {
 
     private Entity selectedEntity;
 
+    private Vec2int createPosition = new Vec2int();
+
     public MapView(VCSApp app) {
         super(app);
         this.world = app.world;
@@ -74,7 +76,7 @@ public class MapView extends VCSPanel {
 
         JPopupMenu rightClickPopUpMenu = new JPopupMenu();
 
-        JMenu createEntity = new JMenu("Create Entity");
+        JMenu createEntityMenu = new JMenu("Create Entity");
 
         JMenu ally = new JMenu("Ally");
         JMenuItem aTank = new JMenuItem("Tank");
@@ -83,7 +85,7 @@ public class MapView extends VCSPanel {
         ally.add(aTank);
         ally.add(aPlane);
         ally.add(aShip);
-        createEntity.add(ally);
+        createEntityMenu.add(ally);
 
         JMenu enemy = new JMenu("Enemy");
         JMenuItem eTank = new JMenuItem("Tank");
@@ -92,13 +94,13 @@ public class MapView extends VCSPanel {
         enemy.add(eTank);
         enemy.add(ePlane);
         enemy.add(eShip);
-        createEntity.add(enemy);
+        createEntityMenu.add(enemy);
 
         //TODO: seçilen bölge için eğer bir birim tipi uygun değilse o çıkmasın veya disable olsun
         aTank.addActionListener(e -> {
             //TODO: CREATE ENTİTY  tank /////////////////////////////////////////
         });
-        rightClickPopUpMenu.add(createEntity);
+        rightClickPopUpMenu.add(createEntityMenu);
 
 
         addMouseListener(new MouseAdapter() {
@@ -141,8 +143,8 @@ public class MapView extends VCSPanel {
                     }
 
                     if(e.getButton() == MouseEvent.BUTTON3){
+                        createPosition = pixPos;
                         rightClickPopUpMenu.show(e.getComponent(),e.getX(),e.getY());
-                        //TODO: canmove ile sınır kontrolü yap ve uygun olmayan seçenekleri disable et
                         if(app.pixelColor.isLocationValidForType("Tank", pixPos)){
                             aTank.setEnabled(true);
                             eTank.setEnabled(true);
@@ -185,6 +187,29 @@ public class MapView extends VCSPanel {
                 }
             }
         });
+
+        aTank.addActionListener(e -> {
+            app.createEntity("ALLY_TANK",0,createPosition,new Vec2int(0,0),0,"Tank");
+        });
+        eTank.addActionListener(e -> {
+            app.createEntity("ENEMY_TANK",1,createPosition,new Vec2int(0,0),0,"Tank");
+        });
+
+        aPlane.addActionListener(e -> {
+            app.createEntity("ALLY_PLANE",0,createPosition,new Vec2int(0,0),0,"Plane");
+        });
+        ePlane.addActionListener(e -> {
+            app.createEntity("ENEMY_PLANE",1,createPosition,new Vec2int(0,0),0,"Plane");
+        });
+
+        aShip.addActionListener(e -> {
+            app.createEntity("ALLY_SHIP",0,createPosition,new Vec2int(0,0),0,"Ship");
+        });
+        eShip.addActionListener(e -> {
+            app.createEntity("ENEMY_SHIP",1,createPosition,new Vec2int(0,0),0,"Ship");
+        });
+
+
 
     }
 
