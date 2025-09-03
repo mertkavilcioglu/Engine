@@ -70,13 +70,33 @@ public class MapView extends VCSPanel {
         desired.y = 435;
         System.out.println( allPixelColors.get(desired.toString()));
 
- */     JMenuItem ally = new JMenuItem("Ally");
+ */
 
         JPopupMenu rightClickPopUpMenu = new JPopupMenu();
-        JMenuItem createEntity = new JMenuItem("Create Entity");
-        createEntity.addActionListener(e -> {
-            //TODO: CREATE ENTİTY /////////////////////////////////////////
-            createEntity.add(ally);
+
+        JMenu createEntity = new JMenu("Create Entity");
+
+        JMenu ally = new JMenu("Ally");
+        JMenuItem aTank = new JMenuItem("Tank");
+        JMenuItem aPlane = new JMenuItem("Plane");
+        JMenuItem aShip = new JMenuItem("Ship");
+        ally.add(aTank);
+        ally.add(aPlane);
+        ally.add(aShip);
+        createEntity.add(ally);
+
+        JMenu enemy = new JMenu("Enemy");
+        JMenuItem eTank = new JMenuItem("Tank");
+        JMenuItem ePlane = new JMenuItem("Plane");
+        JMenuItem eShip = new JMenuItem("Ship");
+        enemy.add(eTank);
+        enemy.add(ePlane);
+        enemy.add(eShip);
+        createEntity.add(enemy);
+
+        //TODO: seçilen bölge için eğer bir birim tipi uygun değilse o çıkmasın veya disable olsun
+        aTank.addActionListener(e -> {
+            //TODO: CREATE ENTİTY  tank /////////////////////////////////////////
         });
         rightClickPopUpMenu.add(createEntity);
 
