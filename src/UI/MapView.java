@@ -142,6 +142,33 @@ public class MapView extends VCSPanel {
 
                     if(e.getButton() == MouseEvent.BUTTON3){
                         rightClickPopUpMenu.show(e.getComponent(),e.getX(),e.getY());
+                        //TODO: canmove ile sınır kontrolü yap ve uygun olmayan seçenekleri disable et
+                        if(app.pixelColor.isLocationValidForType("Tank", pixPos)){
+                            aTank.setEnabled(true);
+                            eTank.setEnabled(true);
+                        }
+                        else{
+                            aTank.setEnabled(false);
+                            eTank.setEnabled(false);
+                        }
+
+                        if(app.pixelColor.isLocationValidForType("Plane", pixPos)){
+                            aPlane.setEnabled(true);
+                            ePlane.setEnabled(true);
+                        }
+                        else{
+                            aPlane.setEnabled(false);
+                            ePlane.setEnabled(false);
+                        }
+
+                        if(app.pixelColor.isLocationValidForType("Ship", pixPos)){
+                            aShip.setEnabled(true);
+                            eShip.setEnabled(true);
+                        }
+                        else{
+                            aShip.setEnabled(false);
+                            eShip.setEnabled(false);
+                        }
                     }
                     repaint();
                 }
