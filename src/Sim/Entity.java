@@ -50,7 +50,6 @@ public class Entity {
     public void completeCurrentOrder(){
         orders.poll();
         currentOrder = orders.peek();
-        isCurrentOrderDone = true;
     }
     //TODO
     public Vec2int nextStep(Vec2int pos, Vec2int nextPos){
@@ -178,6 +177,10 @@ public class Entity {
     public boolean getCurrentOrderState(){
         return isCurrentOrderDone;
     }
+    public void setCurrentOrderState(boolean state){
+        isCurrentOrderDone = state;
+    }
+
     //To access and change content of Entity from other packages.
 
     public String getName(){

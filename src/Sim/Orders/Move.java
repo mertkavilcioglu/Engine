@@ -23,6 +23,7 @@ public class Move extends Order{
             app.log(source.getName() + " reached the target. \n");
             source.setSpeed(new Vec2int(0,0));
             source.completeCurrentOrder();
+            source.setCurrentOrderState(true);
             return;
         }
         else{
@@ -45,8 +46,10 @@ public class Move extends Order{
 
     @Override
     protected void printToLog(){
-        if (!isExecute)
+        if (!isExecute){
             app.log(source.getName() + " moving to " + destination);
+            source.setCurrentOrderState(false);
+        }
         isExecute = true;
     }
 

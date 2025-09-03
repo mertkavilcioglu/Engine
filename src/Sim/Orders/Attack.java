@@ -51,12 +51,15 @@ public class Attack extends Order{
     public void destroy(Entity e){
         app.removeEntity(e);
         source.completeCurrentOrder();
+        source.setCurrentOrderState(true);
     }
 
     @Override
     protected void printToLog(){
-        if (!isExecute)
+        if (!isExecute){
             app.log(source.getName() + " going to attack " + targetEntity.getName());
+            source.setCurrentOrderState(false);
+        }
         isExecute = true;
     }
 

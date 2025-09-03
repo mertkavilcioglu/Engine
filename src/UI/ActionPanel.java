@@ -231,8 +231,10 @@ public class ActionPanel extends VCSPanel {
 
     public void orderRefresher(){
         boolean isDone = selectedEntity.getCurrentOrderState();
-        if (isDone)
+        if (isDone){
             refreshCurrentOrderPanel();
+            isDone = false;
+        }
     }
 
     //find the selected entity from hierarchy panel to give order
