@@ -43,8 +43,17 @@ public class Attack extends Order{
                 targetSpeed = targetEntity.maxSpeed*2;
             else
                 targetSpeed = source.maxSpeed*2;
-            Vec2int newSpeed = source.getPos().vectorDiff(targetEntity.getPos()).normalize(targetSpeed);
+
+            Vec2int newSpeed = new Vec2int();
+            if(source.getPos().distance(targetEntity.getPos()) <= source.maxSpeed){
+                newSpeed = new Vec2int(0,0);
+                source.setPos(targetEntity.getPos());
+            }
+
+            else
+                newSpeed = source.getPos().vectorDiff(targetEntity.getPos()).normalize(targetSpeed);
             source.setSpeed(newSpeed);
+
         }
     }
 
