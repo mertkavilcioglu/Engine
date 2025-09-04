@@ -1,7 +1,9 @@
 package UI;
 
 import App.VCSApp;
+import Sim.Component;
 import Sim.Entity;
+import Sim.Radar;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -29,9 +31,7 @@ public class EntityEditorView extends VCSPanel {
         super(app);
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
-        this.setBorder(new TitledBorder("Create Entity"));
-
-
+        this.setBorder(new TitledBorder("Update Entity"));
 
         String sides[] = {"Ally", "Enemy"};
         addSideBox = new JComboBox<>(sides);
@@ -59,20 +59,7 @@ public class EntityEditorView extends VCSPanel {
         add(ePositionPanel);
         add(eSpeedPanel);
         JButton createButton = new JButton("Create");
-/*
-        JButton tank = new JButton("Tank");
-        tank.addActionListener(e -> { type = "tank";});
-        add(tank);
 
-        JButton plane = new JButton("Plane");
-        plane.addActionListener(e -> { type = "plane";});
-        add(plane);
-
-        JButton ship = new JButton("Ship");
-        ship.addActionListener(e -> { type = "ship";});
-        add(ship);
-
- */
         createButton.addActionListener(e -> {
             //app.attackTest();
             try{
@@ -100,15 +87,8 @@ public class EntityEditorView extends VCSPanel {
                 if(radarPanel != null)
                     radarPanel.dataValidate();
             }
-
-
-
-
-
         });
         //add(createButton);
-
-
 
         updateButton.addActionListener(e -> {
             //TODO: selected entity'ye ulaş ve onun bilgilerini güncelle
@@ -217,6 +197,25 @@ public class EntityEditorView extends VCSPanel {
             case "Ship":
                 addTypeBox.setSelectedIndex(2);
                 break;
+        }
+        for(Component c : e.getComponents()){
+            if(c instanceof Radar && ((Radar) c).getRange() != 0){
+                if(radarPanel == null){
+                    radarPanel = new RadarEditor("Radar:", this);
+                    remove(addComponentButton);
+                    add(radarPanel);
+                    add(addComponentButton);
+                    radarPanel.setData(((Radar) c).getRange());
+                    revalidate();
+                }
+            }
+            else{
+                if(radarPanel != null){
+                    remove(radarPanel);
+                    radarPanel = null;
+                }
+                revalidate();
+            }
         }
 
         updateButton.setEnabled(true);
