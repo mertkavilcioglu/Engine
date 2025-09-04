@@ -72,7 +72,7 @@ public class ActionPanel extends VCSPanel {
     Vec2int coordinates;
 
     //to update current order panel when an order is completed.
-    public Timer timer = new Timer(1000, e->orderRefresher());
+    public Timer timer = new Timer(300, e->orderRefresher());
 
 
     public ActionPanel(VCSApp app){
@@ -288,37 +288,47 @@ public class ActionPanel extends VCSPanel {
 
     public void hideTargetButtons(Entity selectedOne){
         String typeOfSelected = selectedOne.getType();
-        List<Entity> detectedEntitiesFromRadar = selectedOne.getDetectedEntities();
+        List<Entity> detectedEntitiesFromRadar = new ArrayList<>();
         allyTargetPanel.removeAll();
         enemyTargetPanel.removeAll();
         int sideOfSelected = selectedOne.getSide();
+        for (Entity e : allCreatedEntites){
+            if (sideOfSelected == e.getSide()){
+                List<Entity> entities = e.getDetectedEntities();
+                for (int i = 0; i < entities.size(); i++){
+                    detectedEntitiesFromRadar.add(entities.get(i));
+                }
+            }
+        }
         if (typeOfSelected.equals("Plane")){
             if (sideOfSelected == 0){
-                for (Entity keyEntity : enemyButtons.keySet()){
-                    enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                for (Entity keyEntity : enemyButtons.keySet()) {
+                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                        enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                    }
                 }
             } else {
                 for (Entity keyEntity : allyButtons.keySet()){
-                    allyTargetPanel.add(allyButtons.get(keyEntity));
+                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                        allyTargetPanel.add(allyButtons.get(keyEntity));
+                    }
                 }
             }
+        //TODO fix gemi ve tank hala sadece gemi ve tank vurablisn uçak herkesi ama başka ally
+            // yada enemy deteklerse onlarda listede gözüksün kendi sideları
         } else if (typeOfSelected.equals("Ship")) {
             if (sideOfSelected == 1){
                 for (Entity keyEntity : allyButtons.keySet()){
-                    if (keyEntity.getType().equals("Ship")){
-                        allyTargetPanel.add(allyButtons.get(keyEntity));
-                    } else if (detectedEntitiesFromRadar.contains(keyEntity)) {
-                        if (keyEntity.getSide() == 0){
+                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                        if (keyEntity.getType().equals("Ship")){
                             allyTargetPanel.add(allyButtons.get(keyEntity));
                         }
                     }
                 }
-            } else {
+            } else if (sideOfSelected == 0){
                 for (Entity keyEntity : enemyButtons.keySet()){
-                    if (keyEntity.getType().equals("Ship")){
-                        enemyTargetPanel.add(enemyButtons.get(keyEntity));
-                    } else if (detectedEntitiesFromRadar.contains(keyEntity)) {
-                        if (keyEntity.getSide() == 1){
+                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                        if (keyEntity.getType().equals("Ship")){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                         }
                     }
@@ -327,20 +337,16 @@ public class ActionPanel extends VCSPanel {
         } else if (typeOfSelected.equals("Tank")) {
             if (sideOfSelected == 1){
                 for (Entity keyEntity : allyButtons.keySet()){
-                    if (keyEntity.getType().equals("Tank")){
-                        allyTargetPanel.add(allyButtons.get(keyEntity));
-                    } else if (detectedEntitiesFromRadar.contains(keyEntity)) {
-                        if (keyEntity.getSide() == 0){
+                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                        if (keyEntity.getType().equals("Tank")){
                             allyTargetPanel.add(allyButtons.get(keyEntity));
                         }
                     }
                 }
-            } else {
+            } else if (sideOfSelected == 0){
                 for (Entity keyEntity : enemyButtons.keySet()){
-                    if (keyEntity.getType().equals("Tank")){
-                        enemyTargetPanel.add(enemyButtons.get(keyEntity));
-                    } else if (detectedEntitiesFromRadar.contains(keyEntity)) {
-                        if (keyEntity.getSide() == 1){
+                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                        if (keyEntity.getType().equals("Tank")){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                         }
                     }
