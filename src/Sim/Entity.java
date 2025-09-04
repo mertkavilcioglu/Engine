@@ -13,6 +13,7 @@ public class Entity {
     Vec2int speed;
     String type;
     ArrayList<Component> components = new ArrayList<>();
+    List<Entity> detectedEntities = new ArrayList<>();
     RGB currentPixelColor;
     private final World w;
     private NodeInfo nodeInfo;
@@ -192,6 +193,18 @@ public class Entity {
     }
     public void setCurrentOrderState(boolean state){
         isCurrentOrderDone = state;
+    }
+
+    public void setDetectedEntities(Entity detectedEntity){
+        detectedEntities.add(detectedEntity);
+    }
+
+    public void removeFromDetectedEntities(Entity outOfRangeEntity){
+        detectedEntities.remove(outOfRangeEntity);
+    }
+
+    public List<Entity> getDetectedEntities(){
+        return detectedEntities;
     }
 
     //To access and change content of Entity from other packages.
