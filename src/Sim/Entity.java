@@ -38,6 +38,19 @@ public class Entity {
         orders.add(order);
     }
 
+    public void updateEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, String newType){
+        name = newName;
+        side = newSide;
+        pos = newPos;
+        speed = newSpeed;
+        type = newType;
+
+        for (Component c : components){
+            if(c.getClass() == Radar.class)
+                ((Radar) c).setRange(newRange);
+        }
+    }
+
     public void removeOrder(ArrayList<Order> orderList){
         //TODO: remove order ekle, ayrıca (burası icin degil) peak ile current'e
         // ulaşmak yerine direk currentOrder'ı kullan
