@@ -82,7 +82,7 @@ public class ActionPanel extends VCSPanel {
         selectedUnitLabel = new JLabel("No unit selected.", SwingConstants.CENTER);
         JPanel mergePanel = new JPanel(new GridLayout(1,3,0,0));
 
-        giveOrderPanel = new JPanel(new GridLayout(5,1));
+        giveOrderPanel = new JPanel(new GridLayout(3,1, 0, 20));
         attackButton = new JButton("Attack");
         moveButton = new JButton("Move");
         followButton = new JButton("Follow");
