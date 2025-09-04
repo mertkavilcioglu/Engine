@@ -124,9 +124,7 @@ public class VCSApp {
         actionPanel.createNewTargetButton(hasan);
 
         //attackTest(emir, mert);
-
-        GetInput input = new GetInput();
-        input.readInput("src/Assets/data.txt");
+        
 
         // TODO niye tüm threadler aynı bi düsün
         // TODO Bunu direk Thread olarak calıstırırsak ne olur?
