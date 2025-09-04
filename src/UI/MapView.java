@@ -131,7 +131,7 @@ public class MapView extends VCSPanel {
                     if (!hoveredEntities.isEmpty()) {
                         Entity topEntity = hoveredEntities.poll();
                         app.actionPanel.selectedUnit(topEntity);
-                        selectedEntity = topEntity;
+                        setSelectedEntity(topEntity);
                         hoveredEntities.add(topEntity);
 
                         app.hierarchyPanel.selectNode(topEntity);
@@ -139,7 +139,7 @@ public class MapView extends VCSPanel {
                     } else {
                         app.actionPanel.disablePanel();
                         app.hierarchyPanel.clearSelectionInTree();
-                        selectedEntity = null;
+                        setSelectedEntity(null);
                     }
 
                     if(e.getButton() == MouseEvent.BUTTON3){
@@ -208,9 +208,10 @@ public class MapView extends VCSPanel {
         eShip.addActionListener(e -> {
             app.createEntity("ENEMY_SHIP",1,createPosition,new Vec2int(0,0),0,"Ship");
         });
+    }
 
-
-
+    public Entity getSelectedEntity(){
+        return selectedEntity;
     }
 
     @Override
@@ -382,6 +383,7 @@ public class MapView extends VCSPanel {
 
     public void setSelectedEntity(Entity e){
         selectedEntity = e;
+        app.editorPanel.selectedEntityChanged(selectedEntity);
         repaint();
     }
 }

@@ -136,4 +136,9 @@ public class Vec2intEditor extends JPanel{
         }).start();
     }
 
+    public void setInputEnabled(boolean set){
+        txtX.setEnabled(set);
+        txtY.setEnabled(set);
+    }
+
 }

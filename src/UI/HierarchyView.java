@@ -112,11 +112,10 @@ public class HierarchyView extends VCSPanel {
         rootNode.add(node);
         leaves.put(e, e.getNodeInfo());
         model.reload(rootNode);
+    }
 
-        //TODO: hashmap içine id değil direk entity node'unu at.
-        //TODO: her component için değil sadece entity için hashmap tut,
-        //TODO: yeni bir class aç ve içinde tut component bilgilerini,
-        //TODO: her entity içinde bir de bu class ile comp. bilgilerini referanslarını falan tut
+    public void entityChanged(){
+        model.reload(rootNode);
     }
 
     public void entityRemoved(Entity e){
