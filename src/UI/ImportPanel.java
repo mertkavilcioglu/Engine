@@ -2,9 +2,11 @@ package UI;
 
 import App.VCSApp;
 import Sim.Entity;
+import Sim.GetInput;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class ImportPanel extends VCSPanel{
 
@@ -19,6 +21,28 @@ public class ImportPanel extends VCSPanel{
         this.add(exportb);
         this.add(importb);
         //importpanel.setBorder(BorderFactory.createEmptyBorder(0,0,50,50));
+        importb.addActionListener(e -> {
+            if(e.getSource() == importb) {
+                int prevSize = app.world.entities.size();
+
+                JFileChooser file_upload = new JFileChooser();
+                int res = file_upload.showOpenDialog(null);
+                File file_path = null;
+                if (res == JFileChooser.APPROVE_OPTION) {
+                    file_path = new File(file_upload.getSelectedFile().getAbsolutePath());
+
+                }
+                GetInput input = new GetInput();
+                input.readInput(app.world, String.valueOf(file_path));
+                for (int i = prevSize; i < app.world.entities.size(); i++) {
+                    Sim.Entity ent = app.world.entities.get(i);
+                    app.hierarchyPanel.entityAdded(ent);
+                    app.actionPanel.createNewTargetButton(ent);
+                }
+                app.mapView.repaint();
+            }
+
+        });
     }
 
     @Override

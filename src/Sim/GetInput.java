@@ -1,57 +1,56 @@
 package Sim;
+import Vec.Vec2int;
+
+
 import java.io.*;
 
 public class GetInput {
 
-    int numOfVec = 3;
-    private String[] nameList = new String[numOfVec];
-    private String[] sideList = new String[numOfVec];
-    private String[] vehicleList = new String[numOfVec];
-    private String[] positionList = new String[numOfVec];
-    private String[] velocityList = new String[numOfVec];
-    private String[] isRadarList = new String[numOfVec];
-    private String[] radarRangeList = new String[numOfVec];
-    private String[][] listsList;
-
-    public GetInput() {
-        listsList = new String[][] {
-                nameList,
-                sideList,
-                vehicleList,
-                positionList,
-                velocityList,
-                isRadarList,
-                radarRangeList
-        };
-    }
-    public void readInput(String filePath) {
+    public void readInput(World world, String filePath) {
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            for(int i = 0; i<3; i++){
-                for(int j = 0; j<7; j++){
-                    String line = br.readLine();
-                    listsList[j][i] = line;
-                    }
-                }
+            while (true) {
+                String name = br.readLine();
+                if (name == null) break;
+                String sideStr = br.readLine();
+                String type = br.readLine();
+                String posStr = br.readLine();
+                String speedStr = br.readLine();
+                br.readLine();
 
-            /*
-            for(int i = 0; i<3; i++) {
-                for (int j = 0; j < 7; j++) {
-                    System.out.println(listsList[j][i]);
+                int side = 1;
+                if (sideStr != null && sideStr.toLowerCase().equals("ally")) {
+                    side = 0;
                 }
+                Vec2int pos = strToVec2int(posStr);
+                Vec2int speed = strToVec2int(speedStr);
+                int range = 50;
+                world.createEntity(name, side, pos, speed, range, type);
             }
-            */
-            } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-        /*
-        for(String line; (line = br.readLine()) != null; ) {
-                System.out.println(line);
+            }catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
 
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    }
+    public Vec2int strToVec2int(String str){
+        if(str == null){
+            return new Vec2int(0,0);
         }
-        */
+        String lower = str.toLowerCase();
+        if(lower.equals("null")){
+            return new Vec2int(0,0);
+        }
+
+
+        try {
+            String[] parts = str.split(",");
+            if(parts.length == 2){
+                int x = Integer.parseInt(parts[0]);
+                int y = Integer.parseInt(parts[1]);
+                return new Vec2int(x,y);
+            }
+        }catch (Exception ignored){}
+        return new Vec2int(0,0);
+
     }
 
 
