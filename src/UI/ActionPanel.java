@@ -15,6 +15,7 @@ import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.security.PublicKey;
 import java.util.*;
+import java.util.List;
 
 public class ActionPanel extends VCSPanel {
     //left panel
@@ -287,6 +288,7 @@ public class ActionPanel extends VCSPanel {
 
     public void hideTargetButtons(Entity selectedOne){
         String typeOfSelected = selectedOne.getType();
+        List<Entity> detectedEntitiesFromRadar = selectedOne.getDetectedEntities();
         allyTargetPanel.removeAll();
         enemyTargetPanel.removeAll();
         int sideOfSelected = selectedOne.getSide();
@@ -305,12 +307,20 @@ public class ActionPanel extends VCSPanel {
                 for (Entity keyEntity : allyButtons.keySet()){
                     if (keyEntity.getType().equals("Ship")){
                         allyTargetPanel.add(allyButtons.get(keyEntity));
+                    } else if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                        if (keyEntity.getSide() == 0){
+                            allyTargetPanel.add(allyButtons.get(keyEntity));
+                        }
                     }
                 }
             } else {
                 for (Entity keyEntity : enemyButtons.keySet()){
                     if (keyEntity.getType().equals("Ship")){
                         enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                    } else if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                        if (keyEntity.getSide() == 1){
+                            enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                        }
                     }
                 }
             }
@@ -319,12 +329,20 @@ public class ActionPanel extends VCSPanel {
                 for (Entity keyEntity : allyButtons.keySet()){
                     if (keyEntity.getType().equals("Tank")){
                         allyTargetPanel.add(allyButtons.get(keyEntity));
+                    } else if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                        if (keyEntity.getSide() == 0){
+                            allyTargetPanel.add(allyButtons.get(keyEntity));
+                        }
                     }
                 }
             } else {
                 for (Entity keyEntity : enemyButtons.keySet()){
                     if (keyEntity.getType().equals("Tank")){
                         enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                    } else if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                        if (keyEntity.getSide() == 1){
+                            enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                        }
                     }
                 }
             }
@@ -398,6 +416,7 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void orderRefresher(){
+        hideTargetButtons(selectedEntity);
         boolean isDone = selectedEntity.getCurrentOrderState();
         if (isDone){
             refreshCurrentOrderPanel();

@@ -13,6 +13,7 @@ public class Entity {
     Vec2int speed;
     String type;
     ArrayList<Component> components = new ArrayList<>();
+    List<Entity> detectedEntities = new ArrayList<>();
     RGB currentPixelColor;
     private final World w;
     private NodeInfo nodeInfo;
@@ -36,6 +37,19 @@ public class Entity {
             currentOrder = order;
         }
         orders.add(order);
+    }
+
+    public void updateEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, String newType){
+        name = newName;
+        side = newSide;
+        pos = newPos;
+        speed = newSpeed;
+        type = newType;
+
+        for (Component c : components){
+            if(c.getClass() == Radar.class)
+                ((Radar) c).setRange(newRange);
+        }
     }
 
     public void removeOrder(ArrayList<Order> orderList){
@@ -179,6 +193,18 @@ public class Entity {
     }
     public void setCurrentOrderState(boolean state){
         isCurrentOrderDone = state;
+    }
+
+    public void setDetectedEntities(Entity detectedEntity){
+        detectedEntities.add(detectedEntity);
+    }
+
+    public void removeFromDetectedEntities(Entity outOfRangeEntity){
+        detectedEntities.remove(outOfRangeEntity);
+    }
+
+    public List<Entity> getDetectedEntities(){
+        return detectedEntities;
     }
 
     //To access and change content of Entity from other packages.

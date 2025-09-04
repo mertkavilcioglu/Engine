@@ -1,10 +1,8 @@
 package App;
 
-import Sim.GetInput;
-import Sim.PixelColor;
+import Sim.*;
+import Sim.Component;
 import UI.*;
-import Sim.Entity;
-import Sim.World;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -33,7 +31,7 @@ public class VCSApp {
     public World world;
     private JFrame window;
     public MapView mapView;
-    private EntityEditorView editorPanel;
+    public EntityEditorView editorPanel;
     public HierarchyView hierarchyPanel;
     public ActionPanel actionPanel;
     private LogPanel logPanel;
@@ -187,7 +185,14 @@ public class VCSApp {
         actionPanel.createNewTargetButton(ent);
         // diğer panellere bu entity'yi dağıt
         // log, attack vs.
+        mapView.setSelectedEntity(ent);
         mapView.repaint();
+    }
+
+    public void updateSelectedEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, String newType){
+        mapView.getSelectedEntity().updateEntity(newName, newSide, newPos, newSpeed, newRange, newType);
+        mapView.repaint();
+        hierarchyPanel.entityChanged();
     }
 
     public void removeEntity(Entity e){

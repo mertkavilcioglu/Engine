@@ -7,6 +7,7 @@ import Vec.Vec2int;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.sql.SQLOutput;
 
 public class EntityEditorView extends VCSPanel {
     String[] components = {"Radar"};
@@ -17,15 +18,20 @@ public class EntityEditorView extends VCSPanel {
     JComboBox addSideBox;
     JComboBox addTypeBox;
     String type ="";
+
+    StringEditor eNamePanel = new StringEditor("Name:");
+    Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
+    Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
+
+    JButton updateButton = new JButton("Update Entity");
+
     public EntityEditorView(VCSApp app){
         super(app);
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
         this.setBorder(new TitledBorder("Create Entity"));
 
-        StringEditor eNamePanel = new StringEditor("Name:");
-        Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
-        Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
+
 
         String sides[] = {"Ally", "Enemy"};
         addSideBox = new JComboBox<>(sides);
@@ -100,7 +106,40 @@ public class EntityEditorView extends VCSPanel {
 
 
         });
-        add(createButton);
+        //add(createButton);
+
+
+
+        updateButton.addActionListener(e -> {
+            //TODO: selected entity'ye ulaş ve onun bilgilerini güncelle
+            // sonrasında da her seçim sonrası seçililerin bilgileri ile doldurmayı yap
+            try{
+                String name = eNamePanel.readData();
+                Vec2int pos = ePositionPanel.readData();
+                Vec2int speed = eSpeedPanel.readData();
+                int range = 0;
+                if(radarPanel != null)
+                    range = radarPanel.readData();
+                int side = addSideBox.getSelectedIndex();
+                type = (String) addTypeBox.getSelectedItem();
+                if(app.pixelColor.isLocationValidForType(type, pos)){
+                    app.updateSelectedEntity(name, side, pos, speed, range, type);
+                }
+                else if(app.pixelColor.isLocationValidForType(type, pos) == false){
+                    ePositionPanel.error();
+                }
+
+            }
+            catch (Exception ex){
+                ePositionPanel.dataValidate();
+                eSpeedPanel.dataValidate();
+                if(radarPanel != null)
+                    radarPanel.dataValidate();
+            }
+        });
+        add(updateButton);
+
+
         //add(app.createEntityButton(eNamePanel, ePositionPanel,  eSpeedPanel, null), BorderLayout.CENTER);
         add(new JLabel(" "));
         addComponentButton = new JButton("Add Component");
@@ -153,7 +192,54 @@ public class EntityEditorView extends VCSPanel {
 
     @Override
     public void selectedEntityChanged(Entity entity) {
-        System.out.println("EditorView::selectedEntityChanged");
+        if(entity == null){
+            clearPanelData();
+        }
+        else{
+            updateButton.setEnabled(true);
+            addComponentButton.setEnabled(true);
+            updatePanelData(entity);
+        }
+    }
+
+    public void updatePanelData(Entity e){
+        eNamePanel.setData(e.getName());
+        ePositionPanel.setData(e.getPos());
+        eSpeedPanel.setData(e.getSpeed());
+        addSideBox.setSelectedIndex(e.getSide());
+        switch (e.getType()){
+            case "Tank":
+                addTypeBox.setSelectedIndex(0);
+                break;
+            case "Plane":
+                addTypeBox.setSelectedIndex(1);
+                break;
+            case "Ship":
+                addTypeBox.setSelectedIndex(2);
+                break;
+        }
+
+        updateButton.setEnabled(true);
+        addComponentButton.setEnabled(true);
+        eNamePanel.getInputField().setEnabled(true);
+        ePositionPanel.setInputEnabled(true);
+        eSpeedPanel.setInputEnabled(true);
+        addSideBox.setEnabled(true);
+        addTypeBox.setEnabled(true);
+    }
+
+    public void clearPanelData(){
+        eNamePanel.setData("");
+        ePositionPanel.setData(new Vec2int());
+        eSpeedPanel.setData(new Vec2int());
+
+        updateButton.setEnabled(false);
+        addComponentButton.setEnabled(false);
+        eNamePanel.getInputField().setEnabled(false);
+        ePositionPanel.setInputEnabled(false);
+        eSpeedPanel.setInputEnabled(false);
+        addSideBox.setEnabled(false);
+        addTypeBox.setEnabled(false);
     }
 
 }
