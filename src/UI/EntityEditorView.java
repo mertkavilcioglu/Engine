@@ -81,7 +81,6 @@ public class EntityEditorView extends VCSPanel {
 
             }
             catch (Exception ex){
-               //TODO eNamePanel.dataV düzgün bir validate yapmaya çalış
                 ePositionPanel.dataValidate();
                 eSpeedPanel.dataValidate();
                 if(radarPanel != null)
@@ -91,8 +90,6 @@ public class EntityEditorView extends VCSPanel {
         //add(createButton);
 
         updateButton.addActionListener(e -> {
-            //TODO: selected entity'ye ulaş ve onun bilgilerini güncelle
-            // sonrasında da her seçim sonrası seçililerin bilgileri ile doldurmayı yap
             try{
                 String name = eNamePanel.readData();
                 Vec2int pos = ePositionPanel.readData();
@@ -206,6 +203,10 @@ public class EntityEditorView extends VCSPanel {
                     add(radarPanel);
                     add(addComponentButton);
                     radarPanel.setData(((Radar) c).getRange());
+                    revalidate();//TODO: radar bilgisi sağda güncel değil bide treede yok
+                }
+                else{
+                    radarPanel.setData(((Radar) c).getRange());
                     revalidate();
                 }
             }
@@ -231,6 +232,12 @@ public class EntityEditorView extends VCSPanel {
         eNamePanel.setData("");
         ePositionPanel.setData(new Vec2int());
         eSpeedPanel.setData(new Vec2int());
+
+        if(radarPanel != null){
+            remove(radarPanel);
+            radarPanel = null;
+        }
+        revalidate();
 
         updateButton.setEnabled(false);
         addComponentButton.setEnabled(false);
