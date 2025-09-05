@@ -115,7 +115,7 @@ public class MapView extends VCSPanel {
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (isMouseEntered){
-                    System.out.println("MapView::mouseMoved - THREAD : " + Thread.currentThread().getName());
+                    //System.out.println("MapView::mouseMoved - THREAD : " + Thread.currentThread().getName());
                     pixPos = new Vec2int(e.getX(), e.getY());
                     app.mapPixelPosPanel.showPixelPosOfCursor(pixPos);
                     repaint();
@@ -127,7 +127,7 @@ public class MapView extends VCSPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (isMouseEntered){
-                    System.out.println("MapView::mousePressed - THREAD : " + Thread.currentThread().getName());
+                    //System.out.println("MapView::mousePressed - THREAD : " + Thread.currentThread().getName());
                     if (!hoveredEntities.isEmpty()) {
                         Entity topEntity = hoveredEntities.poll();
                         app.actionPanel.selectedUnit(topEntity);
@@ -181,7 +181,7 @@ public class MapView extends VCSPanel {
             @Override
             public void mouseExited(MouseEvent e) {
                 if (isMouseEntered){
-                    System.out.println("MapView::mouseExited - THREAD : " + Thread.currentThread().getName());
+                    //System.out.println("MapView::mouseExited - THREAD : " + Thread.currentThread().getName());
                     app.mapPixelPosPanel.showPixelPosOfCursor(null);
                     isMouseEntered = false;
                 }
@@ -232,7 +232,7 @@ public class MapView extends VCSPanel {
                 hoveredEntities.remove(ent);
         }
 
-        System.out.println("MapView::paint - THREAD : " + Thread.currentThread().getName());
+        //System.out.println("MapView::paint - THREAD : " + Thread.currentThread().getName());
 
         for (int i = 0; i < world.entities.size(); i++) {
 

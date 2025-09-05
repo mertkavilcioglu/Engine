@@ -39,6 +39,26 @@ public class Entity {
         orders.add(order);
     }
 
+    public void addComponent(String comp){
+        switch (comp){
+            case "Radar":
+
+                break;
+        }
+    }
+
+    public void removeComponent(String s){
+        switch (s){
+            case "Radar":
+                for (Component c : components){
+                    if(c.getClass() == Radar.class){
+                        components.remove(c);
+                    }
+                }
+                break;
+        }
+    }
+
     public void updateEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, String newType){
         name = newName;
         side = newSide;

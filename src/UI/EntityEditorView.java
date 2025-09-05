@@ -97,17 +97,20 @@ public class EntityEditorView extends VCSPanel {
                 int range = 0;
                 if(radarPanel != null)
                     range = radarPanel.readData();
+
                 int side = addSideBox.getSelectedIndex();
                 type = (String) addTypeBox.getSelectedItem();
                 if(app.pixelColor.isLocationValidForType(type, pos)){
                     app.updateSelectedEntity(name, side, pos, speed, range, type);
                 }
-                else if(app.pixelColor.isLocationValidForType(type, pos) == false){
+                else if(!app.pixelColor.isLocationValidForType(type, pos)){
                     ePositionPanel.error();
                 }
+                app.hierarchyPanel.updateComponent("Radar", app.mapView.getSelectedEntity());
 
             }
             catch (Exception ex){
+                System.out.println("CATCHED SMT");
                 ePositionPanel.dataValidate();
                 eSpeedPanel.dataValidate();
                 if(radarPanel != null)
