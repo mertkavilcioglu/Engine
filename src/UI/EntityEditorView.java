@@ -152,6 +152,10 @@ public class EntityEditorView extends VCSPanel {
         add(addComponentButton, BorderLayout.CENTER);
     }
 
+    public void update(){
+        updatePanelData(app.mapView.getSelectedEntity());
+    }
+
     public void removeComponent(JPanel panel, String compName){
         remove(panel);
         remove(addComponentButton);

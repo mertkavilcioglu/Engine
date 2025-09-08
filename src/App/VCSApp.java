@@ -142,6 +142,8 @@ public class VCSApp {
                         world.update(delta);
                         pixelColor.update(delta);
                         hierarchyPanel.update(delta);
+                        editorPanel.update();
+
                         //actionPanel.update(1000);
                         //isEntitySelected();
                         // render world
