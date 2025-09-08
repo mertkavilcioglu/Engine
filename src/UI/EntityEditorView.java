@@ -188,6 +188,8 @@ public class EntityEditorView extends VCSPanel {
     }
 
     public void updatePanelData(Entity e){
+        if(e == null)
+            return;
         eNamePanel.setData(e.getName());
         ePositionPanel.setData(e.getPos());
         eSpeedPanel.setData(e.getSpeed());

@@ -33,6 +33,7 @@ public class HierarchyView extends VCSPanel {
         rootNode = new DefaultMutableTreeNode("Hierarchy");
         model = new DefaultTreeModel(rootNode);
         tree = new JTree(model);
+        tree.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
