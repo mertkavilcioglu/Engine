@@ -90,7 +90,7 @@ public class ActionPanel extends VCSPanel {
         giveOrderPanel.add(attackButton);
         giveOrderPanel.add(moveButton);
         giveOrderPanel.add(followButton);
-        giveOrderPanel.setPreferredSize(new Dimension(120,220));
+        giveOrderPanel.setPreferredSize(new Dimension(app.getWindow().getWidth(),220));
         giveOrderPanel.setBorder(new TitledBorder("Give Order"));
 
         allyTargetPanel = new JPanel();
@@ -101,9 +101,10 @@ public class ActionPanel extends VCSPanel {
         enemyTargetPanel.setLayout(new BoxLayout(enemyTargetPanel, BoxLayout.Y_AXIS));
         enemyTargetPanel.setBorder(new TitledBorder("Choose Target: "));
 
-        movePanel = new JPanel(/*new GridLayout(2,1)*/);
+        movePanel = new JPanel();
         movePanel.setLayout(new BoxLayout(movePanel, BoxLayout.Y_AXIS));
-        Vec2intEditor moveEditor = new Vec2intEditor("Position:");
+        movePanel.setBorder(new TitledBorder("Set Position to Move:"));
+        Vec2intEditor moveEditor = new Vec2intEditor("New Position:");
         JButton moveConfirmButton = new JButton("Move");
         moveConfirmButton.setFocusable(false);
         movePanel.add(moveEditor);
@@ -154,8 +155,8 @@ public class ActionPanel extends VCSPanel {
         chooseActionPanel.add(enemyTargetPanel, "enemy");
         chooseActionPanel.add(movePanel, "move");
         chooseActionPanel.add(followPanel, "follow");
-        chooseActionPanel.setPreferredSize(new Dimension(120,220));
-        chooseActionPanel.setBorder(new TitledBorder(""));
+        chooseActionPanel.setPreferredSize(new Dimension(app.getWindow().getWidth(),220));
+        //chooseActionPanel.setBorder(new TitledBorder(""));
 
 
         currentOrderPanel = new JPanel(new BorderLayout());
@@ -172,7 +173,7 @@ public class ActionPanel extends VCSPanel {
 
         currentOrderPanel.add(currentOrderScroll, BorderLayout.CENTER);
         currentOrderPanel.add(selectedOrderDeleteButton, BorderLayout.SOUTH);
-        currentOrderPanel.setPreferredSize(new Dimension(120,220));
+        currentOrderPanel.setPreferredSize(new Dimension(app.getWindow().getWidth(),220));
 
         //action listeners for open specific middle panel
         attackButton.addActionListener(e -> {
@@ -286,6 +287,7 @@ public class ActionPanel extends VCSPanel {
         });
     }
 
+    //mapdeki entitylerin sideları ve typelarına göre targetların gösterilmesi
     public void hideTargetButtons(Entity selectedOne){
         String typeOfSelected = selectedOne.getType();
         List<Entity> detectedEntitiesFromRadar = new ArrayList<>();
@@ -314,8 +316,6 @@ public class ActionPanel extends VCSPanel {
                     }
                 }
             }
-        //TODO fix gemi ve tank hala sadece gemi ve tank vurablisn uçak herkesi ama başka ally
-            // yada enemy deteklerse onlarda listede gözüksün kendi sideları
         } else if (typeOfSelected.equals("Ship")) {
             if (sideOfSelected == 1){
                 for (Entity keyEntity : allyButtons.keySet()){
@@ -357,27 +357,6 @@ public class ActionPanel extends VCSPanel {
         allyTargetPanel.repaint();
         enemyTargetPanel.revalidate();
         enemyTargetPanel.repaint();
-
-
-//        if (sideOfSelected == 0){
-//            allyTargetPanel.removeAll();
-//            for (Entity mapEntity : allyButtons.keySet()){
-//                if (typeOfSelected.equals("Plane")){
-//                    allyTargetPanel.add(allyButtons.get(mapEntity));
-//                } else if (typeOfSelected.equals(mapEntity.getType())) {
-//                    allyTargetPanel.add(allyButtons.get(mapEntity));
-//                }
-//            }
-//        } else if (sideOfSelected == 1){
-//            enemyTargetPanel.removeAll();
-//            for (Entity mapEntity : enemyButtons.keySet()){
-//                if (typeOfSelected.equals("Plane")){
-//                    enemyTargetPanel.add(enemyButtons.get(mapEntity));
-//                } else if (typeOfSelected.equals(mapEntity.getType())){
-//                    enemyTargetPanel.add(enemyButtons.get(mapEntity));
-//                }
-//            }
-//        }
     }
 
     //for deleting target button if it's entity destroyed with attack order
@@ -404,7 +383,6 @@ public class ActionPanel extends VCSPanel {
                 setFollowTargets();
             }
         }
-
         revalidate();
         repaint();
     }
@@ -442,7 +420,6 @@ public class ActionPanel extends VCSPanel {
                 box.addItemListener(l -> {
                     updateDeleteButtonState();
                 });
-
                 this.currentOrders.add(box);
                 currentOrdersOfEntity.add(order);
                 currentOrderListPanel.add(box);
