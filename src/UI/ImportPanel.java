@@ -7,6 +7,8 @@ import Sim.GetInput;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class ImportPanel extends VCSPanel{
 
@@ -21,6 +23,7 @@ public class ImportPanel extends VCSPanel{
         this.add(exportb);
         this.add(importb);
         //importpanel.setBorder(BorderFactory.createEmptyBorder(0,0,50,50));
+
         importb.addActionListener(e -> {
             if(e.getSource() == importb) {
                 int prevSize = app.world.entities.size();
@@ -40,6 +43,50 @@ public class ImportPanel extends VCSPanel{
                     app.actionPanel.createNewTargetButton(ent);
                 }
                 app.mapView.repaint();
+            }
+        });
+
+        exportb.addActionListener(e -> {
+            int id = 0;
+            try {
+                boolean flag = true;
+                while (flag){
+
+                    File myObj = new File( id + "-Simulation_Plan.txt");
+
+                    if (myObj.createNewFile()) {
+                        System.out.println("File created: " + myObj.getName());
+                        flag = false;
+                    } else {
+                        id++;
+                    }
+                }
+
+            } catch (IOException i) {
+                System.out.println("An error occurred.");
+                i.printStackTrace();
+            }
+            try {
+                FileWriter myWriter = new FileWriter(id + "-Simulation_Plan.txt");
+                int size = app.world.entities.size();
+
+                for (int i = 0; i < size ; i++) {
+                    Sim.Entity ent = app.world.entities.get(i);
+                    String posStr = ent.getPos().toString().substring(1, ent.getPos().toString().length()-1);
+                    String speedStr = ent.getSpeed().toString().substring(1, ent.getSpeed().toString().length()-1);
+
+                    myWriter.write(ent.getName() + "\n");
+                    myWriter.write(ent.getSide() == (1) ? "Enemy":"Ally");
+                    myWriter.write("\n");
+                    myWriter.write(ent.getType() + "\n");
+                    myWriter.write(posStr + "\n");
+                    myWriter.write(speedStr + "\n");
+                    myWriter.write("null" + "\n");//radar information of entity
+
+                }
+                myWriter.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
 
         });
