@@ -103,30 +103,34 @@ public class HierarchyView extends VCSPanel {
     public void updateComponent(String comp, Entity e){
         switch (comp){
             case "Radar":
-                for(Component c : e.getComponents()){
-                    if(c instanceof Radar){
-                        if(((Radar) c).getRange() != 0){
-                            if(e.getNodeInfo().getNode("radarRoot") == null){
-                                DefaultMutableTreeNode radarNode = new DefaultMutableTreeNode("Radar:");
-                                DefaultMutableTreeNode radarRange = new DefaultMutableTreeNode(((Radar) c).getRange());
-                                radarNode.add(radarRange);
-                                e.getNodeInfo().getRoot().add(radarNode);
-                                e.getNodeInfo().assignNode("radarRoot", radarNode);
-                                e.getNodeInfo().assignNode("radarRange", radarRange);
+                if(!e.getComponents().isEmpty()){
+                    for(Component c : e.getComponents()){
+                        if(c instanceof Radar){
+                            if(((Radar) c).getRange() != 0){
+                                if(e.getNodeInfo().getNode("radarRoot") == null){
+                                    DefaultMutableTreeNode radarNode = new DefaultMutableTreeNode("Radar:");
+                                    DefaultMutableTreeNode radarRange = new DefaultMutableTreeNode(((Radar) c).getRange());
+                                    radarNode.add(radarRange);
+                                    e.getNodeInfo().getRoot().add(radarNode);
+                                    e.getNodeInfo().assignNode("radarRoot", radarNode);
+                                    e.getNodeInfo().assignNode("radarRange", radarRange);
+                                }
+                                else{
+                                    e.getNodeInfo().getNode("radarRange").setUserObject(((Radar) c).getRange());
+                                }
+
                             }
                             else{
-                                e.getNodeInfo().getNode("radarRange").setUserObject(((Radar) c).getRange());
-                            }
+                                e.getNodeInfo().getNode("radarRange").setUserObject(0);
+                                e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("radarRoot"));
+                                e.getNodeInfo().assignNode("radarRoot", null);
+                                e.removeComponent("Radar");
 
-                        }
-                        else{
-                            e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("radarRoot"));
-                            e.getNodeInfo().getNode("radarRange").setUserObject(0);
-                            e.removeComponent("Radar");
-                            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAA");
+                            }
                         }
                     }
                 }
+
                 break;
         }
         model.reload(rootNode);
