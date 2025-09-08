@@ -16,7 +16,7 @@ public class Entity {
     public ArrayList<Component> componentsToRemove = new ArrayList<>();
     List<Entity> detectedEntities = new ArrayList<>();
     RGB currentPixelColor;
-    private final World w;
+    protected final World w;
     private NodeInfo nodeInfo;
     private Queue<Order> orders = new LinkedList<>();
     private Order currentOrder = null;
@@ -221,10 +221,14 @@ public class Entity {
 
     public void setDetectedEntities(Entity detectedEntity){
         detectedEntities.add(detectedEntity);
+        String detectMsg = String.format("%s detect %s as a target.", name, detectedEntity.getName());
+        log(detectMsg);
     }
 
     public void removeFromDetectedEntities(Entity outOfRangeEntity){
         detectedEntities.remove(outOfRangeEntity);
+        String exitMsg = String.format("The target %s has moved out of %s's radar range.", outOfRangeEntity.getName(), name);
+        log(exitMsg);
     }
 
     public List<Entity> getDetectedEntities(){
@@ -306,6 +310,10 @@ public class Entity {
             return true;
         }
         return false;
+    }
+
+    private void log(String msg){
+        w.app.log(msg);
     }
 
     public String toLog() {
