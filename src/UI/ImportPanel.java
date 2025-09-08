@@ -25,25 +25,30 @@ public class ImportPanel extends VCSPanel{
         //importpanel.setBorder(BorderFactory.createEmptyBorder(0,0,50,50));
 
         importb.addActionListener(e -> {
-            if(e.getSource() == importb) {
-                int prevSize = app.world.entities.size();
+            try {
+                if(e.getSource() == importb) {
+                    int prevSize = app.world.entities.size();
 
-                JFileChooser file_upload = new JFileChooser();
-                int res = file_upload.showOpenDialog(null);
-                File file_path = null;
-                if (res == JFileChooser.APPROVE_OPTION) {
-                    file_path = new File(file_upload.getSelectedFile().getAbsolutePath());
+                    JFileChooser file_upload = new JFileChooser();
+                    int res = file_upload.showOpenDialog(null);
+                    File file_path = null;
+                    if (res == JFileChooser.APPROVE_OPTION) {
+                        file_path = new File(file_upload.getSelectedFile().getAbsolutePath());
 
+                    }
+                    GetInput input = new GetInput();
+                    input.readInput(app.world, String.valueOf(file_path));
+                    for (int i = prevSize; i < app.world.entities.size(); i++) {
+                        Sim.Entity ent = app.world.entities.get(i);
+                        app.hierarchyPanel.entityAdded(ent);
+                        app.actionPanel.createNewTargetButton(ent);
+                    }
+                    app.mapView.repaint();
                 }
-                GetInput input = new GetInput();
-                input.readInput(app.world, String.valueOf(file_path));
-                for (int i = prevSize; i < app.world.entities.size(); i++) {
-                    Sim.Entity ent = app.world.entities.get(i);
-                    app.hierarchyPanel.entityAdded(ent);
-                    app.actionPanel.createNewTargetButton(ent);
-                }
-                app.mapView.repaint();
+            }catch (RuntimeException r){
+                //System.out.println("User did not select import file");
             }
+
         });
 
         exportb.addActionListener(e -> {
