@@ -7,7 +7,7 @@ null
 Tank-1
 Enemy
 Tank
-100,300
+20,300
 4,4
 null
 Plane-1
