@@ -40,6 +40,7 @@ public class VCSApp {
     public MapPixelPosPanel mapPixelPosPanel;
     private ArrayList<JLabel> entityNames = new ArrayList<>();
     public PixelColor pixelColor;
+    public UIColorManager uiColorManager;
 
     public Timer simTimer;
     //TODO: mouse hareket ettikçe world render oluyor, bu render oyun durmuşken de mouse hareketinde
@@ -72,7 +73,7 @@ public class VCSApp {
 
 
     public void runWithWindow() throws InterruptedException, InvocationTargetException {
-
+        uiColorManager = new UIColorManager();
         world = new World(this);
         window = new AppWindow(this);
         mapView = new MapView(this);

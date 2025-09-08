@@ -44,7 +44,7 @@ public class MapView extends VCSPanel {
     public MapView(VCSApp app) {
         super(app);
         this.world = app.world;
-        setBackground(Color.WHITE);
+        setBackground(app.uiColorManager.DARK_MAP_BG_COLOR);
 
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Assets/map3.png").getImage().getScaledInstance(app.world.map.maxX, app.world.map.maxY, Image.SCALE_DEFAULT));
         Image img = imageIcon.getImage();
