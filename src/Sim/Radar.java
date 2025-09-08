@@ -30,7 +30,9 @@ public class Radar extends Component {
                 //        parentEntity.name.toUpperCase(), entities.get(i).name.toUpperCase(),
                 //        dist);
                 hasVisual = true;
-                parentEntity.setDetectedEntities(e);
+                if (!(parentEntity.getDetectedEntities().contains(e))){
+                    parentEntity.setDetectedEntities(e);
+                }
             } else if (parentEntity.getDetectedEntities().contains(e)){
                 parentEntity.removeFromDetectedEntities(e);
             }
