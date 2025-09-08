@@ -13,6 +13,7 @@ public class Entity {
     Vec2int speed;
     String type;
     ArrayList<Component> components = new ArrayList<>();
+    public ArrayList<Component> componentsToRemove = new ArrayList<>();
     List<Entity> detectedEntities = new ArrayList<>();
     RGB currentPixelColor;
     private final World w;
@@ -51,8 +52,8 @@ public class Entity {
         switch (s){
             case "Radar":
                 for (Component c : components){
-                    if(c.getClass() == Radar.class){
-                        components.remove(c);
+                    if(c instanceof Radar){
+                        componentsToRemove.add(c);
                     }
                 }
                 break;
@@ -188,6 +189,9 @@ public class Entity {
         for (int i = 0; i < components.size(); i++) {
             components.get(i).update(deltaTime);
         }
+
+        components.removeAll(componentsToRemove);
+        componentsToRemove.clear();
     }
 
     public boolean CanMove(RGB rgb, String type) {

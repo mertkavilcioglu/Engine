@@ -137,7 +137,7 @@ public class VCSApp {
                 simTimer = new Timer(delta, new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println("Timer::update - THREAD : " + Thread.currentThread().getName());
+                        //System.out.println("Timer::update - THREAD : " + Thread.currentThread().getName());
                         // update world
                         world.update(delta);
                         pixelColor.update(delta);

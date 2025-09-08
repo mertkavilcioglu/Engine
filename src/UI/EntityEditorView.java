@@ -111,6 +111,7 @@ public class EntityEditorView extends VCSPanel {
             }
             catch (Exception ex){
                 System.out.println("CATCHED SMT");
+                System.out.println(ex.getMessage());
                 ePositionPanel.dataValidate();
                 eSpeedPanel.dataValidate();
                 if(radarPanel != null)
@@ -207,6 +208,7 @@ public class EntityEditorView extends VCSPanel {
                     add(addComponentButton);
                     radarPanel.setData(((Radar) c).getRange());
                     revalidate();//TODO: radar bilgisi sağda güncel değil bide treede yok
+                    //TODO: hiyerarşide radar güncellenmiyor, silip geri ekledikten sonra
                 }
                 else{
                     radarPanel.setData(((Radar) c).getRange());

@@ -87,7 +87,7 @@ public class World{
     }
 
     public void update(int deltaTime) {
-        System.out.println("World::update - THREAD : " + Thread.currentThread().getName());
+        //System.out.println("World::update - THREAD : " + Thread.currentThread().getName());
         //System.out.println("Sim.World::update");
         for (int i = 0; i < entities.size(); i++) {
             entities.get(i).update(deltaTime);
