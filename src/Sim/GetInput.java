@@ -1,12 +1,15 @@
 package Sim;
 import Vec.Vec2int;
+import UI.PopupMenu;
 
-
+import javax.swing.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class GetInput {
 
     public void readInput(World world, String filePath) {
+        ArrayList<String> notCreatedList = new ArrayList<String>();
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             while (true) {
                 String name = br.readLine();
@@ -24,11 +27,17 @@ public class GetInput {
                 Vec2int pos = strToVec2int(posStr);
                 Vec2int speed = strToVec2int(speedStr);
                 int range = 50;
-                world.createEntity(name, side, pos, speed, range, type);
+                if(world.app.pixelColor.isLocationValidForType(type,pos)){
+                    world.createEntity(name, side, pos, speed, range, type);
+                }else {
+                    notCreatedList.add(name);
+                }
+
             }
             }catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
+            new PopupMenu(notCreatedList);
 
     }
     public Vec2int strToVec2int(String str){
