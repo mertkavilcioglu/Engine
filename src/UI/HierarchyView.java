@@ -121,11 +121,13 @@ public class HierarchyView extends VCSPanel {
 
                             }
                             else{
-                                e.getNodeInfo().getNode("radarRange").setUserObject(0);
-                                e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("radarRoot"));
-                                e.getNodeInfo().assignNode("radarRoot", null);
-                                e.removeComponent("Radar");
-
+                                if(e.getNodeInfo().getNode("radarRange") != null &&
+                                        e.getNodeInfo().getNode("radarRoot") != null){
+                                    e.getNodeInfo().getNode("radarRange").setUserObject(0);
+                                    e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("radarRoot"));
+                                    e.getNodeInfo().assignNode("radarRoot", null);
+                                    e.removeComponent("Radar");
+                                }
                             }
                         }
                     }
