@@ -7,6 +7,8 @@ import Sim.GetInput;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class ImportPanel extends VCSPanel{
 
@@ -21,25 +23,75 @@ public class ImportPanel extends VCSPanel{
         this.add(exportb);
         this.add(importb);
         //importpanel.setBorder(BorderFactory.createEmptyBorder(0,0,50,50));
+
         importb.addActionListener(e -> {
-            if(e.getSource() == importb) {
-                int prevSize = app.world.entities.size();
+            try {
+                if(e.getSource() == importb) {
+                    int prevSize = app.world.entities.size();
 
-                JFileChooser file_upload = new JFileChooser();
-                int res = file_upload.showOpenDialog(null);
-                File file_path = null;
-                if (res == JFileChooser.APPROVE_OPTION) {
-                    file_path = new File(file_upload.getSelectedFile().getAbsolutePath());
+                    JFileChooser file_upload = new JFileChooser();
+                    int res = file_upload.showOpenDialog(null);
+                    File file_path = null;
+                    if (res == JFileChooser.APPROVE_OPTION) {
+                        file_path = new File(file_upload.getSelectedFile().getAbsolutePath());
 
+                    }
+                    GetInput input = new GetInput();
+                    input.readInput(app.world, String.valueOf(file_path));
+                    for (int i = prevSize; i < app.world.entities.size(); i++) {
+                        Sim.Entity ent = app.world.entities.get(i);
+                        app.hierarchyPanel.entityAdded(ent);
+                        app.actionPanel.createNewTargetButton(ent);
+                    }
+                    app.mapView.repaint();
                 }
-                GetInput input = new GetInput();
-                input.readInput(app.world, String.valueOf(file_path));
-                for (int i = prevSize; i < app.world.entities.size(); i++) {
+            }catch (RuntimeException r){
+                //System.out.println("User did not select import file");
+            }
+
+        });
+
+        exportb.addActionListener(e -> {
+            int id = 0;
+            try {
+                boolean flag = true;
+                while (flag){
+
+                    File myObj = new File( id + "-Simulation_Plan.txt");
+
+                    if (myObj.createNewFile()) {
+                        System.out.println("File created: " + myObj.getName());
+                        flag = false;
+                    } else {
+                        id++;
+                    }
+                }
+
+            } catch (IOException i) {
+                System.out.println("An error occurred.");
+                i.printStackTrace();
+            }
+            try {
+                FileWriter myWriter = new FileWriter(id + "-Simulation_Plan.txt");
+                int size = app.world.entities.size();
+
+                for (int i = 0; i < size ; i++) {
                     Sim.Entity ent = app.world.entities.get(i);
-                    app.hierarchyPanel.entityAdded(ent);
-                    app.actionPanel.createNewTargetButton(ent);
+                    String posStr = ent.getPos().toString().substring(1, ent.getPos().toString().length()-1);
+                    String speedStr = ent.getSpeed().toString().substring(1, ent.getSpeed().toString().length()-1);
+
+                    myWriter.write(ent.getName() + "\n");
+                    myWriter.write(ent.getSide() == (1) ? "Enemy":"Ally");
+                    myWriter.write("\n");
+                    myWriter.write(ent.getType() + "\n");
+                    myWriter.write(posStr + "\n");
+                    myWriter.write(speedStr + "\n");
+                    myWriter.write("null" + "\n");//radar information of entity
+
                 }
-                app.mapView.repaint();
+                myWriter.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
 
         });

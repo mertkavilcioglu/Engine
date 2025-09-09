@@ -37,7 +37,10 @@ public class GetInput {
             }catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
+
+        if (!notCreatedList.isEmpty()) {
             new PopupMenu(notCreatedList);
+        }
 
     }
     public Vec2int strToVec2int(String str){
