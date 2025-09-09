@@ -15,11 +15,6 @@ public class LogPanel extends VCSPanel {
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(getWidth(),getHeight()));
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
-        //JLabel label = new JLabel("Log: ");
-        //JTextField text = new JTextField();
-        //text.setBorder(new TitledBorder("Log:"));
-        //text.setPreferredSize(new Dimension(300,200));
-        //text.setText("Log will be shown in here.");
         logArea = new JTextArea(10,40);
         logArea.setEditable(false);
         logArea.setCaretColor(Color.white);
