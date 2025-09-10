@@ -21,17 +21,38 @@ public class EntityEditorView extends VCSPanel {
     JComboBox addTypeBox;
     String type ="";
 
-    StringEditor eNamePanel = new StringEditor("Name:");
-    Vec2intEditor ePositionPanel = new Vec2intEditor("Position:");
-    Vec2intEditor eSpeedPanel = new Vec2intEditor("Velocity");
+    StringEditor eNamePanel;
+    Vec2intEditor ePositionPanel;
+    Vec2intEditor eSpeedPanel;
 
     JButton updateButton = new JButton("Update Entity");
 
+    Color panelColor;
+
     public EntityEditorView(VCSApp app){
         super(app);
+        panelColor = app.uiColorManager.DARK_PANEL_COLOR;
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
-        this.setBorder(new TitledBorder("Update Entity"));
+        //this.setBorder(new TitledBorder("Update Entity"));
+
+         eNamePanel = new StringEditor("Name:");
+         ePositionPanel = new Vec2intEditor("Position:", app.uiColorManager);
+
+         eSpeedPanel = new Vec2intEditor("Velocity", app.uiColorManager);
+
+        // Custom Panel Colors
+        TitledBorder titledBorder = new TitledBorder("Update Entity");
+        titledBorder.setTitleColor(app.uiColorManager.DARK_TITLE_COLOR_1);
+        titledBorder.setBorder(BorderFactory.createLineBorder(app.uiColorManager.DARK_TITLE_COLOR_1, 2));
+        this.setBorder(titledBorder);
+        this.setBackground(panelColor);
+
+        eNamePanel.setBackground(panelColor);
+        ePositionPanel.setBackground(panelColor);
+        eSpeedPanel.setBackground(panelColor);
+
+
 
         String sides[] = {"Ally", "Enemy"};
         addSideBox = new JComboBox<>(sides);
@@ -40,7 +61,9 @@ public class EntityEditorView extends VCSPanel {
         addSideBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         addSidePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         addSidePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-        addSidePanel.add(new JLabel("Side: "));
+        JLabel sideLbl = new JLabel("Side: ");
+        sideLbl.setForeground(Color.WHITE);
+        addSidePanel.add(sideLbl);
         addSidePanel.add(addSideBox);
 
         String types[] = {"Tank", "Plane", "Ship"};
@@ -50,8 +73,13 @@ public class EntityEditorView extends VCSPanel {
         addTypeBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         addTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         addTypePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-        addTypePanel.add(new JLabel("Type: "));
+        JLabel typeLbl = new JLabel("Type: ");
+        typeLbl.setForeground(Color.WHITE);
+        addTypePanel.add(typeLbl);
         addTypePanel.add(addTypeBox);
+
+        addSidePanel.setBackground(panelColor);
+        addTypePanel.setBackground(panelColor);
 
         add(eNamePanel);
         add(addSidePanel);

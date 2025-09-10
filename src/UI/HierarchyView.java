@@ -11,9 +11,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
 import java.awt.*;
 import java.util.HashMap;
 
@@ -28,12 +26,25 @@ public class HierarchyView extends VCSPanel {
         super(app);
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
-        this.setBorder(new TitledBorder("Hierarchy"));
+
+        // Custom Panel Colors
+        TitledBorder titledBorder = new TitledBorder("Hierarchy");
+        titledBorder.setTitleColor(app.uiColorManager.DARK_TITLE_COLOR_1);
+        titledBorder.setBorder(BorderFactory.createLineBorder(app.uiColorManager.DARK_TITLE_COLOR_1, 2));
+        this.setBorder(titledBorder);
+        this.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
 
         rootNode = new DefaultMutableTreeNode("Hierarchy");
         model = new DefaultTreeModel(rootNode);
         tree = new JTree(model);
+
+        // Custom Tree BG and Text Colors
+        DefaultTreeCellRenderer cellRenderer = new DefaultTreeCellRenderer();
+        cellRenderer.setBackgroundNonSelectionColor(app.uiColorManager.DARK_PANEL_COLOR);
+        cellRenderer.setTextNonSelectionColor(Color.WHITE);
+        tree.setCellRenderer(cellRenderer);
         tree.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {

@@ -14,7 +14,7 @@ public class AppWindow extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setUndecorated(true);
-        setLayout(new BorderLayout(10,10));
+        setLayout(new BorderLayout(0,0));
         setBackground(app.uiColorManager.DARK_APP_BG_COLOR);
     }
 }

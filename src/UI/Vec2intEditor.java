@@ -18,16 +18,22 @@ public class Vec2intEditor extends JPanel{
     Border defaultBorder;
     private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
-    public Vec2intEditor(String label){
+    public Vec2intEditor(String label, UIColorManager ui){
         nameLbl = new JLabel(label);
+        nameLbl.setForeground(Color.WHITE);
+
         lblX = new JLabel("X:");
         lblY = new JLabel("Y:");
+        lblX.setForeground(Color.WHITE);
+        lblY.setForeground(Color.WHITE);
         txtX = new JTextField();
         txtY = new JTextField();
 
         this.setLayout(new GridLayout(2,1));
         this.add(nameLbl);
         JPanel vecPnl = new JPanel(new GridLayout(1,4));
+        vecPnl.setBackground(ui.DARK_MAP_BG_COLOR);
+        vecPnl.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
         this.setMaximumSize(new Dimension(Integer.MAX_VALUE,40 ));
         vecPnl.add(lblX);
         vecPnl.add(txtX);

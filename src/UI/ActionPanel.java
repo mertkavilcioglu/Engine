@@ -104,10 +104,10 @@ public class ActionPanel extends VCSPanel {
         movePanel = new JPanel();
         movePanel.setLayout(new BoxLayout(movePanel, BoxLayout.Y_AXIS));
         movePanel.setBorder(new TitledBorder("Set Position to Move:"));
-        Vec2intEditor moveEditor = new Vec2intEditor("New Position:");
+        //Vec2intEditor moveEditor = new Vec2intEditor("New Position:");
         JButton moveConfirmButton = new JButton("Move");
         moveConfirmButton.setFocusable(false);
-        movePanel.add(moveEditor);
+        //movePanel.add(moveEditor);
         movePanel.add(moveConfirmButton);
 
         followPanel = new JPanel();
@@ -199,7 +199,7 @@ public class ActionPanel extends VCSPanel {
 
         //action listener for create move order
         moveConfirmButton.addActionListener(e -> {
-            coordinates = moveEditor.readData();
+            //coordinates = moveEditor.readData();
             //currentOrderText.append("Move to " + coordinates + "\n");
             if (selectedEntity != null){
                 selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinates.x, coordinates.y)));

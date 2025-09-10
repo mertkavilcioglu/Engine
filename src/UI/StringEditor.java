@@ -12,6 +12,7 @@ public class StringEditor extends JPanel {
 
     public StringEditor(String labelName){
         lbl = new JLabel(labelName);
+        lbl.setForeground(Color.WHITE);
         txt = new JTextField();
 
         this.setLayout(new GridLayout(2,1));
