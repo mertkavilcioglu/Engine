@@ -70,6 +70,7 @@ public class ActionPanel extends VCSPanel {
     int side;
     String type;
     Vec2int coordinates;
+    private Color panelBgColor;
 
     //to update current order panel when an order is completed.
     public Timer timer = new Timer(300, e->orderRefresher());
@@ -79,10 +80,15 @@ public class ActionPanel extends VCSPanel {
         super(app);
         this.setLayout(new BorderLayout());
 
+        panelBgColor = app.uiColorManager.DARK_PANEL_COLOR;
+        setBackground(panelBgColor);
         selectedUnitLabel = new JLabel("No unit selected.", SwingConstants.CENTER);
+        selectedUnitLabel.setForeground(Color.WHITE);
         JPanel mergePanel = new JPanel(new GridLayout(1,3,0,0));
+        mergePanel.setBackground(panelBgColor);
 
         giveOrderPanel = new JPanel(new GridLayout(3,1, 0, 20));
+        giveOrderPanel.setBackground(panelBgColor);
         attackButton = new JButton("Attack");
         moveButton = new JButton("Move");
         followButton = new JButton("Follow");
@@ -91,28 +97,49 @@ public class ActionPanel extends VCSPanel {
         giveOrderPanel.add(moveButton);
         giveOrderPanel.add(followButton);
         giveOrderPanel.setPreferredSize(new Dimension(app.getWindow().getWidth(),220));
-        giveOrderPanel.setBorder(new TitledBorder("Give Order"));
+
+        TitledBorder giveOrderTitledBorder = new TitledBorder("Give Order");
+        giveOrderTitledBorder.setTitleColor(Color.WHITE);
+        giveOrderTitledBorder.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
+        giveOrderPanel.setBorder(giveOrderTitledBorder);
 
         allyTargetPanel = new JPanel();
         allyTargetPanel.setLayout(new BoxLayout(allyTargetPanel, BoxLayout.Y_AXIS));
-        allyTargetPanel.setBorder(new TitledBorder("Choose Target: "));
+        allyTargetPanel.setBackground(panelBgColor);
+
+        TitledBorder chooseTargetTitledBorder = new TitledBorder("Choose Target: ");
+        chooseTargetTitledBorder.setTitleColor(Color.WHITE);
+        chooseTargetTitledBorder.setBorder(BorderFactory.createLineBorder(Color.BLUE,1));
+        allyTargetPanel.setBorder(chooseTargetTitledBorder);
 
         enemyTargetPanel = new JPanel();
         enemyTargetPanel.setLayout(new BoxLayout(enemyTargetPanel, BoxLayout.Y_AXIS));
-        enemyTargetPanel.setBorder(new TitledBorder("Choose Target: "));
+        enemyTargetPanel.setBorder(chooseTargetTitledBorder);
+        enemyTargetPanel.setBackground(panelBgColor);
 
         movePanel = new JPanel();
         movePanel.setLayout(new BoxLayout(movePanel, BoxLayout.Y_AXIS));
-        movePanel.setBorder(new TitledBorder("Set Position to Move:"));
-        //Vec2intEditor moveEditor = new Vec2intEditor("New Position:");
+        movePanel.setBackground(panelBgColor);
+
+        TitledBorder setMovePosTitledBorder = new TitledBorder("Set Position to Move: ");
+        setMovePosTitledBorder.setTitleColor(Color.WHITE);
+        setMovePosTitledBorder.setBorder(BorderFactory.createLineBorder(Color.BLUE,1));
+        movePanel.setBorder(setMovePosTitledBorder);
+
+        Vec2intEditor moveEditor = new Vec2intEditor("New Position:", app);
         JButton moveConfirmButton = new JButton("Move");
         moveConfirmButton.setFocusable(false);
-        //movePanel.add(moveEditor);
+        movePanel.add(moveEditor);
         movePanel.add(moveConfirmButton);
 
         followPanel = new JPanel();
         followPanel.setLayout(new BoxLayout(followPanel, BoxLayout.Y_AXIS));
-        followPanel.setBorder(new TitledBorder("Choose Unit to Follow: "));
+
+        TitledBorder chooseUnitTitledBorder = new TitledBorder("Choose Unit to Follow: ");
+        chooseUnitTitledBorder.setTitleColor(Color.WHITE);
+        chooseUnitTitledBorder.setBorder(BorderFactory.createLineBorder(Color.WHITE,2));
+        followPanel.setBorder(chooseUnitTitledBorder);
+
         JPanel comboPanel = new JPanel(new BorderLayout());
         followTargetData = new DefaultComboBoxModel<>();
         followTargetBox = new JComboBox<>(followTargetData);
@@ -150,6 +177,7 @@ public class ActionPanel extends VCSPanel {
 
         chooseActionLayout = new CardLayout();
         chooseActionPanel = new JPanel(chooseActionLayout);
+        chooseActionPanel.setBackground(panelBgColor);
         chooseActionPanel.add(new JPanel(), "empty");
         chooseActionPanel.add(allyTargetPanel, "ally");
         chooseActionPanel.add(enemyTargetPanel, "enemy");
@@ -162,8 +190,14 @@ public class ActionPanel extends VCSPanel {
         currentOrderPanel = new JPanel(new BorderLayout());
         currentOrderListPanel = new JPanel();
         currentOrderListPanel.setLayout(new BoxLayout(currentOrderListPanel, BoxLayout.Y_AXIS));
+        currentOrderListPanel.setBackground(panelBgColor);
         JScrollPane currentOrderScroll = new JScrollPane(currentOrderListPanel);
-        currentOrderScroll.setBorder(new TitledBorder("Current Order"));
+
+        TitledBorder currentOrderTitledBorder = new TitledBorder("Current Order");
+        currentOrderTitledBorder.setTitleColor(Color.WHITE);
+        currentOrderTitledBorder.setBorder(BorderFactory.createLineBorder(Color.BLUE,1));
+        currentOrderScroll.setBorder(currentOrderTitledBorder);
+        currentOrderScroll.setBackground(panelBgColor);
 
         selectedOrderDeleteButton = new JButton("Delete");
         selectedOrderDeleteButton.setEnabled(false);
@@ -173,6 +207,7 @@ public class ActionPanel extends VCSPanel {
 
         currentOrderPanel.add(currentOrderScroll, BorderLayout.CENTER);
         currentOrderPanel.add(selectedOrderDeleteButton, BorderLayout.SOUTH);
+        currentOrderPanel.setBackground(panelBgColor);
         currentOrderPanel.setPreferredSize(new Dimension(app.getWindow().getWidth(),220));
 
         //action listeners for open specific middle panel
@@ -215,7 +250,7 @@ public class ActionPanel extends VCSPanel {
 
         this.add(selectedUnitLabel, BorderLayout.NORTH);
         this.add(mergePanel, BorderLayout.CENTER);
-        this.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        //this.setBorder(BorderFactory.createLineBorder(Color.black,1));
 
 
 

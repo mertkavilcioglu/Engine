@@ -8,12 +8,13 @@ import java.awt.*;
 
 public class PlayPausePanel extends VCSPanel{
     private Color initialButColor;
+    private Color panelBgColor;
     public PlayPausePanel(VCSApp app) {
         super(app);
-
+        panelBgColor = app.uiColorManager.DARK_PANEL_COLOR;
         this.setLayout(new GridBagLayout());
         JPanel buttonpanel = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
-        buttonpanel.setBackground(app.uiColorManager.DARK_PANEL_COLOR_2);
+        buttonpanel.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
         //playpanel.setSize(20,90);
         //playpanel.setBounds(20,100,20,90);
         JButton play = new JButton("p");
@@ -32,7 +33,8 @@ public class PlayPausePanel extends VCSPanel{
         this.add(buttonpanel);
         initialButColor = play.getBackground();
         reset.setEnabled(false);
-        setBackground(app.uiColorManager.DARK_APP_BG_COLOR);
+        setBackground(panelBgColor);
+        //setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
         play.addActionListener(e -> {
             app.simTimer.start();

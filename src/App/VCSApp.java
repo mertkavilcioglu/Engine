@@ -86,15 +86,23 @@ public class VCSApp {
         mapPixelPosPanel = new MapPixelPosPanel(this);
         pixelColor = new PixelColor(this);
 
+        //TODO: bu kısımları kendi classlarına taşı:
+        importPanel.setBackground(uiColorManager.DARK_PANEL_COLOR);
+        mapPixelPosPanel.setBackground(uiColorManager.DARK_APP_BG_COLOR);
+        mapPixelPosPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
-        mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
+        //mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
         mergeSouthPanel.add(actionPanel);
         mergeSouthPanel.add(logPanel);
+        actionPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
+        logPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
 
         JPanel mergeNorthPanel = new JPanel(new BorderLayout());
         mergeNorthPanel.add(importPanel, BorderLayout.WEST);
         mergeNorthPanel.add(playPausePanel, BorderLayout.CENTER);
         mergeNorthPanel.add(mapPixelPosPanel, BorderLayout.EAST);
+        mergeNorthPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
         JScrollPane hierarchyScroll = new JScrollPane(hierarchyPanel);
         hierarchyScroll.setBackground(uiColorManager.DARK_PANEL_COLOR);

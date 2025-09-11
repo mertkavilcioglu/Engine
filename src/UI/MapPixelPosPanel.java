@@ -18,6 +18,8 @@ public class MapPixelPosPanel extends VCSPanel{
         this.setLayout(new GridLayout(1,2));
         labelX = new JLabel();
         labelY = new JLabel();
+        labelX.setForeground(Color.WHITE);
+        labelY.setForeground(Color.WHITE);
 
         if (pixelPos == null) {
             labelX.setText(" x:    ");
@@ -25,7 +27,7 @@ public class MapPixelPosPanel extends VCSPanel{
         }
         this.add(labelX);
         this.add(labelY);
-        this.setPreferredSize(new Dimension(80,20));
+        this.setPreferredSize(new Dimension(100,20));//TODO: ölçeklenebilir olsun hard coded değil
     }
 
     public void showPixelPosOfCursor(Vec2int p){

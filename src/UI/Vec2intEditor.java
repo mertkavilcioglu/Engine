@@ -1,5 +1,6 @@
 package UI;
 
+import App.VCSApp;
 import Vec.Vec2int;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -18,9 +19,11 @@ public class Vec2intEditor extends JPanel{
     Border defaultBorder;
     private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
-    public Vec2intEditor(String label, UIColorManager ui){
+    public Vec2intEditor(String label, VCSApp app) {
         nameLbl = new JLabel(label);
         nameLbl.setForeground(Color.WHITE);
+        this.setLayout(new GridLayout(2,1));
+        nameLbl.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
 
         lblX = new JLabel("X:");
         lblY = new JLabel("Y:");
@@ -29,10 +32,9 @@ public class Vec2intEditor extends JPanel{
         txtX = new JTextField();
         txtY = new JTextField();
 
-        this.setLayout(new GridLayout(2,1));
         this.add(nameLbl);
         JPanel vecPnl = new JPanel(new GridLayout(1,4));
-        vecPnl.setBackground(ui.DARK_MAP_BG_COLOR);
+        vecPnl.setBackground(app.uiColorManager.DARK_MAP_BG_COLOR);
         vecPnl.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
         this.setMaximumSize(new Dimension(Integer.MAX_VALUE,40 ));
         vecPnl.add(lblX);

@@ -18,8 +18,14 @@ public class LogPanel extends VCSPanel {
         logArea = new JTextArea(10,40);
         logArea.setEditable(false);
         logArea.setCaretColor(Color.white);
-        logArea.setBorder(new TitledBorder("Log:"));
+
+        TitledBorder logTitledBorder = new TitledBorder("Log: ");
+        logTitledBorder.setTitleColor(Color.WHITE);
+        logTitledBorder.setBorder(BorderFactory.createLineBorder(Color.WHITE,1));
+        logArea.setBorder(logTitledBorder);
+        logArea.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
         JScrollPane scrollPanel = new JScrollPane(logArea);
+        scrollPanel.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
         //this.add(label);
         this.add(scrollPanel, BorderLayout.CENTER);
     }

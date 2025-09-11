@@ -37,9 +37,9 @@ public class EntityEditorView extends VCSPanel {
         //this.setBorder(new TitledBorder("Update Entity"));
 
          eNamePanel = new StringEditor("Name:");
-         ePositionPanel = new Vec2intEditor("Position:", app.uiColorManager);
+         ePositionPanel = new Vec2intEditor("Position:", app);
 
-         eSpeedPanel = new Vec2intEditor("Velocity", app.uiColorManager);
+         eSpeedPanel = new Vec2intEditor("Velocity", app);
 
         // Custom Panel Colors
         TitledBorder titledBorder = new TitledBorder("Update Entity");
