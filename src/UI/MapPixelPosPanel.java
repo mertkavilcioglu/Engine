@@ -14,7 +14,8 @@ public class MapPixelPosPanel extends VCSPanel{
 
     public MapPixelPosPanel(VCSApp app) {
         super(app);
-
+        setBackground(app.uiColorManager.TOP_BAR_COLOR);
+        //setBorder(BorderFactory.createMatteBorder(0,2,0,0,Color.BLACK));
         this.setLayout(new GridLayout(1,2));
         labelX = new JLabel();
         labelY = new JLabel();

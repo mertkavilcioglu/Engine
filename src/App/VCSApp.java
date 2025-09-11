@@ -6,6 +6,7 @@ import UI.*;
 import Vec.Vec2int;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
@@ -87,9 +88,7 @@ public class VCSApp {
         pixelColor = new PixelColor(this);
 
         //TODO: bu kısımları kendi classlarına taşı:
-        importPanel.setBackground(uiColorManager.DARK_PANEL_COLOR);
-        mapPixelPosPanel.setBackground(uiColorManager.DARK_APP_BG_COLOR);
-        mapPixelPosPanel.setBorder(BorderFactory.createLineBorder(uiColorManager.DARK_TITLE_COLOR_1, 2));
+        importPanel.setBackground(uiColorManager.TOP_BAR_COLOR);
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         //mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
@@ -102,8 +101,10 @@ public class VCSApp {
         mergeNorthPanel.add(importPanel, BorderLayout.WEST);
         mergeNorthPanel.add(playPausePanel, BorderLayout.CENTER);
         mergeNorthPanel.add(mapPixelPosPanel, BorderLayout.EAST);
-        mergeNorthPanel.setBackground(uiColorManager.DARK_PANEL_COLOR);
-        mergeNorthPanel.setBorder(BorderFactory.createLineBorder(uiColorManager.DARK_TITLE_COLOR_1, 2));
+        mergeNorthPanel.setBackground(uiColorManager.TOP_BAR_COLOR);
+        EmptyBorder eBorder = new EmptyBorder(4,4,4,4);
+        mergeNorthPanel.setBorder(eBorder);
+        mergeNorthPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
 
         JScrollPane hierarchyScroll = new JScrollPane(hierarchyPanel);
         hierarchyScroll.getViewport().setBackground(uiColorManager.DARK_PANEL_COLOR);

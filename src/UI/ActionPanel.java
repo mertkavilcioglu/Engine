@@ -81,7 +81,7 @@ public class ActionPanel extends VCSPanel {
         super(app);
         this.setLayout(new BorderLayout());
 
-        borderColor = app.uiColorManager.DARK_TITLE_COLOR_1;
+        borderColor = app.uiColorManager.DARK_MAP_BG_BLUE_COLOR;
         panelBgColor = app.uiColorManager.DARK_PANEL_COLOR;
         setBackground(panelBgColor);
         selectedUnitLabel = new JLabel("No unit selected.", SwingConstants.CENTER);
@@ -102,7 +102,7 @@ public class ActionPanel extends VCSPanel {
 
         TitledBorder giveOrderTitledBorder = new TitledBorder("Give Order");
         giveOrderTitledBorder.setTitleColor(Color.WHITE);
-        giveOrderTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor, 1));
+        giveOrderTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor, 2));
         giveOrderPanel.setBorder(giveOrderTitledBorder);
 
         allyTargetPanel = new JPanel();
@@ -111,7 +111,7 @@ public class ActionPanel extends VCSPanel {
 
         TitledBorder chooseTargetTitledBorder = new TitledBorder("Choose Target: ");
         chooseTargetTitledBorder.setTitleColor(Color.WHITE);
-        chooseTargetTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor,1));
+        chooseTargetTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor,2));
         allyTargetPanel.setBorder(chooseTargetTitledBorder);
 
         enemyTargetPanel = new JPanel();
@@ -125,7 +125,7 @@ public class ActionPanel extends VCSPanel {
 
         TitledBorder setMovePosTitledBorder = new TitledBorder("Set Position to Move: ");
         setMovePosTitledBorder.setTitleColor(Color.WHITE);
-        setMovePosTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor,1));
+        setMovePosTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor,2));
         movePanel.setBorder(setMovePosTitledBorder);
 
         Vec2intEditor moveEditor = new Vec2intEditor("New Position:", app);
@@ -140,7 +140,7 @@ public class ActionPanel extends VCSPanel {
 
         TitledBorder chooseUnitTitledBorder = new TitledBorder("Choose Unit to Follow: ");
         chooseUnitTitledBorder.setTitleColor(Color.WHITE);
-        chooseUnitTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor,1));
+        chooseUnitTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor,2));
         followPanel.setBorder(chooseUnitTitledBorder);
 
         JPanel comboPanel = new JPanel(new BorderLayout());
@@ -195,7 +195,7 @@ public class ActionPanel extends VCSPanel {
         emptyPanel.setBackground(panelBgColor);
         TitledBorder emptyBorder = new TitledBorder("Order details:");
         emptyBorder.setTitleColor(Color.WHITE);
-        emptyBorder.setBorder(BorderFactory.createLineBorder(borderColor,1));
+        emptyBorder.setBorder(BorderFactory.createLineBorder(borderColor,2));
         emptyPanel.setBorder(emptyBorder);
         chooseActionPanel.add(emptyPanel, "empty");
         chooseActionPanel.add(allyTargetPanel, "ally");
@@ -216,7 +216,7 @@ public class ActionPanel extends VCSPanel {
 
         TitledBorder currentOrderTitledBorder = new TitledBorder("Current Order");
         currentOrderTitledBorder.setTitleColor(Color.WHITE);
-        currentOrderTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor,1));
+        currentOrderTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor,2));
         currentOrderScroll.setBorder(currentOrderTitledBorder);
         currentOrderScroll.setBackground(panelBgColor);
 

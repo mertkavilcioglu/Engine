@@ -7,6 +7,7 @@ import Var.RGB;
 import Vec.Vec2int;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -44,7 +45,8 @@ public class MapView extends VCSPanel {
     public MapView(VCSApp app) {
         super(app);
         this.world = app.world;
-        setBackground(app.uiColorManager.DARK_MAP_BG_COLOR);
+        setBackground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        setBorder(BorderFactory.createMatteBorder(0,1,0,1,Color.BLACK));
 
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("src/Assets/map3.png").getImage().getScaledInstance(app.world.map.maxX, app.world.map.maxY, Image.SCALE_DEFAULT));
         Image img = imageIcon.getImage();

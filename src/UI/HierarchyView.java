@@ -8,6 +8,8 @@ import Sim.Radar;
 import Vec.Vec2int;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -31,8 +33,11 @@ public class HierarchyView extends VCSPanel {
         TitledBorder titledBorder = new TitledBorder("Hierarchy");
         titledBorder.setTitleColor(app.uiColorManager.DARK_TITLE_COLOR_1);
         titledBorder.setBorder(BorderFactory.createLineBorder(app.uiColorManager.DARK_TITLE_COLOR_1, 2));
-        this.setBorder(titledBorder);
+        //this.setBorder(titledBorder);
         this.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+        //setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+        EmptyBorder eBorder = new EmptyBorder(0,7,0,7);
+        setBorder(eBorder);
 
         rootNode = new DefaultMutableTreeNode("Hierarchy");
         model = new DefaultTreeModel(rootNode);

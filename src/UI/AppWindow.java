@@ -10,7 +10,7 @@ public class AppWindow extends JFrame {
     public AppWindow(VCSApp app){
         super("VCS: Virtual Combat System");
 
-        appBgColor = app.uiColorManager.DARK_APP_BG_COLOR;
+        appBgColor = app.uiColorManager.TOP_BAR_COLOR;
         //setSize(800, 600);
         setResizable(false);
         setExtendedState(JFrame.MAXIMIZED_BOTH);

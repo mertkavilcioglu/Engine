@@ -23,7 +23,7 @@ public class LogPanel extends VCSPanel {
 
         TitledBorder logTitledBorder = new TitledBorder("Log: ");
         logTitledBorder.setTitleColor(Color.WHITE);
-        logTitledBorder.setBorder(BorderFactory.createLineBorder(Color.WHITE,1));
+        logTitledBorder.setBorder(BorderFactory.createLineBorder(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR,2));
         logArea.setBorder(logTitledBorder);
         logArea.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
         JScrollPane scrollPanel = new JScrollPane(logArea);

@@ -7,6 +7,7 @@ import Sim.Radar;
 import Vec.Vec2int;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.sql.SQLOutput;
@@ -38,7 +39,10 @@ public class EntityEditorView extends VCSPanel {
         borderColor = app.uiColorManager.DARK_TITLE_COLOR_1;
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
+        BoxLayout lay = new BoxLayout(this,BoxLayout.Y_AXIS);
         //this.setBorder(new TitledBorder("Update Entity"));
+        EmptyBorder eBorder = new EmptyBorder(0,7,0,7);
+        setBorder(eBorder);
 
          eNamePanel = new StringEditor("Name:");
          ePositionPanel = new Vec2intEditor("Position:", app);
@@ -48,8 +52,8 @@ public class EntityEditorView extends VCSPanel {
         // Custom Panel Colors
         TitledBorder titledBorder = new TitledBorder("Update Entity");
         titledBorder.setTitleColor(app.uiColorManager.DARK_TITLE_COLOR_1);
-        titledBorder.setBorder(BorderFactory.createLineBorder(app.uiColorManager.DARK_TITLE_COLOR_1, 2));
-        this.setBorder(titledBorder);
+        //titledBorder.setBorder(BorderFactory.createLineBorder(app.uiColorManager.DARK_TITLE_COLOR_1, 2));
+        //this.setBorder(titledBorder);
         this.setBackground(panelColor);
 
         eNamePanel.setBackground(panelColor);
