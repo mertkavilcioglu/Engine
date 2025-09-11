@@ -102,6 +102,7 @@ public class VCSApp {
         mergeNorthPanel.add(importPanel, BorderLayout.WEST);
         mergeNorthPanel.add(playPausePanel, BorderLayout.CENTER);
         mergeNorthPanel.add(mapPixelPosPanel, BorderLayout.EAST);
+        mergeNorthPanel.setBackground(uiColorManager.DARK_PANEL_COLOR);
         mergeNorthPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
         JScrollPane hierarchyScroll = new JScrollPane(hierarchyPanel);
