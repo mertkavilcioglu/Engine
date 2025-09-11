@@ -89,21 +89,21 @@ public class VCSApp {
         //TODO: bu kısımları kendi classlarına taşı:
         importPanel.setBackground(uiColorManager.DARK_PANEL_COLOR);
         mapPixelPosPanel.setBackground(uiColorManager.DARK_APP_BG_COLOR);
-        mapPixelPosPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+        mapPixelPosPanel.setBorder(BorderFactory.createLineBorder(uiColorManager.DARK_TITLE_COLOR_1, 2));
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         //mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
         mergeSouthPanel.add(actionPanel);
         mergeSouthPanel.add(logPanel);
-        actionPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
-        logPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
+        actionPanel.setBorder(BorderFactory.createLineBorder(uiColorManager.DARK_TITLE_COLOR_1,2));
+        logPanel.setBorder(BorderFactory.createLineBorder(uiColorManager.DARK_TITLE_COLOR_1,2));
 
         JPanel mergeNorthPanel = new JPanel(new BorderLayout());
         mergeNorthPanel.add(importPanel, BorderLayout.WEST);
         mergeNorthPanel.add(playPausePanel, BorderLayout.CENTER);
         mergeNorthPanel.add(mapPixelPosPanel, BorderLayout.EAST);
         mergeNorthPanel.setBackground(uiColorManager.DARK_PANEL_COLOR);
-        mergeNorthPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+        mergeNorthPanel.setBorder(BorderFactory.createLineBorder(uiColorManager.DARK_TITLE_COLOR_1, 2));
 
         JScrollPane hierarchyScroll = new JScrollPane(hierarchyPanel);
         hierarchyScroll.getViewport().setBackground(uiColorManager.DARK_PANEL_COLOR);

@@ -42,7 +42,7 @@ public class Vec2intEditor extends JPanel{
         this.add(nameLbl);
         JPanel vecPnl = new JPanel(new GridLayout(1,4));
         vecPnl.setBackground(panelComponentBgColor);
-        vecPnl.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
+        vecPnl.setBorder(BorderFactory.createLineBorder(app.uiColorManager.DARK_TITLE_COLOR_1, 1));
         this.setMaximumSize(new Dimension(Integer.MAX_VALUE,40 ));
         vecPnl.add(lblX);
         vecPnl.add(txtX);

@@ -16,10 +16,11 @@ public class RadarEditor extends JPanel {
     private JTextField txt;
     Border defaultBorder;
     private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-
+    private Color borderColor;
 
     //TODO radar comp. eklenmemişse radarsız oluştur, radar varsa ama invalidse kırmızı yap
     public RadarEditor(String label, EntityEditorView editor){
+        borderColor = editor.borderColor;
         setBackground(editor.panelComponentColor);
         nameLbl = new JLabel(label);
         nameLbl.setForeground(Color.WHITE);
@@ -27,7 +28,7 @@ public class RadarEditor extends JPanel {
         lbl.setForeground(Color.WHITE);
         lbl.setBackground(editor.panelColor);
         txt = new JTextField();
-        setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
+        setBorder(BorderFactory.createLineBorder(editor.borderColor, 1));
 
         this.setLayout(new GridLayout(3,1));
         this.add(nameLbl);
