@@ -38,6 +38,7 @@ public class RadarEditor extends JPanel {
         vecPnl.add(txt);
         vecPnl.setBackground(editor.panelComponentColor);
         JButton removeButton = new JButton("X");
+        removeButton.setBackground(editor.app.uiColorManager.BUTTON_COLOR);
         removeButton.addActionListener(e -> {
             editor.removeComponent(this, "Radar");
         });

@@ -18,8 +18,10 @@ public class ImportPanel extends VCSPanel{
         //importpanel.setBounds(0,0,10,50);
         JButton exportb = new JButton("Export");
         exportb.setSize(10,20);
+        exportb.setBackground(app.uiColorManager.BUTTON_COLOR);
         JButton importb = new JButton("Import");
         importb.setSize(10,20);
+        importb.setBackground(app.uiColorManager.BUTTON_COLOR);
         this.add(exportb);
         this.add(importb);
         this.setBackground(app.uiColorManager.TOP_BAR_COLOR);

@@ -91,9 +91,19 @@ public class ActionPanel extends VCSPanel {
 
         giveOrderPanel = new JPanel(new GridLayout(3,1, 0, 20));
         giveOrderPanel.setBackground(panelBgColor);
+
         attackButton = new JButton("Attack");
         moveButton = new JButton("Move");
         followButton = new JButton("Follow");
+
+        attackButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        moveButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        followButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+
+        attackButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        moveButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        followButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+
         updateOrderButtonsState(false);
         giveOrderPanel.add(attackButton);
         giveOrderPanel.add(moveButton);
@@ -130,6 +140,8 @@ public class ActionPanel extends VCSPanel {
 
         Vec2intEditor moveEditor = new Vec2intEditor("New Position:", app);
         JButton moveConfirmButton = new JButton("Move");
+        moveConfirmButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        moveConfirmButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
         moveConfirmButton.setFocusable(false);
         movePanel.add(moveEditor);
         movePanel.add(moveConfirmButton);
@@ -146,9 +158,9 @@ public class ActionPanel extends VCSPanel {
         JPanel comboPanel = new JPanel(new BorderLayout());
         followTargetData = new DefaultComboBoxModel<>();
         followTargetBox = new JComboBox<>(followTargetData);
-        followTargetBox.setBackground(panelBgColor);
+        //followTargetBox.setBackground(app.uiColorManager.BUTTON_COLOR);
         followTargetBox.setRequestFocusEnabled(false);
-        followTargetBox.setForeground(Color.white);
+        followTargetBox.setForeground(Color.BLACK);
         comboPanel.setBackground(panelBgColor);
         JLabel targetLabel = new JLabel("Target: ");
         targetLabel.setForeground(Color.WHITE);
@@ -164,6 +176,8 @@ public class ActionPanel extends VCSPanel {
         timePanel.add(followTimeText);
         JPanel createButtonPanel = new JPanel();
         followCreateButton = new JButton("Follow");
+        followCreateButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        followCreateButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
         followCreateButton.setFocusable(false);
         followCreateButton.addActionListener(e -> {
             if (selectedEntity == null) return;
@@ -221,6 +235,8 @@ public class ActionPanel extends VCSPanel {
         currentOrderScroll.setBackground(panelBgColor);
 
         selectedOrderDeleteButton = new JButton("Delete");
+        selectedOrderDeleteButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        selectedOrderDeleteButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
         selectedOrderDeleteButton.setEnabled(false);
         selectedOrderDeleteButton.addActionListener(e -> {
             deleteSelectedOrders();
@@ -321,6 +337,8 @@ public class ActionPanel extends VCSPanel {
     //for creating new button for each available targets based on their assigned sides
     public void createNewTargetButton(Entity entity){
         newTargetButton = new JButton(entity.getName());
+        newTargetButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        newTargetButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
         allCreatedEntites.add(entity);
         //createFollowButtonList(entity);
         if (entity.getSide() == 0){

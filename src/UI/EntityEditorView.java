@@ -124,7 +124,7 @@ public class EntityEditorView extends VCSPanel {
             }
         });
         //add(createButton);
-
+        updateButton.setBackground(app.uiColorManager.BUTTON_COLOR);
         updateButton.addActionListener(e -> {
             try{
                 String name = eNamePanel.readData();
@@ -161,6 +161,7 @@ public class EntityEditorView extends VCSPanel {
         add(new JLabel(" "));
         addComponentButton = new JButton("Add Component");
         addComponentButton.setBounds(150,300,150,30);
+        addComponentButton.setBackground(app.uiColorManager.BUTTON_COLOR);
 
         JPopupMenu popupMenu = new JPopupMenu();
         for (String comp : components){

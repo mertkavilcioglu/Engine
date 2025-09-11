@@ -20,12 +20,15 @@ public class PlayPausePanel extends VCSPanel{
         JButton play = new JButton("p");
         play.setFocusable(false);
         play.setSize(10,20);
+        play.setBackground(app.uiColorManager.BUTTON_COLOR);
         JButton pause = new JButton("s");
         pause.setSize(10,20);
         pause.setFocusable(false);
+        pause.setBackground(app.uiColorManager.BUTTON_COLOR);
         JButton reset = new JButton("r");
         reset.setSize(10,20);
         reset.setFocusable(false);
+        reset.setBackground(app.uiColorManager.BUTTON_COLOR);
         buttonpanel.add(play);
         buttonpanel.add(pause);
         buttonpanel.add(reset);

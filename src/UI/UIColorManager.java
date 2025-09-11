@@ -11,6 +11,7 @@ public class UIColorManager {
     public final Color DARK_TITLE_COLOR_1 = new Color(0,0,0); //ALT1
     public final Color DARK_PANEL_BORDER_COLOR = new Color(0,0,0); //ALT1
     public final Color TOP_BAR_COLOR = new Color(60,60,65);//15 guzel
+    public final Color BUTTON_COLOR = new Color(230,230,230);
 
 
 }
