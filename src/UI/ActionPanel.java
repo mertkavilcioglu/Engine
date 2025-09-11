@@ -146,6 +146,9 @@ public class ActionPanel extends VCSPanel {
         JPanel comboPanel = new JPanel(new BorderLayout());
         followTargetData = new DefaultComboBoxModel<>();
         followTargetBox = new JComboBox<>(followTargetData);
+        followTargetBox.setBackground(panelBgColor);
+        followTargetBox.setRequestFocusEnabled(false);
+        followTargetBox.setForeground(Color.white);
         comboPanel.setBackground(panelBgColor);
         JLabel targetLabel = new JLabel("Target: ");
         targetLabel.setForeground(Color.WHITE);
@@ -208,6 +211,8 @@ public class ActionPanel extends VCSPanel {
         currentOrderListPanel.setLayout(new BoxLayout(currentOrderListPanel, BoxLayout.Y_AXIS));
         currentOrderListPanel.setBackground(panelBgColor);
         JScrollPane currentOrderScroll = new JScrollPane(currentOrderListPanel);
+        currentOrderScroll.getVerticalScrollBar().setBackground(panelBgColor);
+
 
         TitledBorder currentOrderTitledBorder = new TitledBorder("Current Order");
         currentOrderTitledBorder.setTitleColor(Color.WHITE);
@@ -468,6 +473,8 @@ public class ActionPanel extends VCSPanel {
             Queue<Order> currentOrders = selectedEntity.getOrders();
             for (Order order : currentOrders){
                 JCheckBox box = new JCheckBox(order.createTextToPrint());
+                box.setBackground(panelBgColor);
+                box.setForeground(Color.white);
                 box.addItemListener(l -> {
                     updateDeleteButtonState();
                 });
