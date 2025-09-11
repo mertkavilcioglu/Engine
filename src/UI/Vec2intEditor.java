@@ -18,12 +18,19 @@ public class Vec2intEditor extends JPanel{
     private JTextField txtY;
     Border defaultBorder;
     private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    private Color panelBgColor;
+    private Color panelComponentBgColor;
+
 
     public Vec2intEditor(String label, VCSApp app) {
+
+        panelBgColor = app.uiColorManager.DARK_PANEL_COLOR;
+        panelComponentBgColor = app.uiColorManager.DARK_MAP_BG_COLOR;
         nameLbl = new JLabel(label);
         nameLbl.setForeground(Color.WHITE);
         this.setLayout(new GridLayout(2,1));
-        nameLbl.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+        nameLbl.setBackground(panelBgColor);
+        setBackground(panelBgColor);
 
         lblX = new JLabel("X:");
         lblY = new JLabel("Y:");
@@ -34,8 +41,8 @@ public class Vec2intEditor extends JPanel{
 
         this.add(nameLbl);
         JPanel vecPnl = new JPanel(new GridLayout(1,4));
-        vecPnl.setBackground(app.uiColorManager.DARK_MAP_BG_COLOR);
-        vecPnl.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+        vecPnl.setBackground(panelComponentBgColor);
+        vecPnl.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
         this.setMaximumSize(new Dimension(Integer.MAX_VALUE,40 ));
         vecPnl.add(lblX);
         vecPnl.add(txtX);

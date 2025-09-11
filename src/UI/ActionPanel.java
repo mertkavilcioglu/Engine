@@ -134,19 +134,26 @@ public class ActionPanel extends VCSPanel {
 
         followPanel = new JPanel();
         followPanel.setLayout(new BoxLayout(followPanel, BoxLayout.Y_AXIS));
+        followPanel.setBackground(panelBgColor);
 
         TitledBorder chooseUnitTitledBorder = new TitledBorder("Choose Unit to Follow: ");
         chooseUnitTitledBorder.setTitleColor(Color.WHITE);
-        chooseUnitTitledBorder.setBorder(BorderFactory.createLineBorder(Color.WHITE,2));
+        chooseUnitTitledBorder.setBorder(BorderFactory.createLineBorder(Color.BLUE,1));
         followPanel.setBorder(chooseUnitTitledBorder);
 
         JPanel comboPanel = new JPanel(new BorderLayout());
         followTargetData = new DefaultComboBoxModel<>();
         followTargetBox = new JComboBox<>(followTargetData);
-        comboPanel.add(new JLabel("Target: "), BorderLayout.WEST);
+        comboPanel.setBackground(panelBgColor);
+        JLabel targetLabel = new JLabel("Target: ");
+        targetLabel.setForeground(Color.WHITE);
+        comboPanel.add(targetLabel, BorderLayout.WEST);
         comboPanel.add(followTargetBox, BorderLayout.CENTER);
         JPanel timePanel = new JPanel(new FlowLayout());
+        timePanel.setBackground(panelBgColor);
         followTimeLabel = new JLabel("Follow Time(s):");
+        followTimeLabel.setBackground(panelBgColor);
+        followTimeLabel.setForeground(Color.WHITE);
         followTimeText = new JTextField(10);
         timePanel.add(followTimeLabel);
         timePanel.add(followTimeText);
@@ -168,6 +175,7 @@ public class ActionPanel extends VCSPanel {
             selectedEntity.addOrder(new Follow(app, selectedEntity, choosenEntity, followTime));
             refreshCurrentOrderPanel();
         });
+        createButtonPanel.setBackground(panelBgColor);
         createButtonPanel.add(followCreateButton);
         followPanel.add(comboPanel);
         followPanel.add(Box.createVerticalStrut(8));
@@ -178,7 +186,13 @@ public class ActionPanel extends VCSPanel {
         chooseActionLayout = new CardLayout();
         chooseActionPanel = new JPanel(chooseActionLayout);
         chooseActionPanel.setBackground(panelBgColor);
-        chooseActionPanel.add(new JPanel(), "empty");
+        JPanel emptyPanel = new JPanel();
+        emptyPanel.setBackground(panelBgColor);
+        TitledBorder emptyBorder = new TitledBorder("Order details:");
+        emptyBorder.setTitleColor(Color.WHITE);
+        emptyBorder.setBorder(BorderFactory.createLineBorder(Color.BLUE,1));
+        emptyPanel.setBorder(emptyBorder);
+        chooseActionPanel.add(emptyPanel, "empty");
         chooseActionPanel.add(allyTargetPanel, "ally");
         chooseActionPanel.add(enemyTargetPanel, "enemy");
         chooseActionPanel.add(movePanel, "move");
@@ -234,7 +248,7 @@ public class ActionPanel extends VCSPanel {
 
         //action listener for create move order
         moveConfirmButton.addActionListener(e -> {
-            //coordinates = moveEditor.readData();
+            coordinates = moveEditor.readData();
             //currentOrderText.append("Move to " + coordinates + "\n");
             if (selectedEntity != null){
                 selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinates.x, coordinates.y)));

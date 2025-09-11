@@ -17,7 +17,8 @@ public class LogPanel extends VCSPanel {
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
         logArea = new JTextArea(10,40);
         logArea.setEditable(false);
-        logArea.setCaretColor(Color.white);
+        logArea.setCaretColor(app.uiColorManager.DARK_PANEL_COLOR);
+        logArea.setForeground(Color.WHITE);
 
         TitledBorder logTitledBorder = new TitledBorder("Log: ");
         logTitledBorder.setTitleColor(Color.WHITE);

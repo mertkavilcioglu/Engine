@@ -28,10 +28,12 @@ public class EntityEditorView extends VCSPanel {
     JButton updateButton = new JButton("Update Entity");
 
     Color panelColor;
+    Color panelComponentColor;
 
     public EntityEditorView(VCSApp app){
         super(app);
         panelColor = app.uiColorManager.DARK_PANEL_COLOR;
+        panelComponentColor = app.uiColorManager.DARK_MAP_BG_COLOR;
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
         //this.setBorder(new TitledBorder("Update Entity"));

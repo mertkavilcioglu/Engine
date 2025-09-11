@@ -20,9 +20,14 @@ public class RadarEditor extends JPanel {
 
     //TODO radar comp. eklenmemişse radarsız oluştur, radar varsa ama invalidse kırmızı yap
     public RadarEditor(String label, EntityEditorView editor){
+        setBackground(editor.panelComponentColor);
         nameLbl = new JLabel(label);
+        nameLbl.setForeground(Color.WHITE);
         lbl = new JLabel("Range:");
+        lbl.setForeground(Color.WHITE);
+        lbl.setBackground(editor.panelColor);
         txt = new JTextField();
+        setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
 
         this.setLayout(new GridLayout(3,1));
         this.add(nameLbl);
@@ -30,6 +35,7 @@ public class RadarEditor extends JPanel {
         this.setMaximumSize(new Dimension(Integer.MAX_VALUE,60 ));
         vecPnl.add(lbl);
         vecPnl.add(txt);
+        vecPnl.setBackground(editor.panelComponentColor);
         JButton removeButton = new JButton("X");
         removeButton.addActionListener(e -> {
             editor.removeComponent(this, "Radar");
