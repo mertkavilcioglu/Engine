@@ -15,6 +15,7 @@ public class LogPanel extends VCSPanel {
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(getWidth(),getHeight()));
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
+        this.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
         logArea = new JTextArea(10,40);
         logArea.setEditable(false);
         logArea.setCaretColor(app.uiColorManager.DARK_PANEL_COLOR);
@@ -27,6 +28,8 @@ public class LogPanel extends VCSPanel {
         logArea.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
         JScrollPane scrollPanel = new JScrollPane(logArea);
         scrollPanel.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+        scrollPanel.getViewport().getView().setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+        scrollPanel.setBorder(null);
         //this.add(label);
         this.add(scrollPanel, BorderLayout.CENTER);
     }

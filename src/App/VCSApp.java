@@ -105,7 +105,8 @@ public class VCSApp {
         mergeNorthPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
         JScrollPane hierarchyScroll = new JScrollPane(hierarchyPanel);
-        hierarchyScroll.setBackground(uiColorManager.DARK_PANEL_COLOR);
+        hierarchyScroll.getViewport().setBackground(uiColorManager.DARK_PANEL_COLOR);
+        hierarchyScroll.setBorder(null);
         hierarchyScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         hierarchyScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
