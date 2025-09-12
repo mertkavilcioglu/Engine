@@ -1,7 +1,6 @@
 package App;
 
 import Sim.*;
-import Sim.Component;
 import UI.*;
 import Vec.Vec2int;
 
@@ -211,7 +210,7 @@ public class VCSApp {
     public void removeEntity(Entity e){
         world.entitiesToRemove.add(e);
         hierarchyPanel.entityRemoved(e);
-        actionPanel.deleteTargetButton(e);
+        actionPanel.deleteEntityFromTarget(e);
         //TODO: tree'den sil (hierarchyPanel.entityRemoved(e);)
         //TODO: gerekirse diğer panellere de bildir bu entitynin silindiğini
     }

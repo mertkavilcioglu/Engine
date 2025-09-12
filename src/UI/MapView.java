@@ -7,7 +7,6 @@ import Var.RGB;
 import Vec.Vec2int;
 
 import javax.swing.*;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -19,7 +18,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.io.*;
-import java.util.*;
 
 
 public class MapView extends VCSPanel {
@@ -132,7 +130,7 @@ public class MapView extends VCSPanel {
                     //System.out.println("MapView::mousePressed - THREAD : " + Thread.currentThread().getName());
                     if (!hoveredEntities.isEmpty()) {
                         Entity topEntity = hoveredEntities.poll();
-                        app.actionPanel.selectedUnit(topEntity);
+                        app.actionPanel.setSelectedEntity(topEntity);
                         setSelectedEntity(topEntity);
                         hoveredEntities.add(topEntity);
 

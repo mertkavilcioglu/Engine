@@ -9,7 +9,6 @@ import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -62,7 +61,7 @@ public class HierarchyView extends VCSPanel {
                 Entity entityFound = searchForEntity(node);
                 if (entityFound == null) return;
 
-                app.actionPanel.selectedUnit(entityFound);
+                app.actionPanel.setSelectedEntity(entityFound);
                 app.mapView.setSelectedEntity(entityFound);
             }
         });
