@@ -23,16 +23,22 @@ public class PlayPausePanel extends VCSPanel{
         //playpanel.setBounds(20,100,20,90);
         JButton play = new JButton();
         ImageIcon rescaledPlay = new ImageIcon(
-                playIcon.getImage().getScaledInstance(buttonpanel.getHeight(),buttonpanel.getHeight(),Image.SCALE_SMOOTH));
+                playIcon.getImage().getScaledInstance(12,12,Image.SCALE_SMOOTH));
         play.setIcon(rescaledPlay);
         play.setFocusable(false);
         play.setSize(10,20);
         play.setBackground(app.uiColorManager.BUTTON_COLOR);
-        JButton pause = new JButton("s");
+        JButton pause = new JButton();
+        ImageIcon rescaledPause = new ImageIcon(
+                pauseIcon.getImage().getScaledInstance(12,12,Image.SCALE_SMOOTH));
+        pause.setIcon(rescaledPause);
         pause.setSize(10,20);
         pause.setFocusable(false);
         pause.setBackground(app.uiColorManager.BUTTON_COLOR);
-        JButton reset = new JButton("r");
+        JButton reset = new JButton();
+        ImageIcon rescaledStop = new ImageIcon(
+                stopIcon.getImage().getScaledInstance(12,12,Image.SCALE_SMOOTH));
+        reset.setIcon(rescaledStop);
         reset.setSize(10,20);
         reset.setFocusable(false);
         reset.setBackground(app.uiColorManager.BUTTON_COLOR);
