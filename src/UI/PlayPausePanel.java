@@ -9,6 +9,10 @@ import java.awt.*;
 public class PlayPausePanel extends VCSPanel{
     private Color initialButColor;
     private Color panelBgColor;
+    private ImageIcon playIcon = new ImageIcon("src/Assets/Icons/play_icon.png");
+    private ImageIcon pauseIcon = new ImageIcon("src/Assets/Icons/pause_icon.png");
+    private ImageIcon stopIcon = new ImageIcon("src/Assets/Icons/stop_icon.png");
+
     public PlayPausePanel(VCSApp app) {
         super(app);
         panelBgColor = app.uiColorManager.TOP_BAR_COLOR;
@@ -17,7 +21,10 @@ public class PlayPausePanel extends VCSPanel{
         buttonpanel.setBackground(app.uiColorManager.TOP_BAR_COLOR);
         //playpanel.setSize(20,90);
         //playpanel.setBounds(20,100,20,90);
-        JButton play = new JButton("p");
+        JButton play = new JButton();
+        ImageIcon rescaledPlay = new ImageIcon(
+                playIcon.getImage().getScaledInstance(buttonpanel.getHeight(),buttonpanel.getHeight(),Image.SCALE_SMOOTH));
+        play.setIcon(rescaledPlay);
         play.setFocusable(false);
         play.setSize(10,20);
         play.setBackground(app.uiColorManager.BUTTON_COLOR);
