@@ -11,9 +11,7 @@ import Vec.Vec2int;
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
-import java.security.PublicKey;
 import java.util.*;
 import java.util.List;
 
@@ -66,7 +64,8 @@ public class ActionPanel extends VCSPanel {
 
     boolean isEnemy = false;
     boolean isRootSelected = true;
-    boolean isAttack = false;
+    boolean isAttackAction = false;
+    boolean isPaused = false;
     int side;
     String type;
     Vec2int coordinates;
@@ -250,7 +249,7 @@ public class ActionPanel extends VCSPanel {
         //action listeners for open specific middle panel
         attackButton.addActionListener(e -> {
             hideTargetButtons(selectedEntity);
-            isAttack = true;
+            isAttackAction = true;
             if (isEnemy){
                 chooseActionLayout.show(chooseActionPanel, "ally");
             }else {
@@ -261,7 +260,7 @@ public class ActionPanel extends VCSPanel {
         moveButton.addActionListener(e -> chooseActionLayout.show(chooseActionPanel, "move"));
 
         followButton.addActionListener(e -> {
-            isAttack = false;
+            isAttackAction = false;
             chooseActionLayout.show(chooseActionPanel, "follow");
             followTargetData.removeAllElements();
             followEntityList.clear();
@@ -352,7 +351,7 @@ public class ActionPanel extends VCSPanel {
         newTargetButton.addActionListener(e -> {
             targetEntity = entity;
             attackerEntity = selectedEntity;
-            if (isAttack){
+            if (isAttackAction){
                 if (attackerEntity != null){
                     attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
                     refreshCurrentOrderPanel();
@@ -457,6 +456,8 @@ public class ActionPanel extends VCSPanel {
                 setFollowTargets();
             }
         }
+        entity.deleteAllDetectedEntities();
+
         revalidate();
         repaint();
     }
@@ -476,9 +477,10 @@ public class ActionPanel extends VCSPanel {
     public void orderRefresher(){
         hideTargetButtons(selectedEntity);
         boolean isDone = selectedEntity.getCurrentOrderState();
-        if (isDone){
-            refreshCurrentOrderPanel();
-            isDone = false;
+        if (!isPaused){
+            if (isDone){
+                refreshCurrentOrderPanel();
+            }
         }
     }
 
@@ -550,6 +552,10 @@ public class ActionPanel extends VCSPanel {
         }
         selectedEntity.removeOrder(ordersToDelete);
         refreshCurrentOrderPanel();
+    }
+
+    public void setIfPaused(boolean isPaused){
+        this.isPaused = isPaused;
     }
 
     @Override

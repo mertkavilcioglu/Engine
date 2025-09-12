@@ -50,12 +50,14 @@ public class PlayPausePanel extends VCSPanel{
             app.simTimer.start();
             play.setBackground(Color.GREEN);
             pause.setBackground(initialButColor);
+            app.actionPanel.setIfPaused(false);
         });
 
         pause.addActionListener(e -> {
             app.simTimer.stop();
             pause.setBackground(Color.YELLOW);
             play.setBackground(initialButColor);
+            app.actionPanel.setIfPaused(true);
         });
 
     }

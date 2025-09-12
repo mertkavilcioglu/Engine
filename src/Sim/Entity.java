@@ -215,8 +215,8 @@ public class Entity {
     public boolean getCurrentOrderState(){
         return isCurrentOrderDone;
     }
-    public void setCurrentOrderState(boolean state){
-        isCurrentOrderDone = state;
+    public void setCurrentOrderState(boolean isDone){
+        isCurrentOrderDone = isDone;
     }
 
     public void setDetectedEntities(Entity detectedEntity){
@@ -233,6 +233,10 @@ public class Entity {
 
     public List<Entity> getDetectedEntities(){
         return detectedEntities;
+    }
+
+    public void deleteAllDetectedEntities(){
+        detectedEntities.clear();
     }
 
     //To access and change content of Entity from other packages.
