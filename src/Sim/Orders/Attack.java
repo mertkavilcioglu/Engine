@@ -74,8 +74,8 @@ public class Attack extends Order{
 
     @Override
     protected void actualUpdate() {
-        attackEntity(targetEntity);
         printToLog();
+        attackEntity(targetEntity);
     }
 
     @Override
