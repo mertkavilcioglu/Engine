@@ -39,7 +39,7 @@ public class EntityEditorView extends VCSPanel {
         borderColor = app.uiColorManager.DARK_TITLE_COLOR_1;
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
-        BoxLayout lay = new BoxLayout(this,BoxLayout.Y_AXIS);
+        //BoxLayout lay = new BoxLayout(this,BoxLayout.Y_AXIS);
         //this.setBorder(new TitledBorder("Update Entity"));
         EmptyBorder eBorder = new EmptyBorder(0,7,0,7);
         setBorder(eBorder);
@@ -154,14 +154,16 @@ public class EntityEditorView extends VCSPanel {
                     radarPanel.dataValidate();
             }
         });
+        updateButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
         add(updateButton);
 
 
         //add(app.createEntityButton(eNamePanel, ePositionPanel,  eSpeedPanel, null), BorderLayout.CENTER);
         add(new JLabel(" "));
         addComponentButton = new JButton("Add Component");
-        addComponentButton.setBounds(150,300,150,30);
+        //addComponentButton.setBounds(150,300,150,30);
         addComponentButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        addComponentButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
 
         JPopupMenu popupMenu = new JPopupMenu();
         for (String comp : components){
@@ -205,6 +207,7 @@ public class EntityEditorView extends VCSPanel {
                 }
         }
         revalidate();
+        repaint();
 
     }
 
