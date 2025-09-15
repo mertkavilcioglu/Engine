@@ -22,6 +22,7 @@ import java.io.*;
 
 public class MapView extends VCSPanel {
     private World world;
+    private Map<Entity,Vec2int> initialPoints = new HashMap<>();
     public Map<String, RGB> allPixelColors;
     Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
     Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
@@ -214,6 +215,19 @@ public class MapView extends VCSPanel {
         return selectedEntity;
     }
 
+    public void saveInitialPoints(){
+        initialPoints.clear();
+        for(Entity ent: world.entities){
+            initialPoints.put(ent, new Vec2int(ent.getPos().x, ent.getPos().y));
+        }
+    }
+
+    public Map<Entity,Vec2int> getInitialPoints(){
+        return initialPoints;
+    }
+
+
+    
     @Override
     public void selectedEntityChanged(Entity entity) {
         System.out.println("EditorView::selectedEntityChanged");

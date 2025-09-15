@@ -3,12 +3,15 @@ package UI;
 import App.VCSApp;
 import Sim.Entity;
 import Sim.GetInput;
+import Vec.Vec2int;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ImportPanel extends VCSPanel{
 
@@ -53,6 +56,7 @@ public class ImportPanel extends VCSPanel{
             }
 
         });
+        AtomicBoolean flag2 = new AtomicBoolean(true);
 
         exportb.addActionListener(e -> {
             int id = 0;
@@ -74,15 +78,28 @@ public class ImportPanel extends VCSPanel{
                 System.out.println("An error occurred.");
                 i.printStackTrace();
             }
+
             try {
                 FileWriter myWriter = new FileWriter(id + "-Simulation_Plan.txt");
-                int size = app.world.entities.size();
+                //int size = app.world.entities.size();
+                Map<Entity, Vec2int> initialPositions = app.mapView.getInitialPoints();
+                for(Sim.Entity ent:app.world.entities){
+                    Vec.Vec2int pos = initialPositions.get(ent);
+                    String posStr;
+                    if(pos!=null){
+                        posStr = pos.toString().substring(1,pos.toString().length()-1);
 
-                for (int i = 0; i < size ; i++) {
-                    Sim.Entity ent = app.world.entities.get(i);
-                    String posStr = ent.getPos().toString().substring(1, ent.getPos().toString().length()-1);
+                    }else{
+                        posStr = ent.getPos().toString().substring(1,ent.getPos().toString().length()-1);
+                    }
                     String speedStr = ent.getSpeed().toString().substring(1, ent.getSpeed().toString().length()-1);
-
+                    if(flag2.get()){
+                        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+                        int width = (int)size.getWidth();
+                        int height = (int)size.getHeight();
+                        myWriter.write(width +", " + height + "\n");
+                        flag2.set(false);
+                    }
                     myWriter.write(ent.getName() + "\n");
                     myWriter.write(ent.getSide() == (1) ? "Enemy":"Ally");
                     myWriter.write("\n");

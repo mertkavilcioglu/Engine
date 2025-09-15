@@ -2,9 +2,12 @@ package UI;
 
 import App.VCSApp;
 import Sim.Entity;
+import Vec.Vec2int;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Map;
 
 public class PlayPausePanel extends VCSPanel{
     private Color initialButColor;
@@ -48,14 +51,18 @@ public class PlayPausePanel extends VCSPanel{
         buttonpanel.setBorder(BorderFactory.createEmptyBorder(0,50,0,50));
         this.add(buttonpanel);
         initialButColor = play.getBackground();
-        reset.setEnabled(false);
+        //reset.setEnabled(false);
         setBackground(panelBgColor);
         //setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
         play.addActionListener(e -> {
+            if(app.mapView.getInitialPoints().isEmpty()){
+                app.mapView.saveInitialPoints();
+            }
             app.simTimer.start();
             play.setBackground(Color.GREEN);
             pause.setBackground(initialButColor);
+            reset.setBackground(initialButColor);
             app.actionPanel.setIfPaused(false);
         });
 
@@ -63,9 +70,25 @@ public class PlayPausePanel extends VCSPanel{
             app.simTimer.stop();
             pause.setBackground(Color.YELLOW);
             play.setBackground(initialButColor);
+            reset.setBackground(initialButColor);
             app.actionPanel.setIfPaused(true);
         });
 
+        reset.addActionListener(e ->{
+            Map<Entity, Vec2int> initialPositions = app.mapView.getInitialPoints();
+            for(Sim.Entity ent:app.world.entities) {
+                Vec.Vec2int pos = initialPositions.get(ent);
+                if (pos != null) {
+                    ent.setPos(new Vec.Vec2int(pos.x,pos.y));
+
+                }
+            }
+            app.simTimer.stop();
+            play.setBackground(initialButColor);
+            pause.setBackground(initialButColor);
+            reset.setBackground(Color.RED);
+            app.mapView.repaint();
+        });
     }
 
     @Override
