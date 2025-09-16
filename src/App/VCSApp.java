@@ -144,7 +144,7 @@ public class VCSApp {
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_DELETE){
                     if(mapView.getSelectedEntity() != null){
-                        removeEntity(mapView.getSelectedEntity());
+                        removeEntityInstantaneously(mapView.getSelectedEntity());
                         mapView.repaint();
                     }
                 }
@@ -205,6 +205,15 @@ public class VCSApp {
         world.entitiesToRemove.add(e);
         hierarchyPanel.entityRemoved(e);
         actionPanel.deleteEntityFromTarget(e);
+        mapView.getHoveredEntities().remove(e);
+        mapView.repaint();
+    }
+
+    public void removeEntityInstantaneously(Entity e){
+        world.entities.remove(e);
+        hierarchyPanel.entityRemoved(e);
+        actionPanel.deleteEntityFromTarget(e);
+        mapView.getHoveredEntities().remove(e);
         mapView.repaint();
     }
 

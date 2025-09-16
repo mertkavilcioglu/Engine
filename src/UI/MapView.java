@@ -396,4 +396,8 @@ public class MapView extends VCSPanel {
         app.editorPanel.selectedEntityChanged(selectedEntity);
         repaint();
     }
+
+    public Queue<Entity> getHoveredEntities(){
+        return hoveredEntities;
+    }
 }
