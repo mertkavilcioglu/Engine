@@ -366,17 +366,7 @@ public class MapView extends VCSPanel {
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             if (line.equals(String.valueOf(screenSize))){
                 System.out.println("Reading the file.");
-                while ((line = colorReader.readLine()) != null){
-                    String[] values = line.split(",");
-                    int posX = Integer.parseInt(values[0]);
-                    int posY = Integer.parseInt(values[1]);
-                    int red = Integer.parseInt(values[2]);
-                    int green = Integer.parseInt(values[3]);
-                    int blue = Integer.parseInt(values[4]);
-                    Vec2int vec = new Vec2int(posX, posY);
-                    RGB rgbs = new RGB(red, green, blue);
-                    allPixelColors.put(vec.toString(), rgbs);
-                }
+
             } else{
                 System.out.println("File is rewriting.");
                 fileWriterForPixelColor("src/Assets/MapPixelColors.txt", bImage ,pos, color);
