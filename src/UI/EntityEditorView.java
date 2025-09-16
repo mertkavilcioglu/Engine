@@ -191,15 +191,6 @@ public class EntityEditorView extends VCSPanel {
             popupMenu.show(addComponentButton,x,y);
         });
         add(addComponentButton, BorderLayout.CENTER);
-
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_DELETE){
-                    System.out.println("deleteeeeee");
-                }
-            }
-        });
     }
 
     public void update(){

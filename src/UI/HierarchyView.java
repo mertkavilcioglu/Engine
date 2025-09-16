@@ -63,6 +63,7 @@ public class HierarchyView extends VCSPanel {
 
                 app.actionPanel.setSelectedEntity(entityFound);
                 app.mapView.setSelectedEntity(entityFound);
+                app.getWindow().requestFocus();
             }
         });
         add(tree, BorderLayout.CENTER);
@@ -179,6 +180,7 @@ public class HierarchyView extends VCSPanel {
         if(leaves.get(e).getRoot() != null && rootNode.isNodeChild(leaves.get(e).getRoot())) {
             rootNode.remove(leaves.get(e).getRoot());
             model.reload(rootNode);
+            repaint();
         }
     }
     
