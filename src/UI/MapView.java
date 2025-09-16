@@ -41,6 +41,9 @@ public class MapView extends VCSPanel {
 
     private Vec2int createPosition = new Vec2int();
 
+    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    String screenResolution = String.format("%dx%d", gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
+
     public MapView(VCSApp app) {
         super(app);
         this.world = app.world;
@@ -320,45 +323,37 @@ public class MapView extends VCSPanel {
             if (mapPixelColors.createNewFile()) {
                 System.out.println("File created: " + mapPixelColors.getName());
                 fileWriter("src/Assets/MapPixelColors.txt", bImage ,pos, color);
-//                FileWriter colorWriter = new FileWriter("src/Assets/MapPixelColors.txt");
-//                for(int y=0; y < bImage.getHeight(); y++) {
-//                    for (int x = 0; x < bImage.getWidth(); x++) {
-//                        pos = new Vec2int(x,y);
-//                        int pixel = bImage.getRGB(pos.x, pos.y);
-//                        color = new RGB();
-//
-//                        color.r = (pixel >> 16) & 0xff;
-//                        color.g = (pixel >> 8) & 0xff;
-//                        color.b = (pixel) & 0xff;
-//
-//                        allPixelColors.put(pos.toString(), color);
-//                        String textToWrite = String.format("%d,%d,%d,%d,%d\n", pos.x, pos.y, color.r, color.g, color.b);
-//                        colorWriter.write(textToWrite);
-//                    }
-//                }
-//                colorWriter.close();
             } else {
                 System.out.println("File already exists.");
                 FileInputStream fileStream = new FileInputStream("src/Assets/MapPixelColors.txt");
                 DataInputStream inputStream = new DataInputStream(fileStream);
                 BufferedReader colorReader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
-                if ((line = colorReader.readLine()) == null){
+                if (mapPixelColors.equals(null)){
                     System.out.println("File is rewriting.");
                     fileWriter("src/Assets/MapPixelColors.txt", bImage ,pos, color);
                 }
                 else {
-                    while ((line = colorReader.readLine()) != null){
-                        String[] values = line.split(",");
-                        int posX = Integer.parseInt(values[0]);
-                        int posY = Integer.parseInt(values[1]);
-                        int red = Integer.parseInt(values[2]);
-                        int green = Integer.parseInt(values[3]);
-                        int blue = Integer.parseInt(values[4]);
-                        Vec2int vec = new Vec2int(posX, posY);
-                        RGB rgbs = new RGB(red, green, blue);
-                        allPixelColors.put(vec.toString(), rgbs);
+                    line = colorReader.readLine();
+                    if (line.equals(screenResolution)){
+                        while ((line = colorReader.readLine()) != null){
+                            String[] values = line.split(",");
+                            int posX = Integer.parseInt(values[0]);
+                            int posY = Integer.parseInt(values[1]);
+                            int red = Integer.parseInt(values[2]);
+                            int green = Integer.parseInt(values[3]);
+                            int blue = Integer.parseInt(values[4]);
+                            Vec2int vec = new Vec2int(posX, posY);
+                            RGB rgbs = new RGB(red, green, blue);
+                            allPixelColors.put(vec.toString(), rgbs);
+                        }
+                    } else {
+                        System.out.println("Resolution not match. Recreating a file.");
+                        mapPixelColors.delete();
+                        mapPixelColors.createNewFile();
+                        fileWriter("src/Assets/MapPixelColors.txt", bImage ,pos, color);
                     }
+
                 }
                 fileStream.close();
                 inputStream.close();
@@ -373,6 +368,8 @@ public class MapView extends VCSPanel {
 
     public void fileWriter(String fileName, BufferedImage bImage, Vec2int pos, RGB color) throws IOException {
         FileWriter colorWriter = new FileWriter(fileName);
+        colorWriter.write(screenResolution);
+        colorWriter.write("\n");
         for(int y=0; y < bImage.getHeight(); y++) {
             for (int x = 0; x < bImage.getWidth(); x++) {
                 pos = new Vec2int(x,y);
