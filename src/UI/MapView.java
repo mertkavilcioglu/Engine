@@ -235,65 +235,61 @@ public class MapView extends VCSPanel {
         //System.out.println("MapView::paint - THREAD : " + Thread.currentThread().getName());
 
         for (int i = 0; i < world.entities.size(); i++) {
-
-            Entity e = world.entities.get(i);
-            boolean isHovered = hoveredEntities.contains(e);
-            Vec2int pos = e.getPos();
-            String name = e.getName();
+            if(!app.world.entitiesToRemove.contains(world.entities.get(i))){
+                Entity e = world.entities.get(i);
+                boolean isHovered = hoveredEntities.contains(e);
+                Vec2int pos = e.getPos();
+                String name = e.getName();
 
 //            int half = targetWidth / 2;
 //            g.setColor(Color.GREEN);
 //            g.fillRect(pos.x - half, pos.y - half, targetWidth, targetWidth);
 
-            FontMetrics fontMetric = g.getFontMetrics();
-            int textLength = fontMetric.stringWidth(name);
-            int textX = pos.x - 10 + (20 - textLength) / 2;
-            int textY = pos.y - 10;
+                FontMetrics fontMetric = g.getFontMetrics();
+                int textLength = fontMetric.stringWidth(name);
+                int textX = pos.x - 10 + (20 - textLength) / 2;
+                int textY = pos.y - 10;
 
-            if(e.getSide() == 0)
-                g.setColor(Color.blue);
-            else if (e.getSide() == 1)
-                g.setColor(Color.red);
+                if(e.getSide() == 0)
+                    g.setColor(Color.blue);
+                else if (e.getSide() == 1)
+                    g.setColor(Color.red);
 
-            //g.drawOval(pos.x-10, pos.y-10, 20, 20);
-            if(e.getSide() == 0){
-                if(e.getType().equals("Plane"))
-                    drawNormalizedImageByWidth(g, friendlyAir, pos, targetWidth);
-                else if(e.getType().equals("Tank"))
-                    drawNormalizedImageByWidth(g, friendlyLand, pos, targetWidth+2);
-                else if(e.getType().equals("Ship"))
-                    drawNormalizedImageByWidth(g, friendlySea, pos, targetWidth);
+                //g.drawOval(pos.x-10, pos.y-10, 20, 20);
+                if(e.getSide() == 0){
+                    if(e.getType().equals("Plane"))
+                        drawNormalizedImageByWidth(g, friendlyAir, pos, targetWidth);
+                    else if(e.getType().equals("Tank"))
+                        drawNormalizedImageByWidth(g, friendlyLand, pos, targetWidth+2);
+                    else if(e.getType().equals("Ship"))
+                        drawNormalizedImageByWidth(g, friendlySea, pos, targetWidth);
 
+                }
+
+                else if(e.getSide() == 1){
+                    if(e.getType().equals("Plane"))
+                        drawNormalizedImageByWidth(g, enemyAir, pos, targetWidth);
+                    else if(e.getType().equals("Tank"))
+                        drawNormalizedImageByWidth(g, enemyLand, pos, targetWidth + 2);
+                    else if(e.getType().equals("Ship"))
+                        drawNormalizedImageByWidth(g, enemySea, pos, targetWidth);
+                }
+
+                g.setFont(timesNewRoman);
+                g.drawString(name, textX, textY);
+
+                int targetWidthForHover = targetWidth + targetWidth*11/16;
+                int half = targetWidthForHover / 2;
+
+
+                if (isHovered && (selectedEntity == null || selectedEntity != e)) {
+                    //g.drawString("HOVERED", pos.x, pos.y);
+                    g.drawOval(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
+                }
+                else if(selectedEntity == e){
+                    g.drawRect(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
+                }
             }
-
-            else if(e.getSide() == 1){
-                if(e.getType().equals("Plane"))
-                    drawNormalizedImageByWidth(g, enemyAir, pos, targetWidth);
-                else if(e.getType().equals("Tank"))
-                    drawNormalizedImageByWidth(g, enemyLand, pos, targetWidth + 2);
-                else if(e.getType().equals("Ship"))
-                    drawNormalizedImageByWidth(g, enemySea, pos, targetWidth);
-            }
-            
-            g.setFont(timesNewRoman);
-            g.drawString(name, textX, textY);
-
-            int targetWidthForHover = targetWidth + targetWidth*11/16;
-            int half = targetWidthForHover / 2;
-
-
-            if (isHovered && (selectedEntity == null || selectedEntity != e)) {
-                //g.drawString("HOVERED", pos.x, pos.y);
-                g.drawOval(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
-            }
-            else if(selectedEntity == e){
-                g.drawRect(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
-            }
-
-
-
-            //g.setColor(Color.GREEN);
-            //g.drawRect(pos.x, pos.y, 1,1);
         }
     }
 

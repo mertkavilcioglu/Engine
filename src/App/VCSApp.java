@@ -145,16 +145,12 @@ public class VCSApp {
                 if(e.getKeyCode() == KeyEvent.VK_DELETE){
                     if(mapView.getSelectedEntity() != null){
                         removeEntity(mapView.getSelectedEntity());
+                        mapView.repaint();
                     }
                 }
             }
         });
 
-        //attackTest(emir, mert);
-        
-
-        // TODO niye tüm threadler aynı bi düsün
-        // TODO Bunu direk Thread olarak calıstırırsak ne olur?
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -171,29 +167,11 @@ public class VCSApp {
                         hierarchyPanel.update(delta);
                         editorPanel.update();
 
-                        //actionPanel.update(1000);
-                        //isEntitySelected();
-                        // render world
-                        //w.render();
-                        //attack.attackEntity(emir, mert);
                         world.entities.removeAll(world.entitiesToRemove);
                         world.entitiesToRemove.clear();
-                        System.out.println(mapView.getSelectedEntity());
                         renderToWindow();
                     }
                 });
-//                simTimer.start();
-                //simTimer = timer;
-//                simTimer.start();
-
-                Timer timer2 = new Timer(500, new AbstractAction() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                        System.out.println(Thread.currentThread().getName());
-                    }
-                });
-                //timer2.start();
             }
         });
     }
@@ -224,12 +202,10 @@ public class VCSApp {
     }
 
     public void removeEntity(Entity e){
-        System.out.println("siliyor");
         world.entitiesToRemove.add(e);
         hierarchyPanel.entityRemoved(e);
         actionPanel.deleteEntityFromTarget(e);
-        //TODO: tree'den sil (hierarchyPanel.entityRemoved(e);)
-        //TODO: gerekirse diğer panellere de bildir bu entitynin silindiğini
+        mapView.repaint();
     }
 
     public void log(String message){
