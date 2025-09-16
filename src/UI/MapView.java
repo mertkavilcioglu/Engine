@@ -319,51 +319,9 @@ public class MapView extends VCSPanel {
             File mapPixelColors = new File("src/Assets/MapPixelColors.txt");
             if (mapPixelColors.createNewFile()) {
                 System.out.println("File created: " + mapPixelColors.getName());
-                fileWriter("src/Assets/MapPixelColors.txt", bImage ,pos, color);
-//                FileWriter colorWriter = new FileWriter("src/Assets/MapPixelColors.txt");
-//                for(int y=0; y < bImage.getHeight(); y++) {
-//                    for (int x = 0; x < bImage.getWidth(); x++) {
-//                        pos = new Vec2int(x,y);
-//                        int pixel = bImage.getRGB(pos.x, pos.y);
-//                        color = new RGB();
-//
-//                        color.r = (pixel >> 16) & 0xff;
-//                        color.g = (pixel >> 8) & 0xff;
-//                        color.b = (pixel) & 0xff;
-//
-//                        allPixelColors.put(pos.toString(), color);
-//                        String textToWrite = String.format("%d,%d,%d,%d,%d\n", pos.x, pos.y, color.r, color.g, color.b);
-//                        colorWriter.write(textToWrite);
-//                    }
-//                }
-//                colorWriter.close();
+                fileWriterForPixelColor("src/Assets/MapPixelColors.txt", bImage ,pos, color);
             } else {
-                System.out.println("File already exists.");
-                FileInputStream fileStream = new FileInputStream("src/Assets/MapPixelColors.txt");
-                DataInputStream inputStream = new DataInputStream(fileStream);
-                BufferedReader colorReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                if ((line = colorReader.readLine()) == null){
-                    System.out.println("File is rewriting.");
-                    fileWriter("src/Assets/MapPixelColors.txt", bImage ,pos, color);
-                }
-                else {
-                    while ((line = colorReader.readLine()) != null){
-                        String[] values = line.split(",");
-                        int posX = Integer.parseInt(values[0]);
-                        int posY = Integer.parseInt(values[1]);
-                        int red = Integer.parseInt(values[2]);
-                        int green = Integer.parseInt(values[3]);
-                        int blue = Integer.parseInt(values[4]);
-                        Vec2int vec = new Vec2int(posX, posY);
-                        RGB rgbs = new RGB(red, green, blue);
-                        allPixelColors.put(vec.toString(), rgbs);
-                    }
-                }
-                fileStream.close();
-                inputStream.close();
-                colorReader.close();
-                return;
+                fileReaderForPixelColor("src/Assets/MapPixelColors.txt", bImage ,pos, color);
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -371,8 +329,11 @@ public class MapView extends VCSPanel {
         }
     }
 
-    public void fileWriter(String fileName, BufferedImage bImage, Vec2int pos, RGB color) throws IOException {
+    public void fileWriterForPixelColor(String fileName, BufferedImage bImage, Vec2int pos, RGB color) throws IOException {
         FileWriter colorWriter = new FileWriter(fileName);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        colorWriter.write(String.valueOf(screenSize));
+        colorWriter.write("\n");
         for(int y=0; y < bImage.getHeight(); y++) {
             for (int x = 0; x < bImage.getWidth(); x++) {
                 pos = new Vec2int(x,y);
@@ -389,6 +350,41 @@ public class MapView extends VCSPanel {
             }
         }
         colorWriter.close();
+    }
+
+    public void fileReaderForPixelColor(String fileName, BufferedImage bImage, Vec2int pos, RGB color) throws IOException {
+        System.out.println("File already exists.");
+        FileInputStream fileStream = new FileInputStream("src/Assets/MapPixelColors.txt");
+        DataInputStream inputStream = new DataInputStream(fileStream);
+        BufferedReader colorReader = new BufferedReader(new InputStreamReader(inputStream));
+        String line;
+        if ((line = colorReader.readLine()) == null){
+            System.out.println("File is rewriting.");
+            fileWriterForPixelColor("src/Assets/MapPixelColors.txt", bImage ,pos, color);
+        }
+        else {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            if (line.equals(String.valueOf(screenSize))){
+                System.out.println("Reading the file.");
+                while ((line = colorReader.readLine()) != null){
+                    String[] values = line.split(",");
+                    int posX = Integer.parseInt(values[0]);
+                    int posY = Integer.parseInt(values[1]);
+                    int red = Integer.parseInt(values[2]);
+                    int green = Integer.parseInt(values[3]);
+                    int blue = Integer.parseInt(values[4]);
+                    Vec2int vec = new Vec2int(posX, posY);
+                    RGB rgbs = new RGB(red, green, blue);
+                    allPixelColors.put(vec.toString(), rgbs);
+                }
+            } else{
+                System.out.println("File is rewriting.");
+                fileWriterForPixelColor("src/Assets/MapPixelColors.txt", bImage ,pos, color);
+            }
+        }
+        fileStream.close();
+        inputStream.close();
+        colorReader.close();
     }
 
     public void setSelectedEntity(Entity e){
