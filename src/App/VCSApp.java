@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
@@ -135,11 +137,20 @@ public class VCSApp {
         hierarchyPanel.entityAdded(hasan);
         actionPanel.createNewTargetButton(hasan);
 
-        //attackTest(emir, mert);
-        
+        window.setFocusable(true);
+        window.requestFocus();
+        window.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_DELETE){
+                    if(mapView.getSelectedEntity() != null){
+                        removeEntity(mapView.getSelectedEntity());
+                        mapView.repaint();
+                    }
+                }
+            }
+        });
 
-        // TODO niye tüm threadler aynı bi düsün
-        // TODO Bunu direk Thread olarak calıstırırsak ne olur?
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -156,28 +167,11 @@ public class VCSApp {
                         hierarchyPanel.update(delta);
                         editorPanel.update();
 
-                        //actionPanel.update(1000);
-                        //isEntitySelected();
-                        // render world
-                        //w.render();
-                        //attack.attackEntity(emir, mert);
                         world.entities.removeAll(world.entitiesToRemove);
                         world.entitiesToRemove.clear();
                         renderToWindow();
                     }
                 });
-//                simTimer.start();
-                //simTimer = timer;
-//                simTimer.start();
-
-                Timer timer2 = new Timer(500, new AbstractAction() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                        System.out.println(Thread.currentThread().getName());
-                    }
-                });
-                //timer2.start();
             }
         });
     }
@@ -211,8 +205,7 @@ public class VCSApp {
         world.entitiesToRemove.add(e);
         hierarchyPanel.entityRemoved(e);
         actionPanel.deleteEntityFromTarget(e);
-        //TODO: tree'den sil (hierarchyPanel.entityRemoved(e);)
-        //TODO: gerekirse diğer panellere de bildir bu entitynin silindiğini
+        mapView.repaint();
     }
 
     public void log(String message){
