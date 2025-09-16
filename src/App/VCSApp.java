@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
@@ -135,6 +137,19 @@ public class VCSApp {
         hierarchyPanel.entityAdded(hasan);
         actionPanel.createNewTargetButton(hasan);
 
+        window.setFocusable(true);
+        window.requestFocus();
+        window.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_DELETE){
+                    if(mapView.getSelectedEntity() != null){
+                        removeEntity(mapView.getSelectedEntity());
+                    }
+                }
+            }
+        });
+
         //attackTest(emir, mert);
         
 
@@ -163,6 +178,7 @@ public class VCSApp {
                         //attack.attackEntity(emir, mert);
                         world.entities.removeAll(world.entitiesToRemove);
                         world.entitiesToRemove.clear();
+                        System.out.println(mapView.getSelectedEntity());
                         renderToWindow();
                     }
                 });
@@ -208,6 +224,7 @@ public class VCSApp {
     }
 
     public void removeEntity(Entity e){
+        System.out.println("siliyor");
         world.entitiesToRemove.add(e);
         hierarchyPanel.entityRemoved(e);
         actionPanel.deleteEntityFromTarget(e);
