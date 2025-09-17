@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,10 +15,11 @@ public class RadarEditor extends JPanel {
     private int data;
     private JLabel nameLbl;
     private JLabel lbl;
-    private JTextField txt;
+    public JTextField txt;
     Border defaultBorder;
     private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
     private Color borderColor;
+    private boolean isFocused = false;
 
     //TODO radar comp. eklenmemişse radarsız oluştur, radar varsa ama invalidse kırmızı yap
     public RadarEditor(String label, EntityEditorView editor){
@@ -47,6 +50,18 @@ public class RadarEditor extends JPanel {
         defaultBorder = txt.getBorder();
         add(new JLabel(" "));
         editor.setRadarPanel(this);
+
+        txt.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                isFocused = true;
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                isFocused = false;
+            }
+        });
     }
 
     public void setData(int data) {
@@ -88,5 +103,9 @@ public class RadarEditor extends JPanel {
             }
         }).start();
 
+    }
+
+    public boolean getIsFocused(){
+        return isFocused;
     }
 }
