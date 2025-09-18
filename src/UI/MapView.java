@@ -130,7 +130,19 @@ public class MapView extends VCSPanel {
         addMouseListener(new MouseInputAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (isMouseEntered){
+                if (app.appListenerController.isCaptureMode()){
+                    if (isMouseEntered){
+                        Vec2int posFromMap = new Vec2int(e.getX(), e.getY());
+                        app.actionPanel.setPosFromMap(posFromMap);
+                        app.appListenerController.setCaptureMode(false);
+                        setActionPanelUsingMouseEvent(false);
+
+                    }
+                    e.consume();
+                    return;
+                }
+
+                if (isMouseEntered && !isActionPanelUsingMouseEvent){
                     //System.out.println("MapView::mousePressed - THREAD : " + Thread.currentThread().getName());
                     if (!hoveredEntities.isEmpty()) {
                         Entity topEntity = hoveredEntities.poll();
@@ -396,5 +408,10 @@ public class MapView extends VCSPanel {
 
     public Queue<Entity> getHoveredEntities(){
         return hoveredEntities;
+    }
+
+    private boolean isActionPanelUsingMouseEvent = false;
+    public void setActionPanelUsingMouseEvent(boolean isUsing){
+        isActionPanelUsingMouseEvent = isUsing;
     }
 }

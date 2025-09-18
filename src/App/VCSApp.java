@@ -33,6 +33,7 @@ public class VCSApp {
     public World world;
     private JFrame window;
     public MapView mapView;
+    public AppListenerController appListenerController;
     public EntityEditorView editorPanel;
     public HierarchyView hierarchyPanel;
     public ActionPanel actionPanel;
@@ -76,6 +77,7 @@ public class VCSApp {
 
     public void runWithWindow() throws InterruptedException, InvocationTargetException {
         uiColorManager = new UIColorManager();
+        appListenerController = new AppListenerController();
         world = new World(this);
         window = new AppWindow(this);
         mapView = new MapView(this);

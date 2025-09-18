@@ -36,6 +36,7 @@ public class ActionPanel extends VCSPanel {
 
     //move part of middle panel
     private JPanel movePanel;
+    private Vec2intEditor moveEditor;
 
     //follow part of middle panel
     private JPanel followPanel;
@@ -137,7 +138,7 @@ public class ActionPanel extends VCSPanel {
         setMovePosTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor,2));
         movePanel.setBorder(setMovePosTitledBorder);
 
-        Vec2intEditor moveEditor = new Vec2intEditor("New Position:", app);
+        moveEditor = new Vec2intEditor("New Position:", app);
         JButton moveConfirmButton = new JButton("Move");
         moveConfirmButton.setBackground(app.uiColorManager.BUTTON_COLOR);
         moveConfirmButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
@@ -257,7 +258,13 @@ public class ActionPanel extends VCSPanel {
             }
         });
 
-        moveButton.addActionListener(e -> orderDetailLayout.show(orderDetailPanel, "move"));
+        moveButton.addActionListener(e -> {
+            orderDetailLayout.show(orderDetailPanel, "move");
+
+            app.mapView.setActionPanelUsingMouseEvent(true);
+            app.appListenerController.setCaptureMode(true);
+
+        });
 
         followButton.addActionListener(e -> {
             isAttackAction = false;
@@ -270,12 +277,18 @@ public class ActionPanel extends VCSPanel {
 
         //action listener for create move order
         moveConfirmButton.addActionListener(e -> {
-            coordinatesToMove = moveEditor.readData();
-            //currentOrderText.append("Move to " + coordinates + "\n");
-            if (selectedEntity != null){
-                selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y)));
-                refreshCurrentOrderPanel();
+            try{
+                coordinatesToMove = moveEditor.readData();
+                if (selectedEntity != null){
+                    selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y)));
+                    refreshCurrentOrderPanel();
+                }
             }
+            catch(Exception ex){
+                moveEditor.dataValidate();
+            }
+            //currentOrderText.append("Move to " + coordinates + "\n");
+
 
         });
 
@@ -556,6 +569,14 @@ public class ActionPanel extends VCSPanel {
 
     public void setIfPaused(boolean isPaused){
         this.isPaused = isPaused;
+    }
+
+    Vec2int posFromMap;
+    public void setPosFromMap (Vec2int pos){
+        posFromMap = pos;
+        if (posFromMap != null){
+            moveEditor.setData(posFromMap);
+        }
     }
 
     @Override
