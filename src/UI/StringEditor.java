@@ -4,11 +4,14 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class StringEditor extends JPanel {
     private JLabel lbl;
     private JTextField txt;
-    Border defaultBorder;
+    private Border defaultBorder;
+    private boolean isFocused = false;
 
     public StringEditor(String labelName){
         lbl = new JLabel(labelName);
@@ -20,6 +23,18 @@ public class StringEditor extends JPanel {
         this.add(lbl);
         this.add(txt);
         defaultBorder = txt.getBorder();
+
+        txt.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                isFocused = true;
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                isFocused = false;
+            }
+        });
     }
 
     public void setData(String text) {
@@ -47,6 +62,10 @@ public class StringEditor extends JPanel {
             }
         }).start();
         return null;
+    }
+
+    public boolean getIsFocused(){
+        return isFocused;
     }
 
 }

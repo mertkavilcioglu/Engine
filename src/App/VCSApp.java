@@ -142,7 +142,7 @@ public class VCSApp {
         window.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_DELETE){
+                if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
                     if(mapView.getSelectedEntity() != null){
                         removeEntityInstantaneously(mapView.getSelectedEntity());
                         mapView.repaint();
