@@ -94,10 +94,10 @@ public class ImportPanel extends VCSPanel{
                     }
                     String speedStr = ent.getSpeed().toString().substring(1, ent.getSpeed().toString().length()-1);
                     if(flag2.get()){
-                        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-                        int width = (int)size.getWidth();
-                        int height = (int)size.getHeight();
-                        myWriter.write(width +", " + height + "\n");
+                        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+                        int width = gd.getDisplayMode().getWidth();
+                        int height = gd.getDisplayMode().getHeight();
+                        myWriter.write(width +"x" + height + "\n");
                         flag2.set(false);
                     }
                     myWriter.write(ent.getName() + "\n");
