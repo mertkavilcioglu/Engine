@@ -134,8 +134,8 @@ public class MapView extends VCSPanel {
                     if (isMouseEntered){
                         Vec2int posFromMap = new Vec2int(e.getX(), e.getY());
                         app.actionPanel.setPosFromMap(posFromMap);
-                        app.appListenerController.setCaptureMode(false);
-                        setActionPanelUsingMouseEvent(false);
+//                        app.appListenerController.setCaptureMode(false);
+//                        setActionPanelUsingMouseEvent(false);
 
                     }
                     e.consume();

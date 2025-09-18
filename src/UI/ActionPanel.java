@@ -249,6 +249,7 @@ public class ActionPanel extends VCSPanel {
 
         //action listeners for open specific middle panel
         attackButton.addActionListener(e -> {
+            setMoveMode(false);
             showTargetButtons(selectedEntity);
             isAttackAction = true;
             if (isEnemy){
@@ -261,13 +262,13 @@ public class ActionPanel extends VCSPanel {
         moveButton.addActionListener(e -> {
             orderDetailLayout.show(orderDetailPanel, "move");
 
-            app.mapView.setActionPanelUsingMouseEvent(true);
-            app.appListenerController.setCaptureMode(true);
+            setMoveMode(true);
 
         });
 
         followButton.addActionListener(e -> {
             isAttackAction = false;
+            setMoveMode(false);
             orderDetailLayout.show(orderDetailPanel, "follow");
             followTargetData.removeAllElements();
             followableEntityList.clear();
@@ -282,6 +283,7 @@ public class ActionPanel extends VCSPanel {
                 if (selectedEntity != null){
                     selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y)));
                     refreshCurrentOrderPanel();
+                    setMoveMode(false);
                 }
             }
             catch(Exception ex){
@@ -577,6 +579,11 @@ public class ActionPanel extends VCSPanel {
         if (posFromMap != null){
             moveEditor.setData(posFromMap);
         }
+    }
+
+    public void setMoveMode(boolean isMove){
+        app.mapView.setActionPanelUsingMouseEvent(isMove);
+        app.appListenerController.setCaptureMode(isMove);
     }
 
     @Override
