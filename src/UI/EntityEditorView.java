@@ -12,9 +12,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.sql.SQLOutput;
 
 public class EntityEditorView extends VCSPanel {
     private String[] components = {"Radar"};
@@ -249,7 +246,7 @@ public class EntityEditorView extends VCSPanel {
     @Override
     public void selectedEntityChanged(Entity entity) {
         if(entity == null){
-            clearPanelData();
+            disablePanelData();
         }
         else{
             updateButton.setEnabled(true);
@@ -327,7 +324,7 @@ public class EntityEditorView extends VCSPanel {
         addTypeBox.setEnabled(true);
     }
 
-    public void clearPanelData(){
+    public void disablePanelData(){
         eNamePanel.setData("");
         ePositionPanel.setData(new Vec2int());
         eSpeedPanel.setData(new Vec2int());

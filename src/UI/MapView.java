@@ -125,6 +125,13 @@ public class MapView extends VCSPanel {
                     repaint();
                 }
             }
+
+            @Override
+            public void mouseDragged(MouseEvent e){
+                if (isMouseEntered){
+                    log("sürüklüyom");
+                }
+            }
         });
         //when mouse click an entity
         addMouseListener(new MouseInputAdapter() {
