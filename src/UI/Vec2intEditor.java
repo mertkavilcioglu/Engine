@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,6 +22,8 @@ public class Vec2intEditor extends JPanel{
     private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
     private Color panelBgColor;
     private Color panelComponentBgColor;
+    private boolean isFocusedX = false;
+    private boolean isFocusedY = false;
 
 
     public Vec2intEditor(String label, VCSApp app) {
@@ -51,11 +55,45 @@ public class Vec2intEditor extends JPanel{
         this.add(vecPnl);
         defaultBorder = txtX.getBorder();
 
+        txtX.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                isFocusedX = false;
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                isFocusedX = true;
+            }
+        });
+
+        txtY.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                isFocusedY = true;
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                isFocusedY = false;
+            }
+        });
+
     }
 
     public void setData(Vec2int data) {
         this.data = data;
         txtX.setText(String.valueOf(data.x));
+        txtY.setText(String.valueOf(data.y));
+    }
+
+    public void setDataX(Vec2int data) {
+        this.data = data;
+        txtX.setText(String.valueOf(data.x));
+    }
+
+    public void setDataY(Vec2int data) {
+        this.data = data;
         txtY.setText(String.valueOf(data.y));
     }
 
@@ -155,5 +193,13 @@ public class Vec2intEditor extends JPanel{
         txtX.setEnabled(set);
         txtY.setEnabled(set);
     }
+
+    public boolean getIsFocusedX(){
+        return isFocusedX;
+    }
+    public boolean getIsFocusedY(){
+        return isFocusedY;
+    }
+
 
 }
