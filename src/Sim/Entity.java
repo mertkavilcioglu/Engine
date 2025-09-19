@@ -337,5 +337,8 @@ public class Entity {
         return components;
     }
 
+    public RGB getPosPixelColor(){
+        return currentPixelColor;
+    }
 
 }
