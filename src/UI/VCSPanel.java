@@ -15,5 +15,8 @@ public abstract class VCSPanel extends JPanel {
     protected void log(String message){
         if (app != null) app.log(message);
     }
+    protected void debugLog(String message){
+        if (app != null) app.debugLog(message);
+    }
 
 }

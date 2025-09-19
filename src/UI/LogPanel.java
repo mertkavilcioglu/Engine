@@ -5,10 +5,14 @@ import Sim.Entity;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 
 public class LogPanel extends VCSPanel {
-    private JTextArea logArea;
+    private JTextPane logArea;
 
     public LogPanel(VCSApp app) {
         super(app);
@@ -16,7 +20,7 @@ public class LogPanel extends VCSPanel {
         this.setPreferredSize(new Dimension(getWidth(),getHeight()));
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
         this.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
-        logArea = new JTextArea(10,40);
+        logArea = new JTextPane();
         logArea.setEditable(false);
         logArea.setCaretColor(app.uiColorManager.DARK_PANEL_COLOR);
         logArea.setForeground(Color.WHITE);
@@ -35,8 +39,24 @@ public class LogPanel extends VCSPanel {
     }
 
     public void messageToLog(String message){
-        logArea.append(message + "\n");
+        String text = message + "\n";
+        coloredText(logArea, text, Color.WHITE);
+    }
 
+    public void debugLogMessage(String msg){
+        String text = msg + "\n";
+        coloredText(logArea, text, Color.YELLOW);
+    }
+
+    private void coloredText(JTextPane textPane, String msg, Color color){
+        StyledDocument doc = textPane.getStyledDocument();
+        Style style = textPane.addStyle("ColorStyle", null);
+        StyleConstants.setForeground(style, color);
+        try {
+            doc.insertString(doc.getLength(), msg, style);
+        }catch (BadLocationException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

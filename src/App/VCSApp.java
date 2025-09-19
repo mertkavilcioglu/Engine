@@ -229,6 +229,9 @@ public class VCSApp {
         if (logPanel != null) logPanel.messageToLog(message);
     }
 
+    public void debugLog(String message){
+        if (logPanel != null) logPanel.debugLogMessage(message);
+    }
 
     /*public void isEntitySelected(){
         actionPanel.selectedUnit(hierarchyPanel.entitySelected());
