@@ -103,6 +103,9 @@ public class PlayPausePanel extends VCSPanel{
 
                 }
             }
+            for(Sim.Entity ent:app.world.entities) {
+                ent.deleteAllDetectedEntities();
+            }
             app.simTimer.stop();
             play.setBackground(initialButColor);
             pause.setBackground(initialButColor);
