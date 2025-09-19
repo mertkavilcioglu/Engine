@@ -345,11 +345,9 @@ public class Entity {
         for(Component c : components){
             if(componentToSearch.equals("Radar")){
                 if(c instanceof Radar && ((Radar) c).getRange() != 0){
-                    w.app.debugLog("RADAR VAR");
                     return true;
                 }
                 else{
-                    w.app.debugLog("RADAR YOK");
                     return false;
                 }
             }

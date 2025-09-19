@@ -159,10 +159,9 @@ public class VCSApp {
                 if(e.getKeyCode() == KeyEvent.VK_C && ctrlOn){
                     if(mapView.getSelectedEntity() != null){
                         world.setCopiedEntity(mapView.getSelectedEntity());
-                        debugLog("DEBUG: Copied entity.");
                     }
-                    else debugLog("DEBUG: Did NOT copy entity.");
                 }
+                
                 if(e.getKeyCode() == KeyEvent.VK_V && ctrlOn){
                     if(world.getCopiedEntity() != null &&
                             world.getCopiedEntity().CanMove(mapView.allPixelColors.get(mapView.getPixPos().toString()),
@@ -175,10 +174,7 @@ public class VCSApp {
                             createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType());
                         else
                             createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), 0, ent.getType());
-                        debugLog("DEBUG: Pasted entity");
                     }
-                    else
-                        debugLog("DEBUG: Did NOT paste entity");
                 }
             }
 
