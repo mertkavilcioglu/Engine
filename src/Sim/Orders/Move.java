@@ -20,7 +20,7 @@ public class Move extends Order{
             return;
         double dist = source.getPos().distance(destination);
         if(dist <= 2.0){
-            app.log(source.getName() + " reached the target. \n");
+            app.log(source.getName() + " reached the target.");
             source.setSpeed(new Vec2int(0,0));
             source.completeCurrentOrder();
             source.setCurrentOrderState(true);
@@ -61,7 +61,7 @@ public class Move extends Order{
 
     @Override
     public String createTextToPrint() {
-        return String.format("Move %s\n", destination.toString());
+        return String.format("Move %s", destination.toString());
     }
 
     @Override

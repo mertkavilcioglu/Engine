@@ -33,7 +33,8 @@ public class Attack extends Order{
         double distY = targetEntity.getPos().y - source.getPos().y;
         double dist = source.getPos().distance(targetEntity.getPos());
         if(dist <= 4.0){
-            app.log(source.getName() + " destroy the target " + targetEntity.getName());
+            String msgDestroy = String.format("%s destroy the target %s,", source.getName(), targetEntity.getName());
+            app.log(msgDestroy);
             destroy(targetEntity);
 
         }
@@ -66,7 +67,8 @@ public class Attack extends Order{
     @Override
     protected void printToLog(){
         if (!isExecute){
-            app.log(source.getName() + " going to attack " + targetEntity.getName());
+            String msgAttack = String.format("%s going to attack %s.", source.getName(), targetEntity.getName());
+            app.log(msgAttack);
             source.setCurrentOrderState(false);
         }
         isExecute = true;
@@ -80,7 +82,7 @@ public class Attack extends Order{
 
     @Override
     public String createTextToPrint() {
-        return String.format("Attack %s\n", targetEntity.toString());
+        return String.format("Attack %s", targetEntity.toString());
     }
 
     @Override

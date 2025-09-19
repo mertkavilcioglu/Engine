@@ -16,7 +16,8 @@ public class Follow extends Order{
         this.targetEntity = target;
         this.followTime = time;
         if (followTime == 0){
-            app.log(source.getName() + "'s follow order not started due to time problems.\n");
+            String msgNotStarted = String.format("%s's follow order not started due to time problems.", source.getName());
+            app.log(msgNotStarted);
             isExecute = true;
             source.completeCurrentOrder();
             source.setCurrentOrderState(true);
@@ -43,7 +44,7 @@ public class Follow extends Order{
         if (followTime > numOfUpdate){
             if(dist <= 3.0){
                 int time = followTime - numOfUpdate;
-                String reachString = String.format("%s has reached the target and will continue tracking for %d seconds. \n", source.getName(), time);
+                String reachString = String.format("%s has reached the target and will continue tracking for %d seconds.", source.getName(), time);
                 app.log(reachString);
                 //source.setSpeed(new Vec2int(0,0));
             }
@@ -59,12 +60,12 @@ public class Follow extends Order{
         }
         else if (followTime == numOfUpdate){
             if(dist <= 3.0){
-                String reachString = String.format("%s has reached the target. \n", source.getName());
+                String reachString = String.format("%s has reached the target.", source.getName());
                 app.log(reachString);
                 source.setSpeed(new Vec2int(0,0));
             }
             else{
-                String timeOutString = String.format("%s stopped following the target %s because time was out. \n", source.getName(), target.getName());
+                String timeOutString = String.format("%s stopped following the target %s because time was out.", source.getName(), target.getName());
                 app.log(timeOutString);
             }
             source.completeCurrentOrder();
@@ -75,7 +76,7 @@ public class Follow extends Order{
 
     @Override
     protected void printToLog(){
-        String followString = String.format("%s is following %s. \n",source.getName(), targetEntity.getName());
+        String followString = String.format("%s is following %s.",source.getName(), targetEntity.getName());
         if (!isExecute){
             app.log(followString);
             source.setCurrentOrderState(false);
@@ -92,7 +93,7 @@ public class Follow extends Order{
 
     @Override
     public String createTextToPrint() {
-        return String.format("Follow %s\n", targetEntity.getName());
+        return String.format("Follow %s", targetEntity.getName());
     }
 
     @Override
