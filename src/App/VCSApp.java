@@ -44,6 +44,7 @@ public class VCSApp {
     private ArrayList<JLabel> entityNames = new ArrayList<>();
     public PixelColor pixelColor;
     public UIColorManager uiColorManager;
+    private boolean ctrlOn = false;
 
     public Timer simTimer;
     //TODO: mouse hareket ettikçe world render oluyor, bu render oyun durmuşken de mouse hareketinde
@@ -149,6 +150,42 @@ public class VCSApp {
                         removeEntityInstantaneously(mapView.getSelectedEntity());
                         mapView.repaint();
                     }
+                }
+
+                if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+                    ctrlOn = true;
+                }
+
+                if(e.getKeyCode() == KeyEvent.VK_C && ctrlOn){
+                    if(mapView.getSelectedEntity() != null){
+                        world.setCopiedEntity(mapView.getSelectedEntity());
+                        debugLog("DEBUG: Copied entity.");
+                    }
+                    else debugLog("DEBUG: Did NOT copy entity.");
+                }
+                if(e.getKeyCode() == KeyEvent.VK_V && ctrlOn){
+                    if(world.getCopiedEntity() != null &&
+                            world.getCopiedEntity().CanMove(mapView.allPixelColors.get(mapView.getPixPos().toString()),
+                                    world.getCopiedEntity().getType())){
+                        Entity ent = world.getCopiedEntity();
+                        String newName = String.format("%s - Copy", ent.getName());
+                        Vec2int newPos = mapView.getPixPos();
+
+                        if(ent.hasComponent("Radar"))
+                            createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType());
+                        else
+                            createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), 0, ent.getType());
+                        debugLog("DEBUG: Pasted entity");
+                    }
+                    else
+                        debugLog("DEBUG: Did NOT paste entity");
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e){
+                if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+                    ctrlOn = false;
                 }
             }
         });

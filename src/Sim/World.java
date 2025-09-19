@@ -17,6 +17,7 @@ public class World{
 
     public ArrayList<Entity> entities = new ArrayList<>();
     public ArrayList<Entity> entitiesToRemove = new ArrayList<>();
+    private Entity copiedEntity;
 
     public Entity createEntity2(String name, int side) {
         Entity ent = new Entity(this);
@@ -95,5 +96,13 @@ public class World{
     }
     public void render() {
         System.out.println("World::render");
+    }
+
+    public Entity getCopiedEntity(){
+        return copiedEntity;
+    }
+
+    public void setCopiedEntity(Entity e){
+        copiedEntity = e;
     }
 }

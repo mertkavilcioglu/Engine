@@ -341,4 +341,36 @@ public class Entity {
         return currentPixelColor;
     }
 
+    public boolean hasComponent(String componentToSearch){
+        for(Component c : components){
+            if(componentToSearch.equals("Radar")){
+                if(c instanceof Radar && ((Radar) c).getRange() != 0){
+                    w.app.debugLog("RADAR VAR");
+                    return true;
+                }
+                else{
+                    w.app.debugLog("RADAR YOK");
+                    return false;
+                }
+            }
+
+        }
+        return false;
+    }
+
+    public Component getComponent(String componentToGet){
+        for(Component c : components){
+            if(componentToGet.equals("Radar")){
+                if(c instanceof Radar){
+                    return c;
+                }
+                else{
+                    return null;
+                }
+            }
+
+        }
+        return null;
+    }
+
 }
