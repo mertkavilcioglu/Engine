@@ -209,6 +209,8 @@ public class VCSApp {
         actionPanel.deleteEntityFromTarget(e);
         mapView.getHoveredEntities().remove(e);
         //TODO: disable editor yap
+        editorPanel.disablePanelData();
+        mapView.setSelectedEntity(null);
         mapView.repaint();
     }
 
@@ -217,6 +219,9 @@ public class VCSApp {
         hierarchyPanel.entityRemoved(e);
         actionPanel.deleteEntityFromTarget(e);
         mapView.getHoveredEntities().remove(e);
+        editorPanel.disablePanelData();
+        mapView.setSelectedEntity(null);
+        actionPanel.disablePanel();
         mapView.repaint();
     }
 
