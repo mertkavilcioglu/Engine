@@ -51,7 +51,8 @@ public class PlayPausePanel extends VCSPanel{
         buttonpanel.setBorder(BorderFactory.createEmptyBorder(0,50,0,50));
         this.add(buttonpanel);
         initialButColor = play.getBackground();
-        //reset.setEnabled(false);
+        reset.setEnabled(false);
+        pause.setEnabled(false);
         setBackground(panelBgColor);
         //setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
@@ -64,6 +65,9 @@ public class PlayPausePanel extends VCSPanel{
             pause.setBackground(initialButColor);
             reset.setBackground(initialButColor);
             app.actionPanel.setIfPaused(false);
+            play.setEnabled(false);
+            pause.setEnabled(true);
+            reset.setEnabled(true);
         });
 
         pause.addActionListener(e -> {
@@ -72,6 +76,9 @@ public class PlayPausePanel extends VCSPanel{
             play.setBackground(initialButColor);
             reset.setBackground(initialButColor);
             app.actionPanel.setIfPaused(true);
+            pause.setEnabled(false);
+            play.setEnabled(true);
+            reset.setEnabled(true);
         });
 
         reset.addActionListener(e ->{
@@ -86,8 +93,22 @@ public class PlayPausePanel extends VCSPanel{
             app.simTimer.stop();
             play.setBackground(initialButColor);
             pause.setBackground(initialButColor);
-            reset.setBackground(Color.RED);
+
+//            reset.setBackground(Color.RED);
+//            new Thread(()->{
+//            try {
+//                Thread.sleep(125);
+//                reset.setBackground(initialButColor);
+//            } catch (InterruptedException ee) {
+//                throw new RuntimeException(ee);
+//            }
+//        }).start();
+
+
             app.mapView.repaint();
+            reset.setEnabled(false);
+            pause.setEnabled(false);
+            play.setEnabled(true);
         });
     }
 
