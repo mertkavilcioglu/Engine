@@ -246,6 +246,7 @@ public class ActionPanel extends VCSPanel {
         currentOrderPanel.add(selectedOrderDeleteButton, BorderLayout.SOUTH);
         currentOrderPanel.setBackground(panelBgColor);
         currentOrderPanel.setPreferredSize(new Dimension(app.getWindow().getWidth(),220));
+        attackButton.setFocusable(false);
 
         //action listeners for open specific middle panel
         attackButton.addActionListener(e -> {
@@ -259,6 +260,7 @@ public class ActionPanel extends VCSPanel {
             }
         });
 
+        moveButton.setFocusable(false);
         moveButton.addActionListener(e -> {
             orderDetailLayout.show(orderDetailPanel, "move");
 
@@ -266,6 +268,7 @@ public class ActionPanel extends VCSPanel {
 
         });
 
+        followButton.setFocusable(false);
         followButton.addActionListener(e -> {
             isAttackAction = false;
             setMoveMode(false);
