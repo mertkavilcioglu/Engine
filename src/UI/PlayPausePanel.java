@@ -57,6 +57,7 @@ public class PlayPausePanel extends VCSPanel{
         //setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
         play.addActionListener(e -> {
+            app.logPanel.clearLogArea();
             if(app.mapView.getInitialPoints().isEmpty()){
                 app.mapView.saveInitialPoints();
             }
@@ -84,6 +85,7 @@ public class PlayPausePanel extends VCSPanel{
         reset.addActionListener(e ->{
             Map<Entity, Vec2int> initialPositions = app.mapView.getInitialPoints();
             for(Sim.Entity ent:app.world.entities) {
+                ent.deleteAllDetectedEntities();
                 Vec.Vec2int pos = initialPositions.get(ent);
                 if (pos != null) {
                     ent.setPos(new Vec.Vec2int(pos.x,pos.y));

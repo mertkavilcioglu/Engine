@@ -37,7 +37,7 @@ public class VCSApp {
     public EntityEditorView editorPanel;
     public HierarchyView hierarchyPanel;
     public ActionPanel actionPanel;
-    private LogPanel logPanel;
+    public LogPanel logPanel;
     private PlayPausePanel playPausePanel;
     private ImportPanel importPanel;
     public MapPixelPosPanel mapPixelPosPanel;

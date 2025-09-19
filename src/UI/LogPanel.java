@@ -59,6 +59,14 @@ public class LogPanel extends VCSPanel {
         }
     }
 
+     public void clearLogArea(){
+        try {
+            logArea.getStyledDocument().remove(0, logArea.getStyledDocument().getLength());
+        } catch (BadLocationException e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void selectedEntityChanged(Entity entity) {
 
