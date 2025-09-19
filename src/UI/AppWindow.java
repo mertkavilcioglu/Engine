@@ -12,7 +12,8 @@ public class AppWindow extends JFrame {
 
         appBgColor = app.uiColorManager.TOP_BAR_COLOR;
         //setSize(800, 600);
-        setResizable(false);
+        setResizable(true);
+        //setMinimumSize(new Dimension(960,600));
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setUndecorated(true);

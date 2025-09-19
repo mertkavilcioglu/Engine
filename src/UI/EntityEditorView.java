@@ -10,25 +10,29 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLOutput;
 
 public class EntityEditorView extends VCSPanel {
-    String[] components = {"Radar"};
-    RadarEditor radarPanel = null;
-    JButton addComponentButton;
-    JPanel addSidePanel;
-    JPanel addTypePanel;
-    JComboBox addSideBox;
-    JComboBox addTypeBox;
-    String type ="";
+    private String[] components = {"Radar"};
+    private RadarEditor radarPanel = null;
+    private JButton addComponentButton;
+    private JPanel addSidePanel;
+    private JPanel addTypePanel;
+    private JComboBox addSideBox;
+    private JComboBox addTypeBox;
+    private boolean addSideBoxFocused = false;
+    private boolean addTypeBoxFocused = false;
+    private String type ="";
 
-    StringEditor eNamePanel;
-    Vec2intEditor ePositionPanel;
-    Vec2intEditor eSpeedPanel;
+    private StringEditor eNamePanel;
+    private Vec2intEditor ePositionPanel;
+    private Vec2intEditor eSpeedPanel;
 
-    JButton updateButton = new JButton("Update Entity");
+    private JButton updateButton = new JButton("Update Entity");
 
     Color panelColor;
     Color panelComponentColor;
@@ -179,6 +183,7 @@ public class EntityEditorView extends VCSPanel {
                             add(radarPanel);
                             add(addComponentButton);
                             revalidate();
+                            radarPanel.txt.requestFocus();
                             break;
                         }
                 }
@@ -191,6 +196,30 @@ public class EntityEditorView extends VCSPanel {
             popupMenu.show(addComponentButton,x,y);
         });
         add(addComponentButton, BorderLayout.CENTER);
+
+        addTypeBox.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                addTypeBoxFocused = true;
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                addTypeBoxFocused = false;
+            }
+        });
+
+        addSideBox.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                addSideBoxFocused = true;
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                addSideBoxFocused = false;
+            }
+        });
     }
 
     public void update(){
@@ -232,23 +261,40 @@ public class EntityEditorView extends VCSPanel {
     public void updatePanelData(Entity e){
         if(e == null)
             return;
-        eNamePanel.setData(e.getName());
-        ePositionPanel.setData(e.getPos());
-        eSpeedPanel.setData(e.getSpeed());
-        addSideBox.setSelectedIndex(e.getSide());
-        switch (e.getType()){
-            case "Tank":
-                addTypeBox.setSelectedIndex(0);
-                break;
-            case "Plane":
-                addTypeBox.setSelectedIndex(1);
-                break;
-            case "Ship":
-                addTypeBox.setSelectedIndex(2);
-                break;
+
+        if(!eNamePanel.getIsFocused())
+            eNamePanel.setData(e.getName());
+
+        if(!ePositionPanel.getIsFocusedX())
+            ePositionPanel.setDataX(e.getPos());
+        if(!ePositionPanel.getIsFocusedY())
+            ePositionPanel.setDataY(e.getPos());
+
+        if(!eSpeedPanel.getIsFocusedX())
+            eSpeedPanel.setDataX(e.getSpeed());
+        if(!eSpeedPanel.getIsFocusedY())
+            eSpeedPanel.setDataY(e.getSpeed());
+
+        if(!addSideBoxFocused)
+            addSideBox.setSelectedIndex(e.getSide());
+
+        if(!addTypeBoxFocused){
+            switch (e.getType()){
+                case "Tank":
+                    addTypeBox.setSelectedIndex(0);
+                    break;
+                case "Plane":
+                    addTypeBox.setSelectedIndex(1);
+                    break;
+                case "Ship":
+                    addTypeBox.setSelectedIndex(2);
+                    break;
+            }
         }
+
+
         for(Component c : e.getComponents()){
-            if(c instanceof Radar && ((Radar) c).getRange() != 0){
+            if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
                 if(radarPanel == null){
                     radarPanel = new RadarEditor("Radar:", this);
                     remove(addComponentButton);
@@ -258,13 +304,13 @@ public class EntityEditorView extends VCSPanel {
                     revalidate();//TODO: radar bilgisi sağda güncel değil bide treede yok
                     //TODO: hiyerarşide radar güncellenmiyor, silip geri ekledikten sonra
                 }
-                else{
+                else if(!radarPanel.getIsFocused()){
                     radarPanel.setData(((Radar) c).getRange());
                     revalidate();
                 }
             }
             else{
-                if(radarPanel != null){
+                if(radarPanel != null && !radarPanel.getIsFocused()){
                     remove(radarPanel);
                     radarPanel = null;
                 }
