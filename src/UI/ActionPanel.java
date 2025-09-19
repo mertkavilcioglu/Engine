@@ -138,13 +138,36 @@ public class ActionPanel extends VCSPanel {
         setMovePosTitledBorder.setBorder(BorderFactory.createLineBorder(borderColor,2));
         movePanel.setBorder(setMovePosTitledBorder);
 
-        moveEditor = new Vec2intEditor("New Position:", app);
+        JLabel chooseModeLabel = new JLabel("Choose Position From Map:");
+        chooseModeLabel.setForeground(Color.WHITE);
+        chooseModeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton enableFromMapButton = new JButton("ON");
+        JButton disableFromMapButton = new JButton("OFF");
+        enableFromMapButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        enableFromMapButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        enableFromMapButton.setFocusable(false);
+        disableFromMapButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        disableFromMapButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        disableFromMapButton.setFocusable(false);
+        JPanel moveFomMapPanel = new JPanel();
+        moveFomMapPanel.setLayout(new BoxLayout(moveFomMapPanel, BoxLayout.Y_AXIS));
+        moveFomMapPanel.setBackground(panelBgColor);
+        JPanel fromMapButtonsPanel = new JPanel(new FlowLayout());
+        fromMapButtonsPanel.setBackground(panelBgColor);
+        fromMapButtonsPanel.add(enableFromMapButton);
+        fromMapButtonsPanel.add(disableFromMapButton);
+        moveFomMapPanel.add(new JLabel(" "));
+        moveFomMapPanel.add(chooseModeLabel);
+        moveFomMapPanel.add(fromMapButtonsPanel);
+        moveEditor = new Vec2intEditor("Manuel Mode:", app);
         JButton moveConfirmButton = new JButton("Move");
+        moveConfirmButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
         moveConfirmButton.setBackground(app.uiColorManager.BUTTON_COLOR);
         moveConfirmButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
         moveConfirmButton.setFocusable(false);
         movePanel.add(moveEditor);
         movePanel.add(moveConfirmButton);
+        movePanel.add(moveFomMapPanel);
 
         followPanel = new JPanel();
         followPanel.setLayout(new BoxLayout(followPanel, BoxLayout.Y_AXIS));
@@ -263,10 +286,9 @@ public class ActionPanel extends VCSPanel {
         moveButton.setFocusable(false);
         moveButton.addActionListener(e -> {
             orderDetailLayout.show(orderDetailPanel, "move");
-
-            setMoveMode(true);
-
         });
+        enableFromMapButton.addActionListener(e -> setMoveMode(true));
+        disableFromMapButton.addActionListener(e -> setMoveMode(false));
 
         followButton.setFocusable(false);
         followButton.addActionListener(e -> {
@@ -312,6 +334,7 @@ public class ActionPanel extends VCSPanel {
 
     //find the selected entity from hierarchy panel to give order
     public void setSelectedEntity(Entity entity){
+        setMoveMode(false);
         this.selectedEntity = entity;
         this.isRootSelected = false;
         this.typeOfEntity = entity.getType();
