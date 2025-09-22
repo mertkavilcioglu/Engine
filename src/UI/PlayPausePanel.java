@@ -58,9 +58,9 @@ public class PlayPausePanel extends VCSPanel{
 
         play.addActionListener(e -> {
             app.logPanel.clearLogArea();
-            if(app.mapView.getInitialPoints().isEmpty()){
-                app.mapView.saveInitialPoints();
-            }
+            //if(app.mapView.getInitialPoints().isEmpty()){
+            app.mapView.saveInitialPoints();
+            //}
             if(app.mapView.getInitialSpeeds().isEmpty()){
                 app.mapView.saveSpeed();
             }
@@ -75,6 +75,9 @@ public class PlayPausePanel extends VCSPanel{
         });
 
         pause.addActionListener(e -> {
+            if(app.mapView.getInitialPoints().isEmpty()){
+                app.mapView.saveInitialPoints();
+            }
             app.simTimer.stop();
             pause.setBackground(Color.YELLOW);
             play.setBackground(initialButColor);
@@ -88,7 +91,6 @@ public class PlayPausePanel extends VCSPanel{
         reset.addActionListener(e ->{
             Map<Entity, Vec2int> initialPositions = app.mapView.getInitialPoints();
             for(Sim.Entity ent:app.world.entities) {
-                ent.deleteAllDetectedEntities();
                 Vec.Vec2int pos = initialPositions.get(ent);
                 if (pos != null) {
                     ent.setPos(new Vec.Vec2int(pos.x,pos.y));
@@ -109,6 +111,8 @@ public class PlayPausePanel extends VCSPanel{
             app.simTimer.stop();
             play.setBackground(initialButColor);
             pause.setBackground(initialButColor);
+            new PopupMenu();
+
 
 //            reset.setBackground(Color.RED);
 //            new Thread(()->{

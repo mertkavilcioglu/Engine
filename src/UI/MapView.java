@@ -246,7 +246,7 @@ public class MapView extends VCSPanel {
     }
 
     public void saveInitialPoints(){
-        initialPoints.clear();
+        //initialPoints.clear();
         for(Entity ent: world.entities){
             initialPoints.put(ent, new Vec2int(ent.getPos().x, ent.getPos().y));
         }
