@@ -14,20 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class VCSApp {
-    //TODO paneller icin selected
-    //TODO PLAY PAUSE BIRLIKTE, TEK GIRME
-
-
-    //TODO 25.08.2.25
-    //imlecin bulunduğu pikseli tutabilelim, belki ileride add remove falan bağlarız
-    //TODO imleçle haritadaki entityleri seçebilmek falan da yapılabilse iyi olur
-    //TODO sınırdan çıkma kontrolü için, bir sonraki pikseli (sonraki update konumuna göre) hesap etme işini düşün
-    //remove order butonları ekle alt panele
-    //TODO exit butonu
-    //TODO followu bağla
-    //TODO haritanın arka planı olsun ve çözünürlüğü düşürülebilir
-    //TODO play pause zamanı çıtırdan yaklaşıyor
-
 
     // VIRTUAL COMBAT SYSTEM (VCS)
     public World world;
@@ -47,10 +33,6 @@ public class VCSApp {
     private boolean ctrlOn = false;
 
     public Timer simTimer;
-    //TODO: mouse hareket ettikçe world render oluyor, bu render oyun durmuşken de mouse hareketinde
-    // devam ediyor. mouse hareketine gerek kalmadan, pause olunda da dünya render edilsin ki create
-    // entityler gözüksün anında.
-    // eğer düzgün çalışmazsa world render ile engine render'ı ayırman gerekebilir belki
 
     public void run() {
         System.out.println("App::run");
@@ -241,7 +223,6 @@ public class VCSApp {
         hierarchyPanel.entityRemoved(e);
         actionPanel.deleteEntityFromTarget(e);
         mapView.getHoveredEntities().remove(e);
-        //TODO: disable editor yap
         editorPanel.disablePanelData();
         mapView.setSelectedEntity(null);
         mapView.repaint();

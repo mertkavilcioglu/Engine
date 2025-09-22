@@ -300,8 +300,7 @@ public class EntityEditorView extends VCSPanel {
                     add(radarPanel);
                     add(addComponentButton);
                     radarPanel.setData(((Radar) c).getRange());
-                    revalidate();//TODO: radar bilgisi sağda güncel değil bide treede yok
-                    //TODO: hiyerarşide radar güncellenmiyor, silip geri ekledikten sonra
+                    revalidate();
                 }
                 else if(!radarPanel.getIsFocused()){
                     radarPanel.setData(((Radar) c).getRange());
@@ -347,4 +346,3 @@ public class EntityEditorView extends VCSPanel {
     }
 
 }
-//TODO window yap

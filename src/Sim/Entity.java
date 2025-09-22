@@ -25,8 +25,7 @@ public class Entity {
     private Vec2int nextPos;
     private RGB nextPosPixelColor = new RGB();
     private RGB posPixelColor = new RGB();
-    //TODO current order tutulsun
-    //TODO entity içinde orderda kullanılan değişkenleri tut
+
 
     public Entity(World w) {
         this.w = w;
@@ -74,8 +73,6 @@ public class Entity {
     }
 
     public void removeOrder(ArrayList<Order> orderList){
-        //TODO: remove order ekle, ayrıca (burası icin degil) peak ile current'e
-        // ulaşmak yerine direk currentOrder'ı kullan
         for(Order o : orderList){
             orders.remove(o);
         }
@@ -86,7 +83,7 @@ public class Entity {
         orders.poll();
         currentOrder = orders.peek();
     }
-    //TODO
+
     public Vec2int nextStep(Vec2int pos, Vec2int nextPos){
         posPixelColor =w.app.mapView.allPixelColors.get(pos.toString());
         Vec2int newPos = new Vec2int(pos.x,pos.y);
