@@ -121,6 +121,9 @@ public class MapView extends VCSPanel {
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (isMouseEntered){
+                    if (app.appListenerController.isCaptureMode()){
+                        setCursor(createPointSelectionCurser(Color.LIGHT_GRAY, Color.LIGHT_GRAY));
+                    } else setCursor(Cursor.getDefaultCursor());
                     //System.out.println("MapView::mouseMoved - THREAD : " + Thread.currentThread().getName());
                     pixPos = new Vec2int(e.getX(), e.getY());
                     app.mapPixelPosPanel.showPixelPosOfCursor(pixPos);
@@ -130,7 +133,7 @@ public class MapView extends VCSPanel {
 
             @Override
             public void mouseDragged(MouseEvent e){
-                if (isMouseEntered/* && e.getButton() == MouseEvent.BUTTON1*/){
+                if (isMouseEntered && !isActionPanelUsingMouseEvent){
                     pixPos = new Vec2int(e.getX(), e.getY());
                     app.mapPixelPosPanel.showPixelPosOfCursor(pixPos);
                     handleEntityDrag(selectedEntity);
@@ -143,6 +146,7 @@ public class MapView extends VCSPanel {
             public void mousePressed(MouseEvent e) {
                 if (app.appListenerController.isCaptureMode()){
                     if (isMouseEntered){
+                        setCursor(createPointSelectionCurser(Color.LIGHT_GRAY, Color.YELLOW));
                         Vec2int posFromMap = new Vec2int(e.getX(), e.getY());
                         app.actionPanel.setPosFromMap(posFromMap);
 //                        app.appListenerController.setCaptureMode(false);
@@ -442,5 +446,25 @@ public class MapView extends VCSPanel {
             app.editorPanel.updatePanelData(e);
             repaint();
         }
+    }
+
+    public Vec2int getPixPos(){
+        return pixPos;
+    }
+
+    private Cursor createPointSelectionCurser(Color outerColor, Color inerColor){
+        int size = 16;
+        BufferedImage curserImage = new BufferedImage(24,24, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = curserImage.createGraphics();
+        g.setColor(outerColor);
+        g.drawRect(0,0,size,size);
+        g.setColor(inerColor);
+        g.fillRect(6, 6, 5, 5);
+
+        g.dispose();
+
+        Cursor pointCursor = Toolkit.getDefaultToolkit().createCustomCursor
+                (curserImage, new Point(size/2,size/2), "custom curser");
+        return pointCursor;
     }
 }
