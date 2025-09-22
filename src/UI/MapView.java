@@ -130,8 +130,10 @@ public class MapView extends VCSPanel {
 
             @Override
             public void mouseDragged(MouseEvent e){
-                if (isMouseEntered){
-                    log("sürüklüyom");
+                if (isMouseEntered/* && e.getButton() == MouseEvent.BUTTON1*/){
+                    pixPos = new Vec2int(e.getX(), e.getY());
+                    app.mapPixelPosPanel.showPixelPosOfCursor(pixPos);
+                    handleEntityDrag(selectedEntity);
                 }
             }
         });
@@ -429,5 +431,16 @@ public class MapView extends VCSPanel {
     private boolean isActionPanelUsingMouseEvent = false;
     public void setActionPanelUsingMouseEvent(boolean isUsing){
         isActionPanelUsingMouseEvent = isUsing;
+    }
+
+    public void handleEntityDrag(Entity e){
+        if(e == null)
+            return;
+        Vec2int prevPos = e.getPos();
+        if(allPixelColors.get(pixPos.toString()) != null && e.CanMove(allPixelColors.get(pixPos.toString()), e.getType())){
+            e.setPos(pixPos);
+            app.editorPanel.updatePanelData(e);
+            repaint();
+        }
     }
 }
