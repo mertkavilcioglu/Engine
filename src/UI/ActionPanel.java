@@ -287,8 +287,16 @@ public class ActionPanel extends VCSPanel {
         moveButton.addActionListener(e -> {
             orderDetailLayout.show(orderDetailPanel, "move");
         });
-        enableFromMapButton.addActionListener(e -> setMoveMode(true));
-        disableFromMapButton.addActionListener(e -> setMoveMode(false));
+        enableFromMapButton.addActionListener(e -> {
+            setMoveMode(true);
+            enableFromMapButton.setBackground(Color.GRAY);
+            enableFromMapButton.setForeground(Color.lightGray);
+        });
+        disableFromMapButton.addActionListener(e -> {
+            setMoveMode(false);
+            enableFromMapButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+            enableFromMapButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        });
 
         followButton.setFocusable(false);
         followButton.addActionListener(e -> {
