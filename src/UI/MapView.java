@@ -23,6 +23,8 @@ import java.io.*;
 public class MapView extends VCSPanel {
     private World world;
     private Map<Entity,Vec2int> initialPoints = new HashMap<>();
+    private Map<Entity,Vec2int> initialSpeeds = new HashMap<>();
+
     public Map<String, RGB> allPixelColors;
     Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
     Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
@@ -250,11 +252,18 @@ public class MapView extends VCSPanel {
         }
     }
 
+    public void saveSpeed(){
+        for(Entity ent: world.entities){
+            initialSpeeds.put(ent, ent.getSpeed());
+        }
+    }
     public Map<Entity,Vec2int> getInitialPoints(){
         return initialPoints;
     }
 
-
+    public Map<Entity,Vec2int> getInitialSpeeds(){
+        return initialSpeeds;
+    }
     
     @Override
     public void selectedEntityChanged(Entity entity) {
