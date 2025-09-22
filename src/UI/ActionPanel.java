@@ -37,6 +37,8 @@ public class ActionPanel extends VCSPanel {
     //move part of middle panel
     private JPanel movePanel;
     private Vec2intEditor moveEditor;
+    private JButton enableFromMapButton;
+    private JButton disableFromMapButton;
 
     //follow part of middle panel
     private JPanel followPanel;
@@ -141,8 +143,8 @@ public class ActionPanel extends VCSPanel {
         JLabel chooseModeLabel = new JLabel("Choose Position From Map:");
         chooseModeLabel.setForeground(Color.WHITE);
         chooseModeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton enableFromMapButton = new JButton("ON");
-        JButton disableFromMapButton = new JButton("OFF");
+        enableFromMapButton = new JButton("ON");
+        disableFromMapButton = new JButton("OFF");
         enableFromMapButton.setBackground(app.uiColorManager.BUTTON_COLOR);
         enableFromMapButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
         enableFromMapButton.setFocusable(false);
@@ -294,8 +296,6 @@ public class ActionPanel extends VCSPanel {
         });
         disableFromMapButton.addActionListener(e -> {
             setMoveMode(false);
-            enableFromMapButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-            enableFromMapButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
         });
 
         followButton.setFocusable(false);
@@ -618,6 +618,10 @@ public class ActionPanel extends VCSPanel {
     public void setMoveMode(boolean isMove){
         app.mapView.setActionPanelUsingMouseEvent(isMove);
         app.appListenerController.setCaptureMode(isMove);
+        if (isMove == false){
+            enableFromMapButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+            enableFromMapButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        }
     }
 
     @Override
