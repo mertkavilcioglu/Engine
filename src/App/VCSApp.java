@@ -125,6 +125,9 @@ public class VCSApp {
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
                     if(mapView.getSelectedEntity() != null){
+                        Entity ent = mapView.getSelectedEntity();
+                        world.latestDeletedEntities.push(ent);
+                        world.latestChanges.push("DELETE");
                         removeEntityInstantaneously(mapView.getSelectedEntity());
                         mapView.repaint();
                     }
@@ -156,10 +159,7 @@ public class VCSApp {
                 }
 
                 if(e.getKeyCode() == KeyEvent.VK_Z && ctrlOn){
-                    if(!world.latestCreatedEntities.isEmpty()){
-                        removeEntityInstantaneously(world.latestCreatedEntities.getLast());
-                        world.latestCreatedEntities.pop();
-                    }
+                    world.revertLastChange();
                 }
             }
 
@@ -208,10 +208,17 @@ public class VCSApp {
     public void createEntity(String name, int side, Vec2int pos, Vec2int speed, int range, String type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
         world.latestCreatedEntities.push(ent);
+        world.latestChanges.push("CREATE");
         hierarchyPanel.entityAdded(ent);
         actionPanel.createNewTargetButton(ent);
-        // diğer panellere bu entity'yi dağıt
-        // log, attack vs.
+        mapView.setSelectedEntity(ent);
+        mapView.repaint();
+    }
+
+    public void createEntityByRevert(String name, int side, Vec2int pos, Vec2int speed, int range, String type){
+        Entity ent = world.createEntity(name, side, pos, speed, range, type);
+        hierarchyPanel.entityAdded(ent);
+        actionPanel.createNewTargetButton(ent);
         mapView.setSelectedEntity(ent);
         mapView.repaint();
     }

@@ -1,9 +1,8 @@
 package Sim;
 
 import App.VCSApp;
-import UI.MapView;
 import Vec.Vec2int;
-import java.awt.image.BufferedImage;
+
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,6 +18,9 @@ public class World{
     public ArrayList<Entity> entities = new ArrayList<>();
     public ArrayList<Entity> entitiesToRemove = new ArrayList<>();
     public Stack<Entity> latestCreatedEntities = new Stack<>();
+    public Stack<Entity> latestDeletedEntities = new Stack<>();
+    public Stack<Entity> latestMovedEntities = new Stack<>();
+    public Stack<String> latestChanges = new Stack<>();
     private Entity copiedEntity;
 
     public Entity createEntity2(String name, int side) {
@@ -62,8 +64,6 @@ public class World{
         if(eName == null){
             return null;
         }
-        System.out.format("Created entity %s with x:%d and y:%d", eName, pos.x, pos.y);
-        System.out.format("Created entity type %s", type);
         Entity ent = new Entity(this);
         ent.setName(eName);
         ent.setSide(eSide);
@@ -106,5 +106,35 @@ public class World{
 
     public void setCopiedEntity(Entity e){
         copiedEntity = e;
+    }
+
+    public void revertLastChange(){
+        if(latestChanges.isEmpty())
+            return;
+
+        if(latestChanges.getLast().equals("MOVE")){
+
+        }
+        else if(latestChanges.getLast().equals("CREATE")){
+            if(!latestCreatedEntities.isEmpty()){
+                System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
+                System.out.println(latestCreatedEntities.getLast());
+                app.removeEntityInstantaneously(latestCreatedEntities.getLast());
+                latestCreatedEntities.pop();
+                latestChanges.pop();
+            }
+        }
+        else if(latestChanges.getLast().equals("DELETE")){
+            if(!latestDeletedEntities.isEmpty()){
+                Entity de = latestDeletedEntities.getLast();
+                if(de.hasComponent("Radar"))
+                    app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(),
+                            ((Radar)de.getComponent("Radar")).getRange(), de.getType());
+                else
+                    app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(), 0, de.getType());
+                latestDeletedEntities.pop();
+                latestChanges.pop();
+            }
+        }
     }
 }

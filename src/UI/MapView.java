@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -116,6 +117,7 @@ public class MapView extends VCSPanel {
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (isMouseEntered){
+                    System.out.println(app.world.latestChanges.size());
                     if (app.appListenerController.isCaptureMode()){
                         setCursor(createPointSelectionCurser(Color.LIGHT_GRAY, Color.LIGHT_GRAY));
                     } else setCursor(Cursor.getDefaultCursor());
