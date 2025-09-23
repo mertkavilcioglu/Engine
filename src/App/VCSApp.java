@@ -215,12 +215,13 @@ public class VCSApp {
         mapView.repaint();
     }
 
-    public void createEntityByRevert(String name, int side, Vec2int pos, Vec2int speed, int range, String type){
+    public Entity createEntityByRevert(String name, int side, Vec2int pos, Vec2int speed, int range, String type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
         hierarchyPanel.entityAdded(ent);
         actionPanel.createNewTargetButton(ent);
         mapView.setSelectedEntity(ent);
         mapView.repaint();
+        return ent;
     }
 
     public void updateSelectedEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, String newType){

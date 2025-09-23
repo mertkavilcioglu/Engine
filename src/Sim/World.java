@@ -117,7 +117,6 @@ public class World{
         }
         else if(latestChanges.getLast().equals("CREATE")){
             if(!latestCreatedEntities.isEmpty()){
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
                 System.out.println(latestCreatedEntities.getLast());
                 app.removeEntityInstantaneously(latestCreatedEntities.getLast());
                 latestCreatedEntities.pop();
@@ -127,13 +126,16 @@ public class World{
         else if(latestChanges.getLast().equals("DELETE")){
             if(!latestDeletedEntities.isEmpty()){
                 Entity de = latestDeletedEntities.getLast();
+                Entity newEnt;
                 if(de.hasComponent("Radar"))
-                    app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(),
+                    newEnt = app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(),
                             ((Radar)de.getComponent("Radar")).getRange(), de.getType());
                 else
-                    app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(), 0, de.getType());
+                    newEnt = app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(), 0, de.getType());
                 latestDeletedEntities.pop();
                 latestChanges.pop();
+                if(latestCreatedEntities.contains(de))
+                    latestCreatedEntities.set(latestCreatedEntities.indexOf(de), newEnt);
             }
         }
     }
