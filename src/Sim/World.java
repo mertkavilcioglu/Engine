@@ -5,6 +5,7 @@ import UI.MapView;
 import Vec.Vec2int;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class World{
@@ -17,6 +18,7 @@ public class World{
 
     public ArrayList<Entity> entities = new ArrayList<>();
     public ArrayList<Entity> entitiesToRemove = new ArrayList<>();
+    public Stack<Entity> latestCreatedEntities = new Stack<>();
     private Entity copiedEntity;
 
     public Entity createEntity2(String name, int side) {

@@ -27,7 +27,6 @@ public class VCSApp {
     private PlayPausePanel playPausePanel;
     private ImportPanel importPanel;
     public MapPixelPosPanel mapPixelPosPanel;
-    private ArrayList<JLabel> entityNames = new ArrayList<>();
     public PixelColor pixelColor;
     public UIColorManager uiColorManager;
     private boolean ctrlOn = false;
@@ -155,6 +154,13 @@ public class VCSApp {
                             createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), 0, ent.getType());
                     }
                 }
+
+                if(e.getKeyCode() == KeyEvent.VK_Z && ctrlOn){
+                    if(!world.latestCreatedEntities.isEmpty()){
+                        removeEntityInstantaneously(world.latestCreatedEntities.getLast());
+                        world.latestCreatedEntities.pop();
+                    }
+                }
             }
 
             @Override
@@ -201,6 +207,7 @@ public class VCSApp {
 
     public void createEntity(String name, int side, Vec2int pos, Vec2int speed, int range, String type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
+        world.latestCreatedEntities.push(ent);
         hierarchyPanel.entityAdded(ent);
         actionPanel.createNewTargetButton(ent);
         // diğer panellere bu entity'yi dağıt
