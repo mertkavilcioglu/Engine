@@ -131,6 +131,7 @@ public class EntityEditorView extends VCSPanel {
         updateButton.setFocusable(false);
         updateButton.addActionListener(e -> {
             try{
+                Vec2int oldPos = app.mapView.getSelectedEntity().getPos();
                 String name = eNamePanel.readData();
                 Vec2int pos = ePositionPanel.readData();
                 Vec2int speed = eSpeedPanel.readData();
@@ -147,6 +148,13 @@ public class EntityEditorView extends VCSPanel {
                     ePositionPanel.error();
                 }
                 app.hierarchyPanel.updateComponent("Radar", app.mapView.getSelectedEntity());
+
+                if(app.mapView.getSelectedEntity().getPreviousPositions().getLast().x != pos.x &&
+                        app.mapView.getSelectedEntity().getPreviousPositions().getLast().y != pos.y){
+                    app.mapView.getSelectedEntity().getPreviousPositions().push(oldPos);
+                    app.world.latestMovedEntities.push(app.mapView.getSelectedEntity());
+                    app.world.latestChanges.push("MOVE");
+                }
 
             }
             catch (Exception ex){

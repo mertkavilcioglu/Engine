@@ -41,11 +41,12 @@ public class MapView extends VCSPanel {
     private Queue<Entity> hoveredEntities = new LinkedList<>();
 
     private Entity selectedEntity;
-
     private Vec2int createPosition = new Vec2int();
+    private boolean isDragging = false;
 
     private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private String screenResolution = String.format("%dx%d", gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
+
 
     public MapView(VCSApp app) {
         super(app);
@@ -117,7 +118,6 @@ public class MapView extends VCSPanel {
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (isMouseEntered){
-                    System.out.println(app.world.latestChanges.size());
                     if (app.appListenerController.isCaptureMode()){
                         setCursor(createPointSelectionCurser(Color.LIGHT_GRAY, Color.LIGHT_GRAY));
                     } else setCursor(Cursor.getDefaultCursor());
@@ -131,11 +131,16 @@ public class MapView extends VCSPanel {
             @Override
             public void mouseDragged(MouseEvent e){
                 if (isMouseEntered && !isActionPanelUsingMouseEvent){
+                    if(!isDragging && selectedEntity != null){
+                        isDragging = true;
+                        selectedEntity.getPreviousPositions().push(selectedEntity.getPos());
+                    }
                     pixPos = new Vec2int(e.getX(), e.getY());
                     app.mapPixelPosPanel.showPixelPosOfCursor(pixPos);
                     handleEntityDrag(selectedEntity);
                 }
             }
+
         });
         //when mouse click an entity
         addMouseListener(new MouseInputAdapter() {
@@ -201,6 +206,16 @@ public class MapView extends VCSPanel {
                         }
                     }
                     repaint();
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(isDragging){
+                    isDragging = false;
+                    app.world.latestMovedEntities.push(selectedEntity);
+                    app.world.latestChanges.push("MOVE");
+
                 }
             }
         });

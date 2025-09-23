@@ -113,11 +113,15 @@ public class World{
             return;
 
         if(latestChanges.getLast().equals("MOVE")){
-
+            if(!latestMovedEntities.isEmpty()){
+                latestMovedEntities.getLast().revertToPreviousPosition();
+                latestMovedEntities.pop();
+                latestChanges.pop();
+                app.mapView.repaint();
+            }
         }
         else if(latestChanges.getLast().equals("CREATE")){
             if(!latestCreatedEntities.isEmpty()){
-                System.out.println(latestCreatedEntities.getLast());
                 app.removeEntityInstantaneously(latestCreatedEntities.getLast());
                 latestCreatedEntities.pop();
                 latestChanges.pop();

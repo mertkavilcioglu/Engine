@@ -25,6 +25,7 @@ public class Entity {
     private Vec2int nextPos;
     private RGB nextPosPixelColor = new RGB();
     private RGB posPixelColor = new RGB();
+    private Stack<Vec2int> previousPositions = new Stack<>();
 
 
     public Entity(World w) {
@@ -337,6 +338,17 @@ public class Entity {
 
         }
         return null;
+    }
+
+    public Stack<Vec2int> getPreviousPositions(){
+        return previousPositions;
+    }
+
+    public void revertToPreviousPosition(){
+        if(!previousPositions.isEmpty()){
+            pos = previousPositions.getLast();
+            previousPositions.pop();
+        }
     }
 
 }
