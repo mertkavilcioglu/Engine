@@ -26,14 +26,14 @@ public class MapView extends VCSPanel {
     private Map<Entity,Vec2int> initialSpeeds = new HashMap<>();
 
     public Map<String, RGB> allPixelColors;
-    Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
-    Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
-    Image friendlySea = new ImageIcon("src/Assets/Symbols/nato_friendly_sea.png").getImage();
-    Image enemyAir = new ImageIcon("src/Assets/Symbols/nato_enemy_air.png").getImage();
-    Image enemyLand = new ImageIcon("src/Assets/Symbols/nato_enemy_land.png").getImage();
-    Image enemySea = new ImageIcon("src/Assets/Symbols/nato_enemy_sea.png").getImage();
-    int targetWidth = 19;
-    Font timesNewRoman = new Font("Times New Roman", Font.PLAIN, 10 );
+    private final Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
+    private final Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
+    private final Image friendlySea = new ImageIcon("src/Assets/Symbols/nato_friendly_sea.png").getImage();
+    private final Image enemyAir = new ImageIcon("src/Assets/Symbols/nato_enemy_air.png").getImage();
+    private final Image enemyLand = new ImageIcon("src/Assets/Symbols/nato_enemy_land.png").getImage();
+    private final Image enemySea = new ImageIcon("src/Assets/Symbols/nato_enemy_sea.png").getImage();
+    private int targetWidth = 19;
+    private final Font timesNewRoman = new Font("Times New Roman", Font.PLAIN, 10 );
     boolean isMouseEntered = false;
 
     private Vec2int pixPos = new Vec2int();
@@ -43,8 +43,8 @@ public class MapView extends VCSPanel {
 
     private Vec2int createPosition = new Vec2int();
 
-    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    String screenResolution = String.format("%dx%d", gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
+    private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private String screenResolution = String.format("%dx%d", gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
 
     public MapView(VCSApp app) {
         super(app);
@@ -101,11 +101,6 @@ public class MapView extends VCSPanel {
         enemy.add(ePlane);
         enemy.add(eShip);
         createEntityMenu.add(enemy);
-
-        //TODO: seçilen bölge için eğer bir birim tipi uygun değilse o çıkmasın veya disable olsun
-        aTank.addActionListener(e -> {
-            //TODO: CREATE ENTİTY  tank /////////////////////////////////////////
-        });
         rightClickPopUpMenu.add(createEntityMenu);
 
 
@@ -292,10 +287,6 @@ public class MapView extends VCSPanel {
                 Vec2int pos = e.getPos();
                 String name = e.getName();
 
-//            int half = targetWidth / 2;
-//            g.setColor(Color.GREEN);
-//            g.fillRect(pos.x - half, pos.y - half, targetWidth, targetWidth);
-
                 FontMetrics fontMetric = g.getFontMetrics();
                 int textLength = fontMetric.stringWidth(name);
                 int textX = pos.x - 10 + (20 - textLength) / 2;
@@ -306,7 +297,6 @@ public class MapView extends VCSPanel {
                 else if (e.getSide() == 1)
                     g.setColor(Color.red);
 
-                //g.drawOval(pos.x-10, pos.y-10, 20, 20);
                 if(e.getSide() == 0){
                     if(e.getType().equals("Plane"))
                         drawNormalizedImageByWidth(g, friendlyAir, pos, targetWidth);
@@ -334,7 +324,6 @@ public class MapView extends VCSPanel {
 
 
                 if (isHovered && (selectedEntity == null || selectedEntity != e)) {
-                    //g.drawString("HOVERED", pos.x, pos.y);
                     g.drawOval(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
                 }
                 else if(selectedEntity == e){
@@ -440,7 +429,6 @@ public class MapView extends VCSPanel {
     public void handleEntityDrag(Entity e){
         if(e == null)
             return;
-        Vec2int prevPos = e.getPos();
         if(allPixelColors.get(pixPos.toString()) != null && e.CanMove(allPixelColors.get(pixPos.toString()), e.getType())){
             e.setPos(pixPos);
             app.editorPanel.updatePanelData(e);

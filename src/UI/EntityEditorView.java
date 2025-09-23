@@ -31,9 +31,9 @@ public class EntityEditorView extends VCSPanel {
 
     private JButton updateButton = new JButton("Update Entity");
 
-    Color panelColor;
-    Color panelComponentColor;
-    Color borderColor;
+    public Color panelColor;
+    public Color panelComponentColor;
+    public Color borderColor;
 
     public EntityEditorView(VCSApp app){
         super(app);

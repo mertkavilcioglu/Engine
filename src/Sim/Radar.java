@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Radar extends Component {
-    int range = 50;
+    private int range = 50;
 
     public Radar(Entity parent, ArrayList<Entity> entities) {
         super(parent, entities);
@@ -14,9 +14,6 @@ public class Radar extends Component {
 
 
     void detect(List<Entity> entities) {
-        // calc distance for every unit
-        // check range
-
         boolean hasVisual = false;
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
@@ -26,12 +23,9 @@ public class Radar extends Component {
             if (e.getSide() == parentEntity.getSide()){
                 continue;
             }
-            Vec2int p = entities.get(i).pos;
-            double dist = parentEntity.pos.distance(p);
+            Vec2int p = entities.get(i).getPos();
+            double dist = parentEntity.getPos().distance(p);
             if(dist <= range) {
-                //System.out.format("ComponentRadar::update Unit %s has detected unit %s - distance: %.2f.\n",
-                //        parentEntity.name.toUpperCase(), entities.get(i).name.toUpperCase(),
-                //        dist);
                 hasVisual = true;
                 if (!(parentEntity.getDetectedEntities().contains(e))){
                     parentEntity.setDetectedEntities(e);

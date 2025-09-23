@@ -5,7 +5,7 @@ import Vec.Vec2int;
 import java.util.ArrayList;
 
 public abstract class Component {
-    Entity parentEntity;
+    protected Entity parentEntity;
     protected ArrayList<Entity> entities;
 
     public Component(Entity parent, ArrayList<Entity> entities){
@@ -15,6 +15,6 @@ public abstract class Component {
 
     public abstract void update(int deltaTime);
     void setPosition(Vec2int pos){
-        parentEntity.pos = pos;
+        parentEntity.setPos(pos);
     }
 }

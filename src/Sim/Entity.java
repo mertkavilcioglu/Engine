@@ -7,15 +7,15 @@ import Vec.Vec2int;
 import java.util.*;
 
 public class Entity {
-    String name;
-    int side = 0;
-    Vec2int pos;
-    Vec2int speed;
-    String type;
-    ArrayList<Component> components = new ArrayList<>();
+    private String name;
+    private int side = 0;
+    private Vec2int pos;
+    private Vec2int speed;
+    private String type;
+    private ArrayList<Component> components = new ArrayList<>();
     public ArrayList<Component> componentsToRemove = new ArrayList<>();
-    List<Entity> detectedEntities = new ArrayList<>();
-    RGB currentPixelColor;
+    private List<Entity> detectedEntities = new ArrayList<>();
+    private RGB currentPixelColor;
     protected final World w;
     private NodeInfo nodeInfo;
     private Queue<Order> orders = new LinkedList<>();
@@ -37,14 +37,6 @@ public class Entity {
             currentOrder = order;
         }
         orders.add(order);
-    }
-
-    public void addComponent(String comp){
-        switch (comp){
-            case "Radar":
-
-                break;
-        }
     }
 
     public void removeComponent(String s){
@@ -136,15 +128,6 @@ public class Entity {
 
         }
 
-
-/*
-        if(CanMove(currentPixelColor,type)){
-
-        }
-
- */
-
-
         if(pos.x <= 0){
             pos.x = 0;
             speed.x = 0;
@@ -156,19 +139,7 @@ public class Entity {
             speed.x = 0;
             speed.y = 0;
         }
-/*
-        if(Objects.equals(type, "Ship") && pos.y >= w.map.midY){
-            pos.y = w.map.midY;
-            speed.x = 0;
-            speed.y = 0;
-        }
 
-        if(Objects.equals(type, "Tank") && pos.y <= w.map.midY){
-            pos.y = w.map.midY;
-            speed.x = 0;
-            speed.y = 0;
-        }
-*/
         if(pos.y <= 0){
             pos.y = 0;
             speed.x = 0;

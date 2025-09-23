@@ -28,7 +28,7 @@ public class World{
         ent.setSpeed(speed);
         Radar r = new Radar(ent,entities);
         ent.addComponents(r);
-        ent.type = "Plane";
+        ent.setType("Plane");
 
         ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
         if(ent.maxSpeed == 0)
@@ -46,7 +46,7 @@ public class World{
         ent.setSpeed(Vec2int.getRandom(-4,4,-4,4));
         Radar r = new Radar(ent,entities);
         ent.addComponents(r);
-        ent.type = "Plane";
+        ent.setType("Plane");
 
         ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
         if(ent.maxSpeed == 0)

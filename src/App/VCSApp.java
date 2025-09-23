@@ -73,9 +73,6 @@ public class VCSApp {
         mapPixelPosPanel = new MapPixelPosPanel(this);
         pixelColor = new PixelColor(this);
 
-        //TODO: bu kısımları kendi classlarına taşı:
-        importPanel.setBackground(uiColorManager.TOP_BAR_COLOR);
-
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         //mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
         mergeSouthPanel.add(actionPanel);
@@ -246,11 +243,5 @@ public class VCSApp {
     public void debugLog(String message){
         if (logPanel != null) logPanel.debugLogMessage(message);
     }
-
-    /*public void isEntitySelected(){
-        actionPanel.selectedUnit(hierarchyPanel.entitySelected());
-    }*/
-
-
 
 }

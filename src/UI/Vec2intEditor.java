@@ -18,7 +18,7 @@ public class Vec2intEditor extends JPanel{
     private JLabel lblY;
     private JTextField txtX;
     private JTextField txtY;
-    Border defaultBorder;
+    private Border defaultBorder;
     private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
     private Color panelBgColor;
     private Color panelComponentBgColor;
@@ -143,34 +143,6 @@ public class Vec2intEditor extends JPanel{
                 throw new RuntimeException(e);
             }
         }).start();
-
-
-//        try {
-//            x = Integer.parseInt(txtX.getText());
-//        }
-//        catch (NumberFormatException e) {
-//            System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblX.getText());
-//            txtX.setBorder(new LineBorder(Color.RED, 2));
-//        }
-//
-//        try {
-//            y = Integer.parseInt(txtY.getText());
-//        }
-//        catch (NumberFormatException e) {
-//            System.out.format("%s %s IS NOT VALID\n", nameLbl.getText(), lblY.getText());
-//            txtY.setBorder(new LineBorder(Color.RED, 2));
-//        }
-//        new Thread(()->{
-//            try {
-//                Thread.sleep(1000);
-//                //txt.setBackground(Color.WHITE);
-//                txtX.setBorder(defaultBorder);
-//                txtY.setBorder(defaultBorder);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }).start();
-
     }
 
     public void error(){
@@ -180,7 +152,6 @@ public class Vec2intEditor extends JPanel{
         new Thread(()->{
             try {
                 Thread.sleep(1000);
-                //txt.setBackground(Color.WHITE);
                 txtX.setBorder(defaultBorder);
                 txtY.setBorder(defaultBorder);
             } catch (InterruptedException e) {

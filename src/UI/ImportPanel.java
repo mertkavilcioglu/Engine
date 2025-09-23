@@ -28,6 +28,7 @@ public class ImportPanel extends VCSPanel{
         this.add(exportb);
         this.add(importb);
         this.setBackground(app.uiColorManager.TOP_BAR_COLOR);
+        setBackground(app.uiColorManager.TOP_BAR_COLOR);
         //importpanel.setBorder(BorderFactory.createEmptyBorder(0,0,50,50));
 
         importb.addActionListener(e -> {

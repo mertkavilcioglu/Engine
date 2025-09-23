@@ -16,7 +16,7 @@ public class RadarEditor extends JPanel {
     private JLabel nameLbl;
     private JLabel lbl;
     public JTextField txt;
-    Border defaultBorder;
+    private Border defaultBorder;
     private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
     private Color borderColor;
     private boolean isFocused = false;
