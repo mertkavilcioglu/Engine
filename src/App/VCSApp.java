@@ -236,6 +236,15 @@ public class VCSApp {
         return ent;
     }
 
+    public Entity createEntityByReset(String name, int side, Vec2int pos, Vec2int speed, int range, String type){
+        Entity ent = world.createEntity(name, side, pos, speed, range, type);
+        hierarchyPanel.entityAdded(ent);
+        actionPanel.createNewTargetButton(ent);
+        mapView.setSelectedEntity(ent);
+        mapView.repaint();
+        return ent;
+    }
+
     public void updateSelectedEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, String newType){
         mapView.getSelectedEntity().updateEntity(newName, newSide, newPos, newSpeed, newRange, newType);
         mapView.repaint();

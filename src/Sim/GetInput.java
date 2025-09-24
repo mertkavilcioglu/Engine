@@ -1,10 +1,12 @@
 package Sim;
+import App.VCSApp;
 import Vec.Vec2int;
 import UI.PopupMenu;
 
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class GetInput {
 
@@ -43,6 +45,37 @@ public class GetInput {
         }
 
     }
+
+    public void readInputForReset(VCSApp app, String filePath){
+        HashSet<Entity> allEntities = new HashSet<>(app.world.entities);
+        try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            while (true) {
+                String name = br.readLine();
+                if (name == null) break;
+                String sideStr = br.readLine();
+                String type = br.readLine();
+                String posStr = br.readLine();
+                String speedStr = br.readLine();
+                br.readLine();
+
+                int side = 1;
+                if (sideStr != null && sideStr.toLowerCase().equals("ally")) {
+                    side = 0;
+                }
+                Vec2int pos = strToVec2int(posStr);
+                Vec2int speed = strToVec2int(speedStr);
+                int range = 50;
+                if(app.pixelColor.isLocationValidForType(type,pos)){
+                    Entity entity = app.createEntityByReset(name, side, pos, speed, range, type);
+                    if (allEntities.contains(entity)) app.removeEntity(entity);
+                }
+
+            }
+        }catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
     public Vec2int strToVec2int(String str){
         if(str == null){
             return new Vec2int(0,0);

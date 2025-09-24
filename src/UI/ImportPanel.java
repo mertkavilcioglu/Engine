@@ -3,6 +3,7 @@ package UI;
 import App.VCSApp;
 import Sim.Entity;
 import Sim.GetInput;
+import Sim.World;
 import Vec.Vec2int;
 
 import javax.swing.*;

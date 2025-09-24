@@ -143,4 +143,11 @@ public class World{
             }
         }
     }
+
+    public void clearAllStack(){
+        latestCreatedEntities.clear();
+        latestDeletedEntities.clear();
+        latestMovedEntities.clear();
+        latestChanges.clear();
+    }
 }
