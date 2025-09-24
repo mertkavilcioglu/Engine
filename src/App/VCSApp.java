@@ -88,11 +88,19 @@ public class VCSApp {
         mergeNorthPanel.setBorder(eBorder);
         mergeNorthPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
 
+        int targetWidthNorth = Toolkit.getDefaultToolkit().getScreenSize().width;
+        int targetHeightNorth = Toolkit.getDefaultToolkit().getScreenSize().height / 26;
+        mergeNorthPanel.setPreferredSize(new Dimension(targetWidthNorth, targetHeightNorth));
+
+//        int targetWidthSouth = Toolkit.getDefaultToolkit().getScreenSize().width;
+//        int targetHeightSouth = Toolkit.getDefaultToolkit().getScreenSize().height / 4;
+//        mergeSouthPanel.setPreferredSize(new Dimension(targetWidthSouth, targetHeightSouth));
+
         JScrollPane hierarchyScroll = new JScrollPane(hierarchyPanel);
         hierarchyScroll.getViewport().setBackground(uiColorManager.DARK_PANEL_COLOR);
         hierarchyScroll.setBorder(null);
-        hierarchyScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        hierarchyScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        hierarchyScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        hierarchyScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         window.add(mapView,BorderLayout.CENTER);
         window.add(editorPanel, BorderLayout.EAST);
@@ -176,6 +184,10 @@ public class VCSApp {
             public void run() {
                 int delta = 1000;
                 int x = 0;
+
+                //TODO: MAP BURADA BOYUT KAZANIYOR İLK
+                mapView.initializeTheMap();
+
 
                 simTimer = new Timer(delta, new AbstractAction() {
                     @Override
