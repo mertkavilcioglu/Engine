@@ -41,7 +41,11 @@ public class EntityEditorView extends VCSPanel {
         panelComponentColor = app.uiColorManager.DARK_MAP_BG_COLOR;
         borderColor = app.uiColorManager.DARK_TITLE_COLOR_1;
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
+
+        int targetWidth = Toolkit.getDefaultToolkit().getScreenSize().width / 8;
+        int targetHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+        this.setPreferredSize(new Dimension(targetWidth, targetHeight));
+
         //BoxLayout lay = new BoxLayout(this,BoxLayout.Y_AXIS);
         //this.setBorder(new TitledBorder("Update Entity"));
         EmptyBorder eBorder = new EmptyBorder(0,7,0,7);

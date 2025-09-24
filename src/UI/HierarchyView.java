@@ -26,7 +26,10 @@ public class HierarchyView extends VCSPanel {
     public HierarchyView(VCSApp app){
         super(app);
         this.setLayout(new BorderLayout());
-        this.setPreferredSize(new Dimension(150,app.getWindow().getHeight()));
+
+        int targetWidth = Toolkit.getDefaultToolkit().getScreenSize().width / 8;
+        int targetHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+        this.setPreferredSize(new Dimension(targetWidth, targetHeight));
 
         // Custom Panel Colors
         TitledBorder titledBorder = new TitledBorder("Hierarchy");
