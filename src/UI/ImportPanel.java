@@ -1,9 +1,8 @@
 package UI;
 
 import App.VCSApp;
-import Sim.Entity;
-import Sim.GetInput;
-import Sim.World;
+import Sim.*;
+import Sim.Component;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -15,26 +14,33 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ImportPanel extends VCSPanel{
+    JButton exportButton;
+    JButton importButton;
+    JButton saveButton;
 
     public ImportPanel(VCSApp app) {
         super(app);
         this.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
         //importpanel.setBounds(0,0,10,50);
-        JButton exportb = new JButton("Export");
-        exportb.setSize(10,20);
-        exportb.setBackground(app.uiColorManager.BUTTON_COLOR);
-        JButton importb = new JButton("Import");
-        importb.setSize(10,20);
-        importb.setBackground(app.uiColorManager.BUTTON_COLOR);
-        this.add(exportb);
-        this.add(importb);
+        exportButton = new JButton("Export");
+        exportButton.setSize(10,20);
+        exportButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        importButton = new JButton("Import");
+        importButton.setSize(10,20);
+        importButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        saveButton = new JButton("Save");
+        saveButton.setSize(10,20);
+        saveButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+        this.add(exportButton);
+        this.add(importButton);
+        this.add(saveButton);
         this.setBackground(app.uiColorManager.TOP_BAR_COLOR);
         setBackground(app.uiColorManager.TOP_BAR_COLOR);
         //importpanel.setBorder(BorderFactory.createEmptyBorder(0,0,50,50));
 
-        importb.addActionListener(e -> {
+        importButton.addActionListener(e -> {
             try {
-                if(e.getSource() == importb) {
+                if(e.getSource() == importButton) {
                     int prevSize = app.world.entities.size();
 
                     JFileChooser file_upload = new JFileChooser();
@@ -60,7 +66,7 @@ public class ImportPanel extends VCSPanel{
         });
         AtomicBoolean flag2 = new AtomicBoolean(true);
 
-        exportb.addActionListener(e -> {
+        exportButton.addActionListener(e -> {
             int id = 0;
             try {
                 boolean flag = true;
@@ -117,6 +123,42 @@ public class ImportPanel extends VCSPanel{
             }
 
         });
+
+        saveButton.addActionListener(e -> {
+            File saveFile = app.localFile.createLocalFile("SavedSenario");
+            saveFile.delete();
+                try {
+                    FileWriter myWriter = new FileWriter(saveFile);
+                    int range = 0;
+                    for (Sim.Entity ent : app.world.entities) {
+                        String posStr;
+                        posStr = ent.getPos().toString().substring(1, ent.getPos().toString().length() - 1);
+                        for (Component c : ent.getComponents()){
+                            if(c instanceof Radar){
+                                if(((Radar) c).getRange() != 0){
+                                    range = ((Radar) c).getRange();
+                                } else range = 0;
+                            }
+                        }
+                        String speedStr = ent.getSpeed().toString().substring(1, ent.getSpeed().toString().length() - 1);
+                        myWriter.write(ent.getName() + "\n");
+                        myWriter.write(ent.getSide() == (1) ? "Enemy" : "Ally");
+                        myWriter.write("\n");
+                        myWriter.write(ent.getType() + "\n");
+                        myWriter.write(posStr + "\n");
+                        myWriter.write(speedStr + "\n");
+                        myWriter.write(range + "\n");
+
+                    }
+                    myWriter.close();
+                }catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+        });
+    }
+
+    public void changeStateOfSaveButton(boolean isInitial){
+        saveButton.setEnabled(isInitial);
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
@@ -24,11 +25,12 @@ public class VCSApp {
     public HierarchyView hierarchyPanel;
     public ActionPanel actionPanel;
     public LogPanel logPanel;
-    private PlayPausePanel playPausePanel;
-    private ImportPanel importPanel;
+    public PlayPausePanel playPausePanel;
+    public ImportPanel importPanel;
     public MapPixelPosPanel mapPixelPosPanel;
     public PixelColor pixelColor;
     public UIColorManager uiColorManager;
+    public LocalFile localFile;
     private boolean ctrlOn = false;
 
     public Timer simTimer;
@@ -71,6 +73,7 @@ public class VCSApp {
         importPanel = new ImportPanel(this);
         mapPixelPosPanel = new MapPixelPosPanel(this);
         pixelColor = new PixelColor(this);
+        localFile = new LocalFile();
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         //mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
@@ -110,21 +113,27 @@ public class VCSApp {
 
         window.setVisible(true);
 
-        Entity mert = world.createEntity2("Mert", 1);
-        hierarchyPanel.entityAdded(mert);
-        actionPanel.createNewTargetButton(mert);
+        File savedFile = localFile.createLocalFile("SavedSenario");
+        if (savedFile.exists()){
+            GetInput input = new GetInput();
+            input.readInputForReset(this, String.valueOf(savedFile));
+        } else {
+            Entity mert = world.createEntity2("Mert", 1);
+            hierarchyPanel.entityAdded(mert);
+            actionPanel.createNewTargetButton(mert);
 
-        Entity emir = world.createEntity2("Emir", 0);
-        hierarchyPanel.entityAdded(emir);
-        actionPanel.createNewTargetButton(emir);
+            Entity emir = world.createEntity2("Emir", 0);
+            hierarchyPanel.entityAdded(emir);
+            actionPanel.createNewTargetButton(emir);
 
-        Entity seda = world.createEntity2("Seda", 0);
-        hierarchyPanel.entityAdded(seda);
-        actionPanel.createNewTargetButton(seda);
+            Entity seda = world.createEntity2("Seda", 0);
+            hierarchyPanel.entityAdded(seda);
+            actionPanel.createNewTargetButton(seda);
 
-        Entity hasan = world.createEntity2("Hasan", 0);
-        hierarchyPanel.entityAdded(hasan);
-        actionPanel.createNewTargetButton(hasan);
+            Entity hasan = world.createEntity2("Hasan", 0);
+            hierarchyPanel.entityAdded(hasan);
+            actionPanel.createNewTargetButton(hasan);
+        }
 
         window.setFocusable(true);
         window.requestFocus();

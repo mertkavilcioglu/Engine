@@ -56,7 +56,15 @@ public class GetInput {
                 String type = br.readLine();
                 String posStr = br.readLine();
                 String speedStr = br.readLine();
-                br.readLine();
+                String rangeString = br.readLine();
+                int range = 0;
+                try{
+                    if (rangeString == null){
+                        range = 0;
+                    } else range = Integer.parseInt(rangeString);
+                }catch (Exception e){
+                    range = 0;
+                }
 
                 int side = 1;
                 if (sideStr != null && sideStr.toLowerCase().equals("ally")) {
@@ -64,11 +72,8 @@ public class GetInput {
                 }
                 Vec2int pos = strToVec2int(posStr);
                 Vec2int speed = strToVec2int(speedStr);
-                int range = 50;
-                if(app.pixelColor.isLocationValidForType(type,pos)){
-                    Entity entity = app.createEntityByReset(name, side, pos, speed, range, type);
-                    if (allEntities.contains(entity)) app.removeEntity(entity);
-                }
+                Entity entity = app.createEntityByReset(name, side, pos, speed, range, type);
+                if (allEntities.contains(entity)) app.removeEntity(entity);
 
             }
         }catch (IOException ex) {

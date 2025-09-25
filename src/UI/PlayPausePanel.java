@@ -19,6 +19,7 @@ public class PlayPausePanel extends VCSPanel{
     private ImageIcon playIcon = new ImageIcon("src/Assets/Icons/play_icon.png");
     private ImageIcon pauseIcon = new ImageIcon("src/Assets/Icons/pause_icon.png");
     private ImageIcon stopIcon = new ImageIcon("src/Assets/Icons/stop_icon.png");
+    private boolean isFirstPlay = true;
 
     public PlayPausePanel(VCSApp app) {
         super(app);
@@ -61,7 +62,11 @@ public class PlayPausePanel extends VCSPanel{
         //setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
         play.addActionListener(e -> {
-            saveInitial();
+            app.importPanel.changeStateOfSaveButton(false);
+            if (isFirstPlay){
+                saveInitial();
+            }
+            isFirstPlay = false;
             app.logPanel.clearLogArea();
             if(app.mapView.getInitialPoints().isEmpty()){
                 app.mapView.saveInitialPoints();
@@ -80,6 +85,7 @@ public class PlayPausePanel extends VCSPanel{
         });
 
         pause.addActionListener(e -> {
+            app.importPanel.changeStateOfSaveButton(false);
             app.simTimer.stop();
             pause.setBackground(Color.YELLOW);
             play.setBackground(initialButColor);
@@ -135,6 +141,8 @@ public class PlayPausePanel extends VCSPanel{
             reset.setEnabled(false);
             pause.setEnabled(false);
             play.setEnabled(true);
+            isFirstPlay = true;
+            app.importPanel.changeStateOfSaveButton(true);
         });
     }
 
@@ -173,7 +181,6 @@ public class PlayPausePanel extends VCSPanel{
         File filePath = new File("src/Assets/InitialValues");
         GetInput input = new GetInput();
         input.readInputForReset(app, String.valueOf(filePath));
-        filePath.delete();
     }
 
     @Override
