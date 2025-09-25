@@ -79,6 +79,7 @@ public class VCSApp {
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         //mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
+        mergeSouthPanel.setBackground(uiColorManager.TOP_BAR_COLOR);
         mergeSouthPanel.add(actionPanel);
         mergeSouthPanel.add(logPanel);
         actionPanel.setBorder(BorderFactory.createLineBorder(uiColorManager.DARK_TITLE_COLOR_1,2));

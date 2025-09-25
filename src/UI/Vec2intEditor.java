@@ -98,9 +98,10 @@ public class Vec2intEditor extends JPanel{
     }
 
     public Vec2int readData() {
-        data.x = Integer.parseInt(txtX.getText());
-        data.y = Integer.parseInt(txtY.getText());
-        return data;
+        Vec2int newData = new Vec2int();
+        newData.x = Integer.parseInt(txtX.getText());
+        newData.y = Integer.parseInt(txtY.getText());
+        return newData;
     }
 
     // 2 kere catch yapma günah

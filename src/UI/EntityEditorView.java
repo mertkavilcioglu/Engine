@@ -159,7 +159,6 @@ public class EntityEditorView extends VCSPanel {
                     app.world.latestMovedEntities.push(app.mapView.getSelectedEntity());
                     app.world.latestChanges.push("MOVE");
                 }
-
             }
             catch (Exception ex){
                 System.out.println("CATCHED SMT");
