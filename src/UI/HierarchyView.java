@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class HierarchyView extends VCSPanel {
 
-    private JTree tree;
+    public JTree tree;
     private DefaultMutableTreeNode rootNode;
     private DefaultTreeModel model; // data of tree
     private HashMap<Entity, NodeInfo> leaves = new HashMap<>();

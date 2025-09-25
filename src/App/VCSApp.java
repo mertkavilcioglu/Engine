@@ -6,6 +6,8 @@ import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.plaf.metal.MetalScrollBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -99,15 +101,19 @@ public class VCSApp {
 //        int targetHeightSouth = Toolkit.getDefaultToolkit().getScreenSize().height / 4;
 //        mergeSouthPanel.setPreferredSize(new Dimension(targetWidthSouth, targetHeightSouth));
 
-        JScrollPane hierarchyScroll = new JScrollPane(hierarchyPanel);
+        JScrollPane hierarchyScroll = new JScrollPane(hierarchyPanel.tree);
         hierarchyScroll.getViewport().setBackground(uiColorManager.DARK_PANEL_COLOR);
         hierarchyScroll.setBorder(null);
-        hierarchyScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        hierarchyScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        hierarchyScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        hierarchyScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        hierarchyScroll.setVerticalScrollBar(new JScrollBar(Adjustable.VERTICAL,0,0,0,0));
+        hierarchyScroll.setHorizontalScrollBar(new JScrollBar(Adjustable.HORIZONTAL,0,0,0,0));
+
+        hierarchyPanel.add(hierarchyScroll);
 
         window.add(mapView,BorderLayout.CENTER);
         window.add(editorPanel, BorderLayout.EAST);
-        window.add(hierarchyScroll, BorderLayout.WEST);
+        window.add(hierarchyPanel, BorderLayout.WEST);
         window.add(mergeSouthPanel, BorderLayout.SOUTH);
         window.add(mergeNorthPanel, BorderLayout.NORTH);
 
