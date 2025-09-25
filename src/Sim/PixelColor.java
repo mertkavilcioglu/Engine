@@ -43,10 +43,10 @@ public class PixelColor {
     
     public boolean isLocationValidForType(String type, Vec2int pos) {
         RGB currentColor = PixelColorFind(pos.x, pos.y);
-        if(Objects.equals(type, "Tank") && (currentColor.r==93 && currentColor.g == 94 && currentColor.b == 97)){
+        if(Objects.equals(type, "Tank") && !(currentColor.r==25 && currentColor.g == 25 && currentColor.b == 40)){
             return true;
         }
-        if(Objects.equals(type, "Ship") && (currentColor.r==0 && currentColor.g == 0 && currentColor.b == 0)){
+        if(Objects.equals(type, "Ship") && (currentColor.r==25 && currentColor.g == 25 && currentColor.b == 40)){
             return true;
         }
         if(Objects.equals(type, "Plane")){
