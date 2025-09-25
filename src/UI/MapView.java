@@ -476,7 +476,8 @@ public class MapView extends VCSPanel {
     }
 
     public void initializeTheMap(){
-        turkeyMap = new ImageIcon(new ImageIcon("src/Assets/Turkey_map_painted.png").getImage().getScaledInstance(getWidth() - getWidth()/400, getHeight() - getHeight()/400, Image.SCALE_DEFAULT));
+        turkeyMap = new ImageIcon(new ImageIcon("src/Assets/Turkey_map_painted.png").getImage().
+                getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT));
         Image mapImg = turkeyMap.getImage();
         BufferedImage bImage = new BufferedImage(mapImg.getWidth(null), mapImg.getHeight(null), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bImage.createGraphics();
@@ -484,6 +485,9 @@ public class MapView extends VCSPanel {
         g.dispose();
         JLabel label = new JLabel();
         label.setIcon(turkeyMap);
+//        label.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+//        setBorder(BorderFactory.createLineBorder(Color.RED));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(label);
         world.map.SetBufferedImage(bImage);
 
