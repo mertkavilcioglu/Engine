@@ -164,11 +164,11 @@ public class Entity {
     }
 
     public boolean CanMove(RGB rgb, String type) {
-
-        if((rgb.r == 93 && rgb.g == 94 && rgb.b == 97) && (Objects.equals(type, "Tank"))){
+        // spawn icin renk kontrolunu, PixelColor classi icindeki isValidForType() yapiyor
+        if(!(rgb.r == 25 && rgb.g == 25 && rgb.b == 40) && (Objects.equals(type, "Tank"))){
             return true;
         }
-        if((rgb.r == 0 && rgb.g == 0 && rgb.b == 0) && (Objects.equals(type, "Ship"))){
+        if((rgb.r == 25 && rgb.g == 25 && rgb.b == 40) && (Objects.equals(type, "Ship"))){
             return true;
         }
         if(Objects.equals(type, "Plane")){

@@ -27,7 +27,7 @@ public class MapView extends VCSPanel {
     private Map<Entity,Vec2int> initialSpeeds = new HashMap<>();
 
     public Map<String, RGB> allPixelColors;
-    private ImageIcon turkeyMap = new ImageIcon(new ImageIcon("src/Assets/map3.png").getImage());
+    private ImageIcon turkeyMap = new ImageIcon(new ImageIcon("src/Assets/Turkey_map_painted.png").getImage());
     private final Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
     private final Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
     private final Image friendlySea = new ImageIcon("src/Assets/Symbols/nato_friendly_sea.png").getImage();
@@ -476,7 +476,7 @@ public class MapView extends VCSPanel {
     }
 
     public void initializeTheMap(){
-        turkeyMap = new ImageIcon(new ImageIcon("src/Assets/map3.png").getImage().getScaledInstance(getWidth() - getWidth()/20, getHeight() - getHeight()/20, Image.SCALE_DEFAULT));
+        turkeyMap = new ImageIcon(new ImageIcon("src/Assets/Turkey_map_painted.png").getImage().getScaledInstance(getWidth() - getWidth()/400, getHeight() - getHeight()/400, Image.SCALE_DEFAULT));
         Image mapImg = turkeyMap.getImage();
         BufferedImage bImage = new BufferedImage(mapImg.getWidth(null), mapImg.getHeight(null), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bImage.createGraphics();
@@ -489,8 +489,8 @@ public class MapView extends VCSPanel {
 
         Vec2int pos = new Vec2int();
         RGB color = new RGB();
-        locateAllPixels(bImage, pos, color);
         revalidate();
         repaint();
+        locateAllPixels(bImage, pos, color);
     }
 }
