@@ -145,7 +145,7 @@ public class EntityEditorView extends VCSPanel {
 
                 int side = addSideBox.getSelectedIndex();
                 type = (String) addTypeBox.getSelectedItem();
-                if(app.pixelColor.isLocationValidForType(type, pos)){
+                if(app.pixelColor.isLocationValidForType(type, pos) && name != null){
                     app.updateSelectedEntity(name, side, pos, speed, range, type);
                 }
                 else if(!app.pixelColor.isLocationValidForType(type, pos)){
