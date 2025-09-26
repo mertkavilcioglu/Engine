@@ -355,14 +355,6 @@ public class Entity {
         return null;
     }
 
-    public String getPosAsString(){
-        return pos.fileFormat(pos.x, pos.y);
-    }
-
-    public String getSpeedAsString(){
-        return speed.fileFormat(speed.x, speed.y);
-    }
-
     public Stack<Vec2int> getPreviousPositions(){
         return previousPositions;
     }
