@@ -1,13 +1,14 @@
 package UI;
 
 import App.VCSApp;
+import Sim.Component;
 import Sim.Entity;
 import Sim.GetInput;
+import Sim.Radar;
 import Vec.Vec2int;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -27,8 +28,6 @@ public class PlayPausePanel extends VCSPanel{
         this.setLayout(new GridBagLayout());
         JPanel buttonpanel = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
         buttonpanel.setBackground(app.uiColorManager.TOP_BAR_COLOR);
-        //playpanel.setSize(20,90);
-        //playpanel.setBounds(20,100,20,90);
         JButton play = new JButton();
         ImageIcon rescaledPlay = new ImageIcon(
                 playIcon.getImage().getScaledInstance(12,12,Image.SCALE_SMOOTH));
@@ -62,9 +61,11 @@ public class PlayPausePanel extends VCSPanel{
         //setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
         play.addActionListener(e -> {
-            app.importPanel.changeStateOfSaveButton(false);
-            if (isFirstPlay){
-                saveInitial();
+            app.loadSavePanel.changeStateOfSaveButton(false);
+            if (!app.loadSavePanel.isAnyFile()){
+                if (isFirstPlay){
+                    saveInitial();
+                }
             }
             isFirstPlay = false;
             app.logPanel.clearLogArea();
@@ -85,7 +86,7 @@ public class PlayPausePanel extends VCSPanel{
         });
 
         pause.addActionListener(e -> {
-            app.importPanel.changeStateOfSaveButton(false);
+            app.loadSavePanel.changeStateOfSaveButton(true);
             app.simTimer.stop();
             pause.setBackground(Color.YELLOW);
             play.setBackground(initialButColor);
@@ -97,23 +98,6 @@ public class PlayPausePanel extends VCSPanel{
         });
 
         reset.addActionListener(e ->{
-//            Map<Entity, Vec2int> initialPositions = app.mapView.getInitialPoints();
-//            for(Sim.Entity ent:app.world.entities) {
-//                ent.deleteAllDetectedEntities();
-//                Vec.Vec2int pos = initialPositions.get(ent);
-//                if (pos != null) {
-//                    ent.setPos(new Vec.Vec2int(pos.x,pos.y));
-//
-//                }
-//            }
-//            Map<Entity, Vec2int> initialSpeeds = app.mapView.getInitialSpeeds();
-//            for(Sim.Entity ent:app.world.entities) {
-//                Vec.Vec2int speed = initialSpeeds.get(ent);
-//                if (speed != null) {
-//                    ent.setSpeed(speed);
-//
-//                }
-//            }
             for(Sim.Entity ent:app.world.entities) {
                 ent.deleteAllDetectedEntities();
             }
@@ -121,15 +105,6 @@ public class PlayPausePanel extends VCSPanel{
             play.setBackground(initialButColor);
             pause.setBackground(initialButColor);
 
-//            reset.setBackground(Color.RED);
-//            new Thread(()->{
-//            try {
-//                Thread.sleep(125);
-//                reset.setBackground(initialButColor);
-//            } catch (InterruptedException ee) {
-//                throw new RuntimeException(ee);
-//            }
-//        }).start();
             for (Entity entity : app.world.entities){
                 app.removeEntity(entity);
             }
@@ -142,45 +117,25 @@ public class PlayPausePanel extends VCSPanel{
             pause.setEnabled(false);
             play.setEnabled(true);
             isFirstPlay = true;
-            app.importPanel.changeStateOfSaveButton(true);
+            app.loadSavePanel.changeStateOfSaveButton(true);
         });
     }
 
     private void saveInitial() {
         File init = new File("src/Assets/InitialValues");
-        init.delete();
-        try {
-            FileWriter myWriter = new FileWriter("src/Assets/InitialValues");
-            Map<Entity, Vec2int> initialPositions = app.mapView.getInitialPoints();
-            for (Sim.Entity ent : app.world.entities) {
-                Vec.Vec2int pos = initialPositions.get(ent);
-                String posStr;
-                if (pos != null) {
-                    posStr = pos.toString().substring(1, pos.toString().length() - 1);
-
-                } else {
-                    posStr = ent.getPos().toString().substring(1, ent.getPos().toString().length() - 1);
-                }
-                String speedStr = ent.getSpeed().toString().substring(1, ent.getSpeed().toString().length() - 1);
-                myWriter.write(ent.getName() + "\n");
-                myWriter.write(ent.getSide() == (1) ? "Enemy" : "Ally");
-                myWriter.write("\n");
-                myWriter.write(ent.getType() + "\n");
-                myWriter.write(posStr + "\n");
-                myWriter.write(speedStr + "\n");
-                myWriter.write("null" + "\n");//radar information of entity
-
-            }
-            myWriter.close();
-        }catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        app.saveSenario(init);
     }
 
     private void restoreInitials(){
-        File filePath = new File("src/Assets/InitialValues");
         GetInput input = new GetInput();
-        input.readInputForReset(app, String.valueOf(filePath));
+        if (!app.loadSavePanel.isAnyFile()){
+            File filePath = new File("src/Assets/InitialValues");
+            input.readInputForReset(app, String.valueOf(filePath));
+        } else if (app.loadSavePanel.getLoadedFilePath() != null) {
+            input.readInputForReset(app, String.valueOf(app.loadSavePanel.getLoadedFilePath()));
+        } else if (app.loadSavePanel.getSavedFilePath() != null) {
+            input.readInputForReset(app, String.valueOf(app.loadSavePanel.getSavedFilePath()));
+        }
     }
 
     @Override

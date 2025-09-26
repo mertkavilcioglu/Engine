@@ -1,6 +1,7 @@
 package App;
 
 import Sim.*;
+import Sim.Component;
 import UI.*;
 import Vec.Vec2int;
 
@@ -13,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ public class VCSApp {
 
     // VIRTUAL COMBAT SYSTEM (VCS)
     public World world;
-    private JFrame window;
+    public JFrame window;
     public MapView mapView;
     public AppListenerController appListenerController;
     public EntityEditorView editorPanel;
@@ -29,7 +32,7 @@ public class VCSApp {
     public ActionPanel actionPanel;
     public LogPanel logPanel;
     public PlayPausePanel playPausePanel;
-    public ImportPanel importPanel;
+    public LoadSavePanel loadSavePanel;
     public MapPixelPosPanel mapPixelPosPanel;
     public PixelColor pixelColor;
     public UIColorManager uiColorManager;
@@ -73,21 +76,20 @@ public class VCSApp {
         logPanel = new LogPanel(this);
         actionPanel = new ActionPanel(this);
         playPausePanel = new PlayPausePanel(this);
-        importPanel = new ImportPanel(this);
+        loadSavePanel = new LoadSavePanel(this);
         mapPixelPosPanel = new MapPixelPosPanel(this);
         pixelColor = new PixelColor(this);
         localFile = new LocalFile();
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         //mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
-        mergeSouthPanel.setBackground(uiColorManager.TOP_BAR_COLOR);
         mergeSouthPanel.add(actionPanel);
         mergeSouthPanel.add(logPanel);
         actionPanel.setBorder(BorderFactory.createLineBorder(uiColorManager.DARK_TITLE_COLOR_1,2));
         logPanel.setBorder(BorderFactory.createLineBorder(uiColorManager.DARK_TITLE_COLOR_1,2));
 
         JPanel mergeNorthPanel = new JPanel(new BorderLayout());
-        mergeNorthPanel.add(importPanel, BorderLayout.WEST);
+        mergeNorthPanel.add(loadSavePanel, BorderLayout.WEST);
         mergeNorthPanel.add(playPausePanel, BorderLayout.CENTER);
         mergeNorthPanel.add(mapPixelPosPanel, BorderLayout.EAST);
         mergeNorthPanel.setBackground(uiColorManager.TOP_BAR_COLOR);
@@ -121,27 +123,27 @@ public class VCSApp {
 
         window.setVisible(true);
 
-        File savedFile = localFile.createLocalFile("SavedSenario");
-        if (savedFile.exists()){
-            GetInput input = new GetInput();
-            input.readInputForReset(this, String.valueOf(savedFile));
-        } else {
-            Entity mert = world.createEntity2("Mert", 1);
-            hierarchyPanel.entityAdded(mert);
-            actionPanel.createNewTargetButton(mert);
-
-            Entity emir = world.createEntity2("Emir", 0);
-            hierarchyPanel.entityAdded(emir);
-            actionPanel.createNewTargetButton(emir);
-
-            Entity seda = world.createEntity2("Seda", 0);
-            hierarchyPanel.entityAdded(seda);
-            actionPanel.createNewTargetButton(seda);
-
-            Entity hasan = world.createEntity2("Hasan", 0);
-            hierarchyPanel.entityAdded(hasan);
-            actionPanel.createNewTargetButton(hasan);
-        }
+//        File savedFile = localFile.createLocalFile("SavedSenario");
+//        if (savedFile.exists()){
+//            GetInput input = new GetInput();
+//            input.readInputForReset(this, String.valueOf(savedFile));
+//        } else {
+//            Entity mert = world.createEntity2("Mert", 1);
+//            hierarchyPanel.entityAdded(mert);
+//            actionPanel.createNewTargetButton(mert);
+//
+//            Entity emir = world.createEntity2("Emir", 0);
+//            hierarchyPanel.entityAdded(emir);
+//            actionPanel.createNewTargetButton(emir);
+//
+//            Entity seda = world.createEntity2("Seda", 0);
+//            hierarchyPanel.entityAdded(seda);
+//            actionPanel.createNewTargetButton(seda);
+//
+//            Entity hasan = world.createEntity2("Hasan", 0);
+//            hierarchyPanel.entityAdded(hasan);
+//            actionPanel.createNewTargetButton(hasan);
+//        }
 
         window.setFocusable(true);
         window.requestFocus();
@@ -287,6 +289,41 @@ public class VCSApp {
         mapView.setSelectedEntity(null);
         actionPanel.disablePanel();
         mapView.repaint();
+    }
+
+    public void saveSenario(File file){
+        File saveFile = file;
+        if (saveFile.exists()){
+            saveFile.delete();
+        }
+        try {
+            FileWriter myWriter = new FileWriter(saveFile);
+            int range = 0;
+            for (Sim.Entity ent : world.entities) {
+                String posStr;
+                posStr = ent.getPos().toString().substring(1, ent.getPos().toString().length() - 1);
+                for (Component c : ent.getComponents()){
+                    if(c instanceof Radar){
+                        if(((Radar) c).getRange() != 0){
+                            range = ((Radar) c).getRange();
+                        } else range = 0;
+                    }
+                }
+                String speedStr = ent.getSpeed().toString().substring(1, ent.getSpeed().toString().length() - 1);
+                myWriter.write(ent.getName() + "\n");
+                myWriter.write(ent.getSide() == (1) ? "Enemy" : "Ally");
+                myWriter.write("\n");
+                myWriter.write(ent.getType() + "\n");
+                myWriter.write(posStr + "\n");
+                myWriter.write(speedStr + "\n");
+                myWriter.write(range + "\n");
+
+            }
+            myWriter.close();
+        }catch (IOException ex) {
+            System.out.println("VCSApp:: saveSenario func:: IOException");
+            ex.printStackTrace();
+        }
     }
 
     public void log(String message){

@@ -7,6 +7,7 @@ public class LocalFile {
     String userHome;
     File dir;
     String fileName;
+    File savedFile;
 
     public LocalFile() {
         systemOs = System.getProperty("os.name");
@@ -28,7 +29,15 @@ public class LocalFile {
     public File createLocalFile(String fileName){
         this.fileName = fileName;
         File createdFile = new File(dir, fileName);
+        savedFile = createdFile;
         return createdFile;
+    }
+
+    public File getSavedFile(){
+        if (savedFile.exists()){
+            return savedFile;
+        }
+        else return (new File(dir, fileName));
     }
 
 }
