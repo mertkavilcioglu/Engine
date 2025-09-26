@@ -313,7 +313,7 @@ public class VCSApp {
                 myWriter.write(ent.getName() + "\n");
                 myWriter.write(ent.getSide() == (1) ? "Enemy" : "Ally");
                 myWriter.write("\n");
-                myWriter.write(ent.getType() + "\n");
+                myWriter.write(ent.getType().getName() + "\n");
                 myWriter.write(posStr + "\n");
                 myWriter.write(speedStr + "\n");
                 myWriter.write(range + "\n");
