@@ -32,7 +32,7 @@ public class World{
         ent.setSpeed(speed);
         Radar r = new Radar(ent,entities);
         ent.addComponents(r);
-        ent.setType("Plane");
+        ent.setType(Entity.Type.AIR);
 
         ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
         if(ent.maxSpeed == 0)
@@ -50,7 +50,7 @@ public class World{
         ent.setSpeed(Vec2int.getRandom(-4,4,-4,4));
         Radar r = new Radar(ent,entities);
         ent.addComponents(r);
-        ent.setType("Plane");
+        ent.setType(Entity.Type.AIR);
 
         ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
         if(ent.maxSpeed == 0)
@@ -60,7 +60,7 @@ public class World{
         return ent;
     }
 
-    public Entity createEntity(String eName, int eSide, Vec2int pos, Vec2int speed, int range, String type){
+    public Entity createEntity(String eName, int eSide, Vec2int pos, Vec2int speed, int range, Entity.Type type){
         if(eName == null){
             return null;
         }

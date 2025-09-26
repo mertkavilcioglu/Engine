@@ -70,7 +70,7 @@ public class ActionPanel extends VCSPanel {
     boolean isAttackAction = false;
     boolean isPaused = false;
     int sideOfEntity;
-    String typeOfEntity;
+    Entity.Type typeOfEntity;
     Vec2int coordinatesToMove;
     private Color panelBgColor;
     private Color borderColor;
@@ -411,7 +411,7 @@ public class ActionPanel extends VCSPanel {
 
     //mapdeki entitylerin sideları ve typelarına göre targetların gösterilmesi
     public void showTargetButtons(Entity selectedOne){
-        String typeOfSelected = selectedOne.getType();
+        Entity.Type typeOfSelected = selectedOne.getType();
         List<Entity> detectedEntitiesFromRadar = new ArrayList<>();
         allyTargetPanel.removeAll();
         enemyTargetPanel.removeAll();
@@ -424,7 +424,7 @@ public class ActionPanel extends VCSPanel {
                 }
             }
         }
-        if (typeOfSelected.equals("Plane")){
+        if (typeOfSelected == Entity.Type.AIR){
             if (sideOfSelected == 0){
                 for (Entity keyEntity : enemyButtons.keySet()) {
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
@@ -438,11 +438,11 @@ public class ActionPanel extends VCSPanel {
                     }
                 }
             }
-        } else if (typeOfSelected.equals("Ship")) {
+        } else if (typeOfSelected == Entity.Type.SURFACE) {
             if (sideOfSelected == 1){
                 for (Entity keyEntity : allyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
-                        if (keyEntity.getType().equals("Ship")){
+                        if (keyEntity.getType() == Entity.Type.SURFACE){
                             allyTargetPanel.add(allyButtons.get(keyEntity));
                         }
                     }
@@ -450,17 +450,17 @@ public class ActionPanel extends VCSPanel {
             } else if (sideOfSelected == 0){
                 for (Entity keyEntity : enemyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
-                        if (keyEntity.getType().equals("Ship")){
+                        if (keyEntity.getType() == Entity.Type.SURFACE){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                         }
                     }
                 }
             }
-        } else if (typeOfSelected.equals("Tank")) {
+        } else if (typeOfSelected == Entity.Type.GROUND) {
             if (sideOfSelected == 1){
                 for (Entity keyEntity : allyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
-                        if (keyEntity.getType().equals("Tank")){
+                        if (keyEntity.getType() == Entity.Type.GROUND){
                             allyTargetPanel.add(allyButtons.get(keyEntity));
                         }
                     }
@@ -468,7 +468,7 @@ public class ActionPanel extends VCSPanel {
             } else if (sideOfSelected == 0){
                 for (Entity keyEntity : enemyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
-                        if (keyEntity.getType().equals("Tank")){
+                        if (keyEntity.getType() == Entity.Type.GROUND){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                         }
                     }

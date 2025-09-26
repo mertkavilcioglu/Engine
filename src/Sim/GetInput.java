@@ -30,7 +30,7 @@ public class GetInput {
                 Vec2int speed = strToVec2int(speedStr);
                 int range = 50;
                 if(world.app.pixelColor.isLocationValidForType(type,pos)){
-                    world.createEntity(name, side, pos, speed, range, type);
+                    world.createEntity(name, side, pos, speed, range, strToType(type) );
                 }else {
                     notCreatedList.add(name);
                 }
@@ -72,7 +72,7 @@ public class GetInput {
                 }
                 Vec2int pos = strToVec2int(posStr);
                 Vec2int speed = strToVec2int(speedStr);
-                Entity entity = app.createEntityByReset(name, side, pos, speed, range, type);
+                Entity entity = app.createEntityByReset(name, side, pos, speed, range, strToType(type));
                 if (allEntities.contains(entity)) app.removeEntity(entity);
 
             }
@@ -101,6 +101,17 @@ public class GetInput {
         }catch (Exception ignored){}
         return new Vec2int(0,0);
 
+    }
+
+    private Entity.Type strToType(String str){
+        if(str.equals(Entity.Type.AIR.getName()))
+            return Entity.Type.AIR;
+        else if(str.equals(Entity.Type.GROUND.getName()))
+            return Entity.Type.GROUND;
+        else if(str.equals(Entity.Type.SURFACE.getName()))
+            return Entity.Type.SURFACE;
+
+        return null;
     }
 
 

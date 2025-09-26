@@ -14,6 +14,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class VCSApp {
@@ -233,7 +234,7 @@ public class VCSApp {
         return window;
     }
 
-    public void createEntity(String name, int side, Vec2int pos, Vec2int speed, int range, String type){
+    public void createEntity(String name, int side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
         world.latestCreatedEntities.push(ent);
         world.latestChanges.push(World.Change.CREATE);
@@ -243,7 +244,7 @@ public class VCSApp {
         mapView.repaint();
     }
 
-    public Entity createEntityByRevert(String name, int side, Vec2int pos, Vec2int speed, int range, String type){
+    public Entity createEntityByRevert(String name, int side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
         hierarchyPanel.entityAdded(ent);
         actionPanel.createNewTargetButton(ent);
@@ -252,7 +253,7 @@ public class VCSApp {
         return ent;
     }
 
-    public Entity createEntityByReset(String name, int side, Vec2int pos, Vec2int speed, int range, String type){
+    public Entity createEntityByReset(String name, int side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
         hierarchyPanel.entityAdded(ent);
         actionPanel.createNewTargetButton(ent);
@@ -261,7 +262,7 @@ public class VCSApp {
         return ent;
     }
 
-    public void updateSelectedEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, String newType){
+    public void updateSelectedEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, Entity.Type newType){
         mapView.getSelectedEntity().updateEntity(newName, newSide, newPos, newSpeed, newRange, newType);
         mapView.repaint();
         hierarchyPanel.entityChanged();

@@ -89,18 +89,18 @@ public class MapView extends VCSPanel {
         JMenu createEntityMenu = new JMenu("Create Entity");
 
         JMenu ally = new JMenu("Ally");
-        JMenuItem aTank = new JMenuItem("Tank");
-        JMenuItem aPlane = new JMenuItem("Plane");
-        JMenuItem aShip = new JMenuItem("Ship");
+        JMenuItem aTank = new JMenuItem(Entity.Type.GROUND.getName());
+        JMenuItem aPlane = new JMenuItem(Entity.Type.AIR.getName());
+        JMenuItem aShip = new JMenuItem(Entity.Type.SURFACE.getName());
         ally.add(aTank);
         ally.add(aPlane);
         ally.add(aShip);
         createEntityMenu.add(ally);
 
         JMenu enemy = new JMenu("Enemy");
-        JMenuItem eTank = new JMenuItem("Tank");
-        JMenuItem ePlane = new JMenuItem("Plane");
-        JMenuItem eShip = new JMenuItem("Ship");
+        JMenuItem eTank = new JMenuItem(Entity.Type.GROUND.getName());
+        JMenuItem ePlane = new JMenuItem(Entity.Type.AIR.getName());
+        JMenuItem eShip = new JMenuItem(Entity.Type.SURFACE.getName());
         enemy.add(eTank);
         enemy.add(ePlane);
         enemy.add(eShip);
@@ -180,7 +180,7 @@ public class MapView extends VCSPanel {
                     if(e.getButton() == MouseEvent.BUTTON3){
                         createPosition = pixPos;
                         rightClickPopUpMenu.show(e.getComponent(),e.getX(),e.getY());
-                        if(app.pixelColor.isLocationValidForType("Tank", pixPos)){
+                        if(app.pixelColor.isLocationValidForType(Entity.Type.GROUND.getName(), pixPos)){
                             aTank.setEnabled(true);
                             eTank.setEnabled(true);
                         }
@@ -189,7 +189,7 @@ public class MapView extends VCSPanel {
                             eTank.setEnabled(false);
                         }
 
-                        if(app.pixelColor.isLocationValidForType("Plane", pixPos)){
+                        if(app.pixelColor.isLocationValidForType(Entity.Type.AIR.getName(), pixPos)){
                             aPlane.setEnabled(true);
                             ePlane.setEnabled(true);
                         }
@@ -198,7 +198,7 @@ public class MapView extends VCSPanel {
                             ePlane.setEnabled(false);
                         }
 
-                        if(app.pixelColor.isLocationValidForType("Ship", pixPos)){
+                        if(app.pixelColor.isLocationValidForType(Entity.Type.SURFACE.getName(), pixPos)){
                             aShip.setEnabled(true);
                             eShip.setEnabled(true);
                         }
@@ -234,24 +234,24 @@ public class MapView extends VCSPanel {
         });
 
         aTank.addActionListener(e -> {
-            app.createEntity("ALLY_TANK",0,createPosition,new Vec2int(0,0),0,"Tank");
+            app.createEntity("ALLY_TANK",0,createPosition,new Vec2int(0,0),0, Entity.Type.GROUND);
         });
         eTank.addActionListener(e -> {
-            app.createEntity("ENEMY_TANK",1,createPosition,new Vec2int(0,0),0,"Tank");
+            app.createEntity("ENEMY_TANK",1,createPosition,new Vec2int(0,0),0, Entity.Type.GROUND);
         });
 
         aPlane.addActionListener(e -> {
-            app.createEntity("ALLY_PLANE",0,createPosition,new Vec2int(0,0),0,"Plane");
+            app.createEntity("ALLY_PLANE",0,createPosition,new Vec2int(0,0),0, Entity.Type.AIR);
         });
         ePlane.addActionListener(e -> {
-            app.createEntity("ENEMY_PLANE",1,createPosition,new Vec2int(0,0),0,"Plane");
+            app.createEntity("ENEMY_PLANE",1,createPosition,new Vec2int(0,0),0, Entity.Type.AIR);
         });
 
         aShip.addActionListener(e -> {
-            app.createEntity("ALLY_SHIP",0,createPosition,new Vec2int(0,0),0,"Ship");
+            app.createEntity("ALLY_SHIP",0,createPosition,new Vec2int(0,0),0, Entity.Type.SURFACE);
         });
         eShip.addActionListener(e -> {
-            app.createEntity("ENEMY_SHIP",1,createPosition,new Vec2int(0,0),0,"Ship");
+            app.createEntity("ENEMY_SHIP",1,createPosition,new Vec2int(0,0),0, Entity.Type.SURFACE);
         });
     }
 
@@ -317,21 +317,21 @@ public class MapView extends VCSPanel {
                     g.setColor(Color.red);
 
                 if(e.getSide() == 0){
-                    if(e.getType().equals("Plane"))
+                    if(e.getType() == Entity.Type.AIR)
                         drawNormalizedImageByWidth(g, friendlyAir, pos, targetWidth);
-                    else if(e.getType().equals("Tank"))
+                    else if(e.getType() == Entity.Type.GROUND)
                         drawNormalizedImageByWidth(g, friendlyLand, pos, targetWidth+2);
-                    else if(e.getType().equals("Ship"))
+                    else if(e.getType() == Entity.Type.SURFACE)
                         drawNormalizedImageByWidth(g, friendlySea, pos, targetWidth);
 
                 }
 
                 else if(e.getSide() == 1){
-                    if(e.getType().equals("Plane"))
+                    if(e.getType() == Entity.Type.AIR)
                         drawNormalizedImageByWidth(g, enemyAir, pos, targetWidth);
-                    else if(e.getType().equals("Tank"))
+                    else if(e.getType() == Entity.Type.GROUND)
                         drawNormalizedImageByWidth(g, enemyLand, pos, targetWidth + 2);
-                    else if(e.getType().equals("Ship"))
+                    else if(e.getType() == Entity.Type.SURFACE)
                         drawNormalizedImageByWidth(g, enemySea, pos, targetWidth);
                 }
 

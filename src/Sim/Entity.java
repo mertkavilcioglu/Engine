@@ -11,7 +11,7 @@ public class Entity {
     private int side = 0;
     private Vec2int pos;
     private Vec2int speed;
-    private String type;
+    private Type type;
     private ArrayList<Component> components = new ArrayList<>();
     public ArrayList<Component> componentsToRemove = new ArrayList<>();
     private List<Entity> detectedEntities = new ArrayList<>();
@@ -33,6 +33,21 @@ public class Entity {
         nodeInfo = new NodeInfo();
     }
 
+    public enum Type{
+        GROUND("Tank"),
+        SURFACE("Ship"),
+        AIR("Plane");
+
+        private String name;
+
+        Type(String name){
+            this.name = name;
+        }
+        public String getName(){
+            return name;
+        }
+    }
+
     public void addOrder(Order order){
         if(orders.isEmpty()){
             currentOrder = order;
@@ -52,7 +67,7 @@ public class Entity {
         }
     }
 
-    public void updateEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, String newType){
+    public void updateEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, Type newType){
         name = newName;
         side = newSide;
         pos = newPos;
@@ -163,15 +178,15 @@ public class Entity {
         componentsToRemove.clear();
     }
 
-    public boolean CanMove(RGB rgb, String type) {
+    public boolean CanMove(RGB rgb, Type type) {
         // spawn icin renk kontrolunu, PixelColor classi icindeki isValidForType() yapiyor
-        if(!(rgb.r == 25 && rgb.g == 25 && rgb.b == 40) && (Objects.equals(type, "Tank"))){
+        if(!(rgb.r == 25 && rgb.g == 25 && rgb.b == 40) && (Objects.equals(type, Type.GROUND))){
             return true;
         }
-        if((rgb.r == 25 && rgb.g == 25 && rgb.b == 40) && (Objects.equals(type, "Ship"))){
+        if((rgb.r == 25 && rgb.g == 25 && rgb.b == 40) && (Objects.equals(type, Type.SURFACE))){
             return true;
         }
-        if(Objects.equals(type, "Plane")){
+        if(Objects.equals(type, Type.AIR)){
             return true;
         }
         return false;
@@ -248,11 +263,11 @@ public class Entity {
         return side;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
-    public String getType(){
+    public Type getType(){
         return type;
     }
 

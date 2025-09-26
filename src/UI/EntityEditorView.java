@@ -82,7 +82,7 @@ public class EntityEditorView extends VCSPanel {
         addSidePanel.add(sideLbl);
         addSidePanel.add(addSideBox);
 
-        String types[] = {"Tank", "Plane", "Ship"};
+        String types[] = {Entity.Type.GROUND.getName(), Entity.Type.AIR.getName(), Entity.Type.SURFACE.getName()};
         addTypeBox = new JComboBox<>(types);
         addTypeBox.setEditable(false);
         addTypeBox.setSelectedIndex(0);
@@ -116,10 +116,10 @@ public class EntityEditorView extends VCSPanel {
                 int side = addSideBox.getSelectedIndex();
                 type = (String) addTypeBox.getSelectedItem();
                 if(app.pixelColor.isLocationValidForType(type, pos)){
-                    app.createEntity(name, side, pos, speed, range, type);
+                    app.createEntity(name, side, pos, speed, range, strToType(type));
                     log("New unit named " + name + " created.");
                 }
-                else if(app.pixelColor.isLocationValidForType(type, pos) == false){
+                else if(!app.pixelColor.isLocationValidForType(type, pos)){
                     ePositionPanel.error();
                 }
 
@@ -147,14 +147,15 @@ public class EntityEditorView extends VCSPanel {
                 int side = addSideBox.getSelectedIndex();
                 type = (String) addTypeBox.getSelectedItem();
                 if(app.pixelColor.isLocationValidForType(type, pos) && name != null){
-                    app.updateSelectedEntity(name, side, pos, speed, range, type);
+                    app.updateSelectedEntity(name, side, pos, speed, range, strToType(type));
                 }
                 else if(!app.pixelColor.isLocationValidForType(type, pos)){
                     ePositionPanel.error();
                 }
                 app.hierarchyPanel.updateComponent("Radar", app.mapView.getSelectedEntity());
 
-                if(app.mapView.getSelectedEntity().getPreviousPositions().getLast().x != pos.x &&
+                if(!app.mapView.getSelectedEntity().getPreviousPositions().isEmpty() &&
+                        app.mapView.getSelectedEntity().getPreviousPositions().getLast().x != pos.x &&
                         app.mapView.getSelectedEntity().getPreviousPositions().getLast().y != pos.y){
                     app.mapView.getSelectedEntity().getPreviousPositions().push(oldPos);
                     app.world.latestMovedEntities.push(app.mapView.getSelectedEntity());
@@ -292,13 +293,13 @@ public class EntityEditorView extends VCSPanel {
 
         if(!addTypeBoxFocused){
             switch (e.getType()){
-                case "Tank":
+                case Entity.Type.GROUND:
                     addTypeBox.setSelectedIndex(0);
                     break;
-                case "Plane":
+                case Entity.Type.AIR:
                     addTypeBox.setSelectedIndex(1);
                     break;
-                case "Ship":
+                case Entity.Type.SURFACE:
                     addTypeBox.setSelectedIndex(2);
                     break;
             }
@@ -356,6 +357,17 @@ public class EntityEditorView extends VCSPanel {
         eSpeedPanel.setInputEnabled(false);
         addSideBox.setEnabled(false);
         addTypeBox.setEnabled(false);
+    }
+
+    private Entity.Type strToType(String str){
+        if(str.equals(Entity.Type.AIR.getName()))
+            return Entity.Type.AIR;
+        else if(str.equals(Entity.Type.GROUND.getName()))
+            return Entity.Type.GROUND;
+        else if(str.equals(Entity.Type.SURFACE.getName()))
+            return Entity.Type.SURFACE;
+
+        return null;
     }
 
 }
