@@ -4,6 +4,7 @@ import App.VCSApp;
 import Sim.Component;
 import Sim.Entity;
 import Sim.Radar;
+import Sim.World;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -157,12 +158,13 @@ public class EntityEditorView extends VCSPanel {
                         app.mapView.getSelectedEntity().getPreviousPositions().getLast().y != pos.y){
                     app.mapView.getSelectedEntity().getPreviousPositions().push(oldPos);
                     app.world.latestMovedEntities.push(app.mapView.getSelectedEntity());
-                    app.world.latestChanges.push("MOVE");
+                    app.world.latestChanges.push(World.Change.MOVE);
                 }
             }
             catch (Exception ex){
                 System.out.println("CATCHED SMT");
-                System.out.println(ex.getMessage());
+                System.out.println(ex.getLocalizedMessage());
+                ex.printStackTrace();
                 ePositionPanel.dataValidate();
                 eSpeedPanel.dataValidate();
                 if(radarPanel != null)

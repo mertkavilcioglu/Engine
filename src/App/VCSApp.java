@@ -151,7 +151,7 @@ public class VCSApp {
                     if(mapView.getSelectedEntity() != null){
                         Entity ent = mapView.getSelectedEntity();
                         world.latestDeletedEntities.push(ent);
-                        world.latestChanges.push("DELETE");
+                        world.latestChanges.push(World.Change.DELETE);
                         removeEntityInstantaneously(mapView.getSelectedEntity());
                         mapView.repaint();
                     }
@@ -236,7 +236,7 @@ public class VCSApp {
     public void createEntity(String name, int side, Vec2int pos, Vec2int speed, int range, String type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
         world.latestCreatedEntities.push(ent);
-        world.latestChanges.push("CREATE");
+        world.latestChanges.push(World.Change.CREATE);
         hierarchyPanel.entityAdded(ent);
         actionPanel.createNewTargetButton(ent);
         mapView.setSelectedEntity(ent);

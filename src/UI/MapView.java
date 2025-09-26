@@ -216,7 +216,7 @@ public class MapView extends VCSPanel {
                 if(isDragging){
                     isDragging = false;
                     app.world.latestMovedEntities.push(selectedEntity);
-                    app.world.latestChanges.push("MOVE");
+                    app.world.latestChanges.push(World.Change.MOVE);
 
                 }
             }

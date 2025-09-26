@@ -20,7 +20,7 @@ public class World{
     public Stack<Entity> latestCreatedEntities = new Stack<>();
     public Stack<Entity> latestDeletedEntities = new Stack<>();
     public Stack<Entity> latestMovedEntities = new Stack<>();
-    public Stack<String> latestChanges = new Stack<>();
+    public Stack<Change> latestChanges = new Stack<>();
     private Entity copiedEntity;
 
     public Entity createEntity2(String name, int side) {
@@ -108,11 +108,17 @@ public class World{
         copiedEntity = e;
     }
 
+    public enum Change {
+        MOVE,
+        CREATE,
+        DELETE
+    }
+
     public void revertLastChange(){
         if(latestChanges.isEmpty())
             return;
 
-        if(latestChanges.getLast().equals("MOVE")){
+        if(latestChanges.getLast().equals(Change.MOVE)){
             if(!latestMovedEntities.isEmpty()){
                 latestMovedEntities.getLast().revertToPreviousPosition();
                 latestMovedEntities.pop();
@@ -120,14 +126,14 @@ public class World{
                 app.mapView.repaint();
             }
         }
-        else if(latestChanges.getLast().equals("CREATE")){
+        else if(latestChanges.getLast().equals(Change.CREATE)){
             if(!latestCreatedEntities.isEmpty()){
                 app.removeEntityInstantaneously(latestCreatedEntities.getLast());
                 latestCreatedEntities.pop();
                 latestChanges.pop();
             }
         }
-        else if(latestChanges.getLast().equals("DELETE")){
+        else if(latestChanges.getLast().equals(Change.DELETE)){
             if(!latestDeletedEntities.isEmpty()){
                 Entity de = latestDeletedEntities.getLast();
                 Entity newEnt;
@@ -136,10 +142,18 @@ public class World{
                             ((Radar)de.getComponent("Radar")).getRange(), de.getType());
                 else
                     newEnt = app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(), 0, de.getType());
+                while(!de.getPreviousPositions().isEmpty()){
+                    Vec2int prePos = new Vec2int(de.getPreviousPositions().getFirst().x, de.getPreviousPositions().getFirst().y);
+                    newEnt.getPreviousPositions().push(prePos);
+                    de.getPreviousPositions().removeFirst();
+                }
+                System.out.println(newEnt.getPreviousPositions().size());
                 latestDeletedEntities.pop();
                 latestChanges.pop();
-                if(latestCreatedEntities.contains(de))
+                while(latestCreatedEntities.contains(de))
                     latestCreatedEntities.set(latestCreatedEntities.indexOf(de), newEnt);
+                while(latestMovedEntities.contains(de))
+                    latestMovedEntities.set(latestMovedEntities.indexOf(de), newEnt);
             }
         }
     }
