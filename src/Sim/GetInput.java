@@ -31,9 +31,9 @@ public class GetInput {
                     range = 0;
                 }
 
-                int side = 1;
+                Entity.Side side = Entity.Side.ENEMY;
                 if (sideStr != null && sideStr.toLowerCase().equals("ally")) {
-                    side = 0;
+                    side = Entity.Side.ALLY;
                 }
                 Vec2int pos = strToVec2int(posStr);
                 Vec2int speed = strToVec2int(speedStr);
@@ -75,9 +75,9 @@ public class GetInput {
                 }
 
 
-                int side = 1;
+                Entity.Side side = Entity.Side.ENEMY;
                 if (sideStr != null && sideStr.toLowerCase().equals("ally")) {
-                    side = 0;
+                    side = Entity.Side.ALLY;
                 }
                 Vec2int pos = strToVec2int(posStr);
                 Vec2int speed = strToVec2int(speedStr);

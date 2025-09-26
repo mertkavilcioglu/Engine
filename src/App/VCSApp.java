@@ -236,7 +236,7 @@ public class VCSApp {
         return window;
     }
 
-    public void createEntity(String name, int side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
+    public void createEntity(String name, Entity.Side side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
         world.latestCreatedEntities.push(ent);
         world.latestChanges.push(World.Change.CREATE);
@@ -246,7 +246,7 @@ public class VCSApp {
         mapView.repaint();
     }
 
-    public Entity createEntityByRevert(String name, int side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
+    public Entity createEntityByRevert(String name, Entity.Side side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
         hierarchyPanel.entityAdded(ent);
         actionPanel.createNewTargetButton(ent);
@@ -255,7 +255,7 @@ public class VCSApp {
         return ent;
     }
 
-    public Entity createEntityByReset(String name, int side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
+    public Entity createEntityByReset(String name, Entity.Side side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
         hierarchyPanel.entityAdded(ent);
         actionPanel.createNewTargetButton(ent);
@@ -264,7 +264,7 @@ public class VCSApp {
         return ent;
     }
 
-    public void updateSelectedEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, Entity.Type newType){
+    public void updateSelectedEntity(String newName, Entity.Side newSide, Vec2int newPos, Vec2int newSpeed, int newRange, Entity.Type newType){
         mapView.getSelectedEntity().updateEntity(newName, newSide, newPos, newSpeed, newRange, newType);
         mapView.repaint();
         hierarchyPanel.entityChanged();
@@ -311,7 +311,7 @@ public class VCSApp {
                 }
                 String speedStr = ent.getSpeed().toString().substring(1, ent.getSpeed().toString().length() - 1);
                 myWriter.write(ent.getName() + "\n");
-                myWriter.write(ent.getSide() == (1) ? "Enemy" : "Ally");
+                myWriter.write(ent.getSide() == Entity.Side.ENEMY ? "Enemy" : "Ally");
                 myWriter.write("\n");
                 myWriter.write(ent.getType().getName() + "\n");
                 myWriter.write(posStr + "\n");

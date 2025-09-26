@@ -23,7 +23,7 @@ public class World{
     public Stack<Change> latestChanges = new Stack<>();
     private Entity copiedEntity;
 
-    public Entity createEntity2(String name, int side) {
+    public Entity createEntity2(String name, Entity.Side side) {
         Entity ent = new Entity(this);
         ent.setName(name);
         ent.setSide(side);
@@ -42,7 +42,7 @@ public class World{
         return ent;
     }
 
-    public Entity createEntity(String name, int side) {
+    public Entity createEntity(String name, Entity.Side side) {
         Entity ent = new Entity(this);
         ent.setName(name);
         ent.setSide(side);
@@ -60,7 +60,7 @@ public class World{
         return ent;
     }
 
-    public Entity createEntity(String eName, int eSide, Vec2int pos, Vec2int speed, int range, Entity.Type type){
+    public Entity createEntity(String eName, Entity.Side eSide, Vec2int pos, Vec2int speed, int range, Entity.Type type){
         if(eName == null){
             return null;
         }

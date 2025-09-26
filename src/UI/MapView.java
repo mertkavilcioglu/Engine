@@ -234,24 +234,24 @@ public class MapView extends VCSPanel {
         });
 
         aTank.addActionListener(e -> {
-            app.createEntity("ALLY_TANK",0,createPosition,new Vec2int(0,0),0, Entity.Type.GROUND);
+            app.createEntity("ALLY_TANK", Entity.Side.ALLY,createPosition,new Vec2int(0,0),0, Entity.Type.GROUND);
         });
         eTank.addActionListener(e -> {
-            app.createEntity("ENEMY_TANK",1,createPosition,new Vec2int(0,0),0, Entity.Type.GROUND);
+            app.createEntity("ENEMY_TANK", Entity.Side.ENEMY,createPosition,new Vec2int(0,0),0, Entity.Type.GROUND);
         });
 
         aPlane.addActionListener(e -> {
-            app.createEntity("ALLY_PLANE",0,createPosition,new Vec2int(0,0),0, Entity.Type.AIR);
+            app.createEntity("ALLY_PLANE", Entity.Side.ALLY,createPosition,new Vec2int(0,0),0, Entity.Type.AIR);
         });
         ePlane.addActionListener(e -> {
-            app.createEntity("ENEMY_PLANE",1,createPosition,new Vec2int(0,0),0, Entity.Type.AIR);
+            app.createEntity("ENEMY_PLANE",Entity.Side.ENEMY,createPosition,new Vec2int(0,0),0, Entity.Type.AIR);
         });
 
         aShip.addActionListener(e -> {
-            app.createEntity("ALLY_SHIP",0,createPosition,new Vec2int(0,0),0, Entity.Type.SURFACE);
+            app.createEntity("ALLY_SHIP",Entity.Side.ALLY,createPosition,new Vec2int(0,0),0, Entity.Type.SURFACE);
         });
         eShip.addActionListener(e -> {
-            app.createEntity("ENEMY_SHIP",1,createPosition,new Vec2int(0,0),0, Entity.Type.SURFACE);
+            app.createEntity("ENEMY_SHIP",Entity.Side.ENEMY,createPosition,new Vec2int(0,0),0, Entity.Type.SURFACE);
         });
     }
 
@@ -311,12 +311,12 @@ public class MapView extends VCSPanel {
                 int textX = pos.x - 10 + (20 - textLength) / 2;
                 int textY = pos.y - 10;
 
-                if(e.getSide() == 0)
+                if(e.getSide() == Entity.Side.ALLY)
                     g.setColor(Color.blue);
-                else if (e.getSide() == 1)
+                else if (e.getSide() == Entity.Side.ENEMY)
                     g.setColor(Color.red);
 
-                if(e.getSide() == 0){
+                if(e.getSide() == Entity.Side.ALLY){
                     if(e.getType() == Entity.Type.AIR)
                         drawNormalizedImageByWidth(g, friendlyAir, pos, targetWidth);
                     else if(e.getType() == Entity.Type.GROUND)
@@ -326,7 +326,7 @@ public class MapView extends VCSPanel {
 
                 }
 
-                else if(e.getSide() == 1){
+                else if(e.getSide() == Entity.Side.ENEMY){
                     if(e.getType() == Entity.Type.AIR)
                         drawNormalizedImageByWidth(g, enemyAir, pos, targetWidth);
                     else if(e.getType() == Entity.Type.GROUND)

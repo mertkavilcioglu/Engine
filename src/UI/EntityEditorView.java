@@ -113,10 +113,11 @@ public class EntityEditorView extends VCSPanel {
                 int range = 0;
                 if(radarPanel != null)
                     range = radarPanel.readData();
-                int side = addSideBox.getSelectedIndex();
+                int sideInt = addSideBox.getSelectedIndex();
+
                 type = (String) addTypeBox.getSelectedItem();
                 if(app.pixelColor.isLocationValidForType(type, pos)){
-                    app.createEntity(name, side, pos, speed, range, strToType(type));
+                    app.createEntity(name, intToSide(sideInt), pos, speed, range, strToType(type));
                     log("New unit named " + name + " created.");
                 }
                 else if(!app.pixelColor.isLocationValidForType(type, pos)){
@@ -144,10 +145,10 @@ public class EntityEditorView extends VCSPanel {
                 if(radarPanel != null)
                     range = radarPanel.readData();
 
-                int side = addSideBox.getSelectedIndex();
+                int sideInt = addSideBox.getSelectedIndex();
                 type = (String) addTypeBox.getSelectedItem();
                 if(app.pixelColor.isLocationValidForType(type, pos) && name != null){
-                    app.updateSelectedEntity(name, side, pos, speed, range, strToType(type));
+                    app.updateSelectedEntity(name, intToSide(sideInt), pos, speed, range, strToType(type));
                 }
                 else if(!app.pixelColor.isLocationValidForType(type, pos)){
                     ePositionPanel.error();
@@ -289,7 +290,7 @@ public class EntityEditorView extends VCSPanel {
             eSpeedPanel.setDataY(e.getSpeed());
 
         if(!addSideBoxFocused)
-            addSideBox.setSelectedIndex(e.getSide());
+            addSideBox.setSelectedIndex(e.getSide().getIndex());
 
         if(!addTypeBoxFocused){
             switch (e.getType()){
@@ -368,6 +369,12 @@ public class EntityEditorView extends VCSPanel {
             return Entity.Type.SURFACE;
 
         return null;
+    }
+
+    public Entity.Side intToSide(int i){
+        if(i == 0)
+            return Entity.Side.ALLY;
+        return Entity.Side.ENEMY;
     }
 
 }

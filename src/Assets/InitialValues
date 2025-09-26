@@ -1,6 +1,12 @@
-ALLY_PLANE
+ALLY_TANK
 Ally
+Tank
+496,167
+0,0
+0
+ENEMY_PLANE
+Enemy
 Plane
-444,129
+594,162
 0,0
 0

@@ -69,7 +69,7 @@ public class ActionPanel extends VCSPanel {
     boolean isRootSelected = true;
     boolean isAttackAction = false;
     boolean isPaused = false;
-    int sideOfEntity;
+    Entity.Side sideOfEntity;
     Entity.Type typeOfEntity;
     Vec2int coordinatesToMove;
     private Color panelBgColor;
@@ -348,8 +348,8 @@ public class ActionPanel extends VCSPanel {
         this.typeOfEntity = entity.getType();
 
         this.sideOfEntity = entity.getSide();
-        if(sideOfEntity == 1) isEnemy = true;
-        else if (sideOfEntity == 0) isEnemy = false;
+        if(sideOfEntity == Entity.Side.ENEMY) isEnemy = true;
+        else if (sideOfEntity == Entity.Side.ALLY) isEnemy = false;
 
         timer.start();
         updateOrderButtonsState(true);
@@ -389,7 +389,7 @@ public class ActionPanel extends VCSPanel {
         targetButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
         allCreatedEntites.add(entity);
         //createFollowButtonList(entity);
-        if (entity.getSide() == 0){
+        if (entity.getSide() == Entity.Side.ALLY){
             allyButtons.put(entity, targetButton);
             allyTargetPanel.add(targetButton);
         } else {
@@ -415,9 +415,8 @@ public class ActionPanel extends VCSPanel {
         List<Entity> detectedEntitiesFromRadar = new ArrayList<>();
         allyTargetPanel.removeAll();
         enemyTargetPanel.removeAll();
-        int sideOfSelected = selectedOne.getSide();
         for (Entity e : allCreatedEntites){
-            if (sideOfSelected == e.getSide()){
+            if (selectedOne.getSide() == e.getSide()){
                 List<Entity> entities = e.getDetectedEntities();
                 for (int i = 0; i < entities.size(); i++){
                     detectedEntitiesFromRadar.add(entities.get(i));
@@ -425,7 +424,7 @@ public class ActionPanel extends VCSPanel {
             }
         }
         if (typeOfSelected == Entity.Type.AIR){
-            if (sideOfSelected == 0){
+            if (selectedOne.getSide() == Entity.Side.ALLY){
                 for (Entity keyEntity : enemyButtons.keySet()) {
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         enemyTargetPanel.add(enemyButtons.get(keyEntity));
@@ -439,7 +438,7 @@ public class ActionPanel extends VCSPanel {
                 }
             }
         } else if (typeOfSelected == Entity.Type.SURFACE) {
-            if (sideOfSelected == 1){
+            if (selectedOne.getSide() == Entity.Side.ENEMY){
                 for (Entity keyEntity : allyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.SURFACE){
@@ -447,7 +446,7 @@ public class ActionPanel extends VCSPanel {
                         }
                     }
                 }
-            } else if (sideOfSelected == 0){
+            } else if (selectedOne.getSide() == Entity.Side.ALLY){
                 for (Entity keyEntity : enemyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.SURFACE){
@@ -457,7 +456,7 @@ public class ActionPanel extends VCSPanel {
                 }
             }
         } else if (typeOfSelected == Entity.Type.GROUND) {
-            if (sideOfSelected == 1){
+            if (selectedOne.getSide() == Entity.Side.ENEMY){
                 for (Entity keyEntity : allyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.GROUND){
@@ -465,7 +464,7 @@ public class ActionPanel extends VCSPanel {
                         }
                     }
                 }
-            } else if (sideOfSelected == 0){
+            } else if (selectedOne.getSide() == Entity.Side.ALLY){
                 for (Entity keyEntity : enemyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.GROUND){
@@ -487,11 +486,11 @@ public class ActionPanel extends VCSPanel {
             return;
         //for attack panel
         JButton deletedButton;
-        if (entity.getSide() == 0){
+        if (entity.getSide() == Entity.Side.ALLY){
             deletedButton = allyButtons.remove(entity);
             if(deletedButton != null)
                 allyTargetPanel.remove(deletedButton);
-        } else if (entity.getSide() == 1) {
+        } else if (entity.getSide() == Entity.Side.ENEMY) {
             deletedButton = enemyButtons.remove(entity);
             if(deletedButton != null)
                 enemyTargetPanel.remove(deletedButton);
@@ -618,7 +617,7 @@ public class ActionPanel extends VCSPanel {
     public void setMoveMode(boolean isMove){
         app.mapView.setActionPanelUsingMouseEvent(isMove);
         app.appListenerController.setCaptureMode(isMove);
-        if (isMove == false){
+        if (!isMove){
             enableFromMapButton.setBackground(app.uiColorManager.BUTTON_COLOR);
             enableFromMapButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
         }

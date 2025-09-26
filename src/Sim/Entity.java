@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Entity {
     private String name;
-    private int side = 0;
+    private Side side = Side.ALLY;
     private Vec2int pos;
     private Vec2int speed;
     private Type type;
@@ -48,6 +48,27 @@ public class Entity {
         }
     }
 
+    public enum Side{
+        ALLY("Ally"),
+        ENEMY("Enemy");
+
+        private String name;
+
+        Side(String name){
+            this.name = name;
+        }
+        public String getName(){
+            return name;
+        }
+
+        public int getIndex(){
+            if(name.equals("Ally"))
+                return 0;
+            return 1;
+        }
+
+    }
+
     public void addOrder(Order order){
         if(orders.isEmpty()){
             currentOrder = order;
@@ -67,7 +88,7 @@ public class Entity {
         }
     }
 
-    public void updateEntity(String newName, int newSide, Vec2int newPos, Vec2int newSpeed, int newRange, Type newType){
+    public void updateEntity(String newName, Side newSide, Vec2int newPos, Vec2int newSpeed, int newRange, Type newType){
         name = newName;
         side = newSide;
         pos = newPos;
@@ -255,11 +276,11 @@ public class Entity {
         this.components.add(c);
     }
 
-    public void setSide(int side){
+    public void setSide(Side side){
         this.side = side;
     }
 
-    public int getSide(){
+    public Side getSide(){
         return side;
     }
 
@@ -284,10 +305,10 @@ public class Entity {
 
     public String getSideAsName(){
         String sideName = "";
-        if (side == 0) {
+        if (side == Side.ALLY) {
             sideName = "Ally";
         }
-        else if (side == 1) {
+        else if (side == Side.ENEMY) {
             sideName = "Enemy";
         }
         return sideName;
