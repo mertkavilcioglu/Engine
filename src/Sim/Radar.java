@@ -33,6 +33,9 @@ public class Radar extends Component {
             } else if (parentEntity.getDetectedEntities().contains(e)){
                 parentEntity.removeFromDetectedEntities(e);
             }
+            if (hasVisual) {
+                e.setIsDetected(true);
+            } else e.setIsDetected(false);
         }
         if(!hasVisual);
             //System.out.format("ComponentRadar::update Unit %s has no detection.\n", parentEntity.name.toUpperCase());

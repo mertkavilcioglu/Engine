@@ -26,6 +26,7 @@ public class Entity {
     private RGB nextPosPixelColor = new RGB();
     private RGB posPixelColor = new RGB();
     private Stack<Vec2int> previousPositions = new Stack<>();
+    private boolean isDetected = false;
 
 
     public Entity(World w) {
@@ -221,6 +222,14 @@ public class Entity {
 
     public void deleteAllDetectedEntities(){
         detectedEntities.clear();
+    }
+
+    public void setIsDetected(boolean b){
+        isDetected = b;
+    }
+
+    public boolean isDetected(){
+        return isDetected;
     }
 
     //To access and change content of Entity from other packages.
