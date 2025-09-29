@@ -490,6 +490,7 @@ public class MapView extends VCSPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(label);
         world.map.SetBufferedImage(bImage);
+        world.map.setWorldBounds(getWidth(), getHeight());
 
         Vec2int pos = new Vec2int();
         RGB color = new RGB();

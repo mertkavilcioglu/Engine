@@ -11,4 +11,9 @@ public class WorldMap {
         this.image = image;
     }
 
+    public void setWorldBounds(int x, int y){
+        maxX = x;
+        maxY = y;
+    }
+
 }
