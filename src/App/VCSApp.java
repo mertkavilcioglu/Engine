@@ -85,6 +85,7 @@ public class VCSApp {
         //mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
         mergeSouthPanel.add(actionPanel);
         mergeSouthPanel.add(logPanel);
+        mergeSouthPanel.setBackground(uiColorManager.TOP_BAR_COLOR);
         actionPanel.setBorder(BorderFactory.createLineBorder(uiColorManager.DARK_TITLE_COLOR_1,2));
         logPanel.setBorder(BorderFactory.createLineBorder(uiColorManager.DARK_TITLE_COLOR_1,2));
 

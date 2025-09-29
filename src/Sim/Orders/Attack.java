@@ -8,6 +8,9 @@ public class Attack extends Order{
 
     private Entity targetEntity;
     private boolean isExecute = false;
+    private double dist;
+    private Vec2int prevSpeed;
+    private Vec2int targetPos;
 
     public Attack(VCSApp app, Entity src, Entity target) {
         super(app, src);
@@ -29,32 +32,42 @@ public class Attack extends Order{
     public void attackEntity(Entity targetEntity){
         if(targetEntity == null )
             return;
-        double distX = targetEntity.getPos().x - source.getPos().x;
-        double distY = targetEntity.getPos().y - source.getPos().y;
-        double dist = source.getPos().distance(targetEntity.getPos());
+        if (targetEntity.isDetected()){
+            targetPos = targetEntity.getPos();
+        }
+        dist = source.getPos().distance(targetPos);
         if(dist <= 4.0){
-            String msgDestroy = String.format("%s destroy the target %s,", source.getName(), targetEntity.getName());
-            app.log(msgDestroy);
-            destroy(targetEntity);
+            if (targetEntity.isDetected()){
+                String msgDestroy = String.format("%s destroy the target %s,", source.getName(), targetEntity.getName());
+                app.log(msgDestroy);
+                destroy(targetEntity);
+            } else {
+                String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), source.getName());
+                app.log(notFoundMsg);
+                source.setSpeed(new Vec2int(0,0));
+                source.completeCurrentOrder();
+                source.setCurrentOrderState(true);
+            }
+
 
         }
         else{
-            int targetSpeed;
-            if(source.maxSpeed <= targetEntity.maxSpeed)
-                targetSpeed = targetEntity.maxSpeed*2;
-            else
-                targetSpeed = source.maxSpeed*2;
+                int targetSpeed;
+                if(source.maxSpeed <= targetEntity.maxSpeed)
+                    targetSpeed = targetEntity.maxSpeed*2;
+                else
+                    targetSpeed = source.maxSpeed*2;
 
-            Vec2int newSpeed = new Vec2int();
-            if(source.getPos().distance(targetEntity.getPos()) <= source.maxSpeed){
-                newSpeed = new Vec2int(0,0);
-                source.setPos(targetEntity.getPos());
-            }
 
-            else
-                newSpeed = source.getPos().vectorDiff(targetEntity.getPos()).normalize(targetSpeed);
-            source.setSpeed(newSpeed);
-
+                Vec2int newSpeed = new Vec2int();
+                if(source.getPos().distance(targetPos) <= source.maxSpeed){
+                    newSpeed = new Vec2int(0,0);
+                    source.setPos(targetEntity.getPos());
+                }
+                else{
+                    newSpeed = source.getPos().vectorDiff(targetPos).normalize(targetSpeed);
+                    source.setSpeed(newSpeed);
+                }
         }
     }
 
@@ -70,6 +83,7 @@ public class Attack extends Order{
             String msgAttack = String.format("%s going to attack %s.", source.getName(), targetEntity.getName());
             app.log(msgAttack);
             source.setCurrentOrderState(false);
+            prevSpeed = source.getSpeed();
         }
         isExecute = true;
     }

@@ -45,12 +45,10 @@ public class AppWindow extends JFrame {
                     if (app.loadSavePanel.getLoadedFilePath() != null){
                         if (!compareIfEqual(app.loadSavePanel.getLoadedFilePath(), forCheckIsSaved)){
                             savePopUp(app.loadSavePanel.getLoadedFilePath());
-                            forCheckIsSaved.delete();
                         } else setDefaultCloseOperation(EXIT_ON_CLOSE);
                     } else if (app.loadSavePanel.getSavedFilePath() != null) {
                         if (!compareIfEqual(app.loadSavePanel.getSavedFilePath(), forCheckIsSaved)){
                             savePopUp(app.loadSavePanel.getSavedFilePath());
-                            forCheckIsSaved.delete();
                         } else setDefaultCloseOperation(EXIT_ON_CLOSE);
                     }
                 } else {
@@ -60,10 +58,8 @@ public class AppWindow extends JFrame {
                             setDefaultCloseOperation(EXIT_ON_CLOSE);
                             forCheckIsSaved.delete();
                         } else {
-                            String[] options = { "Save","Don't save" };
-                            JFrame frame = new JFrame();
-                            frame.getContentPane();
-                            int choice = JOptionPane.showOptionDialog(frame,
+                            String[] options = { "Save","Don't save", "Cancel" };
+                            int choice = JOptionPane.showOptionDialog(null,
                                     "Do you want to save?", "Select an option",
                                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,newIcon,
                                     options, options[0]);
@@ -71,8 +67,11 @@ public class AppWindow extends JFrame {
                                 app.loadSavePanel.saveAs();
                                 setDefaultCloseOperation(EXIT_ON_CLOSE);
                             }
-                            if (choice == 1) {
+                            else if (choice == 1) {
                                 setDefaultCloseOperation(EXIT_ON_CLOSE);
+                            }
+                            else {
+                                setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
                             }
                         }
                     } catch (IOException ex){
@@ -88,7 +87,6 @@ public class AppWindow extends JFrame {
     private boolean compareIfEqual(File createdFile, File checkFile){
         try (BufferedReader firstFile = Files.newBufferedReader(createdFile.toPath());
              BufferedReader secFile = Files.newBufferedReader(checkFile.toPath())) {
-
             String firstFileLine = "", secFileLine = "";
             while ((firstFileLine = firstFile.readLine()) != null) {
                 secFileLine = secFile.readLine();
@@ -106,10 +104,8 @@ public class AppWindow extends JFrame {
     }
 
     private void savePopUp(File file){
-        String[] options = { "Save","Don't save" };
-        JFrame frame = new JFrame();
-        frame.getContentPane();
-        int choice = JOptionPane.showOptionDialog(frame,
+        String[] options = { "Save","Don't save", "Cancel" };
+        int choice = JOptionPane.showOptionDialog(null,
                 "Do you want to save?", "Select an option",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,newIcon,
                 options, options[0]);
@@ -117,8 +113,11 @@ public class AppWindow extends JFrame {
             app.saveSenario(file);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
         }
-        if (choice == 1) {
+        else if (choice == 1) {
             setDefaultCloseOperation(EXIT_ON_CLOSE);
+        }
+        else {
+            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         }
     }
 }
