@@ -99,6 +99,7 @@ public class HierarchyView extends VCSPanel {
         e.getNodeInfo().assignNode("posY", posYnode);
         e.getNodeInfo().assignNode("velX", velXnode);
         e.getNodeInfo().assignNode("velY", velYnode);
+        e.getNodeInfo().assignNode("side", sideNode);
         e.getNodeInfo().assignRoot(leaf);
 
         leaf.add(velNode);
@@ -214,7 +215,11 @@ public class HierarchyView extends VCSPanel {
             leaves.get(e).getNode("velY").setUserObject(e.getSpeed().y);
             model.nodeChanged(leaves.get(e).getNode("velX"));
             model.nodeChanged(leaves.get(e).getNode("velY"));
+
+            leaves.get(e).getNode("side").setUserObject(e.getSide().getName());
+            model.nodeChanged(leaves.get(e).getNode("side"));
         }
+
 
     }
 

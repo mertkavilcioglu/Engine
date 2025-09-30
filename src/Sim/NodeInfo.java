@@ -10,6 +10,7 @@ public class NodeInfo {
     private DefaultMutableTreeNode velY;
     private DefaultMutableTreeNode radarRoot;
     private DefaultMutableTreeNode radar;
+    private DefaultMutableTreeNode side;
 
     public void assignRoot(DefaultMutableTreeNode node){
         root = node;
@@ -35,6 +36,9 @@ public class NodeInfo {
             case "radarRange":
                 radar = node;
                 break;
+            case "side":
+                side = node;
+                break;
         }
     }
 
@@ -52,6 +56,8 @@ public class NodeInfo {
                 return radarRoot;
             case "radarRange":
                 return radar;
+            case "side":
+                return side;
 
         }
         return null;
