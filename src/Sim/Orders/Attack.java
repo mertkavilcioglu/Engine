@@ -44,6 +44,7 @@ public class Attack extends Order{
             } else {
                 String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), source.getName());
                 app.log(notFoundMsg);
+                //TODO order bitince ya da yarım kalınca unitlere hareket belirleme
                 source.setSpeed(new Vec2int(0,0));
                 source.completeCurrentOrder();
                 source.setCurrentOrderState(true);
