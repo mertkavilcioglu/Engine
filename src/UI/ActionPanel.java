@@ -53,9 +53,9 @@ public class ActionPanel extends VCSPanel {
     //right panel
     private JPanel currentOrderPanel;
     private JPanel currentOrdersListPanel;
+    private JList<Order> currentOrderList;
+    private DefaultListModel<Order> orderModel;
     private JButton selectedOrderDeleteButton;
-    ArrayList <JCheckBox> currentOrderBoxes = new ArrayList<>();
-    ArrayList <Order> currentOrdersOfEntity = new ArrayList<>();
 
     //main label of whole panel
     private JLabel selectedUnitLabel;
@@ -183,7 +183,6 @@ public class ActionPanel extends VCSPanel {
         JPanel comboPanel = new JPanel(new BorderLayout());
         followTargetData = new DefaultComboBoxModel<>();
         followTargetBox = new JComboBox<>(followTargetData);
-        //followTargetBox.setBackground(app.uiColorManager.BUTTON_COLOR);
         followTargetBox.setRequestFocusEnabled(false);
         followTargetBox.setForeground(Color.BLACK);
         comboPanel.setBackground(panelBgColor);
@@ -242,14 +241,27 @@ public class ActionPanel extends VCSPanel {
         orderDetailPanel.add(movePanel, "move");
         orderDetailPanel.add(followPanel, "follow");
         orderDetailPanel.setPreferredSize(new Dimension(app.getWindow().getWidth(),220));
-        //chooseActionPanel.setBorder(new TitledBorder(""));
 
 
         currentOrderPanel = new JPanel(new BorderLayout());
-        currentOrdersListPanel = new JPanel();
-        currentOrdersListPanel.setLayout(new BoxLayout(currentOrdersListPanel, BoxLayout.Y_AXIS));
-        currentOrdersListPanel.setBackground(panelBgColor);
-        JScrollPane currentOrderScroll = new JScrollPane(currentOrdersListPanel);
+        orderModel = new DefaultListModel<>();
+        currentOrderList = new JList<>(orderModel);
+        currentOrderList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        currentOrderList.setVisibleRowCount(8);
+        currentOrderList.setCellRenderer(new DefaultListCellRenderer(){
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel lbl = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Order){
+                    Order o = (Order) value;
+                    lbl.setText(o.createTextToPrint());
+                } return lbl;
+            }
+        });
+        currentOrderList.addListSelectionListener(l-> updateDeleteButtonState());
+        currentOrderList.setBackground(panelBgColor);
+        currentOrderList.setForeground(Color.WHITE);
+        JScrollPane currentOrderScroll = new JScrollPane(currentOrderList);
         currentOrderScroll.getVerticalScrollBar().setBackground(panelBgColor);
 
 
@@ -322,9 +334,6 @@ public class ActionPanel extends VCSPanel {
             catch(Exception ex){
                 moveEditor.dataValidate();
             }
-            //currentOrderText.append("Move to " + coordinates + "\n");
-
-
         });
 
         //merge left, middle and right panels into one
@@ -334,10 +343,6 @@ public class ActionPanel extends VCSPanel {
 
         this.add(selectedUnitLabel, BorderLayout.NORTH);
         this.add(mergePanel, BorderLayout.CENTER);
-        //this.setBorder(BorderFactory.createLineBorder(Color.black,1));
-
-
-
     }
 
     //find the selected entity from hierarchy panel to give order
@@ -534,25 +539,15 @@ public class ActionPanel extends VCSPanel {
 
     //change the current order panel based on the selected entity
     private void refreshCurrentOrderPanel(){
-        currentOrderBoxes.clear();
-        currentOrdersOfEntity.clear();
-        currentOrdersListPanel.removeAll();
+        orderModel.removeAllElements();
         if (selectedEntity != null){
             Queue<Order> currentOrders = selectedEntity.getOrders();
             for (Order order : currentOrders){
-                JCheckBox box = new JCheckBox(order.createTextToPrint());
-                box.setBackground(panelBgColor);
-                box.setForeground(Color.white);
-                box.addItemListener(l -> {
-                    updateDeleteButtonState();
-                });
-                this.currentOrderBoxes.add(box);
-                currentOrdersOfEntity.add(order);
-                currentOrdersListPanel.add(box);
+                orderModel.addElement(order);
             }
         }
-        currentOrdersListPanel.revalidate();
-        currentOrdersListPanel.repaint();
+        currentOrderPanel.revalidate();
+        currentOrderPanel.repaint();
         updateDeleteButtonState();
     }
 
@@ -567,38 +562,27 @@ public class ActionPanel extends VCSPanel {
             selectedOrderDeleteButton.setEnabled(false);
             return;
         }
-        boolean anySelected = false;
-        for (JCheckBox cb : currentOrderBoxes){
-            if (cb.isSelected()){
-                anySelected = true;
-                break;
-            }
-        }
+        boolean anySelected = !currentOrderList.isSelectionEmpty();
         selectedOrderDeleteButton.setEnabled(anySelected);
     }
 
     //clear the current order panel for each new selected entity and root
     private void clearCurrentOrderPanel(){
-        currentOrdersOfEntity.clear();
-        currentOrderBoxes.clear();
-        currentOrdersListPanel.removeAll();
-        currentOrdersListPanel.revalidate();
-        currentOrdersListPanel.repaint();
+        orderModel.removeAllElements();
+
+        currentOrderPanel.revalidate();
+        currentOrderPanel.repaint();
         updateDeleteButtonState();
     }
 
     private void deleteSelectedOrders(){
-        ArrayList<Order> ordersToDelete = new ArrayList<>();
         if (selectedEntity == null) return;
-        for (int i = currentOrderBoxes.size()-1; i >= 0; i--){
-            if (currentOrderBoxes.get(i).isSelected()){
-                Order deletedOrder = currentOrdersOfEntity.get(i);
-                ordersToDelete.add(deletedOrder);
-                String deleteLog = String.format("%s of %s is deleted.", deletedOrder.toString(), selectedEntity.getName());
+        List<Order> toDelete = currentOrderList.getSelectedValuesList();
+        for (int i = toDelete.size()-1; i >= 0; i--){
+                String deleteLog = String.format("%s of %s is deleted.", toDelete.get(i).toString(), selectedEntity.getName());
                 app.log(deleteLog);
-            }
         }
-        selectedEntity.removeOrder(ordersToDelete);
+        selectedEntity.removeOrder((ArrayList<Order>) toDelete);
         refreshCurrentOrderPanel();
     }
 
