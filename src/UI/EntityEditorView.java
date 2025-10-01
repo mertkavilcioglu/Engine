@@ -252,8 +252,36 @@ public class EntityEditorView extends VCSPanel {
         eNamePanel.getInputField().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                debugLog("*** ENTER pressed ***");
-                //Update entity
+                //debugLog("*** ENTER pressed ***");
+                updateSelectedEntity();
+            }
+        });
+
+        ePositionPanel.getInputFieldX().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateSelectedEntity();
+            }
+        });
+
+        ePositionPanel.getInputFieldY().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateSelectedEntity();
+            }
+        });
+
+        eSpeedPanel.getInputFieldX().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateSelectedEntity();
+            }
+        });
+
+        eSpeedPanel.getInputFieldY().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateSelectedEntity();
             }
         });
     }
@@ -397,6 +425,46 @@ public class EntityEditorView extends VCSPanel {
         if(i == 0)
             return Entity.Side.ALLY;
         return Entity.Side.ENEMY;
+    }
+
+    public void updateSelectedEntity(){
+        try{
+            Vec2int oldPos = app.mapView.getSelectedEntity().getPos();
+            String name = eNamePanel.readData();
+            Vec2int pos = ePositionPanel.readData();
+            Vec2int speed = eSpeedPanel.readData();
+            int range = 0;
+            if(radarPanel != null)
+                range = radarPanel.readData();
+
+            int sideInt = addSideBox.getSelectedIndex();
+            type = (String) addTypeBox.getSelectedItem();
+            if(app.pixelColor.isLocationValidForType(type, pos) && name != null){
+                app.updateSelectedEntity(name, intToSide(sideInt), pos, speed, range, strToType(type));
+            }
+            else if(!app.pixelColor.isLocationValidForType(type, pos)){
+                ePositionPanel.error();
+            }
+            app.hierarchyPanel.updateComponent("Radar", app.mapView.getSelectedEntity());
+
+            if(!app.mapView.getSelectedEntity().getPreviousPositions().isEmpty() &&
+                    app.mapView.getSelectedEntity().getPreviousPositions().getLast().x != pos.x &&
+                    app.mapView.getSelectedEntity().getPreviousPositions().getLast().y != pos.y){
+                app.mapView.getSelectedEntity().getPreviousPositions().push(oldPos);
+                app.world.latestMovedEntities.push(app.mapView.getSelectedEntity());
+                app.world.latestChanges.push(World.Change.MOVE);
+            }
+            app.hierarchyPanel.update(1000);
+        }
+        catch (Exception ex){
+            System.out.println("CATCHED SMT");
+            System.out.println(ex.getLocalizedMessage());
+            ex.printStackTrace();
+            ePositionPanel.dataValidate();
+            eSpeedPanel.dataValidate();
+            if(radarPanel != null)
+                radarPanel.dataValidate();
+        }
     }
 
 

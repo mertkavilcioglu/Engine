@@ -173,5 +173,12 @@ public class Vec2intEditor extends JPanel{
         return isFocusedY;
     }
 
+    public JTextField getInputFieldX(){
+        return txtX;
+    }
+
+    public JTextField getInputFieldY(){
+        return txtY;
+    }
 
 }

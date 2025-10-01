@@ -125,7 +125,6 @@ public class VCSApp {
                 handleEntityCopy(e); // CTRL + C
                 handleEntityPaste(e); // CTRL + V
                 handleRevertingChanges(e); // CTRL + Z
-                handleEditorPanelEnterInput(e);
             }
 
             @Override
@@ -326,12 +325,4 @@ public class VCSApp {
             ctrlOn = false;
         }
     }
-
-    private void handleEditorPanelEnterInput(KeyEvent e){
-        if(e.getKeyCode() == KeyEvent.VK_ENTER && editorPanel.hasFocus()){
-            debugLog("ENTER");
-        }
-        else debugLogError("no focus");
-    }
-
 }
