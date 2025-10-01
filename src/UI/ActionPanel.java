@@ -433,12 +433,18 @@ public class ActionPanel extends VCSPanel {
                 for (Entity keyEntity : enemyButtons.keySet()) {
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                        if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
+                            enemyButtons.get(keyEntity).setEnabled(false);
+                        }
                     }
                 }
             } else {
                 for (Entity keyEntity : allyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         allyTargetPanel.add(allyButtons.get(keyEntity));
+                        if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
+                            allyButtons.get(keyEntity).setEnabled(false);
+                        }
                     }
                 }
             }
@@ -448,6 +454,9 @@ public class ActionPanel extends VCSPanel {
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.SURFACE){
                             allyTargetPanel.add(allyButtons.get(keyEntity));
+                            if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
+                                allyButtons.get(keyEntity).setEnabled(false);
+                            }
                         }
                     }
                 }
@@ -456,6 +465,9 @@ public class ActionPanel extends VCSPanel {
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.SURFACE){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                            if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
+                                enemyButtons.get(keyEntity).setEnabled(false);
+                            }
                         }
                     }
                 }
@@ -466,6 +478,9 @@ public class ActionPanel extends VCSPanel {
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.GROUND){
                             allyTargetPanel.add(allyButtons.get(keyEntity));
+                            if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
+                                allyButtons.get(keyEntity).setEnabled(false);
+                            }
                         }
                     }
                 }
@@ -474,6 +489,9 @@ public class ActionPanel extends VCSPanel {
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.GROUND){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                            if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
+                                enemyButtons.get(keyEntity).setEnabled(false);
+                            }
                         }
                     }
                 }
@@ -579,8 +597,19 @@ public class ActionPanel extends VCSPanel {
         if (selectedEntity == null) return;
         List<Order> toDelete = currentOrderList.getSelectedValuesList();
         for (int i = toDelete.size()-1; i >= 0; i--){
-                String deleteLog = String.format("%s of %s is deleted.", toDelete.get(i).toString(), selectedEntity.getName());
+                Order o = toDelete.get(i);
+                String deleteLog = String.format("%s of %s is deleted.", o.toString(), selectedEntity.getName());
                 app.log(deleteLog);
+                if (o.toString().equals("Attack order")){
+                    Attack a = (Attack) o;
+                    if (selectedEntity.getSide() == Entity.Side.ALLY){
+                        JButton b = enemyButtons.get(a.getTargetEntity());
+                        b.setEnabled(true);
+                    } else {
+                        JButton b = allyButtons.get(a.getTargetEntity());
+                        b.setEnabled(true);
+                    }
+                }
         }
         selectedEntity.removeOrder((ArrayList<Order>) toDelete);
         refreshCurrentOrderPanel();

@@ -78,6 +78,10 @@ public class Attack extends Order{
         source.setCurrentOrderState(true);
     }
 
+    public Entity getTargetEntity(){
+        return targetEntity;
+    }
+
     @Override
     protected void printToLog(){
         if (!isExecute){

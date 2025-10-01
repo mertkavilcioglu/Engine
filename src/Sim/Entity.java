@@ -1,5 +1,6 @@
 package Sim;
 
+import Sim.Orders.Attack;
 import Sim.Orders.Order;
 import Var.RGB;
 import Vec.Vec2int;
@@ -251,6 +252,18 @@ public class Entity {
 
     public boolean isDetected(){
         return isDetected;
+    }
+
+    public ArrayList<Entity> getEntitiesToAttack(){
+        ArrayList<Entity> entities = new ArrayList<>();
+        Object[] ordersArray = orders.toArray();
+        for (int i = 0; i < ordersArray.length; i++){
+            if (ordersArray[i].getClass() == Attack.class){
+                Attack attack = (Attack) ordersArray[i];
+                entities.add(attack.getTargetEntity());
+            }
+        }
+        return entities;
     }
 
     //To access and change content of Entity from other packages.
