@@ -11,8 +11,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
 
 public class EntityEditorView extends VCSPanel {
     private String[] components = {"Radar"};
@@ -35,6 +34,8 @@ public class EntityEditorView extends VCSPanel {
     public Color panelColor;
     public Color panelComponentColor;
     public Color borderColor;
+
+    public boolean isFocusGaied = false;
 
     public EntityEditorView(VCSApp app){
         super(app);
@@ -235,10 +236,30 @@ public class EntityEditorView extends VCSPanel {
                 addSideBoxFocused = false;
             }
         });
+
+        eNamePanel.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                isFocusGaied = true;
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                isFocusGaied = false;
+            }
+        });
+
+        eNamePanel.getInputField().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                debugLog("*** ENTER pressed ***");
+                //Update entity
+            }
+        });
     }
 
     public void update(){
-        updatePanelData(app.mapView.getSelectedEntity());
+        //updatePanelData(app.mapView.getSelectedEntity());
     }
 
     public void removeComponent(JPanel panel, String compName){
@@ -377,5 +398,6 @@ public class EntityEditorView extends VCSPanel {
             return Entity.Side.ALLY;
         return Entity.Side.ENEMY;
     }
+
 
 }

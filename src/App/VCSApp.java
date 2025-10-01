@@ -7,8 +7,6 @@ import Vec.Vec2int;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.plaf.metal.MetalScrollBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -17,8 +15,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class VCSApp {
 
@@ -82,7 +78,6 @@ public class VCSApp {
         localFile = new LocalFile();
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
-        //mergeSouthPanel.setBorder(BorderFactory.createLineBorder(Color.black,2));
         mergeSouthPanel.add(actionPanel);
         mergeSouthPanel.add(logPanel);
         mergeSouthPanel.setBackground(uiColorManager.TOP_BAR_COLOR);
@@ -102,10 +97,6 @@ public class VCSApp {
         int targetHeightNorth = Toolkit.getDefaultToolkit().getScreenSize().height / 26;
         mergeNorthPanel.setPreferredSize(new Dimension(targetWidthNorth, targetHeightNorth));
 
-//        int targetWidthSouth = Toolkit.getDefaultToolkit().getScreenSize().width;
-//        int targetHeightSouth = Toolkit.getDefaultToolkit().getScreenSize().height / 4;
-//        mergeSouthPanel.setPreferredSize(new Dimension(targetWidthSouth, targetHeightSouth));
-
         JScrollPane hierarchyScroll = new JScrollPane(hierarchyPanel.tree);
         hierarchyScroll.getViewport().setBackground(uiColorManager.DARK_PANEL_COLOR);
         hierarchyScroll.setBorder(null);
@@ -124,78 +115,22 @@ public class VCSApp {
 
         window.setVisible(true);
 
-//        File savedFile = localFile.createLocalFile("SavedSenario");
-//        if (savedFile.exists()){
-//            GetInput input = new GetInput();
-//            input.readInputForReset(this, String.valueOf(savedFile));
-//        } else {
-//            Entity mert = world.createEntity2("Mert", 1);
-//            hierarchyPanel.entityAdded(mert);
-//            actionPanel.createNewTargetButton(mert);
-//
-//            Entity emir = world.createEntity2("Emir", 0);
-//            hierarchyPanel.entityAdded(emir);
-//            actionPanel.createNewTargetButton(emir);
-//
-//            Entity seda = world.createEntity2("Seda", 0);
-//            hierarchyPanel.entityAdded(seda);
-//            actionPanel.createNewTargetButton(seda);
-//
-//            Entity hasan = world.createEntity2("Hasan", 0);
-//            hierarchyPanel.entityAdded(hasan);
-//            actionPanel.createNewTargetButton(hasan);
-//        }
-
         window.setFocusable(true);
         window.requestFocus();
         window.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
-                    if(mapView.getSelectedEntity() != null){
-                        Entity ent = mapView.getSelectedEntity();
-                        world.latestDeletedEntities.push(ent);
-                        world.latestChanges.push(World.Change.DELETE);
-                        removeEntityInstantaneously(mapView.getSelectedEntity());
-                        mapView.repaint();
-                    }
-                }
-
-                if(e.getKeyCode() == KeyEvent.VK_CONTROL){
-                    ctrlOn = true;
-                }
-
-                if(e.getKeyCode() == KeyEvent.VK_C && ctrlOn){
-                    if(mapView.getSelectedEntity() != null){
-                        world.setCopiedEntity(mapView.getSelectedEntity());
-                    }
-                }
-                
-                if(e.getKeyCode() == KeyEvent.VK_V && ctrlOn){
-                    if(world.getCopiedEntity() != null &&
-                            world.getCopiedEntity().CanMove(mapView.allPixelColors.get(mapView.getPixPos().toString()),
-                                    world.getCopiedEntity().getType())){
-                        Entity ent = world.getCopiedEntity();
-                        String newName = String.format("%s - Copy", ent.getName());
-                        Vec2int newPos = mapView.getPixPos();
-
-                        if(ent.hasComponent("Radar"))
-                            createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType());
-                        else
-                            createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), 0, ent.getType());
-                    }
-                }
-
-                if(e.getKeyCode() == KeyEvent.VK_Z && ctrlOn){
-                    world.revertLastChange();
-                }
+                handleEntityDelete(e); // DEL & BACKSPACE
+                handleCtrlActivate(e); // CTRL
+                handleEntityCopy(e); // CTRL + C
+                handleEntityPaste(e); // CTRL + V
+                handleRevertingChanges(e); // CTRL + Z
+                handleEditorPanelEnterInput(e);
             }
 
             @Override
             public void keyReleased(KeyEvent e){
-                if(e.getKeyCode() == KeyEvent.VK_CONTROL){
-                    ctrlOn = false;
-                }
+                handleCtrlDeactivate(e);
             }
         });
 
@@ -205,9 +140,7 @@ public class VCSApp {
                 int delta = 1000;
                 int x = 0;
 
-                //TODO: MAP BURADA BOYUT KAZANIYOR İLK
                 mapView.initializeTheMap();
-
 
                 simTimer = new Timer(delta, new AbstractAction() {
                     @Override
@@ -333,6 +266,72 @@ public class VCSApp {
 
     public void debugLog(String message){
         if (logPanel != null) logPanel.debugLogMessage(message);
+    }
+
+    public void debugLogError(String message){
+        if (logPanel != null) logPanel.debugLogError(message);
+    }
+
+    private void handleEntityDelete(KeyEvent e){
+        if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+            if(mapView.getSelectedEntity() != null){
+                Entity ent = mapView.getSelectedEntity();
+                world.latestDeletedEntities.push(ent);
+                world.latestChanges.push(World.Change.DELETE);
+                removeEntityInstantaneously(mapView.getSelectedEntity());
+                mapView.repaint();
+            }
+        }
+    }
+
+    private void handleCtrlActivate(KeyEvent e){
+        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+            ctrlOn = true;
+        }
+    }
+
+    private void handleEntityCopy(KeyEvent e){
+        if(e.getKeyCode() == KeyEvent.VK_C && ctrlOn){
+            if(mapView.getSelectedEntity() != null){
+                world.setCopiedEntity(mapView.getSelectedEntity());
+            }
+        }
+    }
+
+    private void handleEntityPaste(KeyEvent e){
+        if(e.getKeyCode() == KeyEvent.VK_V && ctrlOn){
+            if(world.getCopiedEntity() != null &&
+                    world.getCopiedEntity().CanMove(mapView.allPixelColors.get(mapView.getPixPos().toString()),
+                            world.getCopiedEntity().getType())){
+                Entity ent = world.getCopiedEntity();
+                String newName = String.format("%s - Copy", ent.getName());
+                Vec2int newPos = mapView.getPixPos();
+
+                if(ent.hasComponent("Radar"))
+                    createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType());
+                else
+                    createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), 0, ent.getType());
+            }
+        }
+    }
+
+    private void handleRevertingChanges(KeyEvent e){
+        if(e.getKeyCode() == KeyEvent.VK_Z && ctrlOn){
+            world.revertLastChange();
+        }
+    }
+
+    private void handleCtrlDeactivate(KeyEvent e){
+        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+            ctrlOn = false;
+        }
+    }
+
+    private void handleEditorPanelEnterInput(KeyEvent e){
+        if(e.getKeyCode() == KeyEvent.VK_ENTER && editorPanel.hasFocus()){
+            debugLog("ENTER");
+        }
+        else debugLogError("no focus");
     }
 
 }

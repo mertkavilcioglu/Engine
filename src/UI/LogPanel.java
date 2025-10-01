@@ -48,6 +48,11 @@ public class LogPanel extends VCSPanel {
         coloredText(logArea, text, Color.YELLOW);
     }
 
+    public void debugLogError(String msg){
+        String text = msg + "\n";
+        coloredText(logArea, text, Color.RED);
+    }
+
     private void coloredText(JTextPane textPane, String msg, Color color){
         StyledDocument doc = textPane.getStyledDocument();
         Style style = textPane.addStyle("ColorStyle", null);
