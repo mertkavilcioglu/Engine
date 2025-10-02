@@ -36,6 +36,7 @@ public class LoadSavePanel extends VCSPanel{
         this.setBackground(app.uiColorManager.TOP_BAR_COLOR);
         setBackground(app.uiColorManager.TOP_BAR_COLOR);
 
+        //choose an existing txt file to load as a scenario
         loadButton.addActionListener(e -> {
             try {
                 if(e.getSource() == loadButton) {
@@ -61,59 +62,24 @@ public class LoadSavePanel extends VCSPanel{
                     }
                     app.mapView.repaint();
                 }
-            }catch (RuntimeException r){
-                //System.out.println("User did not select import file");
+            } catch (HeadlessException ex) {
+                ex.printStackTrace();
             }
 
         });
-        AtomicBoolean flag2 = new AtomicBoolean(true);
 
+        //save with choosing where to save
         saveAsButton.addActionListener(e -> {
             saveAs();
-
-//            try {
-//                FileWriter myWriter = new FileWriter(id + "-Simulation_Plan.txt");
-//                Map<Entity, Vec2int> initialPositions = app.mapView.getInitialPoints();
-//                for(Sim.Entity ent:app.world.entities){
-//                    Vec.Vec2int pos = initialPositions.get(ent);
-//                    String posStr;
-//                    if(pos!=null){
-//                        posStr = pos.toString().substring(1,pos.toString().length()-1);
-//
-//                    }else{
-//                        posStr = ent.getPos().toString().substring(1,ent.getPos().toString().length()-1);
-//                    }
-//                    String speedStr = ent.getSpeed().toString().substring(1, ent.getSpeed().toString().length()-1);
-//                    if(flag2.get()){
-//                        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-//                        int width = gd.getDisplayMode().getWidth();
-//                        int height = gd.getDisplayMode().getHeight();
-//                        myWriter.write(width +"x" + height + "\n");
-//                        flag2.set(false);
-//                    }
-//                    myWriter.write(ent.getName() + "\n");
-//                    myWriter.write(ent.getSide() == (1) ? "Enemy":"Ally");
-//                    myWriter.write("\n");
-//                    myWriter.write(ent.getType() + "\n");
-//                    myWriter.write(posStr + "\n");
-//                    myWriter.write(speedStr + "\n");
-//                    myWriter.write("null" + "\n");//radar information of entity
-//
-//                }
-//                myWriter.close();
-//            } catch (IOException ex) {
-//                throw new RuntimeException(ex);
-//            }
-
         });
 
+        //save if there is an existing file for that scenario or save as
         saveButton.addActionListener(e -> {
             if (loadedFilePath != null){
                 app.saveSenario(loadedFilePath);
             } else if (fileToSave != null){
                 app.saveSenario(fileToSave);
             } else saveAs();
-            //app.saveSenario();
         });
     }
 

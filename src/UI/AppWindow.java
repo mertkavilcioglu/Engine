@@ -38,7 +38,6 @@ public class AppWindow extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                GetInput input = new GetInput();
                 File forCheckIsSaved = new File("src/Assets/CheckFile");
                 app.saveSenario(forCheckIsSaved);
                 if (app.loadSavePanel.isAnyFile()){
@@ -58,21 +57,7 @@ public class AppWindow extends JFrame {
                             setDefaultCloseOperation(EXIT_ON_CLOSE);
                             forCheckIsSaved.delete();
                         } else {
-                            String[] options = { "Save","Don't save", "Cancel" };
-                            int choice = JOptionPane.showOptionDialog(null,
-                                    "Do you want to save?", "Select an option",
-                                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,newIcon,
-                                    options, options[0]);
-                            if (choice == 0) {
-                                app.loadSavePanel.saveAs();
-                                setDefaultCloseOperation(EXIT_ON_CLOSE);
-                            }
-                            else if (choice == 1) {
-                                setDefaultCloseOperation(EXIT_ON_CLOSE);
-                            }
-                            else {
-                                setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-                            }
+                            savePopUp(null);
                         }
                     } catch (IOException ex){
                         ex.printStackTrace();
@@ -87,7 +72,8 @@ public class AppWindow extends JFrame {
     private boolean compareIfEqual(File createdFile, File checkFile){
         try (BufferedReader firstFile = Files.newBufferedReader(createdFile.toPath());
              BufferedReader secFile = Files.newBufferedReader(checkFile.toPath())) {
-            String firstFileLine = "", secFileLine = "";
+            String firstFileLine = "";
+            String secFileLine = "";
             while ((firstFileLine = firstFile.readLine()) != null) {
                 secFileLine = secFile.readLine();
                 if (secFileLine == null || !firstFileLine.equals(secFileLine)) {
@@ -110,7 +96,11 @@ public class AppWindow extends JFrame {
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,newIcon,
                 options, options[0]);
         if (choice == 0) {
-            app.saveSenario(file);
+            if (file == null){
+                app.loadSavePanel.saveAs();
+            } else {
+                app.saveSenario(file);
+            }
             setDefaultCloseOperation(EXIT_ON_CLOSE);
         }
         else if (choice == 1) {
