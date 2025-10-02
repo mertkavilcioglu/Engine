@@ -176,7 +176,38 @@ public class EntityEditorView extends VCSPanel {
             }
         });
         updateButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-        add(updateButton);
+        //add(updateButton);
+
+        addSideBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateSelectedEntity();
+            }
+        });
+
+        addTypeBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(app.pixelColor.isLocationValidForType(addTypeBox.getSelectedItem().toString(),
+                        app.mapView.getSelectedEntity().getPos())){
+                    updateSelectedEntity();
+                }
+                else{
+                    switch (app.mapView.getSelectedEntity().getType()){
+                        case Entity.Type.GROUND:
+                            addTypeBox.setSelectedIndex(0);
+                            break;
+                        case Entity.Type.AIR:
+                            addTypeBox.setSelectedIndex(1);
+                            break;
+                        case Entity.Type.SURFACE:
+                            addTypeBox.setSelectedIndex(2);
+                            break;
+                    }
+                }
+
+            }
+        });
 
 
         //add(app.createEntityButton(eNamePanel, ePositionPanel,  eSpeedPanel, null), BorderLayout.CENTER);
@@ -254,6 +285,9 @@ public class EntityEditorView extends VCSPanel {
                 isFocusGaied = false;
             }
         });
+
+        if(app.mapView.getSelectedEntity() == null)
+            disablePanelData();
     }
 
     public void update(){
@@ -325,7 +359,6 @@ public class EntityEditorView extends VCSPanel {
                     break;
             }
         }
-
 
         for(Component c : e.getComponents()){
             if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
