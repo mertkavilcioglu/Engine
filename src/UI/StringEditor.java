@@ -1,9 +1,13 @@
 package UI;
 
+import App.VCSApp;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -13,7 +17,7 @@ public class StringEditor extends JPanel {
     private Border defaultBorder;
     private boolean isFocused = false;
 
-    public StringEditor(String labelName){
+    public StringEditor(String labelName, VCSApp app){
         lbl = new JLabel(labelName);
         lbl.setForeground(Color.WHITE);
         txt = new JTextField();
@@ -33,6 +37,13 @@ public class StringEditor extends JPanel {
             @Override
             public void focusLost(FocusEvent e) {
                 isFocused = false;
+            }
+        });
+
+        txt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                app.editorPanel.updateSelectedEntity();
             }
         });
     }

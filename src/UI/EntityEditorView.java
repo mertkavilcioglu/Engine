@@ -53,7 +53,7 @@ public class EntityEditorView extends VCSPanel {
         EmptyBorder eBorder = new EmptyBorder(0,7,0,7);
         setBorder(eBorder);
 
-         eNamePanel = new StringEditor("Name:");
+         eNamePanel = new StringEditor("Name:", app);
          ePositionPanel = new Vec2intEditor("Position:", app);
 
          eSpeedPanel = new Vec2intEditor("Velocity", app);
@@ -252,42 +252,6 @@ public class EntityEditorView extends VCSPanel {
             @Override
             public void focusLost(FocusEvent e) {
                 isFocusGaied = false;
-            }
-        });
-
-        eNamePanel.getInputField().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //debugLog("*** ENTER pressed ***");
-                updateSelectedEntity();
-            }
-        });
-
-        ePositionPanel.getInputFieldX().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateSelectedEntity();
-            }
-        });
-
-        ePositionPanel.getInputFieldY().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateSelectedEntity();
-            }
-        });
-
-        eSpeedPanel.getInputFieldX().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateSelectedEntity();
-            }
-        });
-
-        eSpeedPanel.getInputFieldY().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateSelectedEntity();
             }
         });
     }
