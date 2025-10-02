@@ -44,6 +44,8 @@ public class RadarEditor extends JPanel {
         removeButton.setBackground(editor.app.uiColorManager.BUTTON_COLOR);
         removeButton.addActionListener(e -> {
             editor.removeComponent(this, "Radar");
+            editor.app.mapView.getSelectedEntity().removeComponent("Radar");
+            editor.updateSelectedEntity();
         });
         vecPnl.add(removeButton);
         this.add(vecPnl);
@@ -107,5 +109,9 @@ public class RadarEditor extends JPanel {
 
     public boolean getIsFocused(){
         return isFocused;
+    }
+
+    public JTextField getTxt(){
+        return txt;
     }
 }

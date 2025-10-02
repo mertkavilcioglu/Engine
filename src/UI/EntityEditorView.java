@@ -119,7 +119,7 @@ public class EntityEditorView extends VCSPanel {
                 type = (String) addTypeBox.getSelectedItem();
                 if(app.pixelColor.isLocationValidForType(type, pos)){
                     app.createEntity(name, intToSide(sideInt), pos, speed, range, strToType(type));
-                    log("New unit named " + name + " created.");
+                    //log("New unit named " + name + " created.");
                 }
                 else if(!app.pixelColor.isLocationValidForType(type, pos)){
                     ePositionPanel.error();
@@ -197,6 +197,12 @@ public class EntityEditorView extends VCSPanel {
                             radarPanel = new RadarEditor("Radar:", this);
                             remove(addComponentButton);
                             add(radarPanel);
+                            radarPanel.getTxt().setText("5000");
+                            if(!app.mapView.getSelectedEntity().hasComponent("Radar")){
+                                app.mapView.getSelectedEntity().addComponents(new Radar(app.mapView.getSelectedEntity(),
+                                        app.world.entities));
+                            }
+                            updateSelectedEntity();
                             add(addComponentButton);
                             revalidate();
                             radarPanel.txt.requestFocus();
@@ -434,8 +440,9 @@ public class EntityEditorView extends VCSPanel {
             Vec2int pos = ePositionPanel.readData();
             Vec2int speed = eSpeedPanel.readData();
             int range = 0;
-            if(radarPanel != null)
+            if(radarPanel != null){
                 range = radarPanel.readData();
+            }
 
             int sideInt = addSideBox.getSelectedIndex();
             type = (String) addTypeBox.getSelectedItem();

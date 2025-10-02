@@ -90,6 +90,18 @@ public class Entity {
         }
     }
 
+    public void removeComponentInstantly(String s){
+        switch (s){
+            case "Radar":
+                for (Component c : components){
+                    if(c instanceof Radar){
+                        components.remove(c);
+                    }
+                }
+                break;
+        }
+    }
+
     public void updateEntity(String newName, Side newSide, Vec2int newPos, Vec2int newSpeed, int newRange, Type newType){
         name = newName;
         side = newSide;
