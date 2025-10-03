@@ -15,8 +15,9 @@ public class Radar extends Component {
 
     void detect(List<Entity> entities) {
         boolean hasVisual = false;
+        Entity e;
         for (int i = 0; i < entities.size(); i++) {
-            Entity e = entities.get(i);
+            e = entities.get(i);
             if (e == parentEntity) {
                 continue;
             }
@@ -27,18 +28,16 @@ public class Radar extends Component {
             double dist = parentEntity.getPos().distance(p);
             if(dist <= range) {
                 hasVisual = true;
+                e.setIsDetected(hasVisual);
                 if (!(parentEntity.getDetectedEntities().contains(e))){
                     parentEntity.setDetectedEntities(e);
                 }
             } else if (parentEntity.getDetectedEntities().contains(e)){
                 parentEntity.removeFromDetectedEntities(e);
+                hasVisual = false;
+                e.setIsDetected(hasVisual);
             }
-            if (hasVisual) {
-                e.setIsDetected(true);
-            } else e.setIsDetected(false);
         }
-        if(!hasVisual);
-            //System.out.format("ComponentRadar::update Unit %s has no detection.\n", parentEntity.name.toUpperCase());
     }
 
     @Override
