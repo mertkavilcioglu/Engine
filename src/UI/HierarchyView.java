@@ -204,7 +204,7 @@ public class HierarchyView extends VCSPanel {
         }
     }
 
-    public void update(int deltaTime){
+    public void update(int deltaTime){;
         for(Entity e : app.world.entities){
             leaves.get(e).getNode("posX").setUserObject(e.getPos().x);
             leaves.get(e).getNode("posY").setUserObject(e.getPos().y);

@@ -181,28 +181,33 @@ public class EntityEditorView extends VCSPanel {
         addSideBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                updateSelectedEntity();
+                if(e.getSource() == addSideBox && addSideBox.hasFocus()){
+                    updateSelectedEntity();
+                }
+
             }
         });
 
         addTypeBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(app.pixelColor.isLocationValidForType(addTypeBox.getSelectedItem().toString(),
-                        app.mapView.getSelectedEntity().getPos())){
-                    updateSelectedEntity();
-                }
-                else{
-                    switch (app.mapView.getSelectedEntity().getType()){
-                        case Entity.Type.GROUND:
-                            addTypeBox.setSelectedIndex(0);
-                            break;
-                        case Entity.Type.AIR:
-                            addTypeBox.setSelectedIndex(1);
-                            break;
-                        case Entity.Type.SURFACE:
-                            addTypeBox.setSelectedIndex(2);
-                            break;
+                if(e.getSource() == addTypeBox && addTypeBox.hasFocus()){
+                    if(app.pixelColor.isLocationValidForType(addTypeBox.getSelectedItem().toString(),
+                            app.mapView.getSelectedEntity().getPos())){
+                        updateSelectedEntity();
+                    }
+                    else{
+                        switch (app.mapView.getSelectedEntity().getType()){
+                            case Entity.Type.GROUND:
+                                addTypeBox.setSelectedIndex(0);
+                                break;
+                            case Entity.Type.AIR:
+                                addTypeBox.setSelectedIndex(1);
+                                break;
+                            case Entity.Type.SURFACE:
+                                addTypeBox.setSelectedIndex(2);
+                                break;
+                        }
                     }
                 }
 

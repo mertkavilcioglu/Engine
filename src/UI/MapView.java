@@ -141,7 +141,8 @@ public class MapView extends VCSPanel {
                     pixPos = new Vec2int(e.getX(), e.getY());
                     app.mapPixelPosPanel.showPixelPosOfCursor(pixPos);
                     handleEntityDrag(selectedEntity);
-                    app.hierarchyPanel.update(1000);
+                    if(isDragging)
+                        app.hierarchyPanel.update(1000);
                 }
             }
 
