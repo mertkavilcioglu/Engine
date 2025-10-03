@@ -112,6 +112,7 @@ public class MapView extends VCSPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 isMouseEntered = true;
+                app.window.requestFocus();
             }
         });
 
