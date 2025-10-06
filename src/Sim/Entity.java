@@ -2,6 +2,7 @@ package Sim;
 
 import Sim.Orders.Attack;
 import Sim.Orders.Order;
+import Sim.TDL.DataLink;
 import Var.RGB;
 import Vec.Vec2int;
 
@@ -28,6 +29,9 @@ public class Entity {
     private RGB posPixelColor = new RGB();
     private Stack<Vec2int> previousPositions = new Stack<>();
     private boolean isDetected = false;
+
+    private ArrayList<Entity> knownEntities = new ArrayList<>();
+    private DataLink link = new DataLink(200);
 
 
     public Entity(World w) {
@@ -419,6 +423,15 @@ public class Entity {
             pos = previousPositions.getLast();
             previousPositions.pop();
         }
+    }
+
+    public void addKnownEntity(Entity e){
+        if(!knownEntities.contains(e))
+            knownEntities.add(e);
+    }
+
+    public void removeKnownEntity(Entity e){
+        knownEntities.remove(e);
     }
 
 }
