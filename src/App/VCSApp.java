@@ -115,6 +115,9 @@ public class VCSApp {
 
         window.setVisible(true);
 
+        Entity commander = world.createCommander();
+        hierarchyPanel.entityAdded(commander);
+
         window.setFocusable(true);
         window.requestFocus();
         window.addKeyListener(new KeyAdapter() {

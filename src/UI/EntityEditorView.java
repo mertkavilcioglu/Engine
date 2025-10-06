@@ -293,6 +293,8 @@ public class EntityEditorView extends VCSPanel {
 
         if(app.mapView.getSelectedEntity() == null)
             disablePanelData();
+        else if (app.mapView.getSelectedEntity().getType() == Entity.Type.COMMANDER)
+            disablePanelData();
     }
 
     public void update(){

@@ -52,7 +52,6 @@ public class ActionPanel extends VCSPanel {
 
     //right panel
     private JPanel currentOrderPanel;
-    private JPanel currentOrdersListPanel;
     private JList<Order> currentOrderList;
     private DefaultListModel<Order> orderModel;
     private JButton selectedOrderDeleteButton;
@@ -98,13 +97,9 @@ public class ActionPanel extends VCSPanel {
         moveButton = new JButton("Move");
         followButton = new JButton("Follow");
 
-        attackButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-        moveButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-        followButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-
-        attackButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
-        moveButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
-        followButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        setButtonColor(attackButton);
+        setButtonColor(moveButton);
+        setButtonColor(followButton);
 
         updateOrderButtonsState(false);
         giveOrderPanel.add(attackButton);
@@ -145,11 +140,9 @@ public class ActionPanel extends VCSPanel {
         chooseModeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         enableFromMapButton = new JButton("ON");
         disableFromMapButton = new JButton("OFF");
-        enableFromMapButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-        enableFromMapButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        setButtonColor(enableFromMapButton);
         enableFromMapButton.setFocusable(false);
-        disableFromMapButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-        disableFromMapButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        setButtonColor(disableFromMapButton);
         disableFromMapButton.setFocusable(false);
         JPanel moveFomMapPanel = new JPanel();
         moveFomMapPanel.setLayout(new BoxLayout(moveFomMapPanel, BoxLayout.Y_AXIS));
@@ -164,8 +157,7 @@ public class ActionPanel extends VCSPanel {
         moveEditor = new Vec2intEditor("Manuel Mode:", app);
         JButton moveConfirmButton = new JButton("Move");
         moveConfirmButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-        moveConfirmButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-        moveConfirmButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        setButtonColor(moveConfirmButton);
         moveConfirmButton.setFocusable(false);
         movePanel.add(moveEditor);
         movePanel.add(moveConfirmButton);
@@ -200,8 +192,7 @@ public class ActionPanel extends VCSPanel {
         timePanel.add(followTimeText);
         JPanel createButtonPanel = new JPanel();
         followOrderCreateButton = new JButton("Follow");
-        followOrderCreateButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-        followOrderCreateButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        setButtonColor(followOrderCreateButton);
         followOrderCreateButton.setFocusable(false);
         followOrderCreateButton.addActionListener(e -> {
             if (selectedEntity == null) return;
@@ -272,8 +263,7 @@ public class ActionPanel extends VCSPanel {
         currentOrderScroll.setBackground(panelBgColor);
 
         selectedOrderDeleteButton = new JButton("Delete");
-        selectedOrderDeleteButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-        selectedOrderDeleteButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        setButtonColor(selectedOrderDeleteButton);
         selectedOrderDeleteButton.setEnabled(false);
         selectedOrderDeleteButton.addActionListener(e -> {
             deleteSelectedOrders();
@@ -357,7 +347,10 @@ public class ActionPanel extends VCSPanel {
         else if (sideOfEntity == Entity.Side.ALLY) isEnemy = false;
 
         timer.start();
-        updateOrderButtonsState(true);
+        if (selectedEntity.getType() != Entity.Type.COMMANDER){
+            updateOrderButtonsState(true);
+        }
+
 
         selectedUnitLabel.setText("Selected Entity: " + selectedEntity.getName());
         refreshCurrentOrderPanel();
@@ -390,8 +383,7 @@ public class ActionPanel extends VCSPanel {
     //for creating new button for each available targets based on their assigned sides
     public void createNewTargetButton(Entity entity){
         targetButton = new JButton(entity.getName());
-        targetButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-        targetButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        setButtonColor(targetButton);
         allCreatedEntites.add(entity);
         //createFollowButtonList(entity);
         if (entity.getSide() == Entity.Side.ALLY){
@@ -631,9 +623,13 @@ public class ActionPanel extends VCSPanel {
         app.mapView.setActionPanelUsingMouseEvent(isMove);
         app.appListenerController.setCaptureMode(isMove);
         if (!isMove){
-            enableFromMapButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-            enableFromMapButton.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+            setButtonColor(enableFromMapButton);
         }
+    }
+
+    private void setButtonColor(JButton button){
+        button.setBackground(app.uiColorManager.BUTTON_COLOR);
+        button.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
     }
 
     @Override

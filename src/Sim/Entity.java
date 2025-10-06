@@ -42,7 +42,8 @@ public class Entity {
     public enum Type{
         GROUND("Tank"),
         SURFACE("Ship"),
-        AIR("Plane");
+        AIR("Plane"),
+        COMMANDER("Commander");
 
         private String name;
 

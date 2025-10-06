@@ -28,6 +28,7 @@ public class MapView extends VCSPanel {
 
     public Map<String, RGB> allPixelColors;
     private ImageIcon turkeyMap = new ImageIcon(new ImageIcon("src/Assets/Turkey_map_painted.png").getImage());
+    private final Image commander = new ImageIcon("src/Assets/Symbols/nato_hq.png").getImage();
     private final Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
     private final Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
     private final Image friendlySea = new ImageIcon("src/Assets/Symbols/nato_friendly_sea.png").getImage();
@@ -320,6 +321,8 @@ public class MapView extends VCSPanel {
                     g.setColor(Color.red);
 
                 if(e.getSide() == Entity.Side.ALLY){
+                    if (e.getType() == Entity.Type.COMMANDER)
+                        drawNormalizedImageByWidth(g, commander, pos, targetWidth);
                     if(e.getType() == Entity.Type.AIR)
                         drawNormalizedImageByWidth(g, friendlyAir, pos, targetWidth);
                     else if(e.getType() == Entity.Type.GROUND)
