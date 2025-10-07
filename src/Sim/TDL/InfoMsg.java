@@ -1,5 +1,6 @@
 package Sim.TDL;
 
+import App.VCSApp;
 import Sim.Entity;
 import Vec.Vec2int;
 
@@ -12,9 +13,9 @@ public class InfoMsg extends Message{
     private int radarRange;
     private Entity.Type type;
 
-    public InfoMsg(String name, Entity.Side side, Vec2int pos,
+    public InfoMsg(VCSApp app, Entity src, Entity receiver, String name, Entity.Side side, Vec2int pos,
                    Vec2int speed, int radarRange, Entity.Type type) {
-        super(MessageType.ENTITY_INFO);
+        super(MessageType.ENTITY_INFO, app, src, receiver);
         this.name = name;
         this.side = side;
         this.pos = pos;

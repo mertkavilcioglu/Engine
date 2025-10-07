@@ -3,6 +3,8 @@ package Sim;
 import Sim.Orders.Attack;
 import Sim.Orders.Order;
 import Sim.TDL.DataLink;
+import Sim.TDL.TDLReceiver;
+import Sim.TDL.TDLTransmitter;
 import Var.RGB;
 import Vec.Vec2int;
 
@@ -31,7 +33,8 @@ public class Entity {
     private boolean isDetected = false;
 
     private ArrayList<Entity> knownEntities = new ArrayList<>();
-    private DataLink link = new DataLink(200);
+    private TDLReceiver tdlReceiver = new TDLReceiver(this);
+    private TDLTransmitter tdlTransmitter = new TDLTransmitter(this);
 
 
     public Entity(World w) {
@@ -440,6 +443,10 @@ public class Entity {
 
     public void removeKnownEntity(Entity e){
         knownEntities.remove(e);
+    }
+
+    public TDLReceiver getTdlReceiver(){
+        return tdlReceiver;
     }
 
 }

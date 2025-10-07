@@ -3,35 +3,22 @@ package Sim.TDL;
 import App.VCSApp;
 import Sim.Entity;
 
-import java.util.concurrent.RecursiveTask;
-
 public class FollowMsg extends Message{
 
-    private VCSApp app;
-    private Entity src, target;
+    private Entity followTarget;
     private int time;
 
-    public FollowMsg(VCSApp app, Entity src, Entity target, int time) {
-        super(MessageType.FOLLOW_ORDER);
-        this.app = app;
-        this.src = src;
-        this.target = target;
+    public FollowMsg(VCSApp app, Entity src, Entity receiver, Entity followTarget, int time) {
+        super(MessageType.FOLLOW_ORDER, app, src, receiver);
         this.time = time;
-    }
-
-    public VCSApp getApp(){
-        return app;
-    }
-
-    public Entity getSrc(){
-        return src;
-    }
-
-    public Entity getTarget(){
-        return target;
+        this.followTarget = followTarget;
     }
 
     public int getTime(){
         return time;
+    }
+
+    public Entity getFollowTarget(){
+        return followTarget;
     }
 }

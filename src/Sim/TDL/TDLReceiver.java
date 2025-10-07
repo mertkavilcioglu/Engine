@@ -5,11 +5,10 @@ import Sim.Orders.Attack;
 import Sim.Orders.Follow;
 import Sim.Orders.Move;
 
-import javax.sound.midi.spi.SoundbankReader;
-
 public class TDLReceiver {
 
     private Entity source;
+    private int range = 200; //TODO: ui
     public TDLReceiver(Entity source){
         this.source = source;
     }
@@ -21,7 +20,7 @@ public class TDLReceiver {
         }
         else if(msg.type == Message.MessageType.FOLLOW_ORDER){
             source.addOrder(new Follow(((FollowMsg) msg).getApp(), ((FollowMsg) msg).getSrc(),
-                    ((FollowMsg) msg).getTarget(), ((FollowMsg) msg).getTime()));
+                    ((FollowMsg) msg).getFollowTarget(), ((FollowMsg) msg).getTime()));
         }
         else if(msg.type == Message.MessageType.MOVE_ORDER){
             source.addOrder(new Move(((MoveMsg) msg).getApp(), ((MoveMsg) msg).getSrc(),
@@ -31,7 +30,7 @@ public class TDLReceiver {
             //TODO: ENTITY'YI KENDI LOCAL WORLDUNE EKLE,
             // DIREK GERCEK ENTITYYI REFERANS OLARAK EKLEYEBILIRSIN DAHA KOLAY OLUR
             // VEYA LOCALCREATE FONKSIYONU YAZIP ELDEKI INFO ILE YENI BIR ENTITY OLUSTURABILIRSIN
-            // AMA BU SEFER DE DELETE ICIN FALAN KOPYA ENTITY'DE SOURCE ENTITY REF TUTMAK GEREKEBILIR 
+            // AMA BU SEFER DE DELETE ICIN FALAN KOPYA ENTITY'DE SOURCE ENTITY REF TUTMAK GEREKEBILIR
         }
     }
 }
