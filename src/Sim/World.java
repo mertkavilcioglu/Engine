@@ -42,11 +42,12 @@ public class World{
         return ent;
     }
 
-    public Entity createCommander() {
+    public Entity createCommander(Vec2int pos) {
         Entity ent = new Entity(this);
         ent.setName("HEADQUARTER");
         ent.setSide(Entity.Side.ALLY);
-        ent.setPos(new Vec2int(500, 250));
+        if(pos == null) ent.setPos(new Vec2int(500, 250));
+        else ent.setPos(pos);
         ent.setSpeed(new Vec2int(0, 0));
         Radar r = new Radar(ent,entities);
         ent.addComponents(r);

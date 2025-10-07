@@ -116,7 +116,7 @@ public class VCSApp {
 
         window.setVisible(true);
 
-        headQuarter = world.createCommander();
+        headQuarter = world.createCommander(null);
         hierarchyPanel.entityAdded(headQuarter);
 
         window.setFocusable(true);
@@ -327,6 +327,13 @@ public class VCSApp {
     private void handleCtrlDeactivate(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_CONTROL){
             ctrlOn = false;
+        }
+    }
+
+    public void createHQ(boolean b){
+        if (!b){
+            headQuarter = world.createCommander(null);
+            hierarchyPanel.entityAdded(headQuarter);
         }
     }
 }

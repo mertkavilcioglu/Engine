@@ -15,6 +15,7 @@ public class LoadSavePanel extends VCSPanel{
     JButton saveButton;
     File loadedFilePath = null;
     File fileToSave = null;
+    boolean isHaveHQ = false;
 
     public LoadSavePanel(VCSApp app) {
         super(app);
@@ -57,9 +58,13 @@ public class LoadSavePanel extends VCSPanel{
                     GetInput input = new GetInput();
                     input.readInput(app.world, String.valueOf(loadedFilePath));
                     for (Entity entity : app.world.entities) {
+                        if(entity.getType() == Entity.Type.HQ){
+                            isHaveHQ = true;
+                        }
                         app.hierarchyPanel.entityAdded(entity);
                         app.actionPanel.createNewTargetButton(entity);
                     }
+                    app.createHQ(isHaveHQ);
                     app.mapView.repaint();
                 }
             } catch (HeadlessException ex) {
