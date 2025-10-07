@@ -42,7 +42,8 @@ public class Entity {
     public enum Type{
         GROUND("Tank"),
         SURFACE("Ship"),
-        AIR("Plane");
+        AIR("Plane"),
+        HQ("HEADQUARTER");
 
         private String name;
 
@@ -226,6 +227,9 @@ public class Entity {
             return true;
         }
         if(Objects.equals(type, Type.AIR)){
+            return true;
+        }
+        if (Objects.equals(type, Type.HQ)){
             return true;
         }
         return false;
@@ -423,6 +427,10 @@ public class Entity {
             pos = previousPositions.getLast();
             previousPositions.pop();
         }
+    }
+
+    public ArrayList<Entity> getKnownEntities(){
+        return knownEntities;
     }
 
     public void addKnownEntity(Entity e){

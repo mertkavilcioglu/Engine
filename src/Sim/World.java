@@ -42,19 +42,17 @@ public class World{
         return ent;
     }
 
-    public Entity createEntity(String name, Entity.Side side) {
+    public Entity createCommander() {
         Entity ent = new Entity(this);
-        ent.setName(name);
-        ent.setSide(side);
-        ent.setPos(Vec2int.getRandom(map.maxX / 8 ,map.maxY / 6));
-        ent.setSpeed(Vec2int.getRandom(-4,4,-4,4));
+        ent.setName("HEADQUARTER");
+        ent.setSide(Entity.Side.ALLY);
+        ent.setPos(new Vec2int(500, 250));
+        ent.setSpeed(new Vec2int(0, 0));
         Radar r = new Radar(ent,entities);
         ent.addComponents(r);
-        ent.setType(Entity.Type.AIR);
+        ent.setType(Entity.Type.HQ);
 
-        ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
-        if(ent.maxSpeed == 0)
-            ent.maxSpeed = 4;
+        ent.maxSpeed = 0;
 
         entities.add(ent);
         return ent;
