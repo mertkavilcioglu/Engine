@@ -291,10 +291,12 @@ public class EntityEditorView extends VCSPanel {
             }
         });
 
-        if(app.mapView.getSelectedEntity() == null)
+        if(app.mapView.getSelectedEntity() == null){
             disablePanelData();
-        else if (app.mapView.getSelectedEntity().getType() == Entity.Type.COMMANDER)
+        }else if (app.mapView.getSelectedEntity().getType() == Entity.Type.HQ)
             disablePanelData();
+
+
     }
 
     public void update(){
@@ -325,8 +327,46 @@ public class EntityEditorView extends VCSPanel {
     public void selectedEntityChanged(Entity entity) {
         if(entity == null){
             disablePanelData();
-        }
-        else{
+        } else if (entity.getType() == Entity.Type.HQ) {
+            eNamePanel.setData("HEADQUARTER");
+            if(!ePositionPanel.getIsFocusedX())
+                ePositionPanel.setDataX(entity.getPos());
+            if(!ePositionPanel.getIsFocusedY())
+                ePositionPanel.setDataY(entity.getPos());
+            eSpeedPanel.setData(new Vec2int());
+            addSideBox.setSelectedIndex(0);
+            for(Component c : entity.getComponents()){
+                if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
+                    if(radarPanel == null){
+                        radarPanel = new RadarEditor("Range:", this);
+                        remove(addComponentButton);
+                        add(radarPanel);
+                        add(addComponentButton);
+                        radarPanel.setData(((Radar) c).getRange());
+                        revalidate();
+                    }
+                    else if(!radarPanel.getIsFocused()){
+                        radarPanel.setData(((Radar) c).getRange());
+                        revalidate();
+                    }
+                }
+                else{
+                    if(radarPanel != null && !radarPanel.getIsFocused()){
+                        remove(radarPanel);
+                        radarPanel = null;
+                    }
+                    revalidate();
+                }
+            }
+            updateButton.setEnabled(true);
+            addComponentButton.setEnabled(true);
+            eNamePanel.getInputField().setEnabled(false);
+            ePositionPanel.setInputEnabled(true);
+            eSpeedPanel.setInputEnabled(false);
+            addSideBox.setEnabled(false);
+            addTypeBox.setVisible(false);
+            addTypeBox.setEnabled(false);
+        } else {
             updateButton.setEnabled(true);
             addComponentButton.setEnabled(true);
             updatePanelData(entity);
@@ -334,8 +374,10 @@ public class EntityEditorView extends VCSPanel {
     }
 
     public void updatePanelData(Entity e){
-        if(e == null)
+        if(e == null || e.getType() == Entity.Type.HQ)
             return;
+
+        addTypeBox.setVisible(true);
 
         if(!eNamePanel.getIsFocused())
             eNamePanel.setData(e.getName());
@@ -401,6 +443,7 @@ public class EntityEditorView extends VCSPanel {
     }
 
     public void disablePanelData(){
+        addTypeBox.setVisible(true);
         eNamePanel.setData("");
         ePositionPanel.setData(new Vec2int());
         eSpeedPanel.setData(new Vec2int());

@@ -44,13 +44,13 @@ public class World{
 
     public Entity createCommander() {
         Entity ent = new Entity(this);
-        ent.setName("Commander");
+        ent.setName("HEADQUARTER");
         ent.setSide(Entity.Side.ALLY);
         ent.setPos(new Vec2int(500, 250));
         ent.setSpeed(new Vec2int(0, 0));
         Radar r = new Radar(ent,entities);
         ent.addComponents(r);
-        ent.setType(Entity.Type.COMMANDER);
+        ent.setType(Entity.Type.HQ);
 
         ent.maxSpeed = 0;
 

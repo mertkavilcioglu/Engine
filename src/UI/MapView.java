@@ -13,7 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class MapView extends VCSPanel {
 
     public Map<String, RGB> allPixelColors;
     private ImageIcon turkeyMap = new ImageIcon(new ImageIcon("src/Assets/Turkey_map_painted.png").getImage());
-    private final Image commander = new ImageIcon("src/Assets/Symbols/nato_hq.png").getImage();
+    private final Image friendlyHQ = new ImageIcon("src/Assets/Symbols/nato_hq.png").getImage();
     private final Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
     private final Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
     private final Image friendlySea = new ImageIcon("src/Assets/Symbols/nato_friendly_sea.png").getImage();
@@ -312,7 +311,7 @@ public class MapView extends VCSPanel {
 
                 FontMetrics fontMetric = g.getFontMetrics();
                 int textLength = fontMetric.stringWidth(name);
-                int textX = pos.x - 10 + (20 - textLength) / 2;
+                int textX = pos.x - (textLength/2);
                 int textY = pos.y - 10;
 
                 if(e.getSide() == Entity.Side.ALLY)
@@ -321,8 +320,8 @@ public class MapView extends VCSPanel {
                     g.setColor(Color.red);
 
                 if(e.getSide() == Entity.Side.ALLY){
-                    if (e.getType() == Entity.Type.COMMANDER)
-                        drawNormalizedImageByWidth(g, commander, pos, targetWidth);
+                    if (e.getType() == Entity.Type.HQ)
+                        drawNormalizedImageByWidth(g, friendlyHQ, pos, targetWidth+2);
                     if(e.getType() == Entity.Type.AIR)
                         drawNormalizedImageByWidth(g, friendlyAir, pos, targetWidth);
                     else if(e.getType() == Entity.Type.GROUND)

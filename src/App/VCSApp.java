@@ -34,6 +34,7 @@ public class VCSApp {
     public UIColorManager uiColorManager;
     public LocalFile localFile;
     private boolean ctrlOn = false;
+    static public Entity headQuarter;
 
     public Timer simTimer;
 
@@ -115,8 +116,8 @@ public class VCSApp {
 
         window.setVisible(true);
 
-        Entity commander = world.createCommander();
-        hierarchyPanel.entityAdded(commander);
+        headQuarter = world.createCommander();
+        hierarchyPanel.entityAdded(headQuarter);
 
         window.setFocusable(true);
         window.requestFocus();

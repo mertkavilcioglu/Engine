@@ -29,11 +29,11 @@ public class Radar extends Component {
             if(dist <= range) {
                 hasVisual = true;
                 e.setIsDetected(hasVisual);
-                if (!(parentEntity.getDetectedEntities().contains(e))){
-                    parentEntity.setDetectedEntities(e);
+                if (!(parentEntity.getKnownEntities().contains(e))){
+                    parentEntity.addKnownEntity(e);
                 }
-            } else if (parentEntity.getDetectedEntities().contains(e)){
-                parentEntity.removeFromDetectedEntities(e);
+            } else if (parentEntity.getKnownEntities().contains(e)){
+                parentEntity.removeKnownEntity(e);
                 hasVisual = false;
                 e.setIsDetected(hasVisual);
             }
