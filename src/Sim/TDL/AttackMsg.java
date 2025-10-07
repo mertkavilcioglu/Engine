@@ -15,4 +15,16 @@ public class AttackMsg extends Message {
         this.target = target;
 
     }
+
+    public VCSApp getApp(){
+        return app;
+    }
+
+    public Entity getSrc(){
+        return src;
+    }
+
+    public Entity getTarget(){
+        return target;
+    }
 }
