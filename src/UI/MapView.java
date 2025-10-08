@@ -455,7 +455,8 @@ public class MapView extends VCSPanel {
             return;
         if(allPixelColors.get(pixPos.toString()) != null && e.CanMove(allPixelColors.get(pixPos.toString()), e.getType())){
             e.setPos(pixPos);
-            app.editorPanel.updatePanelData(e);
+            if (e.getType() == Entity.Type.HQ) app.editorPanel.updateHQPanelData(e);
+            else app.editorPanel.updatePanelData(e);
             repaint();
         }
     }

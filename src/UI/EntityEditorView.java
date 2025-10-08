@@ -328,44 +328,7 @@ public class EntityEditorView extends VCSPanel {
         if(entity == null){
             disablePanelData();
         } else if (entity.getType() == Entity.Type.HQ) {
-            eNamePanel.setData("HEADQUARTER");
-            if(!ePositionPanel.getIsFocusedX())
-                ePositionPanel.setDataX(entity.getPos());
-            if(!ePositionPanel.getIsFocusedY())
-                ePositionPanel.setDataY(entity.getPos());
-            eSpeedPanel.setData(new Vec2int());
-            addSideBox.setSelectedIndex(0);
-            for(Component c : entity.getComponents()){
-                if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
-                    if(radarPanel == null){
-                        radarPanel = new RadarEditor("Range:", this);
-                        remove(addComponentButton);
-                        add(radarPanel);
-                        add(addComponentButton);
-                        radarPanel.setData(((Radar) c).getRange());
-                        revalidate();
-                    }
-                    else if(!radarPanel.getIsFocused()){
-                        radarPanel.setData(((Radar) c).getRange());
-                        revalidate();
-                    }
-                }
-                else{
-                    if(radarPanel != null && !radarPanel.getIsFocused()){
-                        remove(radarPanel);
-                        radarPanel = null;
-                    }
-                    revalidate();
-                }
-            }
-            updateButton.setEnabled(true);
-            addComponentButton.setEnabled(true);
-            eNamePanel.getInputField().setEnabled(false);
-            ePositionPanel.setInputEnabled(true);
-            eSpeedPanel.setInputEnabled(false);
-            addSideBox.setEnabled(false);
-            addTypeBox.setVisible(false);
-            addTypeBox.setEnabled(false);
+            updateHQPanelData(entity);
         } else {
             updateButton.setEnabled(true);
             addComponentButton.setEnabled(true);
@@ -373,46 +336,18 @@ public class EntityEditorView extends VCSPanel {
         }
     }
 
-    public void updatePanelData(Entity e){
-        if(e == null || e.getType() == Entity.Type.HQ)
-            return;
-
-        addTypeBox.setVisible(true);
-
-        if(!eNamePanel.getIsFocused())
-            eNamePanel.setData(e.getName());
-
+    public void updateHQPanelData(Entity e){
+        eNamePanel.setData("HEADQUARTER");
         if(!ePositionPanel.getIsFocusedX())
             ePositionPanel.setDataX(e.getPos());
         if(!ePositionPanel.getIsFocusedY())
             ePositionPanel.setDataY(e.getPos());
-
-        if(!eSpeedPanel.getIsFocusedX())
-            eSpeedPanel.setDataX(e.getSpeed());
-        if(!eSpeedPanel.getIsFocusedY())
-            eSpeedPanel.setDataY(e.getSpeed());
-
-        if(!addSideBoxFocused)
-            addSideBox.setSelectedIndex(e.getSide().getIndex());
-
-        if(!addTypeBoxFocused){
-            switch (e.getType()){
-                case Entity.Type.GROUND:
-                    addTypeBox.setSelectedIndex(0);
-                    break;
-                case Entity.Type.AIR:
-                    addTypeBox.setSelectedIndex(1);
-                    break;
-                case Entity.Type.SURFACE:
-                    addTypeBox.setSelectedIndex(2);
-                    break;
-            }
-        }
-
+        eSpeedPanel.setData(new Vec2int());
+        addSideBox.setSelectedIndex(0);
         for(Component c : e.getComponents()){
             if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
                 if(radarPanel == null){
-                    radarPanel = new RadarEditor("Radar:", this);
+                    radarPanel = new RadarEditor("Range:", this);
                     remove(addComponentButton);
                     add(radarPanel);
                     add(addComponentButton);
@@ -432,14 +367,87 @@ public class EntityEditorView extends VCSPanel {
                 revalidate();
             }
         }
-
         updateButton.setEnabled(true);
         addComponentButton.setEnabled(true);
-        eNamePanel.getInputField().setEnabled(true);
+        eNamePanel.getInputField().setEnabled(false);
         ePositionPanel.setInputEnabled(true);
-        eSpeedPanel.setInputEnabled(true);
-        addSideBox.setEnabled(true);
-        addTypeBox.setEnabled(true);
+        eSpeedPanel.setInputEnabled(false);
+        addSideBox.setEnabled(false);
+        addTypeBox.setVisible(false);
+        addTypeBox.setEnabled(false);
+    }
+
+    public void updatePanelData(Entity e){
+        if(e == null)
+            return;
+
+        if (e.getType() == Entity.Type.HQ)
+            updateHQPanelData(e);
+        else {
+            addTypeBox.setVisible(true);
+
+            if(!eNamePanel.getIsFocused())
+                eNamePanel.setData(e.getName());
+
+            if(!ePositionPanel.getIsFocusedX())
+                ePositionPanel.setDataX(e.getPos());
+            if(!ePositionPanel.getIsFocusedY())
+                ePositionPanel.setDataY(e.getPos());
+
+            if(!eSpeedPanel.getIsFocusedX())
+                eSpeedPanel.setDataX(e.getSpeed());
+            if(!eSpeedPanel.getIsFocusedY())
+                eSpeedPanel.setDataY(e.getSpeed());
+
+            if(!addSideBoxFocused)
+                addSideBox.setSelectedIndex(e.getSide().getIndex());
+
+            if(!addTypeBoxFocused){
+                switch (e.getType()){
+                    case Entity.Type.GROUND:
+                        addTypeBox.setSelectedIndex(0);
+                        break;
+                    case Entity.Type.AIR:
+                        addTypeBox.setSelectedIndex(1);
+                        break;
+                    case Entity.Type.SURFACE:
+                        addTypeBox.setSelectedIndex(2);
+                        break;
+                }
+            }
+
+            for(Component c : e.getComponents()){
+                if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
+                    if(radarPanel == null){
+                        radarPanel = new RadarEditor("Radar:", this);
+                        remove(addComponentButton);
+                        add(radarPanel);
+                        add(addComponentButton);
+                        radarPanel.setData(((Radar) c).getRange());
+                        revalidate();
+                    }
+                    else if(!radarPanel.getIsFocused()){
+                        radarPanel.setData(((Radar) c).getRange());
+                        revalidate();
+                    }
+                }
+                else{
+                    if(radarPanel != null && !radarPanel.getIsFocused()){
+                        remove(radarPanel);
+                        radarPanel = null;
+                    }
+                    revalidate();
+                }
+            }
+
+            updateButton.setEnabled(true);
+            addComponentButton.setEnabled(true);
+            eNamePanel.getInputField().setEnabled(true);
+            ePositionPanel.setInputEnabled(true);
+            eSpeedPanel.setInputEnabled(true);
+            addSideBox.setEnabled(true);
+            addTypeBox.setEnabled(true);
+        }
     }
 
     public void disablePanelData(){

@@ -3,6 +3,7 @@ package UI;
 import App.VCSApp;
 import Sim.Entity;
 import Sim.GetInput;
+import Vec.Vec2int;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,11 +55,16 @@ public class AppWindow extends JFrame {
                     try {
                         BufferedReader br = new BufferedReader(new FileReader(forCheckIsSaved));
                         if (br.readLine() == null) {
-                            setDefaultCloseOperation(EXIT_ON_CLOSE);
                             forCheckIsSaved.delete();
-                        } else {
-                            savePopUp(null);
-                        }
+                            setDefaultCloseOperation(EXIT_ON_CLOSE);
+                        } else if (app.world.entities.size() == 1){
+                            Entity entity = app.world.entities.getFirst();
+                            Vec2int intPos = new Vec2int(500, 250);
+                            if ((entity.getType() == Entity.Type.HQ) && (entity.getPos().x == 500 && entity.getPos().y == 250)){
+                                forCheckIsSaved.delete();
+                                setDefaultCloseOperation(EXIT_ON_CLOSE);
+                            } else savePopUp(null);
+                        } else savePopUp(null);
                     } catch (IOException ex){
                         ex.printStackTrace();
                     }
@@ -77,15 +83,18 @@ public class AppWindow extends JFrame {
             while ((firstFileLine = firstFile.readLine()) != null) {
                 secFileLine = secFile.readLine();
                 if (secFileLine == null || !firstFileLine.equals(secFileLine)) {
+                    checkFile.delete();
                     return false;
                 }
             }
             if (secFile.readLine() != null) {
+                checkFile.delete();
                 return false;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        checkFile.delete();
         return true;
     }
 
