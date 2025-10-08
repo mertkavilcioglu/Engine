@@ -206,8 +206,9 @@ public class ActionPanel extends VCSPanel {
             } catch (NumberFormatException ex) {
                 followTime = 0;
             }
-            selectedEntity.addOrder(new Follow(app, selectedEntity, choosenEntity, followTime));
-            refreshCurrentOrderPanel();
+//            selectedEntity.addOrder(new Follow(app, selectedEntity, choosenEntity, followTime));
+//            refreshCurrentOrderPanel();
+            selectedEntity.getTdlTransmitter().createFollowMessage(app, selectedEntity, choosenEntity, followTime);
         });
         createButtonPanel.setBackground(panelBgColor);
         createButtonPanel.add(followOrderCreateButton);
@@ -316,8 +317,9 @@ public class ActionPanel extends VCSPanel {
             try{
                 coordinatesToMove = moveEditor.readData();
                 if (selectedEntity != null){
-                    selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y)));
-                    refreshCurrentOrderPanel();
+//                    selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y)));
+//                    refreshCurrentOrderPanel();
+                    selectedEntity.getTdlTransmitter().createMoveMessage(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y));
                     setMoveMode(false);
                 }
             }
@@ -399,8 +401,9 @@ public class ActionPanel extends VCSPanel {
             attackerEntity = selectedEntity;
             if (isAttackAction){
                 if (attackerEntity != null){
-                    attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
-                    refreshCurrentOrderPanel();
+                    //attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
+                    attackerEntity.getTdlTransmitter().createAttackMessage(app,attackerEntity,targetEntity);
+                    //refreshCurrentOrderPanel();
                 }
             }
         });
@@ -541,7 +544,7 @@ public class ActionPanel extends VCSPanel {
     }
 
     //change the current order panel based on the selected entity
-    private void refreshCurrentOrderPanel(){
+    public void refreshCurrentOrderPanel(){
         orderModel.removeAllElements();
         if (selectedEntity != null){
             Queue<Order> currentOrders = selectedEntity.getOrders();

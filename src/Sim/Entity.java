@@ -217,6 +217,8 @@ public class Entity {
             components.get(i).update(deltaTime);
         }
 
+        tdlTransmitter.update();
+
         components.removeAll(componentsToRemove);
         componentsToRemove.clear();
     }
@@ -447,6 +449,10 @@ public class Entity {
 
     public TDLReceiver getTdlReceiver(){
         return tdlReceiver;
+    }
+
+    public TDLTransmitter getTdlTransmitter(){
+        return tdlTransmitter;
     }
 
 }
