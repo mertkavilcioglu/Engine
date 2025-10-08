@@ -327,7 +327,8 @@ public class EntityEditorView extends VCSPanel {
     public void selectedEntityChanged(Entity entity) {
         if(entity == null){
             disablePanelData();
-        } else if (entity.getType() == Entity.Type.HQ) {
+        } else if (entity.getType() == Entity.Type.HQ || entity.getType() == null) {
+            entity.setType(Entity.Type.HQ);
             updateHQPanelData(entity);
         } else {
             updateButton.setEnabled(true);
