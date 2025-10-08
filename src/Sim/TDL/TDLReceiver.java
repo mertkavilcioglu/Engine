@@ -15,15 +15,15 @@ public class TDLReceiver {
 
     public void receiveMessage(Message msg){
         if(msg.type == Message.MessageType.ATTACK_ORDER){
-            source.addOrder(new Attack(((AttackMsg) msg).getApp(), ((AttackMsg) msg).getSrc(),
+            source.addOrder(new Attack(((AttackMsg) msg).getApp(), ((AttackMsg) msg).getReceiverEntity(),
                     ((AttackMsg) msg).getTarget()));
         }
         else if(msg.type == Message.MessageType.FOLLOW_ORDER){
-            source.addOrder(new Follow(((FollowMsg) msg).getApp(), ((FollowMsg) msg).getSrc(),
+            source.addOrder(new Follow(((FollowMsg) msg).getApp(), ((FollowMsg) msg).getReceiverEntity(),
                     ((FollowMsg) msg).getFollowTarget(), ((FollowMsg) msg).getTime()));
         }
         else if(msg.type == Message.MessageType.MOVE_ORDER){
-            source.addOrder(new Move(((MoveMsg) msg).getApp(), ((MoveMsg) msg).getSrc(),
+            source.addOrder(new Move(((MoveMsg) msg).getApp(), ((MoveMsg) msg).getReceiverEntity(),
                     ((MoveMsg) msg).getPos()));
         }
         else if(msg.type == Message.MessageType.ENTITY_INFO){
