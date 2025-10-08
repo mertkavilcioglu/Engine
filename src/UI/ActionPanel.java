@@ -3,8 +3,6 @@ package UI;
 import App.VCSApp;
 import Sim.Entity;
 import Sim.Orders.Attack;
-import Sim.Orders.Follow;
-import Sim.Orders.Move;
 import Sim.Orders.Order;
 import Vec.Vec2int;
 
@@ -279,11 +277,12 @@ public class ActionPanel extends VCSPanel {
         //action listeners for open specific middle panel
         attackButton.addActionListener(e -> {
             setMoveMode(false);
-            showTargetButtons(selectedEntity);
             isAttackAction = true;
             if (isEnemy){
+                showTargetButtonsForEnemy(selectedEntity);
                 orderDetailLayout.show(orderDetailPanel, "ally");
             }else {
+                showTargetButtonsForAlly(selectedEntity);
                 orderDetailLayout.show(orderDetailPanel, "enemy");
             }
         });
@@ -349,9 +348,9 @@ public class ActionPanel extends VCSPanel {
         else if (sideOfEntity == Entity.Side.ALLY) isEnemy = false;
 
         timer.start();
-        if (selectedEntity.getType() != Entity.Type.HQ && app.headQuarter.getKnownEntities().contains(selectedEntity)){
+        if (selectedEntity.getType() != Entity.Type.HQ && ((selectedEntity.getSide() == Entity.Side.ENEMY) || (app.headQuarter.getKnownEntities().contains(selectedEntity)))){
             updateOrderButtonsState(true);
-        }
+        } else updateOrderButtonsState(false);
 
 
         selectedUnitLabel.setText("Selected Entity: " + selectedEntity.getName());
@@ -410,12 +409,11 @@ public class ActionPanel extends VCSPanel {
     }
 
     //mapdeki entitylerin sideları ve typelarına göre targetların gösterilmesi
-    public void showTargetButtons(Entity selectedOne){
+    public void showTargetButtonsForAlly(Entity selectedOne){
+        if (selectedOne.getSide() != Entity.Side.ALLY) showTargetButtonsForEnemy(selectedOne);
         Entity.Type typeOfSelected = selectedOne.getType();
-        allyTargetPanel.removeAll();
         enemyTargetPanel.removeAll();
         if (typeOfSelected == Entity.Type.AIR){
-            if (selectedOne.getSide() == Entity.Side.ALLY){
                 for (Entity keyEntity : enemyButtons.keySet()) {
                     if (selectedOne.getKnownEntities().contains(keyEntity)) {
                         enemyTargetPanel.add(enemyButtons.get(keyEntity));
@@ -424,20 +422,58 @@ public class ActionPanel extends VCSPanel {
                         }
                     }
                 }
-            } else {
-                for (Entity keyEntity : allyButtons.keySet()){
+        } else if (typeOfSelected == Entity.Type.SURFACE) {
+                for (Entity keyEntity : enemyButtons.keySet()){
                     if (selectedOne.getKnownEntities().contains(keyEntity)) {
+                        if (keyEntity.getType() == Entity.Type.SURFACE){
+                            enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                            if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
+                                enemyButtons.get(keyEntity).setEnabled(false);
+                            }
+                        }
+                    }
+                }
+
+        } else if (typeOfSelected == Entity.Type.GROUND) {
+                for (Entity keyEntity : enemyButtons.keySet()){
+                    if (selectedOne.getKnownEntities().contains(keyEntity)) {
+                        if (keyEntity.getType() == Entity.Type.GROUND){
+                            enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                            if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
+                                enemyButtons.get(keyEntity).setEnabled(false);
+                            }
+                        }
+                    }
+                }
+        }
+        enemyTargetPanel.revalidate();
+        enemyTargetPanel.repaint();
+    }
+
+    public void showTargetButtonsForEnemy(Entity selectedOne){
+        List<Entity> detectedEntitiesFromRadar = new ArrayList<>();
+        if (selectedOne.getSide() != Entity.Side.ENEMY) showTargetButtonsForAlly(selectedOne);
+        Entity.Type typeOfSelected = selectedOne.getType();
+        allyTargetPanel.removeAll();
+        for (Entity e : allCreatedEntites){
+            if (selectedOne.getSide() == e.getSide()){
+                for (Entity entity : e.getKnownEntities()){
+                    detectedEntitiesFromRadar.add(entity);
+                }
+            }
+        }
+        if (typeOfSelected == Entity.Type.AIR){
+                for (Entity keyEntity : allyButtons.keySet()){
+                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         allyTargetPanel.add(allyButtons.get(keyEntity));
                         if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                             allyButtons.get(keyEntity).setEnabled(false);
                         }
                     }
                 }
-            }
         } else if (typeOfSelected == Entity.Type.SURFACE) {
-            if (selectedOne.getSide() == Entity.Side.ENEMY){
                 for (Entity keyEntity : allyButtons.keySet()){
-                    if (selectedOne.getKnownEntities().contains(keyEntity)) {
+                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.SURFACE){
                             allyTargetPanel.add(allyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
@@ -446,22 +482,9 @@ public class ActionPanel extends VCSPanel {
                         }
                     }
                 }
-            } else if (selectedOne.getSide() == Entity.Side.ALLY){
-                for (Entity keyEntity : enemyButtons.keySet()){
-                    if (selectedOne.getKnownEntities().contains(keyEntity)) {
-                        if (keyEntity.getType() == Entity.Type.SURFACE){
-                            enemyTargetPanel.add(enemyButtons.get(keyEntity));
-                            if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
-                                enemyButtons.get(keyEntity).setEnabled(false);
-                            }
-                        }
-                    }
-                }
-            }
         } else if (typeOfSelected == Entity.Type.GROUND) {
-            if (selectedOne.getSide() == Entity.Side.ENEMY){
                 for (Entity keyEntity : allyButtons.keySet()){
-                    if (selectedOne.getKnownEntities().contains(keyEntity)) {
+                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.GROUND){
                             allyTargetPanel.add(allyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
@@ -470,23 +493,9 @@ public class ActionPanel extends VCSPanel {
                         }
                     }
                 }
-            } else if (selectedOne.getSide() == Entity.Side.ALLY){
-                for (Entity keyEntity : enemyButtons.keySet()){
-                    if (selectedOne.getKnownEntities().contains(keyEntity)) {
-                        if (keyEntity.getType() == Entity.Type.GROUND){
-                            enemyTargetPanel.add(enemyButtons.get(keyEntity));
-                            if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
-                                enemyButtons.get(keyEntity).setEnabled(false);
-                            }
-                        }
-                    }
-                }
-            }
         }
         allyTargetPanel.revalidate();
         allyTargetPanel.repaint();
-        enemyTargetPanel.revalidate();
-        enemyTargetPanel.repaint();
     }
 
     //for deleting target if it's entity destroyed with attack order
@@ -534,7 +543,7 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void currentOrderRefresher(){
-        showTargetButtons(selectedEntity);
+        showTargetButtonsForAlly(selectedEntity);
         boolean isDone = selectedEntity.getCurrentOrderState();
         if (!isPaused){
             if (isDone){
