@@ -33,4 +33,8 @@ public class TDLReceiver {
             // AMA BU SEFER DE DELETE ICIN FALAN KOPYA ENTITY'DE SOURCE ENTITY REF TUTMAK GEREKEBILIR
         }
     }
+
+    public int getRange(){
+        return range;
+    }
 }
