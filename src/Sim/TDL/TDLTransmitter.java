@@ -47,8 +47,10 @@ public class TDLTransmitter {
     public void update(){
         if(!messagesToSend.isEmpty()){
             for(Message msg : messagesToSend){
-                if(msg.getCounter() > 0)
+                if(msg.getCounter() > 0){
                     msg.setCounter(msg.getCounter() - 1);
+                    msg.getApp().debugLog(String.format("Message of %s forwarded to relay.", msg.getSrc().getName()));
+                }
                 else{
                     sendMessage(msg, msg.getReceiverEntity());
                     messagesToRemove.add(msg);
@@ -93,10 +95,10 @@ public class TDLTransmitter {
                         targetReceiver = e;
                     }
                 }
-                counter++;
-                msg.getApp().debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
-            }
 
+            }
+            counter++;
+            msg.getApp().debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
         }
 
         return counter;
