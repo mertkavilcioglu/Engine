@@ -21,9 +21,9 @@ public class Radar extends Component {
             if (e == parentEntity) {
                 continue;
             }
-            if (e.getSide() == parentEntity.getSide()){
-                continue;
-            }
+//            if (e.getSide() == parentEntity.getSide()){
+//                continue;
+//            }
             Vec2int p = entities.get(i).getPos();
             double dist = parentEntity.getPos().distance(p);
             if(dist <= range) {

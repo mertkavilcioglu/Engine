@@ -116,7 +116,7 @@ public class VCSApp {
 
         window.setVisible(true);
 
-        headQuarter = world.createCommander(null);
+        headQuarter = world.createCommander(null, 5000);
         hierarchyPanel.entityAdded(headQuarter);
 
         window.setFocusable(true);
@@ -193,9 +193,15 @@ public class VCSApp {
     }
 
     public Entity createEntityByReset(String name, Entity.Side side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
-        Entity ent = world.createEntity(name, side, pos, speed, range, type);
+        Entity ent;
+        if (type == Entity.Type.HQ || type == null){
+            ent = world.createCommander(pos, range);
+            headQuarter = ent;
+        }else {
+            ent = world.createEntity(name, side, pos, speed, range, type);
+            actionPanel.createNewTargetButton(ent);
+        }
         hierarchyPanel.entityAdded(ent);
-        actionPanel.createNewTargetButton(ent);
         mapView.setSelectedEntity(ent);
         mapView.repaint();
         return ent;
@@ -332,7 +338,7 @@ public class VCSApp {
 
     public void createHQ(boolean b){
         if (!b){
-            headQuarter = world.createCommander(null);
+            headQuarter = world.createCommander(null, 5000);
             hierarchyPanel.entityAdded(headQuarter);
         }
     }

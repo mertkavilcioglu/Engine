@@ -42,7 +42,7 @@ public class World{
         return ent;
     }
 
-    public Entity createCommander(Vec2int pos) {
+    public Entity createCommander(Vec2int pos, int range) {
         Entity ent = new Entity(this);
         ent.setName("HEADQUARTER");
         ent.setSide(Entity.Side.ALLY);
@@ -50,6 +50,7 @@ public class World{
         else ent.setPos(pos);
         ent.setSpeed(new Vec2int(0, 0));
         Radar r = new Radar(ent,entities);
+        r.setRange(range);
         ent.addComponents(r);
         ent.setType(Entity.Type.HQ);
 
