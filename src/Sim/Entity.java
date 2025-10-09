@@ -111,15 +111,23 @@ public class Entity {
     }
 
     public void updateEntity(String newName, Side newSide, Vec2int newPos, Vec2int newSpeed, int newRange, Type newType){
-        name = newName;
-        side = newSide;
-        pos = newPos;
-        speed = newSpeed;
-        type = newType;
+        if (newName.equals("HEADQUARTER")){
+            pos = newPos;
+            for (Component c : components){
+                if(c.getClass() == Radar.class)
+                    ((Radar) c).setRange(newRange);
+            }
+        } else {
+            name = newName;
+            side = newSide;
+            pos = newPos;
+            speed = newSpeed;
+            type = newType;
 
-        for (Component c : components){
-            if(c.getClass() == Radar.class)
-                ((Radar) c).setRange(newRange);
+            for (Component c : components){
+                if(c.getClass() == Radar.class)
+                    ((Radar) c).setRange(newRange);
+            }
         }
     }
 
