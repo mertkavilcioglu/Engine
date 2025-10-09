@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public class TDLTransmitter {
 
     private Entity source;
+    private int range = 200;
+
     private ArrayList<Message> messagesToSend = new ArrayList<>();
     private ArrayList<Message> messagesToRemove = new ArrayList<>();
     public TDLTransmitter(Entity source){
@@ -59,15 +61,20 @@ public class TDLTransmitter {
     }
 
     public int calculateRangeCounter(Message msg){
+        //todo: bunu değiştir. range içinde kontrol yapsın ve bir sonraki aracıyı seçsin, her aracıda counteri bir arttırsın
         int counter;
         double diff = msg.getSrc().getPos().distance(msg.getReceiverEntity().getPos()); //TODO: diff 0 cıkıyor
         msg.getApp().debugLog("source: " + msg.getSrc().getName());
         msg.getApp().debugLog("trgt: " + msg.getReceiverEntity().getName());
         msg.getApp().debugLog("dif: " + diff );
-        counter = (int)(diff / msg.getReceiverEntity().getTdlReceiver().getRange());
+        counter = (int)(diff / msg.getReceiverEntity().getTdlTransmitter().getRange());
         msg.getApp().debugLog("Diff = " + diff);
         msg.getApp().debugLog("Counter = " + counter);
         return counter;
+    }
+
+    public int getRange(){
+        return range;
     }
 
 }

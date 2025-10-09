@@ -8,7 +8,7 @@ import Sim.Orders.Move;
 public class TDLReceiver {
 
     private Entity source;
-    private int range = 200; //TODO: ui
+
     public TDLReceiver(Entity source){
         this.source = source;
     }
@@ -34,7 +34,5 @@ public class TDLReceiver {
         }
     }
 
-    public int getRange(){
-        return range;
-    }
+
 }

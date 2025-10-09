@@ -346,12 +346,15 @@ public class MapView extends VCSPanel {
                 int targetWidthForHover = targetWidth + targetWidth*11/16;
                 int half = targetWidthForHover / 2;
 
+                int tdlRangeWidth = e.getTdlTransmitter().getRange() * 2;
 
                 if (isHovered && (selectedEntity == null || selectedEntity != e)) {
                     g.drawOval(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
                 }
                 else if(selectedEntity == e){
                     g.drawRect(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
+                    g.setColor(Color.YELLOW);
+                    g.drawOval(pos.x - tdlRangeWidth/2, pos.y - tdlRangeWidth/2, tdlRangeWidth, tdlRangeWidth);
                 }
             }
         }
