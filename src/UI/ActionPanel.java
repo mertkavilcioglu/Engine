@@ -348,7 +348,7 @@ public class ActionPanel extends VCSPanel {
         else if (sideOfEntity == Entity.Side.ALLY) isEnemy = false;
 
         timer.start();
-        if (selectedEntity.getType() != Entity.Type.HQ && ((selectedEntity.getSide() == Entity.Side.ENEMY) || (app.headQuarter.getKnownEntities().contains(selectedEntity)))){
+        if (selectedEntity.getType() != Entity.Type.HQ && ((selectedEntity.getSide() == Entity.Side.ENEMY) || (VCSApp.headQuarter.getKnownEntities().contains(selectedEntity)))){
             updateOrderButtonsState(true);
         } else updateOrderButtonsState(false);
 
