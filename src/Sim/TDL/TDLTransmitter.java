@@ -62,26 +62,14 @@ public class TDLTransmitter {
         }
     }
 
-//    public int calculateRangeCounter(Message msg){
-//        //todo: bunu değiştir. range içinde kontrol yapsın ve bir sonraki aracıyı seçsin, her aracıda counteri bir arttırsın
-//        int counter;
-//        double diff = msg.getSrc().getPos().distance(msg.getReceiverEntity().getPos());
-//        msg.getApp().debugLog("source: " + msg.getSrc().getName());
-//        msg.getApp().debugLog("trgt: " + msg.getReceiverEntity().getName());
-//        msg.getApp().debugLog("dif: " + diff );
-//        counter = (int)(diff / msg.getReceiverEntity().getTdlTransmitter().getRange());
-//        msg.getApp().debugLog("Diff = " + diff);
-//        msg.getApp().debugLog("Counter = " + counter);
-//        return counter;
-//    }
-
     public int calculateRangeCounter(Message msg){
-        //todo: bunu değiştir. range içinde kontrol yapsın ve bir sonraki aracıyı seçsin, her aracıda counteri bir arttırsın
+        //todo: yanlıs relay seçiyor, en yakın olanı seçti
 
         // assume that target entity is in the known list
         int counter  = 0;
         // ilk başa direk kendi görüyorsa aracısız yap 0 counter yani
         Entity targetReceiver = msg.getReceiverEntity();
+        Entity temp = targetReceiver;
         double posDiff = 1000000;
 
         while(msg.getSrc().getPos().distance(targetReceiver.getPos()) > msg.getSrc().getTdlTransmitter().getRange()){
@@ -92,14 +80,16 @@ public class TDLTransmitter {
                     double newDiff = e.getPos().distance(msg.getSrc().getPos());
                     if(newDiff < posDiff){
                         posDiff = newDiff;
-                        targetReceiver = e;
+                        temp = e;
                     }
                 }
 
             }
+            targetReceiver = temp;
             counter++;
             msg.getApp().debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
         }
+        msg.getApp().debugLog("Connection is done, forwarding...");
 
         return counter;
     }

@@ -114,6 +114,18 @@ public class World{
         DELETE
     }
 
+    public void revert2() {
+        if(latestChanges.isEmpty())
+            return;
+
+        Change c = latestChanges.pop();
+        switch (c) {
+            case MOVE:
+                Entity e = latestMovedEntities.pop();
+                break;
+        }
+    }
+
     public void revertLastChange(){
         if(latestChanges.isEmpty())
             return;
