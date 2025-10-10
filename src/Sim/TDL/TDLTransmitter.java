@@ -47,8 +47,10 @@ public class TDLTransmitter {
     public void update(){
         if(!messagesToSend.isEmpty()){
             for(Message msg : messagesToSend){
-                if(msg.getCounter() > 0)
+                if(msg.getCounter() > 0){
                     msg.setCounter(msg.getCounter() - 1);
+                    msg.getApp().debugLog(String.format("Message of %s forwarded to relay.", msg.getSrc().getName()));
+                }
                 else{
                     sendMessage(msg, msg.getReceiverEntity());
                     messagesToRemove.add(msg);
@@ -60,16 +62,45 @@ public class TDLTransmitter {
         }
     }
 
+//    public int calculateRangeCounter(Message msg){
+//        //todo: bunu değiştir. range içinde kontrol yapsın ve bir sonraki aracıyı seçsin, her aracıda counteri bir arttırsın
+//        int counter;
+//        double diff = msg.getSrc().getPos().distance(msg.getReceiverEntity().getPos());
+//        msg.getApp().debugLog("source: " + msg.getSrc().getName());
+//        msg.getApp().debugLog("trgt: " + msg.getReceiverEntity().getName());
+//        msg.getApp().debugLog("dif: " + diff );
+//        counter = (int)(diff / msg.getReceiverEntity().getTdlTransmitter().getRange());
+//        msg.getApp().debugLog("Diff = " + diff);
+//        msg.getApp().debugLog("Counter = " + counter);
+//        return counter;
+//    }
+
     public int calculateRangeCounter(Message msg){
         //todo: bunu değiştir. range içinde kontrol yapsın ve bir sonraki aracıyı seçsin, her aracıda counteri bir arttırsın
-        int counter;
-        double diff = msg.getSrc().getPos().distance(msg.getReceiverEntity().getPos()); //TODO: diff 0 cıkıyor
-        msg.getApp().debugLog("source: " + msg.getSrc().getName());
-        msg.getApp().debugLog("trgt: " + msg.getReceiverEntity().getName());
-        msg.getApp().debugLog("dif: " + diff );
-        counter = (int)(diff / msg.getReceiverEntity().getTdlTransmitter().getRange());
-        msg.getApp().debugLog("Diff = " + diff);
-        msg.getApp().debugLog("Counter = " + counter);
+
+        // assume that target entity is in the known list
+        int counter  = 0;
+        // ilk başa direk kendi görüyorsa aracısız yap 0 counter yani
+        Entity targetReceiver = msg.getReceiverEntity();
+        double posDiff = 1000000;
+
+        while(msg.getSrc().getPos().distance(targetReceiver.getPos()) > msg.getSrc().getTdlTransmitter().getRange()){
+            posDiff = 1000000;
+            for(Entity e : msg.getSrc().getKnownEntities()){
+                if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getRange()){
+                    // HAS VISUAL ON TARGET
+                    double newDiff = e.getPos().distance(msg.getSrc().getPos());
+                    if(newDiff < posDiff){
+                        posDiff = newDiff;
+                        targetReceiver = e;
+                    }
+                }
+
+            }
+            counter++;
+            msg.getApp().debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
+        }
+
         return counter;
     }
 
