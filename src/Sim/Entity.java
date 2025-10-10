@@ -2,7 +2,6 @@ package Sim;
 
 import Sim.Orders.Attack;
 import Sim.Orders.Order;
-import Sim.TDL.DataLink;
 import Sim.TDL.TDLReceiver;
 import Sim.TDL.TDLTransmitter;
 import Var.RGB;

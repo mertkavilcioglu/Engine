@@ -63,17 +63,14 @@ public class TDLTransmitter {
     }
 
     public int calculateRangeCounter(Message msg){
-        //todo: yanlıs relay seçiyor, en yakın olanı seçti
 
-        // assume that target entity is in the known list
         int counter  = 0;
-        // ilk başa direk kendi görüyorsa aracısız yap 0 counter yani
         Entity targetReceiver = msg.getReceiverEntity();
         Entity temp = targetReceiver;
-        double posDiff = 1000000;
+        double posDiff;
 
         while(msg.getSrc().getPos().distance(targetReceiver.getPos()) > msg.getSrc().getTdlTransmitter().getRange()){
-            posDiff = 1000000;
+            posDiff = msg.getApp().mapView.getWidth();
             for(Entity e : msg.getSrc().getKnownEntities()){
                 if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getRange()){
                     // HAS VISUAL ON TARGET
