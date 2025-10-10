@@ -3,11 +3,12 @@ package Sim.TDL;
 import App.VCSApp;
 import Sim.Entity;
 
-public class Message {
+public abstract class Message {
 
     private VCSApp app;
     private Entity src, receiver;
     private int counter = 0;
+    private String msg;
 
     public enum MessageType{
         ATTACK_ORDER,
@@ -18,11 +19,13 @@ public class Message {
 
     public MessageType type;
 
-    public Message(MessageType type, VCSApp app, Entity src, Entity receiver){
+    public Message(MessageType type, VCSApp app, Entity src, Entity receiver, String msg){
         this.type = type;
         this.app = app;
         this.src = src;
         this.receiver = receiver;
+        this.msg = msg;
+        app.logPanel.addMsgToLog(this);
     }
     public VCSApp getApp(){
         return app;
@@ -43,5 +46,11 @@ public class Message {
     public void setCounter(int c){
         counter = c;
     }
+
+    public String getMsg(){
+        return msg;
+    }
+
+    public abstract String getMsgDetail();
 
 }

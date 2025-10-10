@@ -15,7 +15,7 @@ public class InfoMsg extends Message{
     private Entity.Type type;
 
     public InfoMsg(VCSApp app, Entity src, Entity receiver) {
-        super(MessageType.ENTITY_INFO, app, src, receiver);
+        super(MessageType.ENTITY_INFO, app, src, receiver, (src + ": Info msg"));
         this.name = src.getName();
         this.side = src.getSide();
         this.pos = src.getPos();
@@ -23,4 +23,10 @@ public class InfoMsg extends Message{
         this.radarRange = ((Radar) src.getComponent("Radar")).getRange();
         this.type = src.getType();
     }
-}
+
+    @Override
+    public String getMsgDetail() {
+        return String.format("Info Message:\n Unit Name: %s\nUnit Type: %s\nUnit Position: %s\nUnit Radar Range: %d", name, type.getName(), pos.toString(), radarRange);
+    }
+
+    }
