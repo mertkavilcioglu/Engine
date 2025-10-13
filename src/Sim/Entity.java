@@ -35,6 +35,8 @@ public class Entity {
     private TDLReceiver tdlReceiver = new TDLReceiver(this);
     private TDLTransmitter tdlTransmitter = new TDLTransmitter(this);
 
+    private boolean isActive = true;
+
 
     public Entity(World w) {
         this.w = w;
@@ -182,14 +184,33 @@ public class Entity {
         return newPos;
     }
     void update(int deltaTime) {
+        if(!isActive)
+            return;
+
         if(!orders.isEmpty() && currentOrder != null)
             currentOrder.update();
+
+        move();
+
+        //System.out.format("Entity::update - %s - time: %d\n", this, deltaTime);
+        for (int i = 0; i < components.size(); i++) {
+            components.get(i).update(deltaTime);
+        }
+
+        tdlTransmitter.update();
+
+        components.removeAll(componentsToRemove);
+        componentsToRemove.clear();
+    }
+
+    public void move(){
         nextPos = new Vec2int(pos.x + speed.x , pos.y - speed.y);
 
         nextPosPixelColor = w.app.mapView.allPixelColors.get(nextPos.toString());
         if(nextPosPixelColor != null && CanMove(nextPosPixelColor,type)){
             pos = nextPos;
-        }else {
+        }
+        else {
             pos = nextStep(pos, nextPos);
 
         }
@@ -217,17 +238,6 @@ public class Entity {
             speed.x = 0;
             speed.y = 0;
         }
-
-
-        //System.out.format("Entity::update - %s - time: %d\n", this, deltaTime);
-        for (int i = 0; i < components.size(); i++) {
-            components.get(i).update(deltaTime);
-        }
-
-        tdlTransmitter.update();
-
-        components.removeAll(componentsToRemove);
-        componentsToRemove.clear();
     }
 
     public boolean CanMove(RGB rgb, Type type) {
@@ -460,6 +470,14 @@ public class Entity {
 
     public TDLTransmitter getTdlTransmitter(){
         return tdlTransmitter;
+    }
+
+    public boolean isActive(){
+        return isActive;
+    }
+
+    public void setActive(boolean a){
+        isActive = a;
     }
 
 }

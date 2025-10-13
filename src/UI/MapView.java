@@ -293,7 +293,7 @@ public class MapView extends VCSPanel {
 
         for(Entity ent : app.world.entities){
             if(ent.getPos().distance(pixPos) < targetWidth-targetWidth/3){
-                if(!hoveredEntities.contains(ent))
+                if(!hoveredEntities.contains(ent) && ent.isActive())
                     hoveredEntities.add(ent);
             }
             else
@@ -305,6 +305,8 @@ public class MapView extends VCSPanel {
         for (int i = 0; i < world.entities.size(); i++) {
             if(!app.world.entitiesToRemove.contains(world.entities.get(i))){
                 Entity e = world.entities.get(i);
+                if(!e.isActive())
+                    continue;
                 boolean isHovered = hoveredEntities.contains(e);
                 Vec2int pos = e.getPos();
                 String name = e.getName();

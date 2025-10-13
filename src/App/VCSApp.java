@@ -155,7 +155,10 @@ public class VCSApp {
                         hierarchyPanel.update(delta);
                         editorPanel.update();
 
-                        world.entities.removeAll(world.entitiesToRemove);
+                        //world.entities.removeAll(world.entitiesToRemove);
+                        for(Entity ent : world.entitiesToRemove){
+                            ent.setActive(false);
+                        }
                         world.entitiesToRemove.clear();
                         renderToWindow();
                     }
@@ -224,7 +227,8 @@ public class VCSApp {
     }
 
     public void removeEntityInstantaneously(Entity e){
-        world.entities.remove(e);
+        //world.entities.remove(e);
+        e.setActive(false);
         hierarchyPanel.entityRemoved(e);
         actionPanel.deleteEntityFromTarget(e);
         mapView.getHoveredEntities().remove(e);
