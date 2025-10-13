@@ -29,6 +29,7 @@ public class Entity {
     private RGB nextPosPixelColor = new RGB();
     private RGB posPixelColor = new RGB();
     private Stack<Vec2int> previousPositions = new Stack<>();
+    private boolean isInLink = false;
     private boolean isDetected = false;
 
     private ArrayList<Entity> knownEntities = new ArrayList<>();
@@ -288,12 +289,12 @@ public class Entity {
         detectedEntities.clear();
     }
 
-    public void setIsDetected(boolean b){
-        isDetected = b;
+    public void setIsInLink(boolean b){
+        isInLink = b;
     }
 
-    public boolean isDetected(){
-        return isDetected;
+    public boolean isInLink(){
+        return isInLink;
     }
 
     public ArrayList<Entity> getEntitiesToAttack(){
@@ -440,6 +441,14 @@ public class Entity {
         return null;
     }
 
+    public boolean isDetected(){
+        return isDetected;
+    }
+
+    public void isItDetected(boolean b){
+        isDetected = b;
+    }
+
     public Stack<Vec2int> getPreviousPositions(){
         return previousPositions;
     }
@@ -479,5 +488,26 @@ public class Entity {
     public void setActive(boolean a){
         isActive = a;
     }
+
+    public List<Entity> getAllyEntitiesInRange(){
+        List<Entity> allyEntities = new ArrayList<>();
+        if (isInLink){
+            for (Entity entity : w.app.headQuarter.getKnownEntities()){
+                if (entity.getSide() == Side.ALLY)
+                    allyEntities.add(entity);
+            }
+        } else return null;
+        return allyEntities;
+    }
+
+    //TODO list mi tek tek mi kararsızım tek tek info mesaj atılabilir ama tek basar bakıcam
+//    public void sendInfoMessages(){
+//        List<Entity> entities = getAllyEntitiesInRange();
+//        if (entities.isEmpty()){
+//            return;
+//        } else {
+//            this.getTdlTransmitter().createInfoMessage(w.app, this, entities);
+//        }
+//    }
 
 }
