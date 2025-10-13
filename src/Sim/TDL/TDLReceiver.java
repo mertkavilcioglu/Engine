@@ -27,6 +27,7 @@ public class TDLReceiver {
                     ((MoveMsg) msg).getPos()));
         }
         else if(msg.type == Message.MessageType.ENTITY_INFO){
+            source.addKnownEntity(msg.getSrc());
             //TODO: ENTITY'YI KENDI LOCAL WORLDUNE EKLE,
             // DIREK GERCEK ENTITYYI REFERANS OLARAK EKLEYEBILIRSIN DAHA KOLAY OLUR
             // VEYA LOCALCREATE FONKSIYONU YAZIP ELDEKI INFO ILE YENI BIR ENTITY OLUSTURABILIRSIN

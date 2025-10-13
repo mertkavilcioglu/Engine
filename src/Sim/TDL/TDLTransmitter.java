@@ -5,6 +5,7 @@ import Sim.Entity;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TDLTransmitter {
 
@@ -36,6 +37,14 @@ public class TDLTransmitter {
         followMsg.setCounter(calculateRangeCounter(followMsg));
         messagesToSend.add(followMsg);
         app.debugLog(String.format("Message sent from %s to %s\n", followMsg.getSrc(), followMsg.getReceiverEntity()));
+    }
+
+    public void createInfoMessage(VCSApp app, Entity source, List<Entity> targetReceivers){
+        //TODO nasıl createlenip ne şekilde ne zaman basılcağına bakmalı
+        InfoMsg infoMsg = new InfoMsg(app, source, targetReceivers);
+        infoMsg.setCounter(calculateRangeCounter(infoMsg));
+        messagesToSend.add(infoMsg);
+        app.debugLog(String.format("Message sent from %s to %s\n", infoMsg.getSrc(), infoMsg.getReceiverEntity()));
     }
 
     public void sendMessage(Message msg, Entity receiver){
