@@ -229,6 +229,9 @@ public class VCSApp {
     public void removeEntityInstantaneously(Entity e){
         //world.entities.remove(e);
         e.setActive(false);
+        for(Entity ent : e.getKnownEntities()){
+            ent.removeKnownEntity(e);
+        }
         hierarchyPanel.entityRemoved(e);
         actionPanel.deleteEntityFromTarget(e);
         mapView.getHoveredEntities().remove(e);
