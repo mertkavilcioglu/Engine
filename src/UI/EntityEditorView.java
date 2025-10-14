@@ -164,11 +164,11 @@ public class EntityEditorView extends VCSPanel {
                     Entity selectedEntity = app.mapView.getSelectedEntity();
                     app.world.changedEntities.push(selectedEntity);
                     if(selectedEntity.hasComponent("Radar"))
-                        app.world.changes2.push(app.world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                                selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType()));
+                        app.world.changes2.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                                selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType(),true));
                     else
-                        app.world.changes2.push(app.world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                                selectedEntity.getSpeed(), 0, selectedEntity.getType()));
+                        app.world.changes2.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                                selectedEntity.getSpeed(), 0, selectedEntity.getType(), true));
                 }
                 app.hierarchyPanel.update(1000);
             }
@@ -525,11 +525,11 @@ public class EntityEditorView extends VCSPanel {
                 Entity selectedEntity = app.mapView.getSelectedEntity();
                 app.world.changedEntities.push(selectedEntity);
                 if(selectedEntity.hasComponent("Radar"))
-                    app.world.changes2.push(app.world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                            selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType()));
+                    app.world.changes2.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                            selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType(), true));
                 else
-                    app.world.changes2.push(app.world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                            selectedEntity.getSpeed(), 0, selectedEntity.getType()));
+                    app.world.changes2.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                            selectedEntity.getSpeed(), 0, selectedEntity.getType(), true));
             }
             app.hierarchyPanel.update(1000);
         }

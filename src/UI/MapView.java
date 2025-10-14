@@ -138,6 +138,14 @@ public class MapView extends VCSPanel {
                     if(!isDragging && selectedEntity != null){
                         isDragging = true;
                         selectedEntity.getPreviousPositions().push(selectedEntity.getPos());
+                        app.world.changedEntities.push(selectedEntity);
+                        if(selectedEntity.hasComponent("Radar"))
+                            world.changes2.push(new Entity(world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                                    selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType(), true));
+                        else
+                            world.changes2.push(new Entity(world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                                    selectedEntity.getSpeed(), 0, selectedEntity.getType(), true));
+
                     }
                     pixPos = new Vec2int(e.getX(), e.getY());
                     app.mapPixelPosPanel.showPixelPosOfCursor(pixPos);
@@ -219,13 +227,13 @@ public class MapView extends VCSPanel {
             public void mouseReleased(MouseEvent e) {
                 if(isDragging){
                     isDragging = false;
-                    app.world.changedEntities.push(selectedEntity);
-                    if(selectedEntity.hasComponent("Radar"))
-                        world.changes2.push(world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                                selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType()));
-                    else
-                        world.changes2.push(world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                                selectedEntity.getSpeed(), 0, selectedEntity.getType()));
+//                    app.world.changedEntities.push(selectedEntity);
+//                    if(selectedEntity.hasComponent("Radar"))
+//                        world.changes2.push(new Entity(world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+//                                selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType(), true));
+//                    else
+//                        world.changes2.push(new Entity(world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+//                                selectedEntity.getSpeed(), 0, selectedEntity.getType(), true));
 
 
                 }

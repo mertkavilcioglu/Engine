@@ -539,12 +539,16 @@ public class Entity {
         }
         else if(isActive && !e.isActive){
             w.app.hierarchyPanel.entityRemoved(this);
-            w.app. actionPanel.deleteEntityFromTarget(this);
-            w.app. mapView.getHoveredEntities().remove(this);
+            w.app.actionPanel.deleteEntityFromTarget(this);
+            w.app.mapView.getHoveredEntities().remove(this);
             w.app.editorPanel.disablePanelData();
             w.app.mapView.setSelectedEntity(null);
             w.app.actionPanel.disablePanel();
-            w.app. mapView.repaint();
+            w.app.mapView.repaint();
+        }
+        else{
+            w.app.hierarchyPanel.update(1000);
+            w.app.mapView.repaint();
         }
         isActive = e.isActive();
 //        components = e.getComponents();
