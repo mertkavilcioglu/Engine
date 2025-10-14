@@ -36,11 +36,26 @@ public class Entity {
     private TDLTransmitter tdlTransmitter = new TDLTransmitter(this);
 
     private boolean isActive = true;
-
+    //TODO: stack içinde tutulacak entityleri createEntity fonksiyonu ile koymuştun bu yanlış,
+    // bunları new Entity ile yapacak şekilde değiştir.
 
     public Entity(World w) {
         this.w = w;
         nodeInfo = new NodeInfo();
+    }
+
+    public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, int range, Entity.Type type, boolean active){
+        this.w = w;
+        this.name = name;
+        this.side = side;
+        this.pos = pos;
+        this.speed = speed;
+        if(range != 0){
+            addComponents(new Radar(this, w.entities));
+            ((Radar)getComponent("Radar")).setRange(range);
+        }
+        this.type = type;
+        this.isActive = active;
     }
 
     public enum Type{
@@ -478,6 +493,34 @@ public class Entity {
 
     public void setActive(boolean a){
         isActive = a;
+    }
+
+    public void copyFrom(Entity e){
+        name = e.getName();
+        side = e.getSide();
+        pos = e.getPos();
+        speed = e.getSpeed();
+        type = e.getType();
+        if(!isActive && e.isActive){
+            w.app.hierarchyPanel.entityAdded(this);
+            w.app.actionPanel.createNewTargetButton(this);
+            w.app.mapView.setSelectedEntity(this);
+            w.app.mapView.repaint();
+        }
+        else if(isActive && !e.isActive){
+            w.app.hierarchyPanel.entityRemoved(this);
+            w.app. actionPanel.deleteEntityFromTarget(this);
+            w.app. mapView.getHoveredEntities().remove(this);
+            w.app.editorPanel.disablePanelData();
+            w.app.mapView.setSelectedEntity(null);
+            w.app.actionPanel.disablePanel();
+            w.app. mapView.repaint();
+        }
+        isActive = e.isActive();
+//        components = e.getComponents();
+//        detectedEntities = e.getDetectedEntities();
+        // ORDERLARI falan da ekleyebilirsin
+
     }
 
 }

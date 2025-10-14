@@ -178,8 +178,12 @@ public class VCSApp {
 
     public void createEntity(String name, Entity.Side side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
-        world.latestCreatedEntities.push(ent);
-        world.latestChanges.push(World.Change.CREATE);
+//        world.createdEntities.push(ent);
+//        world.changes.push(World.Change.CREATE);
+        world.changes2.push(new Entity(world, name, side, pos, speed, range, type, false));
+
+        world.changedEntities.push(ent);
+        ent.setActive(true);
         hierarchyPanel.entityAdded(ent);
         actionPanel.createNewTargetButton(ent);
         mapView.setSelectedEntity(ent);
@@ -292,8 +296,20 @@ public class VCSApp {
         if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
             if(mapView.getSelectedEntity() != null){
                 Entity ent = mapView.getSelectedEntity();
-                world.latestDeletedEntities.push(ent);
-                world.latestChanges.push(World.Change.DELETE);
+//                world.deletedEntities.push(ent);
+//                world.changes.push(World.Change.DELETE);
+
+                if(ent.hasComponent("Radar")){
+                    world.changes2.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
+                            ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType(), true));
+                }
+
+                else{
+                    world.changes2.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
+                            ent.getSpeed(), 0, ent.getType(), true));
+                }
+
+                world.changedEntities.push(ent);
                 removeEntityInstantaneously(mapView.getSelectedEntity());
                 mapView.repaint();
             }
@@ -333,7 +349,7 @@ public class VCSApp {
 
     private void handleRevertingChanges(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_Z && ctrlOn){
-            world.revertLastChange();
+            world.revert2();
         }
     }
 

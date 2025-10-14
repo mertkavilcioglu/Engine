@@ -160,8 +160,15 @@ public class EntityEditorView extends VCSPanel {
                         app.mapView.getSelectedEntity().getPreviousPositions().getLast().x != pos.x &&
                         app.mapView.getSelectedEntity().getPreviousPositions().getLast().y != pos.y){
                     app.mapView.getSelectedEntity().getPreviousPositions().push(oldPos);
-                    app.world.latestMovedEntities.push(app.mapView.getSelectedEntity());
-                    app.world.latestChanges.push(World.Change.MOVE);
+
+                    Entity selectedEntity = app.mapView.getSelectedEntity();
+                    app.world.changedEntities.push(selectedEntity);
+                    if(selectedEntity.hasComponent("Radar"))
+                        app.world.changes2.push(app.world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                                selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType()));
+                    else
+                        app.world.changes2.push(app.world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                                selectedEntity.getSpeed(), 0, selectedEntity.getType()));
                 }
                 app.hierarchyPanel.update(1000);
             }
@@ -514,8 +521,15 @@ public class EntityEditorView extends VCSPanel {
                     app.mapView.getSelectedEntity().getPreviousPositions().getLast().x != pos.x &&
                     app.mapView.getSelectedEntity().getPreviousPositions().getLast().y != pos.y){
                 app.mapView.getSelectedEntity().getPreviousPositions().push(oldPos);
-                app.world.latestMovedEntities.push(app.mapView.getSelectedEntity());
-                app.world.latestChanges.push(World.Change.MOVE);
+
+                Entity selectedEntity = app.mapView.getSelectedEntity();
+                app.world.changedEntities.push(selectedEntity);
+                if(selectedEntity.hasComponent("Radar"))
+                    app.world.changes2.push(app.world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                            selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType()));
+                else
+                    app.world.changes2.push(app.world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                            selectedEntity.getSpeed(), 0, selectedEntity.getType()));
             }
             app.hierarchyPanel.update(1000);
         }

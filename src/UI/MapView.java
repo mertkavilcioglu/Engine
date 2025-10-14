@@ -2,6 +2,7 @@ package UI;
 
 import App.VCSApp;
 import Sim.Entity;
+import Sim.Radar;
 import Sim.World;
 import Var.RGB;
 import Vec.Vec2int;
@@ -218,8 +219,14 @@ public class MapView extends VCSPanel {
             public void mouseReleased(MouseEvent e) {
                 if(isDragging){
                     isDragging = false;
-                    app.world.latestMovedEntities.push(selectedEntity);
-                    app.world.latestChanges.push(World.Change.MOVE);
+                    app.world.changedEntities.push(selectedEntity);
+                    if(selectedEntity.hasComponent("Radar"))
+                        world.changes2.push(world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                                selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType()));
+                    else
+                        world.changes2.push(world.createEntity(selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                                selectedEntity.getSpeed(), 0, selectedEntity.getType()));
+
 
                 }
             }

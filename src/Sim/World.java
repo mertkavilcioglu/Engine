@@ -17,13 +17,16 @@ public class World{
 
     public ArrayList<Entity> entities = new ArrayList<>();
     public ArrayList<Entity> entitiesToRemove = new ArrayList<>();
-    public Stack<Entity> latestCreatedEntities = new Stack<>();
-    public Stack<Entity> latestDeletedEntities = new Stack<>();
-    public Stack<Entity> latestMovedEntities = new Stack<>();
-    public Stack<Change> latestChanges = new Stack<>();
+//    public Stack<Entity> createdEntities = new Stack<>();
+//    public Stack<Entity> deletedEntities = new Stack<>();
+//    public Stack<Entity> movedEntities = new Stack<>();
+//    public Stack<Change> changes = new Stack<>();
     private Entity copiedEntity;
 
-    public Entity createEntity2(String name, Entity.Side side) {
+    public Stack<Entity> changedEntities = new Stack<>();
+    public Stack<Entity> changes2 = new Stack<>();
+
+        public Entity createEntity2(String name, Entity.Side side) {
         Entity ent = new Entity(this);
         ent.setName(name);
         ent.setSide(side);
@@ -115,65 +118,68 @@ public class World{
     }
 
     public void revert2() {
-        if(latestChanges.isEmpty())
+        if(changedEntities.isEmpty())
             return;
-
-        Change c = latestChanges.pop();
-        switch (c) {
-            case MOVE:
-                Entity e = latestMovedEntities.pop();
-                break;
-        }
+        changedEntities.pop().copyFrom(changes2.pop());
     }
 
-    public void revertLastChange(){
-        if(latestChanges.isEmpty())
-            return;
-
-        if(latestChanges.getLast().equals(Change.MOVE)){
-            if(!latestMovedEntities.isEmpty()){
-                latestMovedEntities.getLast().revertToPreviousPosition();
-                latestMovedEntities.pop();
-                latestChanges.pop();
-                app.mapView.repaint();
-            }
-        }
-        else if(latestChanges.getLast().equals(Change.CREATE)){
-            if(!latestCreatedEntities.isEmpty()){
-                app.removeEntityInstantaneously(latestCreatedEntities.getLast());
-                latestCreatedEntities.pop();
-                latestChanges.pop();
-            }
-        }
-        else if(latestChanges.getLast().equals(Change.DELETE)){
-            if(!latestDeletedEntities.isEmpty()){
-                Entity de = latestDeletedEntities.getLast();
-                Entity newEnt;
-                if(de.hasComponent("Radar"))
-                    newEnt = app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(),
-                            ((Radar)de.getComponent("Radar")).getRange(), de.getType());
-                else
-                    newEnt = app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(), 0, de.getType());
-                while(!de.getPreviousPositions().isEmpty()){
-                    Vec2int prePos = new Vec2int(de.getPreviousPositions().getFirst().x, de.getPreviousPositions().getFirst().y);
-                    newEnt.getPreviousPositions().push(prePos);
-                    de.getPreviousPositions().removeFirst();
-                }
-                System.out.println(newEnt.getPreviousPositions().size());
-                latestDeletedEntities.pop();
-                latestChanges.pop();
-                while(latestCreatedEntities.contains(de))
-                    latestCreatedEntities.set(latestCreatedEntities.indexOf(de), newEnt);
-                while(latestMovedEntities.contains(de))
-                    latestMovedEntities.set(latestMovedEntities.indexOf(de), newEnt);
-            }
-        }
-    }
+//    public void revertLastChange(){
+//        if(changes.isEmpty())
+//            return;
+//
+//        if(changes.getLast().equals(Change.MOVE)){
+//            if(!movedEntities.isEmpty()){
+//                movedEntities.getLast().revertToPreviousPosition();
+//                movedEntities.pop();
+//                changes.pop();
+//                app.mapView.repaint();
+//            }
+//        }
+//        else if(changes.getLast().equals(Change.CREATE)){
+//            if(!createdEntities.isEmpty()){
+//                app.removeEntityInstantaneously(createdEntities.getLast());
+//                createdEntities.pop();
+//                changes.pop();
+//            }
+//        }
+//        else if(changes.getLast().equals(Change.DELETE)){
+//            if(!deletedEntities.isEmpty()){
+//                Entity de = deletedEntities.getLast();
+//                Entity newEnt;
+//                if(de.hasComponent("Radar"))
+//                    newEnt = app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(),
+//                            ((Radar)de.getComponent("Radar")).getRange(), de.getType());
+//                else
+//                    newEnt = app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(), 0, de.getType());
+//                while(!de.getPreviousPositions().isEmpty()){
+//                    Vec2int prePos = new Vec2int(de.getPreviousPositions().getFirst().x, de.getPreviousPositions().getFirst().y);
+//                    newEnt.getPreviousPositions().push(prePos);
+//                    de.getPreviousPositions().removeFirst();
+//                }
+//                System.out.println(newEnt.getPreviousPositions().size());
+//                deletedEntities.pop();
+//                changes.pop();
+//                while(createdEntities.contains(de))
+//                    createdEntities.set(createdEntities.indexOf(de), newEnt);
+//                while(movedEntities.contains(de))
+//                    movedEntities.set(movedEntities.indexOf(de), newEnt);
+//            }
+//        }
+//    }
+//
+//    public void clearAllStack(){
+//        createdEntities.clear();
+//        deletedEntities.clear();
+//        movedEntities.clear();
+//        changes.clear();
+//    }
 
     public void clearAllStack(){
-        latestCreatedEntities.clear();
-        latestDeletedEntities.clear();
-        latestMovedEntities.clear();
-        latestChanges.clear();
+        changes2.clear();
+        changedEntities.clear();
     }
+
+
+
+
 }
