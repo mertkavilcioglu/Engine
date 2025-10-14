@@ -5,13 +5,21 @@ import Sim.Entity;
 
 public class ResultMsg extends Message{
 //TODO içini doldur
+    private boolean isDone;
 
-    public ResultMsg(MessageType type, VCSApp app, Entity src, Entity receiver, String msg) {
-        super(type, app, src, receiver, msg);
+    public ResultMsg(VCSApp app, Entity src, Entity receiver, boolean isDone) {
+        super(MessageType.ORDER_RESULT, app, src, receiver, (src + ": Result Msg"));
+        this.isDone = isDone;
+    }
+
+    public String resultDetail(){
+        if (isDone){
+            return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Status: Done", getSrc().getName(), getReceiverEntity().getName());
+        } else return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Status: Not Done", getSrc().getName(), getReceiverEntity().getName());
     }
 
     @Override
     public String getMsgDetail() {
-        return "";
+        return resultDetail();
     }
 }

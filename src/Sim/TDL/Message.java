@@ -17,7 +17,9 @@ public abstract class Message {
         ATTACK_ORDER,
         MOVE_ORDER,
         FOLLOW_ORDER,
-        ENTITY_INFO
+        ENTITY_INFO,
+        RECEIVE_INFO,
+        ORDER_RESULT
     }
 
     public MessageType type;

@@ -47,6 +47,16 @@ public class TDLTransmitter {
         app.debugLog(String.format("Message sent from %s to %s\n", infoMsg.getSrc(), infoMsg.getReceiverEntity()));
     }
 
+    public void createReceiveMessage(VCSApp app, Entity source, Message.MessageType type){
+        ReceiveMsg receiveMsg = new ReceiveMsg(app, source, VCSApp.headQuarter, type);
+        messagesToSend.add(receiveMsg);
+    }
+
+    public void createResultMessage(VCSApp app, Entity source, boolean isDone){
+        ResultMsg resultMsg = new ResultMsg(app, source, VCSApp.headQuarter, isDone);
+        messagesToSend.add(resultMsg);
+    }
+
     public void sendMessage(Message msg, Entity receiver){
         receiver.getTdlReceiver().receiveMessage(msg);
         msg.getApp().actionPanel.refreshCurrentOrderPanel();
