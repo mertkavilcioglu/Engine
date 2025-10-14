@@ -3,10 +3,13 @@ package Sim.TDL;
 import App.VCSApp;
 import Sim.Entity;
 
+import java.util.List;
+
 public abstract class Message {
 
     private VCSApp app;
     private Entity src, receiver;
+    private List<Entity> receiverList;
     private int counter = 0;
     private String msg;
 
@@ -27,6 +30,14 @@ public abstract class Message {
         this.msg = msg;
         app.logPanel.addMsgToLog(this);
     }
+    public Message(MessageType type, VCSApp app, Entity src, List<Entity> receivers, String msg){
+        this.type = type;
+        this.app = app;
+        this.src = src;
+        this.receiverList = receivers;
+        this.msg = msg;
+        app.logPanel.addMsgToLog(this);
+    }
     public VCSApp getApp(){
         return app;
     }
@@ -37,6 +48,10 @@ public abstract class Message {
 
     public Entity getReceiverEntity(){
         return receiver;
+    }
+
+    public List<Entity> getReceiverList(){
+        return receiverList;
     }
 
     public int getCounter(){

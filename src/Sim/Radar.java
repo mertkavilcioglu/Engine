@@ -28,19 +28,50 @@ public class Radar extends Component {
             double dist = parentEntity.getPos().distance(p);
             if(dist <= range) {
                 hasVisual = true;
-                e.setIsDetected(hasVisual);
+                e.isItDetected(hasVisual);
+                //for add link to give order but not add to knownentities of hq
+                if (parentEntity.getType() == Entity.Type.HQ || parentEntity.w.app.headQuarter.getKnownEntities().contains(parentEntity)) {
+                    if (e.getType() != Entity.Type.HQ){
+                        if (e.getSide() == Entity.Side.ALLY) e.setIsInLink(hasVisual);
+                    }
+                }
                 if (!(parentEntity.getKnownEntities().contains(e)) && e.isActive()){
                     parentEntity.addKnownEntity(e);
+                    updateKnownEntities(e);
+
                 }
                 else if(parentEntity.getKnownEntities().contains(e) && !e.isActive()){
                     parentEntity.removeKnownEntity(e);
                     hasVisual = false;
-                    e.setIsDetected(hasVisual);
+                    e.isItDetected(hasVisual);
                 }
             } else if (parentEntity.getKnownEntities().contains(e)){
-                parentEntity.removeKnownEntity(e);
-                hasVisual = false;
-                e.setIsDetected(hasVisual);
+                boolean isAnySee = false;
+                for (Entity entity : parentEntity.getKnownEntities()){
+                    if (entity.getKnownEntities().contains(e)){
+                        isAnySee = true;
+                    }
+                }
+                if (!isAnySee){
+                    parentEntity.removeKnownEntity(e);
+                    hasVisual = false;
+                    e.isItDetected(hasVisual);
+                    if (parentEntity.getType() == Entity.Type.HQ) e.setIsInLink(hasVisual);
+                } else parentEntity.addKnownEntity(e);
+            }
+        }
+    }
+
+
+    //TODO neden çalışmadığına bak
+    private void updateKnownEntities(Entity e){
+        for (Entity entity : parentEntity.getKnownEntities()){
+            if (entity.getSide() == parentEntity.getSide()){
+                if (e != entity){
+                    if (!(e.getKnownEntities().contains(entity))){
+                        e.addKnownEntity(entity);
+                    }
+                }
             }
         }
     }

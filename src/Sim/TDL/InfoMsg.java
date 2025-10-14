@@ -5,6 +5,8 @@ import Sim.Entity;
 import Sim.Radar;
 import Vec.Vec2int;
 
+import java.util.List;
+
 public class InfoMsg extends Message{
 
     private String name;
@@ -14,8 +16,8 @@ public class InfoMsg extends Message{
     private int radarRange;
     private Entity.Type type;
 
-    public InfoMsg(VCSApp app, Entity src, Entity receiver) {
-        super(MessageType.ENTITY_INFO, app, src, receiver, (src + ": Info msg"));
+    public InfoMsg(VCSApp app, Entity src, List<Entity> receivers) {
+        super(MessageType.ENTITY_INFO, app, src, receivers, (src + ": Info msg"));
         this.name = src.getName();
         this.side = src.getSide();
         this.pos = src.getPos();
