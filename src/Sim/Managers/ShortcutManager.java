@@ -15,13 +15,13 @@ public class ShortcutManager {
     private final VCSApp app;
     private final MapView mapView;
     private final World world;
-
     private boolean ctrlOn = false;
 
     public ShortcutManager(VCSApp app){
         this.app = app;
         mapView = app.mapView;
         world = app.world;
+
         app.getWindow().addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -43,20 +43,9 @@ public class ShortcutManager {
         if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
             if(mapView.getSelectedEntity() != null){
                 Entity ent = mapView.getSelectedEntity();
-//                world.deletedEntities.push(ent);
-//                world.changes.push(World.Change.DELETE);
 
-                if(ent.hasComponent("Radar")){
-                    world.changes2.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
-                            ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType(), true));
-                }
+                addChange(ent);
 
-                else{
-                    world.changes2.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
-                            ent.getSpeed(), 0, ent.getType(), true));
-                }
-
-                world.changedEntities.push(ent);
                 app.removeEntityInstantaneously(mapView.getSelectedEntity());
                 mapView.repaint();
             }
@@ -96,7 +85,7 @@ public class ShortcutManager {
 
     private void handleRevertingChanges(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_Z && ctrlOn){
-            world.revert2();
+            world.revert();
         }
     }
 
@@ -104,6 +93,20 @@ public class ShortcutManager {
         if(e.getKeyCode() == KeyEvent.VK_CONTROL){
             ctrlOn = false;
         }
+    }
+
+    public void addChange(Entity ent){
+        if(ent.hasComponent("Radar")){
+            world.changes.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
+                    ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType(), true));
+        }
+
+        else{
+            world.changes.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
+                    ent.getSpeed(), 0, ent.getType(), true));
+        }
+
+        world.changedEntities.push(ent);
     }
 
 }

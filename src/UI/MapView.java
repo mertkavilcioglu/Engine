@@ -140,10 +140,10 @@ public class MapView extends VCSPanel {
                         selectedEntity.getPreviousPositions().push(selectedEntity.getPos());
                         app.world.changedEntities.push(selectedEntity);
                         if(selectedEntity.hasComponent("Radar"))
-                            world.changes2.push(new Entity(world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                            world.changes.push(new Entity(world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
                                     selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType(), true));
                         else
-                            world.changes2.push(new Entity(world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                            world.changes.push(new Entity(world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
                                     selectedEntity.getSpeed(), 0, selectedEntity.getType(), true));
 
                     }

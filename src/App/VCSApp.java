@@ -10,8 +10,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -184,7 +182,7 @@ public class VCSApp {
         Entity ent = world.createEntity(name, side, pos, speed, range, type);
 //        world.createdEntities.push(ent);
 //        world.changes.push(World.Change.CREATE);
-        world.changes2.push(new Entity(world, name, side, pos, speed, range, type, false));
+        world.changes.push(new Entity(world, name, side, pos, speed, range, type, false));
 
         world.changedEntities.push(ent);
         ent.setActive(true);
@@ -368,5 +366,9 @@ public class VCSApp {
             headQuarter = world.createCommander(null, 5000);
             hierarchyPanel.entityAdded(headQuarter);
         }
+    }
+
+    public ShortcutManager getShortcutManager(){
+        return shortcutManager;
     }
 }
