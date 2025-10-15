@@ -1,5 +1,6 @@
 package Sim.TDL;
 
+import App.VCSApp;
 import Sim.Entity;
 import Sim.Orders.Attack;
 import Sim.Orders.Follow;
@@ -21,6 +22,7 @@ public class TDLReceiver {
         else if(msg.type == Message.MessageType.FOLLOW_ORDER){
             source.addOrder(new Follow(msg.getApp(), msg.getReceiverEntity(),
                     ((FollowMsg) msg).getFollowTarget(), ((FollowMsg) msg).getTime()));
+
         }
         else if(msg.type == Message.MessageType.MOVE_ORDER){
             source.addOrder(new Move(msg.getApp(), msg.getReceiverEntity(),
@@ -32,6 +34,20 @@ public class TDLReceiver {
             // DIREK GERCEK ENTITYYI REFERANS OLARAK EKLEYEBILIRSIN DAHA KOLAY OLUR
             // VEYA LOCALCREATE FONKSIYONU YAZIP ELDEKI INFO ILE YENI BIR ENTITY OLUSTURABILIRSIN
             // AMA BU SEFER DE DELETE ICIN FALAN KOPYA ENTITY'DE SOURCE ENTITY REF TUTMAK GEREKEBILIR
+        }
+        else if (msg.type == Message.MessageType.RECEIVE_INFO) {
+            msg.getApp().debugLog("Message arrived successfully.");
+            //TODO orderının receivelendiğini öğreninice nolcak bilmiyorum
+        }
+        else if (msg.type == Message.MessageType.ORDER_RESULT) {
+            ResultMsg rm = (ResultMsg) msg;
+            if (rm.getOrderResult()){
+                msg.getApp().debugLog("Order done!");
+                //order tamamlanmış okey
+            } else {
+                msg.getApp().debugLog("Order not done!");
+                //TODO order tamalanamamış, nedeni ve ne orderı olduğuna bakılıp tekrar emir verilinebilir
+            }
         }
     }
 

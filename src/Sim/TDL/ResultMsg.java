@@ -18,6 +18,10 @@ public class ResultMsg extends Message{
         } else return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Status: Not Done", getSrc().getName(), getReceiverEntity().getName());
     }
 
+    public boolean getOrderResult(){
+        return isDone;
+    }
+
     @Override
     public String getMsgDetail() {
         return resultDetail();

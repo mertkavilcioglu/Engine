@@ -2,6 +2,7 @@ package Sim.Orders;
 
 import App.VCSApp;
 import Sim.Entity;
+import Sim.TDL.Message;
 import Vec.Vec2int;
 
 public class Move extends Order{
@@ -20,6 +21,7 @@ public class Move extends Order{
             return;
         double dist = source.getPos().distance(destination);
         if(dist <= 2.0){
+            source.getTdlTransmitter().createResultMessage(app, source, true);
             app.log(source.getName() + " reached the target.");
             source.setSpeed(new Vec2int(0,0));
             source.completeCurrentOrder();
@@ -47,6 +49,7 @@ public class Move extends Order{
     @Override
     protected void printToLog(){
         if (!isExecute){
+            source.getTdlTransmitter().createReceiveMessage(app, source, Message.MessageType.MOVE_ORDER);
             app.log(source.getName() + " moving to " + destination);
             source.setCurrentOrderState(false);
         }

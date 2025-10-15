@@ -2,6 +2,7 @@ package Sim.Orders;
 
 import App.VCSApp;
 import Sim.Entity;
+import Sim.TDL.Message;
 import Vec.Vec2int;
 
 public class Attack extends Order{
@@ -38,10 +39,12 @@ public class Attack extends Order{
         dist = source.getPos().distance(targetPos);
         if(dist <= 4.0){
             if (targetEntity.isDetected()){
+                source.getTdlTransmitter().createResultMessage(app, source, true);
                 String msgDestroy = String.format("%s destroy the target %s,", source.getName(), targetEntity.getName());
                 app.log(msgDestroy);
                 destroy(targetEntity);
             } else {
+                source.getTdlTransmitter().createResultMessage(app, source, false);
                 String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), source.getName());
                 app.log(notFoundMsg);
                 //TODO order bitince ya da yarım kalınca unitlere hareket belirleme
@@ -85,6 +88,7 @@ public class Attack extends Order{
     @Override
     protected void printToLog(){
         if (!isExecute){
+            source.getTdlTransmitter().createReceiveMessage(app, source, Message.MessageType.ATTACK_ORDER);
             String msgAttack = String.format("%s going to attack %s.", source.getName(), targetEntity.getName());
             app.log(msgAttack);
             source.setCurrentOrderState(false);

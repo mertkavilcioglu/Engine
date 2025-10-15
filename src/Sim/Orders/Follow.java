@@ -2,6 +2,7 @@ package Sim.Orders;
 
 import App.VCSApp;
 import Sim.Entity;
+import Sim.TDL.Message;
 import Vec.Vec2int;
 
 public class Follow extends Order{
@@ -44,6 +45,7 @@ public class Follow extends Order{
         if (followTime > numOfUpdate){
             if(dist <= 3.0){
                 int time = followTime - numOfUpdate;
+
                 String reachString = String.format("%s has reached the target and will continue tracking for %d seconds.", source.getName(), time);
                 app.log(reachString);
                 //source.setSpeed(new Vec2int(0,0));
@@ -60,11 +62,13 @@ public class Follow extends Order{
         }
         else if (followTime == numOfUpdate){
             if(dist <= 3.0){
+                source.getTdlTransmitter().createResultMessage(app, source, true);
                 String reachString = String.format("%s has reached the target.", source.getName());
                 app.log(reachString);
                 source.setSpeed(new Vec2int(0,0));
             }
             else{
+                source.getTdlTransmitter().createResultMessage(app, source, false);
                 String timeOutString = String.format("%s stopped following the target %s because time was out.", source.getName(), target.getName());
                 app.log(timeOutString);
             }
@@ -78,6 +82,7 @@ public class Follow extends Order{
     protected void printToLog(){
         String followString = String.format("%s is following %s.",source.getName(), targetEntity.getName());
         if (!isExecute){
+            source.getTdlTransmitter().createReceiveMessage(app, source, Message.MessageType.FOLLOW_ORDER);
             app.log(followString);
             source.setCurrentOrderState(false);
         }
