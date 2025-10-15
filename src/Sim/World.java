@@ -17,14 +17,10 @@ public class World{
 
     public ArrayList<Entity> entities = new ArrayList<>();
     public ArrayList<Entity> entitiesToRemove = new ArrayList<>();
-//    public Stack<Entity> createdEntities = new Stack<>();
-//    public Stack<Entity> deletedEntities = new Stack<>();
-//    public Stack<Entity> movedEntities = new Stack<>();
-//    public Stack<Change> changes = new Stack<>();
     private Entity copiedEntity;
 
     public Stack<Entity> changedEntities = new Stack<>();
-    public Stack<Entity> changes2 = new Stack<>();
+    public Stack<Entity> changes = new Stack<>();
 
         public Entity createEntity2(String name, Entity.Side side) {
         Entity ent = new Entity(this);
@@ -111,14 +107,14 @@ public class World{
         copiedEntity = e;
     }
 
-    public void revert2() {
+    public void revert() {
         if(changedEntities.isEmpty())
             return;
-        changedEntities.pop().copyFrom(changes2.pop());
+        changedEntities.pop().copyFrom(changes.pop());
     }
 
     public void clearAllStack(){
-        changes2.clear();
+        changes.clear();
         changedEntities.clear();
     }
 

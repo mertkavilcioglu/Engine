@@ -531,6 +531,7 @@ public class Entity {
         pos = e.getPos();
         speed = e.getSpeed();
         type = e.getType();
+        //TODO: component bilgisini de ekle
         if(!isActive && e.isActive){
             w.app.hierarchyPanel.entityAdded(this);
             w.app.actionPanel.createNewTargetButton(this);

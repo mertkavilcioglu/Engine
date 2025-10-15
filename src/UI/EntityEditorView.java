@@ -4,7 +4,6 @@ import App.VCSApp;
 import Sim.Component;
 import Sim.Entity;
 import Sim.Radar;
-import Sim.World;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -164,10 +163,10 @@ public class EntityEditorView extends VCSPanel {
                     Entity selectedEntity = app.mapView.getSelectedEntity();
                     app.world.changedEntities.push(selectedEntity);
                     if(selectedEntity.hasComponent("Radar"))
-                        app.world.changes2.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                        app.world.changes.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
                                 selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType(),true));
                     else
-                        app.world.changes2.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                        app.world.changes.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
                                 selectedEntity.getSpeed(), 0, selectedEntity.getType(), true));
                 }
                 app.hierarchyPanel.update(1000);
@@ -498,6 +497,9 @@ public class EntityEditorView extends VCSPanel {
 
     public void updateSelectedEntity(){
         try{
+            Entity selectedEntity = app.mapView.getSelectedEntity();
+            app.getShortcutManager().addChange(selectedEntity);
+
             Vec2int oldPos = app.mapView.getSelectedEntity().getPos();
             String name = eNamePanel.readData();
             Vec2int pos = ePositionPanel.readData();
@@ -514,6 +516,8 @@ public class EntityEditorView extends VCSPanel {
             }
             else if(!app.pixelColor.isLocationValidForType(type, pos)){
                 ePositionPanel.error();
+                app.world.changedEntities.pop();
+                app.world.changes.pop();
             }
             app.hierarchyPanel.updateComponent("Radar", app.mapView.getSelectedEntity());
 
@@ -522,18 +526,13 @@ public class EntityEditorView extends VCSPanel {
                     app.mapView.getSelectedEntity().getPreviousPositions().getLast().y != pos.y){
                 app.mapView.getSelectedEntity().getPreviousPositions().push(oldPos);
 
-                Entity selectedEntity = app.mapView.getSelectedEntity();
-                app.world.changedEntities.push(selectedEntity);
-                if(selectedEntity.hasComponent("Radar"))
-                    app.world.changes2.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                            selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType(), true));
-                else
-                    app.world.changes2.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                            selectedEntity.getSpeed(), 0, selectedEntity.getType(), true));
             }
             app.hierarchyPanel.update(1000);
         }
         catch (Exception ex){
+            app.world.changedEntities.pop();
+            app.world.changes.pop();
+            System.out.println("Deleted last change from stack due to invalid entity update attempt");
             System.out.println("CATCHED SMT");
             System.out.println(ex.getLocalizedMessage());
             ex.printStackTrace();
