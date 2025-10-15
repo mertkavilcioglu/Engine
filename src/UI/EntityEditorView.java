@@ -447,6 +447,14 @@ public class EntityEditorView extends VCSPanel {
                 }
             }
 
+            if(e.getComponents().isEmpty()){
+                if(radarPanel != null && !radarPanel.getIsFocused()){
+                    remove(radarPanel);
+                    radarPanel = null;
+                }
+                revalidate();
+            }
+
             updateButton.setEnabled(true);
             addComponentButton.setEnabled(true);
             eNamePanel.getInputField().setEnabled(true);

@@ -531,6 +531,7 @@ public class Entity {
         pos = e.getPos();
         speed = e.getSpeed();
         type = e.getType();
+        components = e.getComponents();
         //TODO: component bilgisini de ekle
         if(!isActive && e.isActive){
             w.app.hierarchyPanel.entityAdded(this);
@@ -549,6 +550,8 @@ public class Entity {
         }
         else{
             w.app.hierarchyPanel.update(1000);
+            w.app.editorPanel.updatePanelData(this);
+            w.app.hierarchyPanel.entityChanged();
             w.app.mapView.repaint();
         }
         isActive = e.isActive();
