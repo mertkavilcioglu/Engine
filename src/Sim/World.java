@@ -111,75 +111,15 @@ public class World{
         copiedEntity = e;
     }
 
-    public enum Change {
-        MOVE,
-        CREATE,
-        DELETE
-    }
-
     public void revert2() {
         if(changedEntities.isEmpty())
             return;
         changedEntities.pop().copyFrom(changes2.pop());
     }
 
-//    public void revertLastChange(){
-//        if(changes.isEmpty())
-//            return;
-//
-//        if(changes.getLast().equals(Change.MOVE)){
-//            if(!movedEntities.isEmpty()){
-//                movedEntities.getLast().revertToPreviousPosition();
-//                movedEntities.pop();
-//                changes.pop();
-//                app.mapView.repaint();
-//            }
-//        }
-//        else if(changes.getLast().equals(Change.CREATE)){
-//            if(!createdEntities.isEmpty()){
-//                app.removeEntityInstantaneously(createdEntities.getLast());
-//                createdEntities.pop();
-//                changes.pop();
-//            }
-//        }
-//        else if(changes.getLast().equals(Change.DELETE)){
-//            if(!deletedEntities.isEmpty()){
-//                Entity de = deletedEntities.getLast();
-//                Entity newEnt;
-//                if(de.hasComponent("Radar"))
-//                    newEnt = app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(),
-//                            ((Radar)de.getComponent("Radar")).getRange(), de.getType());
-//                else
-//                    newEnt = app.createEntityByRevert(de.getName(), de.getSide(), de.getPos(), de.getSpeed(), 0, de.getType());
-//                while(!de.getPreviousPositions().isEmpty()){
-//                    Vec2int prePos = new Vec2int(de.getPreviousPositions().getFirst().x, de.getPreviousPositions().getFirst().y);
-//                    newEnt.getPreviousPositions().push(prePos);
-//                    de.getPreviousPositions().removeFirst();
-//                }
-//                System.out.println(newEnt.getPreviousPositions().size());
-//                deletedEntities.pop();
-//                changes.pop();
-//                while(createdEntities.contains(de))
-//                    createdEntities.set(createdEntities.indexOf(de), newEnt);
-//                while(movedEntities.contains(de))
-//                    movedEntities.set(movedEntities.indexOf(de), newEnt);
-//            }
-//        }
-//    }
-//
-//    public void clearAllStack(){
-//        createdEntities.clear();
-//        deletedEntities.clear();
-//        movedEntities.clear();
-//        changes.clear();
-//    }
-
     public void clearAllStack(){
         changes2.clear();
         changedEntities.clear();
     }
-
-
-
 
 }

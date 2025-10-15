@@ -2,6 +2,7 @@ package App;
 
 import Sim.*;
 import Sim.Component;
+import Sim.Managers.ShortcutManager;
 import UI.*;
 import Vec.Vec2int;
 
@@ -35,9 +36,11 @@ public class VCSApp {
     public LocalFile localFile;
     private boolean ctrlOn = false;
     static public Entity headQuarter;
+    private ShortcutManager shortcutManager;
 
     public Timer simTimer;
 
+    //TODO: undoManager'e taşı revert ile ilgli kısımları
     public void run() {
         System.out.println("App::run");
         boolean isWorking = true;
@@ -77,6 +80,7 @@ public class VCSApp {
         mapPixelPosPanel = new MapPixelPosPanel(this);
         pixelColor = new PixelColor(this);
         localFile = new LocalFile();
+        shortcutManager = new ShortcutManager(this);
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         mergeSouthPanel.add(actionPanel);
@@ -121,21 +125,21 @@ public class VCSApp {
 
         window.setFocusable(true);
         window.requestFocus();
-        window.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                handleEntityDelete(e); // DEL & BACKSPACE
-                handleCtrlActivate(e); // CTRL
-                handleEntityCopy(e); // CTRL + C
-                handleEntityPaste(e); // CTRL + V
-                handleRevertingChanges(e); // CTRL + Z
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e){
-                handleCtrlDeactivate(e);
-            }
-        });
+//        window.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyPressed(KeyEvent e) {
+//                handleEntityDelete(e); // DEL & BACKSPACE
+//                handleCtrlActivate(e); // CTRL
+//                handleEntityCopy(e); // CTRL + C
+//                handleEntityPaste(e); // CTRL + V
+//                handleRevertingChanges(e); // CTRL + Z
+//            }
+//
+//            @Override
+//            public void keyReleased(KeyEvent e){
+//                handleCtrlDeactivate(e);
+//            }
+//        });
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -292,72 +296,72 @@ public class VCSApp {
         if (logPanel != null) logPanel.debugLogError(message);
     }
 
-    private void handleEntityDelete(KeyEvent e){
-        if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
-            if(mapView.getSelectedEntity() != null){
-                Entity ent = mapView.getSelectedEntity();
-//                world.deletedEntities.push(ent);
-//                world.changes.push(World.Change.DELETE);
-
-                if(ent.hasComponent("Radar")){
-                    world.changes2.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
-                            ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType(), true));
-                }
-
-                else{
-                    world.changes2.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
-                            ent.getSpeed(), 0, ent.getType(), true));
-                }
-
-                world.changedEntities.push(ent);
-                removeEntityInstantaneously(mapView.getSelectedEntity());
-                mapView.repaint();
-            }
-        }
-    }
-
-    private void handleCtrlActivate(KeyEvent e){
-        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
-            ctrlOn = true;
-        }
-    }
-
-    private void handleEntityCopy(KeyEvent e){
-        if(e.getKeyCode() == KeyEvent.VK_C && ctrlOn){
-            if(mapView.getSelectedEntity() != null){
-                world.setCopiedEntity(mapView.getSelectedEntity());
-            }
-        }
-    }
-
-    private void handleEntityPaste(KeyEvent e){
-        if(e.getKeyCode() == KeyEvent.VK_V && ctrlOn){
-            if(world.getCopiedEntity() != null &&
-                    world.getCopiedEntity().CanMove(mapView.allPixelColors.get(mapView.getPixPos().toString()),
-                            world.getCopiedEntity().getType())){
-                Entity ent = world.getCopiedEntity();
-                String newName = String.format("%s - Copy", ent.getName());
-                Vec2int newPos = mapView.getPixPos();
-
-                if(ent.hasComponent("Radar"))
-                    createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType());
-                else
-                    createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), 0, ent.getType());
-            }
-        }
-    }
-
-    private void handleRevertingChanges(KeyEvent e){
-        if(e.getKeyCode() == KeyEvent.VK_Z && ctrlOn){
-            world.revert2();
-        }
-    }
-
-    private void handleCtrlDeactivate(KeyEvent e){
-        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
-            ctrlOn = false;
-        }
-    }
+//    private void handleEntityDelete(KeyEvent e){
+//        if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+//            if(mapView.getSelectedEntity() != null){
+//                Entity ent = mapView.getSelectedEntity();
+////                world.deletedEntities.push(ent);
+////                world.changes.push(World.Change.DELETE);
+//
+//                if(ent.hasComponent("Radar")){
+//                    world.changes2.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
+//                            ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType(), true));
+//                }
+//
+//                else{
+//                    world.changes2.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
+//                            ent.getSpeed(), 0, ent.getType(), true));
+//                }
+//
+//                world.changedEntities.push(ent);
+//                removeEntityInstantaneously(mapView.getSelectedEntity());
+//                mapView.repaint();
+//            }
+//        }
+//    }
+//
+//    private void handleCtrlActivate(KeyEvent e){
+//        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+//            ctrlOn = true;
+//        }
+//    }
+//
+//    private void handleEntityCopy(KeyEvent e){
+//        if(e.getKeyCode() == KeyEvent.VK_C && ctrlOn){
+//            if(mapView.getSelectedEntity() != null){
+//                world.setCopiedEntity(mapView.getSelectedEntity());
+//            }
+//        }
+//    }
+//
+//    private void handleEntityPaste(KeyEvent e){
+//        if(e.getKeyCode() == KeyEvent.VK_V && ctrlOn){
+//            if(world.getCopiedEntity() != null &&
+//                    world.getCopiedEntity().CanMove(mapView.allPixelColors.get(mapView.getPixPos().toString()),
+//                            world.getCopiedEntity().getType())){
+//                Entity ent = world.getCopiedEntity();
+//                String newName = String.format("%s - Copy", ent.getName());
+//                Vec2int newPos = mapView.getPixPos();
+//
+//                if(ent.hasComponent("Radar"))
+//                    createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType());
+//                else
+//                    createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), 0, ent.getType());
+//            }
+//        }
+//    }
+//
+//    private void handleRevertingChanges(KeyEvent e){
+//        if(e.getKeyCode() == KeyEvent.VK_Z && ctrlOn){
+//            world.revert2();
+//        }
+//    }
+//
+//    private void handleCtrlDeactivate(KeyEvent e){
+//        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+//            ctrlOn = false;
+//        }
+//    }
 
     public void createHQ(boolean b){
         if (!b){
