@@ -178,11 +178,11 @@ public class VCSApp {
         return window;
     }
 
-    public void createEntity(String name, Entity.Side side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
-        Entity ent = world.createEntity(name, side, pos, speed, range, type);
+    public Entity createEntity(String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type){
+        Entity ent = world.createEntity(name, side, pos, speed, type);
 //        world.createdEntities.push(ent);
 //        world.changes.push(World.Change.CREATE);
-        world.changes.push(new Entity(world, name, side, pos, speed, range, type, false));
+        world.changes.push(new Entity(world, name, side, pos, speed, type, ent.getComponents(), false));
 
         world.changedEntities.push(ent);
         ent.setActive(true);
@@ -190,14 +190,7 @@ public class VCSApp {
         actionPanel.createNewTargetButton(ent);
         mapView.setSelectedEntity(ent);
         mapView.repaint();
-    }
 
-    public Entity createEntityByRevert(String name, Entity.Side side, Vec2int pos, Vec2int speed, int range, Entity.Type type){
-        Entity ent = world.createEntity(name, side, pos, speed, range, type);
-        hierarchyPanel.entityAdded(ent);
-        actionPanel.createNewTargetButton(ent);
-        mapView.setSelectedEntity(ent);
-        mapView.repaint();
         return ent;
     }
 
@@ -207,7 +200,7 @@ public class VCSApp {
             ent = world.createCommander(pos, range);
             headQuarter = ent;
         }else {
-            ent = world.createEntity(name, side, pos, speed, range, type);
+            ent = world.createEntity(name, side, pos, speed, type);
             actionPanel.createNewTargetButton(ent);
         }
         hierarchyPanel.entityAdded(ent);

@@ -1,6 +1,7 @@
 package Sim.Managers;
 
 import App.VCSApp;
+import Sim.Component;
 import Sim.Entity;
 import Sim.Radar;
 import Sim.World;
@@ -17,6 +18,7 @@ public class ShortcutManager {
     private final World world;
     private boolean ctrlOn = false;
 
+    //TODO: ctrl z yapınca component değişikliği geri alma bozukdu onu düzelt
     public ShortcutManager(VCSApp app){
         this.app = app;
         mapView = app.mapView;
@@ -76,10 +78,14 @@ public class ShortcutManager {
                 String newName = String.format("%s - Copy", ent.getName());
                 Vec2int newPos = mapView.getPixPos();
 
-                if(ent.hasComponent("Radar"))
-                    app.createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType());
-                else
-                    app.createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), 0, ent.getType());
+                Entity clone = app.createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), ent.getType());
+
+                for (Component c : ent.getComponents()){
+                    clone.addComponents(c);
+                }
+                app.editorPanel.updatePanelData(clone);
+                app.editorPanel.updateSelectedEntity();
+                app.hierarchyPanel.entityChanged();
             }
         }
     }
@@ -97,16 +103,8 @@ public class ShortcutManager {
     }
 
     public void addChange(Entity ent){
-        if(ent.hasComponent("Radar")){
-            world.changes.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
-                    ent.getSpeed(), ((Radar)ent.getComponent("Radar")).getRange(), ent.getType(), true));
-        }
-
-        else{
-            world.changes.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
-                    ent.getSpeed(), 0, ent.getType(), true));
-        }
-
+        world.changes.push(new Entity(world, ent.getName(), ent.getSide(), ent.getPos(),
+                    ent.getSpeed(), ent.getType(), ent.getComponents(), true));
         world.changedEntities.push(ent);
     }
 

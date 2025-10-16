@@ -28,7 +28,7 @@ public class EntityEditorView extends VCSPanel {
     private Vec2intEditor ePositionPanel;
     private Vec2intEditor eSpeedPanel;
 
-    private JButton updateButton = new JButton("Update Entity");
+    //private JButton updateButton = new JButton("Update Entity");
 
     public Color panelColor;
     public Color panelComponentColor;
@@ -104,84 +104,80 @@ public class EntityEditorView extends VCSPanel {
         add(eSpeedPanel);
         JButton createButton = new JButton("Create");
 
-        createButton.addActionListener(e -> {
-            //app.attackTest();
-            try{
-                String name = eNamePanel.readData();
-                Vec2int pos = ePositionPanel.readData();
-                Vec2int speed = eSpeedPanel.readData();
-                int range = 0;
-                if(radarPanel != null)
-                    range = radarPanel.readData();
-                int sideInt = addSideBox.getSelectedIndex();
-
-                type = (String) addTypeBox.getSelectedItem();
-                if(app.pixelColor.isLocationValidForType(type, pos)){
-                    app.createEntity(name, intToSide(sideInt), pos, speed, range, strToType(type));
-                    //log("New unit named " + name + " created.");
-                }
-                else if(!app.pixelColor.isLocationValidForType(type, pos)){
-                    ePositionPanel.error();
-                }
-
-            }
-            catch (Exception ex){
-                ePositionPanel.dataValidate();
-                eSpeedPanel.dataValidate();
-                if(radarPanel != null)
-                    radarPanel.dataValidate();
-            }
-        });
+//        createButton.addActionListener(e -> {
+//            //app.attackTest();
+//            try{
+//                String name = eNamePanel.readData();
+//                Vec2int pos = ePositionPanel.readData();
+//                Vec2int speed = eSpeedPanel.readData();
+//                int range = 0;
+//                if(radarPanel != null)
+//                    range = radarPanel.readData();
+//                int sideInt = addSideBox.getSelectedIndex();
+//
+//                type = (String) addTypeBox.getSelectedItem();
+//                if(app.pixelColor.isLocationValidForType(type, pos)){
+//                    app.createEntity(name, intToSide(sideInt), pos, speed, strToType(type));
+//                    //log("New unit named " + name + " created.");
+//                }
+//                else if(!app.pixelColor.isLocationValidForType(type, pos)){
+//                    ePositionPanel.error();
+//                }
+//
+//            }
+//            catch (Exception ex){
+//                ePositionPanel.dataValidate();
+//                eSpeedPanel.dataValidate();
+//                if(radarPanel != null)
+//                    radarPanel.dataValidate();
+//            }
+//        });
         //add(createButton);
-        updateButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-        updateButton.setFocusable(false);
-        updateButton.addActionListener(e -> {
-            try{
-                Vec2int oldPos = app.mapView.getSelectedEntity().getPos();
-                String name = eNamePanel.readData();
-                Vec2int pos = ePositionPanel.readData();
-                Vec2int speed = eSpeedPanel.readData();
-                int range = 0;
-                if(radarPanel != null)
-                    range = radarPanel.readData();
-
-                int sideInt = addSideBox.getSelectedIndex();
-                type = (String) addTypeBox.getSelectedItem();
-                if(app.pixelColor.isLocationValidForType(type, pos) && name != null){
-                    app.updateSelectedEntity(name, intToSide(sideInt), pos, speed, range, strToType(type));
-                }
-                else if(!app.pixelColor.isLocationValidForType(type, pos)){
-                    ePositionPanel.error();
-                }
-                app.hierarchyPanel.updateComponent("Radar", app.mapView.getSelectedEntity());
-
-                if(!app.mapView.getSelectedEntity().getPreviousPositions().isEmpty() &&
-                        app.mapView.getSelectedEntity().getPreviousPositions().getLast().x != pos.x &&
-                        app.mapView.getSelectedEntity().getPreviousPositions().getLast().y != pos.y){
-                    app.mapView.getSelectedEntity().getPreviousPositions().push(oldPos);
-
-                    Entity selectedEntity = app.mapView.getSelectedEntity();
-                    app.world.changedEntities.push(selectedEntity);
-                    if(selectedEntity.hasComponent("Radar"))
-                        app.world.changes.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                                selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType(),true));
-                    else
-                        app.world.changes.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                                selectedEntity.getSpeed(), 0, selectedEntity.getType(), true));
-                }
-                app.hierarchyPanel.update(1000);
-            }
-            catch (Exception ex){
-                System.out.println("CATCHED SMT");
-                System.out.println(ex.getLocalizedMessage());
-                ex.printStackTrace();
-                ePositionPanel.dataValidate();
-                eSpeedPanel.dataValidate();
-                if(radarPanel != null)
-                    radarPanel.dataValidate();
-            }
-        });
-        updateButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+//        updateButton.setBackground(app.uiColorManager.BUTTON_COLOR);
+//        updateButton.setFocusable(false);
+//        updateButton.addActionListener(e -> {
+//            try{
+//                Vec2int oldPos = app.mapView.getSelectedEntity().getPos();
+//                String name = eNamePanel.readData();
+//                Vec2int pos = ePositionPanel.readData();
+//                Vec2int speed = eSpeedPanel.readData();
+//                int range = 0;
+//                if(radarPanel != null)
+//                    range = radarPanel.readData();
+//
+//                int sideInt = addSideBox.getSelectedIndex();
+//                type = (String) addTypeBox.getSelectedItem();
+//                if(app.pixelColor.isLocationValidForType(type, pos) && name != null){
+//                    app.updateSelectedEntity(name, intToSide(sideInt), pos, speed, range, strToType(type));
+//                }
+//                else if(!app.pixelColor.isLocationValidForType(type, pos)){
+//                    ePositionPanel.error();
+//                }
+//                app.hierarchyPanel.updateComponent("Radar", app.mapView.getSelectedEntity());
+//
+//                if(!app.mapView.getSelectedEntity().getPreviousPositions().isEmpty() &&
+//                        app.mapView.getSelectedEntity().getPreviousPositions().getLast().x != pos.x &&
+//                        app.mapView.getSelectedEntity().getPreviousPositions().getLast().y != pos.y){
+//                    app.mapView.getSelectedEntity().getPreviousPositions().push(oldPos);
+//
+//                    Entity selectedEntity = app.mapView.getSelectedEntity();
+//                    app.world.changedEntities.push(selectedEntity);
+//                    app.world.changes.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+//                                selectedEntity.getSpeed(), selectedEntity.getType(), selectedEntity.getComponents(), true));
+//                }
+//                app.hierarchyPanel.update(1000);
+//            }
+//            catch (Exception ex){
+//                System.out.println("CATCHED SMT");
+//                System.out.println(ex.getLocalizedMessage());
+//                ex.printStackTrace();
+//                ePositionPanel.dataValidate();
+//                eSpeedPanel.dataValidate();
+//                if(radarPanel != null)
+//                    radarPanel.dataValidate();
+//            }
+//        });
+//        updateButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
         //add(updateButton);
 
         addSideBox.addActionListener(new ActionListener() {
@@ -337,7 +333,7 @@ public class EntityEditorView extends VCSPanel {
             entity.setType(Entity.Type.HQ);
             updateHQPanelData(entity);
         } else {
-            updateButton.setEnabled(true);
+            //updateButton.setEnabled(true);
             addComponentButton.setEnabled(true);
             updatePanelData(entity);
         }
@@ -374,7 +370,7 @@ public class EntityEditorView extends VCSPanel {
                 revalidate();
             }
         }
-        updateButton.setEnabled(true);
+        //updateButton.setEnabled(true);
         addComponentButton.setEnabled(true);
         eNamePanel.getInputField().setEnabled(false);
         ePositionPanel.setInputEnabled(true);
@@ -455,7 +451,7 @@ public class EntityEditorView extends VCSPanel {
                 revalidate();
             }
 
-            updateButton.setEnabled(true);
+            //updateButton.setEnabled(true);
             addComponentButton.setEnabled(true);
             eNamePanel.getInputField().setEnabled(true);
             ePositionPanel.setInputEnabled(true);
@@ -477,7 +473,7 @@ public class EntityEditorView extends VCSPanel {
         }
         revalidate();
 
-        updateButton.setEnabled(false);
+        //updateButton.setEnabled(false);
         addComponentButton.setEnabled(false);
         eNamePanel.getInputField().setEnabled(false);
         ePositionPanel.setInputEnabled(false);

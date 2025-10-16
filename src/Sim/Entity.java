@@ -45,18 +45,15 @@ public class Entity {
         nodeInfo = new NodeInfo();
     }
 
-    public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, int range, Entity.Type type, boolean active){
+    public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type, ArrayList<Component> components,  boolean active){
         this.w = w;
         this.name = name;
         this.side = side;
         this.pos = pos;
         this.speed = speed;
-        if(range != 0){
-            addComponents(new Radar(this, w.entities));
-            ((Radar)getComponent("Radar")).setRange(range);
-        }
         this.type = type;
         this.isActive = active;
+        this.components = components;
     }
 
     public enum Type{

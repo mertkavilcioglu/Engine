@@ -42,7 +42,7 @@ public class GetInput {
 
                 }
                 if(world.app.pixelColor.isLocationValidForType(type,pos)){
-                    world.createEntity(name, side, pos, speed, range, strToType(type) );
+                    world.createEntity(name, side, pos, speed, strToType(type) );
                 }else {
                     if (!(type.equals(Entity.Type.HQ.getName()))) notCreatedList.add(name);
                 }
