@@ -21,9 +21,6 @@ public class Radar extends Component {
             if (e == parentEntity) {
                 continue;
             }
-//            if (e.getSide() == parentEntity.getSide()){
-//                continue;
-//            }
             Vec2int p = entities.get(i).getPos();
             double dist = parentEntity.getPos().distance(p);
             if(dist <= range) {
@@ -38,7 +35,6 @@ public class Radar extends Component {
                 if (!(parentEntity.getKnownEntities().contains(e)) && e.isActive()){
                     parentEntity.addKnownEntity(e);
                     updateKnownEntities(e);
-
                 }
                 else if(parentEntity.getKnownEntities().contains(e) && !e.isActive()){
                     parentEntity.removeKnownEntity(e);
@@ -48,7 +44,7 @@ public class Radar extends Component {
             } else if (parentEntity.getKnownEntities().contains(e)){
                 boolean isAnySee = false;
                 for (Entity entity : parentEntity.getKnownEntities()){
-                    if (entity.getKnownEntities().contains(e)){
+                    if (entity != e && entity.getKnownEntities().contains(e)){
                         isAnySee = true;
                     }
                 }
@@ -60,6 +56,8 @@ public class Radar extends Component {
                 } else parentEntity.addKnownEntity(e);
             }
         }
+        if (!parentEntity.getKnownEntities().isEmpty())
+            parentEntity.getTdlTransmitter().createInfoMessage(parentEntity.w.app, parentEntity, parentEntity.getKnownEntities());
     }
 
 

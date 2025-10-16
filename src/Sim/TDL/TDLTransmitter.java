@@ -42,9 +42,10 @@ public class TDLTransmitter {
     public void createInfoMessage(VCSApp app, Entity source, List<Entity> targetReceivers){
         //TODO nasıl createlenip ne şekilde ne zaman basılcağına bakmalı
         InfoMsg infoMsg = new InfoMsg(app, source, targetReceivers);
-        infoMsg.setCounter(calculateRangeCounter(infoMsg));
         messagesToSend.add(infoMsg);
-        app.debugLog(String.format("Message sent from %s to %s\n", infoMsg.getSrc(), infoMsg.getReceiverEntity()));
+        for (Entity entity : targetReceivers){
+            app.debugLog(String.format("Message sent from %s to %s\n", infoMsg.getSrc(), entity));
+        }
     }
 
     public void createReceiveMessage(VCSApp app, Entity source, Message.MessageType type){
@@ -63,8 +64,17 @@ public class TDLTransmitter {
 
     }
 
-    public void sendMessage(Message msg, Entity receiver){
-        receiver.getTdlReceiver().receiveMessage(msg);
+    public void sendMessage(Message msg){
+        Entity receiver;
+        if (msg.type == Message.MessageType.ENTITY_INFO){
+            for (Entity entity : msg.getReceiverList()){
+                receiver = entity;
+                receiver.getTdlReceiver().receiveMessage(msg);
+            }
+        }else {
+            receiver = msg.getReceiverEntity();
+            receiver.getTdlReceiver().receiveMessage(msg);
+        }
         msg.getApp().actionPanel.refreshCurrentOrderPanel();
         msg.getApp().debugLog(msg.getMsg() + " message received!!!");
     }
@@ -77,7 +87,7 @@ public class TDLTransmitter {
                     msg.getApp().debugLog(String.format("Message of %s forwarded to relay.", msg.getSrc().getName()));
                 }
                 else{
-                    sendMessage(msg, msg.getReceiverEntity());
+                    sendMessage(msg);
                     messagesToRemove.add(msg);
                 }
             }
@@ -88,7 +98,6 @@ public class TDLTransmitter {
     }
 
     public int calculateRangeCounter(Message msg){
-
         int counter  = 0;
         Entity targetReceiver = msg.getReceiverEntity();
         Entity temp = targetReceiver;

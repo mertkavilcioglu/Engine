@@ -30,6 +30,11 @@ public class TDLReceiver {
         }
         else if(msg.type == Message.MessageType.ENTITY_INFO){
             source.addKnownEntity(msg.getSrc());
+            for (Entity e : msg.getSrc().getKnownEntities()){
+                if (!source.getKnownEntities().contains(e) && e != source){
+                    source.addKnownEntity(e);
+                }
+            }
             //TODO: ENTITY'YI KENDI LOCAL WORLDUNE EKLE,
             // DIREK GERCEK ENTITYYI REFERANS OLARAK EKLEYEBILIRSIN DAHA KOLAY OLUR
             // VEYA LOCALCREATE FONKSIYONU YAZIP ELDEKI INFO ILE YENI BIR ENTITY OLUSTURABILIRSIN

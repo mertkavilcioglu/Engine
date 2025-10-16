@@ -126,6 +126,8 @@ public class LogPanel extends VCSPanel {
      public void clearLogArea(){
         try {
             logArea.getStyledDocument().remove(0, logArea.getStyledDocument().getLength());
+            messageModel.removeAllElements();
+            messageList.repaint();
         } catch (BadLocationException e){
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@ package Sim.TDL;
 import App.VCSApp;
 import Sim.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Message {
@@ -12,6 +13,7 @@ public abstract class Message {
     private List<Entity> receiverList;
     private int counter = 0;
     private String msg;
+    private boolean isFirstInfo = true;
 
     public enum MessageType{
         ATTACK_ORDER,
@@ -38,7 +40,20 @@ public abstract class Message {
         this.src = src;
         this.receiverList = receivers;
         this.msg = msg;
-        app.logPanel.addMsgToLog(this);
+        if (src.getInfoMsgSendEntities().isEmpty()){
+            isFirstInfo = true;
+            infoToLog(isFirstInfo);
+        } else {
+            for (Entity entity : receiverList){
+                if (!src.getInfoMsgSendEntities().contains(entity)) {
+                    isFirstInfo = true;
+                    infoToLog(isFirstInfo);
+                    return;
+                }
+                else isFirstInfo = false;
+            }
+        }
+
     }
     public VCSApp getApp(){
         return app;
@@ -66,6 +81,16 @@ public abstract class Message {
 
     public String getMsg(){
         return msg;
+    }
+
+    public void infoToLog(boolean isFirstInfo){
+        if (isFirstInfo){
+            app.logPanel.addMsgToLog(this);
+            for (Entity e : receiverList){
+                if (!src.getInfoMsgSendEntities().contains(e)) src.setInfoMsgSendEntities(e);
+            }
+        }
+        isFirstInfo = false;
     }
 
     public abstract String getMsgDetail();

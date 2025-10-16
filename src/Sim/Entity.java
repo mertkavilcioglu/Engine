@@ -18,6 +18,7 @@ public class Entity {
     private ArrayList<Component> components = new ArrayList<>();
     public ArrayList<Component> componentsToRemove = new ArrayList<>();
     private List<Entity> detectedEntities = new ArrayList<>();
+    private ArrayList<Entity> infoMsgSendEntities = new ArrayList<>();
     private RGB currentPixelColor;
     protected final World w;
     private NodeInfo nodeInfo;
@@ -524,6 +525,16 @@ public class Entity {
 //            this.getTdlTransmitter().createInfoMessage(w.app, this, entities);
 //        }
 //    }
+
+    public void setInfoMsgSendEntities(Entity entity){
+        if (!infoMsgSendEntities.contains(entity)){
+            infoMsgSendEntities.add(entity);
+        }
+    }
+
+    public ArrayList<Entity> getInfoMsgSendEntities(){
+        return infoMsgSendEntities;
+    }
 
     public void copyFrom(Entity e){
         name = e.getName();
