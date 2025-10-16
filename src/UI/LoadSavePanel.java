@@ -81,11 +81,7 @@ public class LoadSavePanel extends VCSPanel{
 
         //save if there is an existing file for that scenario or save as
         saveButton.addActionListener(e -> {
-            if (loadedFilePath != null){
-                app.saveSenario(loadedFilePath);
-            } else if (fileToSave != null){
-                app.saveSenario(fileToSave);
-            } else saveAs();
+            save();
         });
     }
 
@@ -127,5 +123,13 @@ public class LoadSavePanel extends VCSPanel{
     @Override
     public void selectedEntityChanged(Entity entity) {
 
+    }
+
+    public void save(){
+        if (loadedFilePath != null){
+            app.saveSenario(loadedFilePath);
+        } else if (fileToSave != null){
+            app.saveSenario(fileToSave);
+        } else saveAs();
     }
 }

@@ -25,21 +25,22 @@ public class ShortcutManager {
         app.getWindow().addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                handleEntityDelete(e); // DEL & BACKSPACE
-                handleCtrlActivate(e); // CTRL
-                handleEntityCopy(e); // CTRL + C
-                handleEntityPaste(e); // CTRL + V
-                handleRevertingChanges(e); // CTRL + Z
+                ctrlActivate(e); // CTRL
+                entityDelete(e); // DEL & BACKSPACE
+                entityCopy(e); // CTRL + C
+                entityPaste(e); // CTRL + V
+                revertChanges(e); // CTRL + Z
+                save(e); // CTRL + S
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                handleCtrlDeactivate(e);
+                ctrlDeactivate(e);
             }
         });
     }
 
-    private void handleEntityDelete(KeyEvent e){
+    private void entityDelete(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
             if(mapView.getSelectedEntity() != null){
                 Entity ent = mapView.getSelectedEntity();
@@ -52,13 +53,13 @@ public class ShortcutManager {
         }
     }
 
-    private void handleCtrlActivate(KeyEvent e){
+    private void ctrlActivate(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_CONTROL){
             ctrlOn = true;
         }
     }
 
-    private void handleEntityCopy(KeyEvent e){
+    private void entityCopy(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_C && ctrlOn){
             if(mapView.getSelectedEntity() != null){
                 world.setCopiedEntity(mapView.getSelectedEntity());
@@ -66,7 +67,7 @@ public class ShortcutManager {
         }
     }
 
-    private void handleEntityPaste(KeyEvent e){
+    private void entityPaste(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_V && ctrlOn){
             if(world.getCopiedEntity() != null &&
                     world.getCopiedEntity().CanMove(mapView.allPixelColors.get(mapView.getPixPos().toString()),
@@ -83,13 +84,13 @@ public class ShortcutManager {
         }
     }
 
-    private void handleRevertingChanges(KeyEvent e){
+    private void revertChanges(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_Z && ctrlOn){
             world.revert();
         }
     }
 
-    private void handleCtrlDeactivate(KeyEvent e){
+    private void ctrlDeactivate(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_CONTROL){
             ctrlOn = false;
         }
@@ -107,6 +108,12 @@ public class ShortcutManager {
         }
 
         world.changedEntities.push(ent);
+    }
+
+    public void save(KeyEvent e){
+        if(e.getKeyCode() == KeyEvent.VK_S && ctrlOn){
+            app.loadSavePanel.save();
+        }
     }
 
 }
