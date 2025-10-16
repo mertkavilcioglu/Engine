@@ -59,7 +59,7 @@ public class World{
         return ent;
     }
 
-    public Entity createEntity(String eName, Entity.Side eSide, Vec2int pos, Vec2int speed, int range, Entity.Type type){
+    public Entity createEntity(String eName, Entity.Side eSide, Vec2int pos, Vec2int speed, Entity.Type type){
         if(eName == null){
             return null;
         }
@@ -79,10 +79,6 @@ public class World{
 
         //PixelColor color = new PixelColor(ent, entities);
         //color.CanMove(color.PixelColorFind(ent.getPos().x, ent.getPos().y, map));
-
-        Radar r = new Radar(ent, entities);
-        r.setRange(range);
-        ent.addComponents(r);
         entities.add(ent);
 
         return ent;

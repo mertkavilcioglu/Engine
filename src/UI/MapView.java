@@ -139,12 +139,8 @@ public class MapView extends VCSPanel {
                         isDragging = true;
                         selectedEntity.getPreviousPositions().push(selectedEntity.getPos());
                         app.world.changedEntities.push(selectedEntity);
-                        if(selectedEntity.hasComponent("Radar"))
-                            world.changes.push(new Entity(world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                                    selectedEntity.getSpeed(), ((Radar)selectedEntity.getComponent("Radar")).getRange(), selectedEntity.getType(), true));
-                        else
-                            world.changes.push(new Entity(world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-                                    selectedEntity.getSpeed(), 0, selectedEntity.getType(), true));
+                        world.changes.push(new Entity(world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
+                                    selectedEntity.getSpeed(), selectedEntity.getType(), selectedEntity.getComponents(), true));
 
                     }
                     pixPos = new Vec2int(e.getX(), e.getY());
@@ -252,24 +248,24 @@ public class MapView extends VCSPanel {
         });
 
         aTank.addActionListener(e -> {
-            app.createEntity("ALLY_TANK", Entity.Side.ALLY,createPosition,new Vec2int(0,0),0, Entity.Type.GROUND);
+            app.createEntity("ALLY_TANK", Entity.Side.ALLY,createPosition,new Vec2int(0,0), Entity.Type.GROUND);
         });
         eTank.addActionListener(e -> {
-            app.createEntity("ENEMY_TANK", Entity.Side.ENEMY,createPosition,new Vec2int(0,0),0, Entity.Type.GROUND);
+            app.createEntity("ENEMY_TANK", Entity.Side.ENEMY,createPosition,new Vec2int(0,0), Entity.Type.GROUND);
         });
 
         aPlane.addActionListener(e -> {
-            app.createEntity("ALLY_PLANE", Entity.Side.ALLY,createPosition,new Vec2int(0,0),0, Entity.Type.AIR);
+            app.createEntity("ALLY_PLANE", Entity.Side.ALLY,createPosition,new Vec2int(0,0), Entity.Type.AIR);
         });
         ePlane.addActionListener(e -> {
-            app.createEntity("ENEMY_PLANE",Entity.Side.ENEMY,createPosition,new Vec2int(0,0),0, Entity.Type.AIR);
+            app.createEntity("ENEMY_PLANE",Entity.Side.ENEMY,createPosition,new Vec2int(0,0), Entity.Type.AIR);
         });
 
         aShip.addActionListener(e -> {
-            app.createEntity("ALLY_SHIP",Entity.Side.ALLY,createPosition,new Vec2int(0,0),0, Entity.Type.SURFACE);
+            app.createEntity("ALLY_SHIP",Entity.Side.ALLY,createPosition,new Vec2int(0,0), Entity.Type.SURFACE);
         });
         eShip.addActionListener(e -> {
-            app.createEntity("ENEMY_SHIP",Entity.Side.ENEMY,createPosition,new Vec2int(0,0),0, Entity.Type.SURFACE);
+            app.createEntity("ENEMY_SHIP",Entity.Side.ENEMY,createPosition,new Vec2int(0,0), Entity.Type.SURFACE);
         });
     }
 

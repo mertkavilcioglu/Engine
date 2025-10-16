@@ -46,18 +46,15 @@ public class Entity {
         nodeInfo = new NodeInfo();
     }
 
-    public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, int range, Entity.Type type, boolean active){
+    public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type, ArrayList<Component> components,  boolean active){
         this.w = w;
         this.name = name;
         this.side = side;
         this.pos = pos;
         this.speed = speed;
-        if(range != 0){
-            addComponents(new Radar(this, w.entities));
-            ((Radar)getComponent("Radar")).setRange(range);
-        }
         this.type = type;
         this.isActive = active;
+        this.components = components;
     }
 
     public enum Type{
@@ -542,6 +539,7 @@ public class Entity {
         pos = e.getPos();
         speed = e.getSpeed();
         type = e.getType();
+        components = e.getComponents();
         //TODO: component bilgisini de ekle
         if(!isActive && e.isActive){
             w.app.hierarchyPanel.entityAdded(this);
@@ -560,6 +558,8 @@ public class Entity {
         }
         else{
             w.app.hierarchyPanel.update(1000);
+            w.app.editorPanel.updatePanelData(this);
+            w.app.hierarchyPanel.entityChanged();
             w.app.mapView.repaint();
         }
         isActive = e.isActive();
