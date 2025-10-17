@@ -236,10 +236,10 @@ public class EntityEditorView extends VCSPanel {
                             remove(addComponentButton);
                             add(radarPanel);
                             radarPanel.getTxt().setText("5000");
-                            if(!app.mapView.getSelectedEntity().hasComponent("Radar")){
-                                app.mapView.getSelectedEntity().addComponents(new Radar(app.mapView.getSelectedEntity(),
-                                        app.world.entities));
-                            }
+//                            if(!app.mapView.getSelectedEntity().hasComponent("Radar")){
+//                                app.mapView.getSelectedEntity().addComponents(new Radar(app.mapView.getSelectedEntity(),
+//                                        app.world.entities));
+//                            }
                             updateSelectedEntity();
                             add(addComponentButton);
                             revalidate();
@@ -511,8 +511,13 @@ public class EntityEditorView extends VCSPanel {
             int range = 0;
             if(radarPanel != null){
                 range = radarPanel.readData();
-            }
 
+                if(!selectedEntity.hasComponent("Radar")){
+                    selectedEntity.addComponents(new Radar(selectedEntity,
+                            app.world.entities));
+                    debugLog("added radar");
+                }
+            }
             int sideInt = addSideBox.getSelectedIndex();
             type = (String) addTypeBox.getSelectedItem();
             if(app.pixelColor.isLocationValidForType(type, pos) && name != null){
@@ -531,8 +536,7 @@ public class EntityEditorView extends VCSPanel {
                 app.mapView.getSelectedEntity().getPreviousPositions().push(oldPos);
 
             }
-            app.hierarchyPanel.update(1000);
-        }
+            app.hierarchyPanel.update(1000);}
         catch (Exception ex){
             app.world.changedEntities.pop();
             app.world.changes.pop();

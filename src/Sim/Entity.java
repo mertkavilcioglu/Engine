@@ -54,7 +54,7 @@ public class Entity {
         this.speed = speed;
         this.type = type;
         this.isActive = active;
-        this.components = components;
+        this.components = (ArrayList<Component>) components.clone();
     }
 
     public enum Type{
@@ -112,6 +112,8 @@ public class Entity {
                 break;
         }
     }
+
+
 
     public void removeComponentInstantly(String s){
         switch (s){
@@ -540,7 +542,7 @@ public class Entity {
         speed = e.getSpeed();
         type = e.getType();
         components = e.getComponents();
-        //TODO: component bilgisini de ekle
+
         if(!isActive && e.isActive){
             w.app.hierarchyPanel.entityAdded(this);
             w.app.actionPanel.createNewTargetButton(this);
