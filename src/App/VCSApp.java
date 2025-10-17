@@ -21,7 +21,6 @@ public class VCSApp {
     public World world;
     public JFrame window;
     public MapView mapView;
-    public AppListenerController appListenerController;
     public EntityEditorView editorPanel;
     public HierarchyView hierarchyPanel;
     public ActionPanel actionPanel;
@@ -31,8 +30,6 @@ public class VCSApp {
     public MapPixelPosPanel mapPixelPosPanel;
     public PixelColor pixelColor;
     public UIColorManager uiColorManager;
-    public LocalFile localFile;
-    private boolean ctrlOn = false;
     static public Entity headQuarter;
     private ShortcutManager shortcutManager;
 
@@ -65,7 +62,6 @@ public class VCSApp {
 
     public void runWithWindow() throws InterruptedException, InvocationTargetException {
         uiColorManager = new UIColorManager();
-        appListenerController = new AppListenerController();
         world = new World(this);
         window = new AppWindow(this);
         mapView = new MapView(this);
@@ -77,7 +73,6 @@ public class VCSApp {
         loadSavePanel = new LoadSavePanel(this);
         mapPixelPosPanel = new MapPixelPosPanel(this);
         pixelColor = new PixelColor(this);
-        localFile = new LocalFile();
         shortcutManager = new ShortcutManager(this);
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));

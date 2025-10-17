@@ -1,7 +1,6 @@
 package Sim;
 import App.VCSApp;
 import Vec.Vec2int;
-import UI.PopupMenu;
 
 import javax.swing.*;
 import java.io.*;
@@ -53,7 +52,7 @@ public class GetInput {
             }
 
         if (!notCreatedList.isEmpty()) {
-            new PopupMenu(notCreatedList);
+            createPopUp(notCreatedList);
         }
 
     }
@@ -125,6 +124,11 @@ public class GetInput {
             return Entity.Type.SURFACE;
 
         return null;
+    }
+
+    public void createPopUp(ArrayList<String> entName){
+        String nameStr =  entName.toString().substring(1,entName.toString().length()-1);
+        JOptionPane.showMessageDialog(null,nameStr + " not created.");
     }
 
 

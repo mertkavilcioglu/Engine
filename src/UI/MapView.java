@@ -49,6 +49,12 @@ public class MapView extends VCSPanel {
     private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private String screenResolution = String.format("%dx%d", gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
 
+    public enum Mode {
+        NORMAL,
+        MOVE_POS_CAPTURE
+    }
+    private Mode mode = Mode.NORMAL;
+
 
     public MapView(VCSApp app) {
         super(app);
@@ -122,7 +128,7 @@ public class MapView extends VCSPanel {
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (isMouseEntered){
-                    if (app.appListenerController.isCaptureMode()){
+                    if (isCaptureMode()){
                         setCursor(createPointSelectionCurser(Color.LIGHT_GRAY, Color.LIGHT_GRAY));
                     } else setCursor(Cursor.getDefaultCursor());
                     //System.out.println("MapView::mouseMoved - THREAD : " + Thread.currentThread().getName());
@@ -156,7 +162,7 @@ public class MapView extends VCSPanel {
         addMouseListener(new MouseInputAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (app.appListenerController.isCaptureMode()){
+                if (isCaptureMode()){
                     if (isMouseEntered){
                         setCursor(createPointSelectionCurser(Color.LIGHT_GRAY, Color.YELLOW));
                         Vec2int posFromMap = new Vec2int(e.getX(), e.getY());
@@ -519,5 +525,15 @@ public class MapView extends VCSPanel {
         revalidate();
         repaint();
         locateAllPixels(bImage, pos, color);
+    }
+
+    public boolean isCaptureMode(){
+        return mode == Mode.MOVE_POS_CAPTURE;
+    }
+
+    public void setCaptureMode(boolean isModeOn){
+        if (isModeOn){
+            mode = Mode.MOVE_POS_CAPTURE;
+        } else mode = Mode.NORMAL;
     }
 }

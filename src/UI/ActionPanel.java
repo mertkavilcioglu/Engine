@@ -548,7 +548,7 @@ public class ActionPanel extends VCSPanel {
         if (!isPaused){
             if (isDone){
                 refreshCurrentOrderPanel();
-            }
+            } 
         }
     }
 
@@ -626,7 +626,7 @@ public class ActionPanel extends VCSPanel {
 
     public void setMoveMode(boolean isMove){
         app.mapView.setActionPanelUsingMouseEvent(isMove);
-        app.appListenerController.setCaptureMode(isMove);
+        app.mapView.setCaptureMode(isMove);
         if (!isMove){
             setButtonColor(enableFromMapButton);
         }
