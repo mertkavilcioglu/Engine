@@ -18,7 +18,7 @@ public class ShortcutManager {
     private final World world;
     private boolean ctrlOn = false;
 
-    //TODO: ctrl z yapınca component değişikliği geri alma bozukdu onu düzelt
+    //TODO: ctrl z yapınca component değişikliği geri alma bozuldu onu düzelt
     public ShortcutManager(VCSApp app){
         this.app = app;
         mapView = app.mapView;
