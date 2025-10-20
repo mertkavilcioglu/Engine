@@ -3,6 +3,8 @@ package Sim.TDL;
 import App.VCSApp;
 import Sim.Entity;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +41,13 @@ public abstract class Message {
         this.app = app;
         this.src = src;
         this.receiverList = receivers;
-        this.msg = msg;
+
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String formattedDate = myDateObj.format(myFormatObj);
+
+        this.msg = String.format("[%s] %s",formattedDate, msg);
+
         if (src.getInfoMsgSendEntities().isEmpty()){
             isFirstInfo = true;
             infoToLog(isFirstInfo);

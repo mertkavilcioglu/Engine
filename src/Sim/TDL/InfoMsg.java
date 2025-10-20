@@ -5,6 +5,8 @@ import Sim.Entity;
 import Sim.Radar;
 import Vec.Vec2int;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class InfoMsg extends Message{
