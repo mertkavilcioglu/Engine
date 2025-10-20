@@ -116,8 +116,6 @@ public class Entity {
         }
     }
 
-
-
     public void removeComponentInstantly(String s){
         switch (s){
             case "Radar":
@@ -172,7 +170,6 @@ public class Entity {
             speed.y = 0;
 
         }else {
-
             for (int i = 1; i < 100; i++) {
                 if(nextPos.x - pos.x < 0 && nextPos.y - pos.y < 0){
                     newPos.x -= 1;
@@ -211,14 +208,24 @@ public class Entity {
 
         move();
 
-        //System.out.format("Entity::update - %s - time: %d\n", this, deltaTime);
         for (int i = 0; i < components.size(); i++) {
             components.get(i).update(deltaTime);
         }
 
         tdlTransmitter.update();
 
-
+        if (side == Side.ALLY && type != Type.HQ){
+            if (w.app.headQuarter.getLinkedEntities().contains(this)){
+                for (Entity entity : linkedEntities){
+                    w.app.headQuarter.addLinkedEntity(entity);
+                    for (Entity e : knownEntities){
+                        if (e.getSide() == Side.ENEMY){
+                            entity.addKnownEntity(e);
+                        }
+                    }
+                }
+            }
+        }
 
         components.removeAll(componentsToRemove);
         componentsToRemove.clear();

@@ -2,7 +2,6 @@ package UI;
 
 import App.VCSApp;
 import Sim.Entity;
-import Sim.Radar;
 import Sim.World;
 import Var.RGB;
 import Vec.Vec2int;
@@ -365,7 +364,7 @@ public class MapView extends VCSPanel {
                 int targetWidthForHover = targetWidth + targetWidth*11/16;
                 int half = targetWidthForHover / 2;
 
-                int tdlRangeWidth = e.getTdlTransmitter().getRange() * 2;
+                int tdlRangeWidth = e.getTdlTransmitter().getTransmitterRange() * 2;
 
                 if (isHovered && (selectedEntity == null || selectedEntity != e)) {
                     g.drawOval(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);

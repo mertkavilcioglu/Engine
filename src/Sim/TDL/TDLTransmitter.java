@@ -121,10 +121,10 @@ public class TDLTransmitter {
         double posDiff;
 
         if(msg.getSrc().getLinkedEntities().contains(targetReceiver)){
-            while(msg.getSrc().getPos().distance(targetReceiver.getPos()) > msg.getSrc().getTdlTransmitter().getRange()){
+            while(msg.getSrc().getPos().distance(targetReceiver.getPos()) > msg.getSrc().getTdlTransmitter().getTransmitterRange()){
                 posDiff = msg.getApp().mapView.getWidth();
                 for(Entity e : msg.getSrc().getKnownEntities()){
-                    if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getRange()){
+                    if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getTransmitterRange()){
                         // HAS VISUAL ON TARGET
                         double newDiff = e.getPos().distance(msg.getSrc().getPos());
                         if(newDiff < posDiff){
@@ -147,7 +147,7 @@ public class TDLTransmitter {
         return counter;
     }
 
-    public int getRange(){
+    public int getTransmitterRange(){
         return range;
     }
 

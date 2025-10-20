@@ -113,7 +113,7 @@ public class VCSApp {
 
         window.setVisible(true);
 
-        headQuarter = world.createCommander(null, 5000);
+        headQuarter = world.createCommander(null, 200);
         hierarchyPanel.entityAdded(headQuarter);
 
         window.setFocusable(true);

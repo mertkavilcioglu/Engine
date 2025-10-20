@@ -48,8 +48,8 @@ public class World{
         if(pos == null) ent.setPos(new Vec2int(500, 250));
         else ent.setPos(pos);
         ent.setSpeed(new Vec2int(0, 0));
-        Radar r = new Radar(ent,entities);
-        r.setRange(range);
+        Range r = new Range(ent,entities);
+        r.setLinkRange(range);
         ent.addComponents(r);
         ent.setType(Entity.Type.HQ);
 

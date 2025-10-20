@@ -7,9 +7,11 @@ import java.util.List;
 
 public class Radar extends Component {
     private int range = 50;
+    private int linkRange = 0;
 
     public Radar(Entity parent, ArrayList<Entity> entities) {
         super(parent, entities);
+        linkRange = parentEntity.getTdlTransmitter().getTransmitterRange();
     }
 
 
@@ -26,15 +28,13 @@ public class Radar extends Component {
             if(dist <= range) {
                 hasVisual = true;
                 e.isItDetected(hasVisual);
-                //for add link to give order but not add to knownentities of hq
-                if (parentEntity.getType() == Entity.Type.HQ || parentEntity.w.app.headQuarter.getKnownEntities().contains(parentEntity)) {
-                    if (e.getType() != Entity.Type.HQ){
-                        if (e.getSide() == Entity.Side.ALLY) e.setIsInLink(hasVisual);
-                    }
-                }
                 if (!(parentEntity.getKnownEntities().contains(e)) && e.isActive()){
                     parentEntity.addKnownEntity(e);
-                    updateKnownEntities(e);
+                    if (dist <= linkRange) {
+                        if (e.getSide() == parentEntity.getSide() && parentEntity.getSide() == Entity.Side.ALLY) {
+                            parentEntity.addLinkedEntity(e);
+                        }
+                    }
                 }
                 else if(parentEntity.getKnownEntities().contains(e) && !e.isActive()){
                     parentEntity.removeKnownEntity(e);
@@ -42,42 +42,23 @@ public class Radar extends Component {
                     e.isItDetected(hasVisual);
                 }
             } else if (parentEntity.getKnownEntities().contains(e)){
-                boolean isAnySee = false;
-                for (Entity entity : parentEntity.getKnownEntities()){
-                    if (entity != e && entity.getKnownEntities().contains(e)){
-                        isAnySee = true;
+                parentEntity.removeKnownEntity(e);
+                hasVisual = false;
+                e.isItDetected(hasVisual);
+                if (parentEntity.w.app.headQuarter.getLinkedEntities().contains(parentEntity)){
+                    for (Entity entity : parentEntity.getLinkedEntities()){
+                        entity.removeKnownEntity(e);
                     }
                 }
-                if (!isAnySee){
-                    parentEntity.removeKnownEntity(e);
-                    hasVisual = false;
-                    e.isItDetected(hasVisual);
-                    if (parentEntity.getType() == Entity.Type.HQ) e.setIsInLink(hasVisual);
-                } else parentEntity.addKnownEntity(e);
             }
         }
         if (!parentEntity.getKnownEntities().isEmpty())
             parentEntity.getTdlTransmitter().createInfoMessage(parentEntity.w.app, parentEntity, parentEntity.getKnownEntities());
     }
 
-
-    //TODO neden çalışmadığına bak
-    private void updateKnownEntities(Entity e){
-        for (Entity entity : parentEntity.getKnownEntities()){
-            if (entity.getSide() == parentEntity.getSide()){
-                if (e != entity){
-                    if (!(e.getKnownEntities().contains(entity))){
-                        e.addKnownEntity(entity);
-                    }
-                }
-            }
-        }
-    }
-
     @Override
     public void update(int deltaTime) {
         detect(entities);
-        //System.out.println("ComponentRadar::update");
     }
 
     public void setRange(int r){

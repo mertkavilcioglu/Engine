@@ -348,7 +348,7 @@ public class ActionPanel extends VCSPanel {
         else if (sideOfEntity == Entity.Side.ALLY) isEnemy = false;
 
         timer.start();
-        if (selectedEntity.getType() != Entity.Type.HQ && ((selectedEntity.getSide() == Entity.Side.ENEMY) || selectedEntity.isInLink())){
+        if (selectedEntity.getType() != Entity.Type.HQ && ((selectedEntity.getSide() == Entity.Side.ENEMY) || app.headQuarter.getLinkedEntities().contains(selectedEntity))){
             updateOrderButtonsState(true);
         } else updateOrderButtonsState(false);
 
@@ -400,9 +400,7 @@ public class ActionPanel extends VCSPanel {
             attackerEntity = selectedEntity;
             if (isAttackAction){
                 if (attackerEntity != null){
-                    //attackerEntity.addOrder(new Attack(app, attackerEntity, targetEntity));
                     attackerEntity.getTdlTransmitter().createAttackMessage(app,attackerEntity,targetEntity);
-                    //refreshCurrentOrderPanel();
                 }
             }
         });
@@ -548,7 +546,7 @@ public class ActionPanel extends VCSPanel {
         if (!isPaused){
             if (isDone){
                 refreshCurrentOrderPanel();
-            } 
+            }
         }
     }
 
