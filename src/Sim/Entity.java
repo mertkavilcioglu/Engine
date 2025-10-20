@@ -20,7 +20,7 @@ public class Entity {
     private List<Entity> detectedEntities = new ArrayList<>();
     private ArrayList<Entity> infoMsgSendEntities = new ArrayList<>();
     private RGB currentPixelColor;
-    protected final World w;
+    public final World w;
     private NodeInfo nodeInfo;
     private Queue<Order> orders = new LinkedList<>();
     private Order currentOrder = null;
@@ -34,6 +34,9 @@ public class Entity {
     private boolean isDetected = false;
 
     private ArrayList<Entity> knownEntities = new ArrayList<>();
+    private ArrayList<Entity> linkedEntities = new ArrayList<>();
+    private ArrayList<Entity> linkedEntitiesToRemove = new ArrayList<>();
+
     private TDLReceiver tdlReceiver = new TDLReceiver(this);
     private TDLTransmitter tdlTransmitter = new TDLTransmitter(this);
 
@@ -215,8 +218,13 @@ public class Entity {
 
         tdlTransmitter.update();
 
+
+
         components.removeAll(componentsToRemove);
         componentsToRemove.clear();
+
+        linkedEntities.removeAll(linkedEntitiesToRemove);
+        linkedEntitiesToRemove.clear();
     }
 
     public void move(){
@@ -479,13 +487,26 @@ public class Entity {
         return knownEntities;
     }
 
+    public ArrayList<Entity> getLinkedEntities(){
+        return linkedEntities;
+    }
+
     public void addKnownEntity(Entity e){
         if(!knownEntities.contains(e))
             knownEntities.add(e);
     }
 
+    public void addLinkedEntity(Entity e){
+        if(!linkedEntities.contains(e))
+            linkedEntities.add(e);
+    }
+
     public void removeKnownEntity(Entity e){
         knownEntities.remove(e);
+    }
+
+    public void removeLinkedEntity(Entity e){
+        linkedEntitiesToRemove.add(e);
     }
 
     public TDLReceiver getTdlReceiver(){

@@ -29,16 +29,13 @@ public class TDLReceiver {
                     ((MoveMsg) msg).getPos()));
         }
         else if(msg.type == Message.MessageType.ENTITY_INFO){
-            source.addKnownEntity(msg.getSrc());
-            for (Entity e : msg.getSrc().getKnownEntities()){
-                if (!source.getKnownEntities().contains(e) && e != source){
-                    source.addKnownEntity(e);
+            //source.addLinkedEntity(msg.getSrc());
+            for (Entity e : msg.getSrc().getLinkedEntities()){
+                if (!source.getLinkedEntities().contains(e) && e != source){
+                    //source.addLinkedEntity(e);
                 }
             }
-            //TODO: ENTITY'YI KENDI LOCAL WORLDUNE EKLE,
-            // DIREK GERCEK ENTITYYI REFERANS OLARAK EKLEYEBILIRSIN DAHA KOLAY OLUR
-            // VEYA LOCALCREATE FONKSIYONU YAZIP ELDEKI INFO ILE YENI BIR ENTITY OLUSTURABILIRSIN
-            // AMA BU SEFER DE DELETE ICIN FALAN KOPYA ENTITY'DE SOURCE ENTITY REF TUTMAK GEREKEBILIR
+
         }
         else if (msg.type == Message.MessageType.RECEIVE_INFO) {
             msg.getApp().debugLog("Message arrived successfully.");

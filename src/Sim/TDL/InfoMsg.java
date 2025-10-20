@@ -22,7 +22,7 @@ public class InfoMsg extends Message{
         this.side = src.getSide();
         this.pos = src.getPos();
         this.speed = src.getSpeed();
-        this.radarRange = ((Radar) src.getComponent("Radar")).getRange();
+        //this.radarRange = ((Radar) src.getComponent("Radar")).getRange();
         this.type = src.getType();
     }
 

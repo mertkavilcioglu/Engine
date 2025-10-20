@@ -44,7 +44,7 @@ public class TDLTransmitter {
         InfoMsg infoMsg = new InfoMsg(app, source, targetReceivers);
         messagesToSend.add(infoMsg);
         for (Entity entity : targetReceivers){
-            app.debugLog(String.format("Message sent from %s to %s\n", infoMsg.getSrc(), entity));
+            //app.debugLog(String.format("Message sent from %s to %s\n", infoMsg.getSrc(), entity));
         }
     }
 
@@ -52,7 +52,7 @@ public class TDLTransmitter {
         ReceiveMsg receiveMsg = new ReceiveMsg(app, source, VCSApp.headQuarter, type);
         receiveMsg.setCounter(calculateRangeCounter(receiveMsg));
         messagesToSend.add(receiveMsg);
-        app.debugLog(String.format("Message sent from %s to %s\n", receiveMsg.getSrc(), receiveMsg.getReceiverEntity()));
+        //app.debugLog(String.format("Message sent from %s to %s\n", receiveMsg.getSrc(), receiveMsg.getReceiverEntity()));
 
     }
 
@@ -76,10 +76,25 @@ public class TDLTransmitter {
             receiver.getTdlReceiver().receiveMessage(msg);
         }
         msg.getApp().actionPanel.refreshCurrentOrderPanel();
-        msg.getApp().debugLog(msg.getMsg() + " message received!!!");
+        //msg.getApp().debugLog(msg.getMsg() + " message received!!!");
     }
 
     public void update(){
+
+        for(Entity e : source.w.entities){
+            if(source.getPos().distance(e.getPos()) <= range && e != source)
+                source.addLinkedEntity(e);
+        }
+
+        for(Entity e : source.getLinkedEntities()){
+            if(source.getPos().distance(e.getPos()) > range)
+                source.removeLinkedEntity(e);
+        }
+
+
+        if(!source.getLinkedEntities().isEmpty())
+            source.getTdlTransmitter().createInfoMessage(source.w.app , source, source.getLinkedEntities());
+
         if(!messagesToSend.isEmpty()){
             for(Message msg : messagesToSend){
                 if(msg.getCounter() > 0){
@@ -95,6 +110,8 @@ public class TDLTransmitter {
         if(!messagesToRemove.isEmpty()){
             messagesToSend.removeAll(messagesToRemove);
         }
+
+
     }
 
     public int calculateRangeCounter(Message msg){

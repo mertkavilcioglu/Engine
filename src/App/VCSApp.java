@@ -225,6 +225,7 @@ public class VCSApp {
         e.setActive(false);
         for(Entity ent : e.getKnownEntities()){
             ent.removeKnownEntity(e);
+            ent.removeLinkedEntity(e);
         }
         hierarchyPanel.entityRemoved(e);
         actionPanel.deleteEntityFromTarget(e);
