@@ -28,7 +28,7 @@ public class MapView extends VCSPanel {
 
     public Map<String, RGB> allPixelColors;
     private ImageIcon turkeyMap = new ImageIcon(new ImageIcon("src/Assets/Turkey_map_painted.png").getImage());
-    private final Image friendlyHQ = new ImageIcon("src/Assets/Symbols/nato_hq.png").getImage();
+    private final Image friendlyHQ = new ImageIcon("src/Assets/Symbols/nato_hq2j.jpg").getImage();
     private final Image friendlyAir = new ImageIcon("src/Assets/Symbols/nato_friendly_air.png").getImage();
     private final Image friendlyLand = new ImageIcon("src/Assets/Symbols/nato_friendly_land.png").getImage();
     private final Image friendlySea = new ImageIcon("src/Assets/Symbols/nato_friendly_sea.png").getImage();
