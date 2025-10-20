@@ -120,22 +120,27 @@ public class TDLTransmitter {
         Entity temp = targetReceiver;
         double posDiff;
 
-        while(msg.getSrc().getPos().distance(targetReceiver.getPos()) > msg.getSrc().getTdlTransmitter().getRange()){
-            posDiff = msg.getApp().mapView.getWidth();
-            for(Entity e : msg.getSrc().getKnownEntities()){
-                if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getRange()){
-                    // HAS VISUAL ON TARGET
-                    double newDiff = e.getPos().distance(msg.getSrc().getPos());
-                    if(newDiff < posDiff){
-                        posDiff = newDiff;
-                        temp = e;
+        if(msg.getSrc().getLinkedEntities().contains(targetReceiver)){
+            while(msg.getSrc().getPos().distance(targetReceiver.getPos()) > msg.getSrc().getTdlTransmitter().getRange()){
+                posDiff = msg.getApp().mapView.getWidth();
+                for(Entity e : msg.getSrc().getKnownEntities()){
+                    if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getRange()){
+                        // HAS VISUAL ON TARGET
+                        double newDiff = e.getPos().distance(msg.getSrc().getPos());
+                        if(newDiff < posDiff){
+                            posDiff = newDiff;
+                            temp = e;
+                        }
                     }
-                }
 
+                }
+                targetReceiver = temp;
+                counter++;
+                msg.getApp().debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
             }
-            targetReceiver = temp;
-            counter++;
-            msg.getApp().debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
+        }
+        else{
+            msg.getApp().debugLogError("ALICI MENZİL DIŞINDA!! HATALI İLETİM GERÇEKLEŞİYOR. HATANIN SEBEBİ MUHTEMELEN LİNK RANGE YERİNE RADAR RANGE'E GÖRE HESAP YAPMAK.");
         }
         msg.getApp().debugLog("Connection is done, forwarding...");
 
