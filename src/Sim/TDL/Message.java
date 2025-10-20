@@ -33,7 +33,12 @@ public abstract class Message {
         this.app = app;
         this.src = src;
         this.receiver = receiver;
-        this.msg = msg;
+
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String formattedDate = myDateObj.format(myFormatObj);
+        this.msg = String.format("[%s] %s",formattedDate, msg);
+
         app.logPanel.addMsgToLog(this);
     }
     public Message(MessageType type, VCSApp app, Entity src, List<Entity> receivers, String msg){
