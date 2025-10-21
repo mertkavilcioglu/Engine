@@ -23,6 +23,6 @@ public class FollowMsg extends Message{
 
     @Override
     public String getMsgDetail() {
-        return String.format("Follow Message:\nFrom: %s\nTo: %s\nTarget: %s", getSrc().getName(), getReceiverEntity().getName(), followTarget.getName());
+        return String.format("Follow Mission Assignment Message:\nFrom: %s\nTo: %s\nTarget: %s", getSrc().getName(), getReceiverEntity().getName(), followTarget.getName());
     }
 }

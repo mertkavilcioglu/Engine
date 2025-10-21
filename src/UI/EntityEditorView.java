@@ -515,7 +515,7 @@ public class EntityEditorView extends VCSPanel {
                 if(!selectedEntity.hasComponent("Radar")){
                     selectedEntity.addComponents(new Radar(selectedEntity,
                             app.world.entities));
-                    debugLog("added radar");
+                    //debugLog("added radar");
                 }
             }
             int sideInt = addSideBox.getSelectedIndex();

@@ -30,7 +30,13 @@ public class InfoMsg extends Message{
 
     @Override
     public String getMsgDetail() {
-        return String.format("Info Message:\n Unit Name: %s\nUnit Type: %s\nUnit Position: %s\nUnit Radar Range: %d", name, type.getName(), pos.toString(), radarRange);
+        return String.format(
+                "Precise Participant Location and Identification (PPLI):\n" +
+                        "Unit Name: %s\n" +
+                        "Unit Type: %s\n" +
+                        "Unit Position: %s\n" +
+                        "Unit Speed: %s",
+                name, type.getName(), pos.toString(), speed.toString());
     }
 
     }

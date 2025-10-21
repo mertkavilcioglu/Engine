@@ -19,6 +19,6 @@ public class MoveMsg extends Message{
 
     @Override
     public String getMsgDetail() {
-        return String.format("Move Message:\nFrom: %s\nTo: %s\nTarget Position: %s", getSrc().getName(), getReceiverEntity().getName(), pos.toString());
+        return String.format("Move Mission Assignment Message:\nFrom: %s\nTo: %s\nTarget Position: %s", getSrc().getName(), getReceiverEntity().getName(), pos.toString());
     }
 }
