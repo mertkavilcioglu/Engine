@@ -58,7 +58,6 @@ public class LogPanel extends VCSPanel {
         messageList.setBorder(logTitledBorder);
         messageList.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
         messageList.setForeground(Color.WHITE);
-        messageList.addListSelectionListener(this::valueChanged);
         messageList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -94,7 +93,16 @@ public class LogPanel extends VCSPanel {
     }
 
     public void addMsgToLog(Message message){
-        messageModel.addElement(message);
+        if (message.getSrc().getSide() == Entity.Side.ALLY) {
+            if (message.type.equals(Message.MessageType.ENTITY_INFO)){
+                boolean isAlly = false;
+                for (Entity entity : message.getReceiverList()){
+                    if (entity.getSide() == Entity.Side.ALLY) isAlly = true;
+                }
+                if (isAlly) messageModel.addElement(message);
+            } else if (message.getReceiverEntity().getSide() == Entity.Side.ALLY)
+                messageModel.addElement(message);
+        }
     }
 
     public void messageToLog(String message){
@@ -161,11 +169,6 @@ public class LogPanel extends VCSPanel {
 
     @Override
     public void selectedEntityChanged(Entity entity) {
-
-    }
-
-    private void valueChanged(ListSelectionEvent l) {
-        //if (l.getValueIsAdjusting()) messageList.clearSelection();
 
     }
 }
