@@ -348,9 +348,8 @@ public class ActionPanel extends VCSPanel {
         else if (sideOfEntity == Entity.Side.ALLY) isEnemy = false;
 
         timer.start();
-        if (selectedEntity.getType() != Entity.Type.HQ && ((selectedEntity.getSide() == Entity.Side.ENEMY) || app.headQuarter.getLinkedEntities().contains(selectedEntity))){
-            updateOrderButtonsState(true);
-        } else updateOrderButtonsState(false);
+
+        updateOrderMode(selectedEntity);
 
 
         selectedUnitLabel.setText("Selected Entity: " + selectedEntity.getName());
@@ -633,6 +632,12 @@ public class ActionPanel extends VCSPanel {
     private void setButtonColor(JButton button){
         button.setBackground(app.uiColorManager.BUTTON_COLOR);
         button.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+    }
+
+    public void updateOrderMode(Entity selectedEntity){
+        if (selectedEntity.getType() != Entity.Type.HQ && ((selectedEntity.getSide() == Entity.Side.ENEMY) || app.headQuarter.getLinkedEntities().contains(selectedEntity))){
+            updateOrderButtonsState(true);
+        } else updateOrderButtonsState(false);
     }
 
     @Override
