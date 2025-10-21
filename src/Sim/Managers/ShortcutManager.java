@@ -18,7 +18,6 @@ public class ShortcutManager {
     private final World world;
     private boolean ctrlOn = false;
 
-    //TODO: ctrl z yapınca component değişikliği geri alma bozuldu onu düzelt
     public ShortcutManager(VCSApp app){
         this.app = app;
         mapView = app.mapView;
@@ -44,12 +43,10 @@ public class ShortcutManager {
 
     private void entityDelete(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
-            if(mapView.getSelectedEntity() != null){
-                Entity ent = mapView.getSelectedEntity();
-
-                addChange(ent);
-
-                app.removeEntityInstantaneously(mapView.getSelectedEntity());
+            Entity selectedEntity = mapView.getSelectedEntity();
+            if(selectedEntity != null){
+                addChange(selectedEntity);
+                app.removeEntityInstantaneously(selectedEntity);
                 mapView.repaint();
             }
         }
@@ -71,16 +68,16 @@ public class ShortcutManager {
 
     private void entityPaste(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_V && ctrlOn){
-            if(world.getCopiedEntity() != null &&
-                    world.getCopiedEntity().CanMove(mapView.allPixelColors.get(mapView.getPixPos().toString()),
-                            world.getCopiedEntity().getType())){
-                Entity ent = world.getCopiedEntity();
-                String newName = String.format("%s - Copy", ent.getName());
+            Entity copiedEntity = world.getCopiedEntity();
+
+            if(copiedEntity != null && copiedEntity.CanMove(
+                    mapView.allPixelColors.get(mapView.getPixPos().toString()), copiedEntity.getType())){
+                String newName = String.format("%s - Copy", copiedEntity.getName());
                 Vec2int newPos = mapView.getPixPos();
 
-                Entity clone = app.createEntity(newName, ent.getSide(), newPos, ent.getSpeed(), ent.getType());
+                Entity clone = app.createEntity(newName, copiedEntity.getSide(), newPos, copiedEntity.getSpeed(), copiedEntity.getType());
 
-                for (Component c : ent.getComponents()){
+                for (Component c : copiedEntity.getComponents()){
                     clone.addComponents(c);
                 }
                 app.editorPanel.updatePanelData(clone);

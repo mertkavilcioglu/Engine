@@ -118,31 +118,30 @@ public class TDLTransmitter {
         int counter  = 0;
         Entity targetReceiver = msg.getReceiverEntity();
         Entity temp = targetReceiver;
+        Entity source = msg.getSrc();
+        VCSApp app = msg.getApp();
         double posDiff;
 
-        if(msg.getSrc().getLinkedEntities().contains(targetReceiver)){
-            while(msg.getSrc().getPos().distance(targetReceiver.getPos()) > msg.getSrc().getTdlTransmitter().getTransmitterRange()){
-                posDiff = msg.getApp().mapView.getWidth();
-                for(Entity e : msg.getSrc().getKnownEntities()){
+        if(source.getLinkedEntities().contains(targetReceiver)){
+            while(source.getPos().distance(targetReceiver.getPos()) >
+                    source.getTdlTransmitter().getTransmitterRange()){
+                posDiff = app.mapView.getWidth();
+                for(Entity e : source.getLinkedEntities()){
                     if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getTransmitterRange()){
                         // HAS VISUAL ON TARGET
-                        double newDiff = e.getPos().distance(msg.getSrc().getPos());
+                        double newDiff = e.getPos().distance(source.getPos());
                         if(newDiff < posDiff){
                             posDiff = newDiff;
                             temp = e;
                         }
                     }
-
                 }
                 targetReceiver = temp;
                 counter++;
-                msg.getApp().debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
+                app.debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
             }
         }
-        else{
-            msg.getApp().debugLogError("ALICI MENZİL DIŞINDA!! HATALI İLETİM GERÇEKLEŞİYOR. HATANIN SEBEBİ MUHTEMELEN LİNK RANGE YERİNE RADAR RANGE'E GÖRE HESAP YAPMAK.");
-        }
-        msg.getApp().debugLog("Connection is done, forwarding...");
+        app.debugLog("Connection is done, forwarding...");
 
         return counter;
     }

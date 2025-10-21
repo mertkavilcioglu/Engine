@@ -48,9 +48,6 @@ public class World{
         if(pos == null) ent.setPos(new Vec2int(500, 250));
         else ent.setPos(pos);
         ent.setSpeed(new Vec2int(0, 0));
-        Range r = new Range(ent,entities);
-        r.setLinkRange(range);
-        ent.addComponents(r);
         ent.setType(Entity.Type.HQ);
 
         ent.maxSpeed = 0;
@@ -76,9 +73,6 @@ public class World{
         if(ent.maxSpeed == 0)
             ent.maxSpeed = 4;
 
-
-        //PixelColor color = new PixelColor(ent, entities);
-        //color.CanMove(color.PixelColorFind(ent.getPos().x, ent.getPos().y, map));
         entities.add(ent);
 
         return ent;
