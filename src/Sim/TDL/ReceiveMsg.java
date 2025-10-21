@@ -8,7 +8,7 @@ public class ReceiveMsg extends Message{
     private MessageType order;
 
     public ReceiveMsg(VCSApp app, Entity src, Entity receiver, MessageType orderType) {
-        super(MessageType.RECEIVE_INFO, app, src, receiver, (src + ":Received."));
+        super(MessageType.RECEIVE_INFO, app, src, receiver, (String.format("%s: %s",src, "J1.0")));
         this.order = orderType;
     }
 
