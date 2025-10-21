@@ -103,6 +103,7 @@ public class LogPanel extends VCSPanel {
             } else if (message.getReceiverEntity().getSide() == Entity.Side.ALLY)
                 messageModel.addElement(message);
         }
+        messageList.ensureIndexIsVisible(messageModel.size() - 1);
     }
 
     public void messageToLog(String message){
