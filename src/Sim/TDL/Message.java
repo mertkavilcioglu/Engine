@@ -50,21 +50,11 @@ public abstract class Message {
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formattedDate = myDateObj.format(myFormatObj);
-
         this.msg = String.format("[%s] %s",formattedDate, msg);
 
         if (src.getInfoMsgSendEntities().isEmpty()){
             isFirstInfo = true;
             infoToLog(isFirstInfo);
-        } else {
-            for (Entity entity : receiverList){
-                if (!src.getInfoMsgSendEntities().contains(entity)) {
-                    isFirstInfo = true;
-                    infoToLog(isFirstInfo);
-                    return;
-                }
-                else isFirstInfo = false;
-            }
         }
 
     }

@@ -6,9 +6,10 @@ import Sim.Entity;
 public class AttackMsg extends Message {
 
     private Entity attackTarget;
+    //private String attackCode = "J12.1";
 
     public AttackMsg(VCSApp app, Entity src, Entity receiver, Entity attackTarget) {
-        super(MessageType.ATTACK_ORDER, app, src, receiver, (src + ": Attack msg"));
+        super(MessageType.ATTACK_ORDER, app, src, receiver, (String.format("%s: %s",src, "J12.1")));
         this.attackTarget = attackTarget;
 
     }

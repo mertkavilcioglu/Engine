@@ -39,6 +39,7 @@ public class Entity {
 
     private TDLReceiver tdlReceiver = new TDLReceiver(this);
     private TDLTransmitter tdlTransmitter = new TDLTransmitter(this);
+    private String ppliCode;
 
     private boolean isActive = true;
     //TODO: stack içinde tutulacak entityleri createEntity fonksiyonu ile koymuştun bu yanlış,
@@ -141,6 +142,7 @@ public class Entity {
             pos = newPos;
             speed = newSpeed;
             type = newType;
+            setPpliCode(type);
 
             for (Component c : components){
                 if(c.getClass() == Radar.class)
@@ -570,6 +572,7 @@ public class Entity {
         speed = e.getSpeed();
         type = e.getType();
         components = e.getComponents();
+        setPpliCode(type);
 
         if(!isActive && e.isActive){
             w.app.hierarchyPanel.entityAdded(this);
@@ -597,6 +600,24 @@ public class Entity {
 //        detectedEntities = e.getDetectedEntities();
         // ORDERLARI falan da ekleyebilirsin
 
+    }
+
+    public void setPpliCode(Type type){
+        switch (type){
+            case AIR:
+                ppliCode = "J2.1";
+                break;
+            case HQ, GROUND:
+                ppliCode = "J2.2";
+                break;
+            case SURFACE:
+                ppliCode = "J2.3";
+                break;
+        }
+    }
+
+    public String getPpliCode(){
+        return ppliCode;
     }
 
 }

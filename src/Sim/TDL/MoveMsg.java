@@ -9,7 +9,7 @@ public class MoveMsg extends Message{
     private Vec2int pos;
 
     public MoveMsg(VCSApp app, Entity src, Entity receiver, Vec2int pos) {
-        super(MessageType.MOVE_ORDER, app, src, receiver, (src + ": Move msg"));
+        super(MessageType.MOVE_ORDER, app, src, receiver, (String.format("%s: %s",src, "J12.3")));
         this.pos = pos;
     }
 
