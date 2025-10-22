@@ -2,12 +2,10 @@ package UI;
 
 import App.VCSApp;
 import Sim.Entity;
-import Sim.Orders.Order;
 import Sim.TDL.Message;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -100,7 +98,7 @@ public class LogPanel extends VCSPanel {
                     if (entity.getSide() == Entity.Side.ALLY) isAlly = true;
                 }
                 if (isAlly) messageModel.addElement(message);
-            } else if (message.getReceiverEntity().getSide() == Entity.Side.ALLY)
+            } else if (message.getTargetReceiver().getSide() == Entity.Side.ALLY)
                 messageModel.addElement(message);
         }
         messageList.ensureIndexIsVisible(messageModel.size() - 1);

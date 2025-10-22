@@ -20,6 +20,6 @@ public class AttackMsg extends Message {
 
     @Override
     public String getMsgDetail() {
-        return String.format("Attack Mission Assignment Message:\nFrom: %s\nTo: %s\nTarget: %s", getSrc().getName(), getReceiverEntity().getName(), attackTarget.getName());
+        return String.format("Attack Mission Assignment Message:\nFrom: %s\nTo: %s\nTarget: %s", getSrc().getName(), getTargetReceiver().getName(), attackTarget.getName());
     }
 }

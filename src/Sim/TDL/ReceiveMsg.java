@@ -14,11 +14,11 @@ public class ReceiveMsg extends Message{
 
     public String receiveDetail(){
         if (order == MessageType.ATTACK_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Attack\n%s going to execute the order from %s.", getSrc().getName(), getReceiverEntity().getName(), getSrc().getName(), getReceiverEntity().getName());
+            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Attack\n%s going to execute the order from %s.", getSrc().getName(), getTargetReceiver().getName(), getSrc().getName(), getTargetReceiver().getName());
         } else if (order == MessageType.MOVE_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Move\n%s going to execute the order from %s.", getSrc().getName(), getReceiverEntity().getName(), getSrc().getName(), getReceiverEntity().getName());
+            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Move\n%s going to execute the order from %s.", getSrc().getName(), getTargetReceiver().getName(), getSrc().getName(), getTargetReceiver().getName());
         }else if (order == MessageType.FOLLOW_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Follow\n%s going to execute the order from %s.", getSrc().getName(), getReceiverEntity().getName(), getSrc().getName(), getReceiverEntity().getName());
+            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Follow\n%s going to execute the order from %s.", getSrc().getName(), getTargetReceiver().getName(), getSrc().getName(), getTargetReceiver().getName());
         }else return null;
     }
 

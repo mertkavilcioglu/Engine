@@ -10,6 +10,7 @@ import Vec.Vec2int;
 import java.util.*;
 
 public class Entity {
+    private int id;
     private String name;
     private Side side = Side.ALLY;
     private Vec2int pos;
@@ -618,6 +619,14 @@ public class Entity {
 
     public String getPpliCode(){
         return ppliCode;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public int getId(){
+        return id;
     }
 
 }

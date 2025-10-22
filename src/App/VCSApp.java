@@ -2,6 +2,7 @@ package App;
 
 import Sim.*;
 import Sim.Component;
+import Sim.Managers.IDManager;
 import Sim.Managers.ShortcutManager;
 import UI.*;
 import Vec.Vec2int;
@@ -32,6 +33,7 @@ public class VCSApp {
     public UIColorManager uiColorManager;
     static public Entity headQuarter;
     private ShortcutManager shortcutManager;
+    private IDManager idManager;
 
     public Timer simTimer;
 
@@ -74,6 +76,7 @@ public class VCSApp {
         mapPixelPosPanel = new MapPixelPosPanel(this);
         pixelColor = new PixelColor(this);
         shortcutManager = new ShortcutManager(this);
+        idManager = new IDManager();
 
         JPanel mergeSouthPanel = new JPanel(new GridLayout(1,2));
         mergeSouthPanel.add(actionPanel);
@@ -177,6 +180,8 @@ public class VCSApp {
         Entity ent = world.createEntity(name, side, pos, speed, type);
 //        world.createdEntities.push(ent);
 //        world.changes.push(World.Change.CREATE);
+        ent.setId(idManager.createId());
+        debugLog(String.format("Id of %s : %d", ent.getName(), ent.getId()));
         world.changes.push(new Entity(world, name, side, pos, speed, type, ent.getComponents(), false));
 
         world.changedEntities.push(ent);

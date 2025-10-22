@@ -14,8 +14,8 @@ public class ResultMsg extends Message{
 
     public String resultDetail(){
         if (isDone){
-            return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Status: Done", getSrc().getName(), getReceiverEntity().getName());
-        } else return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Status: Not Done", getSrc().getName(), getReceiverEntity().getName());
+            return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Status: Done", getSrc().getName(), getTargetReceiver().getName());
+        } else return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Status: Not Done", getSrc().getName(), getTargetReceiver().getName());
     }
 
     public boolean getOrderResult(){

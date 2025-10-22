@@ -5,14 +5,14 @@ import Sim.Entity;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Message {
 
     private VCSApp app;
-    private Entity src, receiver;
-    private List<Entity> receiverList;
+    private Entity src, target; //todo DELETE THESE
+    private int srcID, targetID;
+    private List<Entity> receiverList; //todo DELETE
     private int counter = 0;
     private String msg;
     private boolean isFirstInfo = true;
@@ -28,11 +28,11 @@ public abstract class Message {
 
     public MessageType type;
 
-    public Message(MessageType type, VCSApp app, Entity src, Entity receiver, String msg){
+    public Message(MessageType type, VCSApp app, Entity src, Entity target, String msg){
         this.type = type;
         this.app = app;
         this.src = src;
-        this.receiver = receiver;
+        this.target = target;
 
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -66,8 +66,8 @@ public abstract class Message {
         return src;
     }
 
-    public Entity getReceiverEntity(){
-        return receiver;
+    public Entity getTargetReceiver(){
+        return target;
     }
 
     public List<Entity> getReceiverList(){

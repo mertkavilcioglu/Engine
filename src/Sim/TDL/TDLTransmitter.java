@@ -22,21 +22,21 @@ public class TDLTransmitter {
        MoveMsg moveMsg = new MoveMsg(app, VCSApp.headQuarter, targetReceiver, pos);
         moveMsg.setCounter(calculateRangeCounter(moveMsg));
         messagesToSend.add(moveMsg);
-        app.debugLog(String.format("Message sent from %s to %s", moveMsg.getSrc(), moveMsg.getReceiverEntity()));
+        app.debugLog(String.format("Message sent from %s to %s", moveMsg.getSrc(), moveMsg.getTargetReceiver()));
     }
 
     public void createAttackMessage(VCSApp app, Entity targetReceiver, Entity attackTarget){
         AttackMsg attackMsg = new AttackMsg(app, VCSApp.headQuarter, targetReceiver, attackTarget);
         attackMsg.setCounter(calculateRangeCounter(attackMsg));
         messagesToSend.add(attackMsg);
-        app.debugLog(String.format("Message sent from %s to %s", attackMsg.getSrc(), attackMsg.getReceiverEntity()));
+        app.debugLog(String.format("Message sent from %s to %s", attackMsg.getSrc(), attackMsg.getTargetReceiver()));
     }
 
     public void createFollowMessage(VCSApp app, Entity targetReceiver, Entity followEntity, int time){
         FollowMsg followMsg = new FollowMsg(app, VCSApp.headQuarter, targetReceiver, followEntity, time);
         followMsg.setCounter(calculateRangeCounter(followMsg));
         messagesToSend.add(followMsg);
-        app.debugLog(String.format("Message sent from %s to %s\n", followMsg.getSrc(), followMsg.getReceiverEntity()));
+        app.debugLog(String.format("Message sent from %s to %s\n", followMsg.getSrc(), followMsg.getTargetReceiver()));
     }
 
     public void createInfoMessage(VCSApp app, Entity source, List<Entity> targetReceivers){
@@ -60,7 +60,7 @@ public class TDLTransmitter {
         ResultMsg resultMsg = new ResultMsg(app, source, VCSApp.headQuarter, isDone);
         resultMsg.setCounter(calculateRangeCounter(resultMsg));
         messagesToSend.add(resultMsg);
-        app.debugLog(String.format("Message sent from %s to %s\n", resultMsg.getSrc(), resultMsg.getReceiverEntity()));
+        app.debugLog(String.format("Message sent from %s to %s\n", resultMsg.getSrc(), resultMsg.getTargetReceiver()));
 
     }
 
@@ -72,7 +72,7 @@ public class TDLTransmitter {
                 receiver.getTdlReceiver().receiveMessage(msg);
             }
         }else {
-            receiver = msg.getReceiverEntity();
+            receiver = msg.getTargetReceiver();
             receiver.getTdlReceiver().receiveMessage(msg);
         }
         msg.getApp().actionPanel.refreshCurrentOrderPanel();
@@ -116,7 +116,7 @@ public class TDLTransmitter {
 
     public int calculateRangeCounter(Message msg){
         int counter  = 0;
-        Entity targetReceiver = msg.getReceiverEntity();
+        Entity targetReceiver = msg.getTargetReceiver();
         Entity temp = targetReceiver;
         Entity source = msg.getSrc();
         VCSApp app = msg.getApp();
