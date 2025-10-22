@@ -20,23 +20,23 @@ public class TDLTransmitter {
 
     public void createMoveMessage(VCSApp app, Entity targetReceiver, Vec2int pos){
        MoveMsg moveMsg = new MoveMsg(app, VCSApp.headQuarter, targetReceiver, pos);
-        moveMsg.setCounter(calculateRangeCounter(moveMsg));
+        //moveMsg.setCounter(calculateRangeCounter(moveMsg));
         messagesToSend.add(moveMsg);
-        app.debugLog(String.format("Message sent from %s to %s", moveMsg.getSrc(), moveMsg.getTargetReceiver()));
+        app.debugLog(String.format("Message sent from %s to %s", moveMsg.getSrcID(), moveMsg.getTargetID()));
     }
 
-    public void createAttackMessage(VCSApp app, Entity targetReceiver, Entity attackTarget){
-        AttackMsg attackMsg = new AttackMsg(app, VCSApp.headQuarter, targetReceiver, attackTarget);
-        attackMsg.setCounter(calculateRangeCounter(attackMsg));
+    public void createAttackMessage(VCSApp app, String targetID, Entity attackTarget){
+        AttackMsg attackMsg = new AttackMsg(app, VCSApp.headQuarter.getId(), targetID, attackTarget);
+        //attackMsg.setCounter(calculateRangeCounter(attackMsg));
         messagesToSend.add(attackMsg);
-        app.debugLog(String.format("Message sent from %s to %s", attackMsg.getSrc(), attackMsg.getTargetReceiver()));
+        app.debugLog(String.format("Message sent from %s to %s", attackMsg.getSrcID(), attackMsg.getTargetID()));
     }
 
     public void createFollowMessage(VCSApp app, Entity targetReceiver, Entity followEntity, int time){
         FollowMsg followMsg = new FollowMsg(app, VCSApp.headQuarter, targetReceiver, followEntity, time);
-        followMsg.setCounter(calculateRangeCounter(followMsg));
+        //followMsg.setCounter(calculateRangeCounter(followMsg));
         messagesToSend.add(followMsg);
-        app.debugLog(String.format("Message sent from %s to %s\n", followMsg.getSrc(), followMsg.getTargetReceiver()));
+        app.debugLog(String.format("Message sent from %s to %s\n", followMsg.getSrcID(), followMsg.getTargetID()));
     }
 
     public void createInfoMessage(VCSApp app, Entity source, List<Entity> targetReceivers){
@@ -50,7 +50,7 @@ public class TDLTransmitter {
 
     public void createReceiveMessage(VCSApp app, Entity source, Message.MessageType type){
         ReceiveMsg receiveMsg = new ReceiveMsg(app, source, VCSApp.headQuarter, type);
-        receiveMsg.setCounter(calculateRangeCounter(receiveMsg));
+        //receiveMsg.setCounter(calculateRangeCounter(receiveMsg));
         messagesToSend.add(receiveMsg);
         //app.debugLog(String.format("Message sent from %s to %s\n", receiveMsg.getSrc(), receiveMsg.getReceiverEntity()));
 
@@ -58,26 +58,32 @@ public class TDLTransmitter {
 
     public void createResultMessage(VCSApp app, Entity source, boolean isDone){
         ResultMsg resultMsg = new ResultMsg(app, source, VCSApp.headQuarter, isDone);
-        resultMsg.setCounter(calculateRangeCounter(resultMsg));
+        //resultMsg.setCounter(calculateRangeCounter(resultMsg));
         messagesToSend.add(resultMsg);
-        app.debugLog(String.format("Message sent from %s to %s\n", resultMsg.getSrc(), resultMsg.getTargetReceiver()));
+        app.debugLog(String.format("Message sent from %s to %s\n", resultMsg.getSrcID(), resultMsg.getTargetID()));
 
     }
 
-    public void sendMessage(Message msg){
-        Entity receiver;
-        if (msg.type == Message.MessageType.ENTITY_INFO){
-            for (Entity entity : msg.getReceiverList()){
-                receiver = entity;
-                receiver.getTdlReceiver().receiveMessage(msg);
-            }
-        }else {
-            receiver = msg.getTargetReceiver();
-            receiver.getTdlReceiver().receiveMessage(msg);
-        }
-        msg.getApp().actionPanel.refreshCurrentOrderPanel();
-        //msg.getApp().debugLog(msg.getMsg() + " message received!!!");
+    public void sendMessage2(Message msg){
+        //TODO: range içindeki herkesin mesaj listesine mesajı gönder,
+        // receive classında ise her update içinde en üstteki mesajı oku
     }
+
+
+//    public void sendMessage(Message msg){
+//        Entity receiver;
+//        if (msg.type == Message.MessageType.ENTITY_INFO){
+//            for (Entity entity : msg.getReceiverList()){
+//                receiver = entity;
+//                receiver.getTdlReceiver().receiveMessage(msg);
+//            }
+//        }else {
+//            receiver = msg.getTargetReceiver();
+//            receiver.getTdlReceiver().receiveMessage(msg);
+//        }
+//        msg.getApp().actionPanel.refreshCurrentOrderPanel();
+//        //msg.getApp().debugLog(msg.getMsg() + " message received!!!");
+//    }
 
     public void update(){
 
@@ -99,10 +105,10 @@ public class TDLTransmitter {
             for(Message msg : messagesToSend){
                 if(msg.getCounter() > 0){
                     msg.setCounter(msg.getCounter() - 1);
-                    msg.getApp().debugLog(String.format("Message of %s forwarded to relay.", msg.getSrc().getName()));
+                    msg.getApp().debugLog(String.format("Message of %s forwarded to relay.", msg.getSrcID()));
                 }
                 else{
-                    sendMessage(msg);
+                    sendMessage2(msg);
                     messagesToRemove.add(msg);
                 }
             }
@@ -114,37 +120,37 @@ public class TDLTransmitter {
 
     }
 
-    public int calculateRangeCounter(Message msg){
-        int counter  = 0;
-        Entity targetReceiver = msg.getTargetReceiver();
-        Entity temp = targetReceiver;
-        Entity source = msg.getSrc();
-        VCSApp app = msg.getApp();
-        double posDiff;
-
-        if(source.getLinkedEntities().contains(targetReceiver)){
-            while(source.getPos().distance(targetReceiver.getPos()) >
-                    source.getTdlTransmitter().getTransmitterRange()){
-                posDiff = app.mapView.getWidth();
-                for(Entity e : source.getLinkedEntities()){
-                    if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getTransmitterRange()){
-                        // HAS VISUAL ON TARGET
-                        double newDiff = e.getPos().distance(source.getPos());
-                        if(newDiff < posDiff){
-                            posDiff = newDiff;
-                            temp = e;
-                        }
-                    }
-                }
-                targetReceiver = temp;
-                counter++;
-                app.debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
-            }
-        }
-        app.debugLog("Connection is done, forwarding...");
-
-        return counter;
-    }
+//    public int calculateRangeCounter(Message msg){ TODO: silme burayı, shortest path için lazım olacak
+//        int counter  = 0;
+//        Entity targetReceiver = msg.getTargetReceiver();
+//        Entity temp = targetReceiver;
+//        Entity source = msg.getSrc();
+//        VCSApp app = msg.getApp();
+//        double posDiff;
+//
+//        if(source.getLinkedEntities().contains(targetReceiver)){
+//            while(source.getPos().distance(targetReceiver.getPos()) >
+//                    source.getTdlTransmitter().getTransmitterRange()){
+//                posDiff = app.mapView.getWidth();
+//                for(Entity e : source.getLinkedEntities()){
+//                    if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getTransmitterRange()){
+//                        // HAS VISUAL ON TARGET
+//                        double newDiff = e.getPos().distance(source.getPos());
+//                        if(newDiff < posDiff){
+//                            posDiff = newDiff;
+//                            temp = e;
+//                        }
+//                    }
+//                }
+//                targetReceiver = temp;
+//                counter++;
+//                app.debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
+//            }
+//        }
+//        app.debugLog("Connection is done, forwarding...");
+//
+//        return counter;
+//    }
 
     public int getTransmitterRange(){
         return range;

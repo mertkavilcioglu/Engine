@@ -399,7 +399,7 @@ public class ActionPanel extends VCSPanel {
             attackerEntity = selectedEntity;
             if (isAttackAction){
                 if (attackerEntity != null){
-                    attackerEntity.getTdlTransmitter().createAttackMessage(app,attackerEntity,targetEntity);
+                    attackerEntity.getTdlTransmitter().createAttackMessage(app,attackerEntity.getId(),targetEntity);
                 }
             }
         });

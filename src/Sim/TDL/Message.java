@@ -10,8 +10,8 @@ import java.util.List;
 public abstract class Message {
 
     private VCSApp app;
-    private Entity src, target; //todo DELETE THESE
-    private int srcID, targetID;
+    //private Entity src, target; //todo DELETE THESE
+    private String srcID, targetID;
     private List<Entity> receiverList; //todo DELETE
     private int counter = 0;
     private String msg;
@@ -28,11 +28,11 @@ public abstract class Message {
 
     public MessageType type;
 
-    public Message(MessageType type, VCSApp app, Entity src, Entity target, String msg){
+    public Message(MessageType type, VCSApp app, String srcID, String targetID, String msg){
         this.type = type;
         this.app = app;
-        this.src = src;
-        this.target = target;
+        this.srcID = srcID;
+        this.targetID = targetID;
 
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -41,10 +41,10 @@ public abstract class Message {
 
         app.logPanel.addMsgToLog(this);
     }
-    public Message(MessageType type, VCSApp app, Entity src, List<Entity> receivers, String msg){
+    public Message(MessageType type, VCSApp app, String  srcID, List<Entity> receivers, String msg){
         this.type = type;
         this.app = app;
-        this.src = src;
+        this.srcID = srcID;
         this.receiverList = receivers;
 
         LocalDateTime myDateObj = LocalDateTime.now();
@@ -52,22 +52,22 @@ public abstract class Message {
         String formattedDate = myDateObj.format(myFormatObj);
         this.msg = String.format("[%s] %s",formattedDate, msg);
 
-        if (src.getInfoMsgSendEntities().isEmpty()){
-            isFirstInfo = true;
-            infoToLog(isFirstInfo);
-        }
+//        if (src.getInfoMsgSendEntities().isEmpty()){
+//            isFirstInfo = true;
+//            infoToLog(isFirstInfo);
+//        }
 
     }
     public VCSApp getApp(){
         return app;
     }
 
-    public Entity getSrc(){
-        return src;
+    public String getSrcID(){
+        return srcID;
     }
 
-    public Entity getTargetReceiver(){
-        return target;
+    public String getTargetID(){
+        return targetID;
     }
 
     public List<Entity> getReceiverList(){
@@ -86,15 +86,17 @@ public abstract class Message {
         return msg;
     }
 
-    public void infoToLog(boolean isFirstInfo){
-        if (isFirstInfo){
-            app.logPanel.addMsgToLog(this);
-            for (Entity e : receiverList){
-                if (!src.getInfoMsgSendEntities().contains(e)) src.setInfoMsgSendEntities(e);
-            }
-        }
-        isFirstInfo = false;
-    }
+//    public void infoToLog(boolean isFirstInfo){
+//        if (isFirstInfo){
+
+// TODO:           app.logPanel.addMsgToLog(this);
+
+//            for (Entity e : receiverList){
+//                if (!src.getInfoMsgSendEntities().contains(e)) src.setInfoMsgSendEntities(e);
+//            }
+//        }
+//        isFirstInfo = false;
+//    }
 
     public abstract String getMsgDetail();
 
