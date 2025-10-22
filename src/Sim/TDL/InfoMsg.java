@@ -19,7 +19,7 @@ public class InfoMsg extends Message{
     private Entity.Type type;
 
     public InfoMsg(VCSApp app, Entity src, List<Entity> receivers) {
-        super(MessageType.ENTITY_INFO, app, src, receivers, (String.format("%s: %s",src, src.getPpliCode())));
+        super(MessageType.ENTITY_INFO, app, src.getId(), receivers, (String.format("%s: %s",src, src.getPpliCode())));
         this.name = src.getName();
         this.side = src.getSide();
         this.pos = src.getPos();

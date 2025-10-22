@@ -8,14 +8,14 @@ public class ResultMsg extends Message{
     private boolean isDone;
 
     public ResultMsg(VCSApp app, Entity src, Entity receiver, boolean isDone) {
-        super(MessageType.ORDER_RESULT, app, src, receiver, (src + ": Result Msg"));
+        super(MessageType.ORDER_RESULT, app, src.getId(), receiver.getId(), (src + ": Result Msg"));
         this.isDone = isDone;
     }
 
     public String resultDetail(){
         if (isDone){
-            return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Status: Done", getSrc().getName(), getTargetReceiver().getName());
-        } else return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Status: Not Done", getSrc().getName(), getTargetReceiver().getName());
+            return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Status: Done", getSrcID(), getTargetID());
+        } else return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Status: Not Done", getSrcID(), getTargetID());
     }
 
     public boolean getOrderResult(){

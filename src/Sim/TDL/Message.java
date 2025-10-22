@@ -39,7 +39,7 @@ public abstract class Message {
         String formattedDate = myDateObj.format(myFormatObj);
         this.msg = String.format("[%s] %s",formattedDate, msg);
 
-        app.logPanel.addMsgToLog(this);
+        //app.logPanel.addMsgToLog(this); TODO
     }
     public Message(MessageType type, VCSApp app, String  srcID, List<Entity> receivers, String msg){
         this.type = type;

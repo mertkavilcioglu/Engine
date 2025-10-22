@@ -90,19 +90,19 @@ public class LogPanel extends VCSPanel {
         this.add(scrollPane);
     }
 
-    public void addMsgToLog(Message message){
-        if (message.getSrc().getSide() == Entity.Side.ALLY) {
-            if (message.type.equals(Message.MessageType.ENTITY_INFO)){
-                boolean isAlly = false;
-                for (Entity entity : message.getReceiverList()){
-                    if (entity.getSide() == Entity.Side.ALLY) isAlly = true;
-                }
-                if (isAlly) messageModel.addElement(message);
-            } else if (message.getTargetReceiver().getSide() == Entity.Side.ALLY)
-                messageModel.addElement(message);
-        }
-        messageList.ensureIndexIsVisible(messageModel.size() - 1);
-    }
+//    public void addMsgToLog(Message message){ TODO: BURAYI DÜZELT
+//        if (message.getSrc().getSide() == Entity.Side.ALLY) {
+//            if (message.type.equals(Message.MessageType.ENTITY_INFO)){
+//                boolean isAlly = false;
+//                for (Entity entity : message.getReceiverList()){
+//                    if (entity.getSide() == Entity.Side.ALLY) isAlly = true;
+//                }
+//                if (isAlly) messageModel.addElement(message);
+//            } else if (message.getTargetReceiver().getSide() == Entity.Side.ALLY)
+//                messageModel.addElement(message);
+//        }
+//        messageList.ensureIndexIsVisible(messageModel.size() - 1);
+//    }
 
     public void messageToLog(String message){
         String text = message + "\n";

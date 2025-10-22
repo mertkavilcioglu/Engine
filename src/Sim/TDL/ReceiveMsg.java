@@ -8,17 +8,18 @@ public class ReceiveMsg extends Message{
     private MessageType order;
 
     public ReceiveMsg(VCSApp app, Entity src, Entity receiver, MessageType orderType) {
-        super(MessageType.RECEIVE_INFO, app, src, receiver, (String.format("%s: %s",src, "J1.0")));
+        super(MessageType.RECEIVE_INFO, app, src.getId(), receiver.getId(), (String.format("%s: %s",src, "J1.0")));
+        //super.setMsg("J1.0");
         this.order = orderType;
     }
 
     public String receiveDetail(){
         if (order == MessageType.ATTACK_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Attack\n%s going to execute the order from %s.", getSrc().getName(), getTargetReceiver().getName(), getSrc().getName(), getTargetReceiver().getName());
+            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Attack\n%s going to execute the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
         } else if (order == MessageType.MOVE_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Move\n%s going to execute the order from %s.", getSrc().getName(), getTargetReceiver().getName(), getSrc().getName(), getTargetReceiver().getName());
+            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Move\n%s going to execute the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
         }else if (order == MessageType.FOLLOW_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Follow\n%s going to execute the order from %s.", getSrc().getName(), getTargetReceiver().getName(), getSrc().getName(), getTargetReceiver().getName());
+            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Follow\n%s going to execute the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
         }else return null;
     }
 
