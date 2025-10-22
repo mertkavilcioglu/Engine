@@ -21,7 +21,7 @@ public class Entity {
     private List<Entity> detectedEntities = new ArrayList<>();
     private ArrayList<Entity> infoMsgSendEntities = new ArrayList<>();
     private RGB currentPixelColor;
-    public final World w;
+    public World w;
     private NodeInfo nodeInfo;
     private Queue<Order> orders = new LinkedList<>();
     private Order currentOrder = null;
@@ -60,6 +60,15 @@ public class Entity {
         this.type = type;
         this.isActive = active;
         this.components = (ArrayList<Component>) components.clone();
+    }
+
+    public Entity(String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type){
+        this.name = name;
+        this.side = side;
+        this.pos = new Vec2int(pos.x, pos.y);
+        this.speed = new Vec2int(speed.x, speed.y);
+        this.type = type;
+        //setPpliCode(type);
     }
 
     public enum Type{

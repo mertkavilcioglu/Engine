@@ -49,7 +49,6 @@ public class World{
         else ent.setPos(pos);
         ent.setSpeed(new Vec2int(0, 0));
         ent.setType(Entity.Type.HQ);
-        ent.setPpliCode(Entity.Type.HQ);
 
         ent.maxSpeed = 0;
 
@@ -69,7 +68,6 @@ public class World{
         ent.setSpeed(new Vec2int(speed.x, speed.y));
 
         ent.setType(type);
-        ent.setPpliCode(type);
 
         ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
         if(ent.maxSpeed == 0)
