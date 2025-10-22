@@ -1,12 +1,8 @@
 package Sim.TDL;
 
 import Sim.Entity;
-import Sim.Orders.Attack;
-import Sim.Orders.Follow;
-import Sim.Orders.Move;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class TDLReceiver {
 
@@ -23,9 +19,28 @@ public class TDLReceiver {
     }
 
     public void readMessage(Message msg){
-        if(msg.getTargetID().equals(source.getId()))
+        if(msg.getTargetID().equals(source.getId())) {
             return;
-        // Or relay, if requested
+            // Or relay, if requested
+        } else {
+            if (msg.type.equals(Message.MessageType.ENTITY_INFO)){
+                //TODO create local world and write a create func for that world
+                // than with that func create a entity and add to linkedEntities
+            } else if (msg.type.equals(Message.MessageType.SURVEILLANCE_MSG)) {
+                //TODO with local create func create entity and add to knownentities of target
+            } else if (msg.type.equals(Message.MessageType.RECEIVE_INFO)) {
+
+            } else if (msg.type.equals(Message.MessageType.ATTACK_ORDER)) {
+
+            } else if (msg.type.equals(Message.MessageType.MOVE_ORDER)) {
+
+            }else if (msg.type.equals(Message.MessageType.FOLLOW_ORDER)){
+
+            }else if (msg.type.equals(Message.MessageType.ORDER_RESULT)){
+
+            }
+        }
+
 
 
     }

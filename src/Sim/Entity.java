@@ -40,7 +40,7 @@ public class Entity {
 
     private TDLReceiver tdlReceiver = new TDLReceiver(this);
     private TDLTransmitter tdlTransmitter = new TDLTransmitter(this);
-    private String ppliCode;
+    //private String ppliCode;
 
     private boolean isActive = true;
     //TODO: stack içinde tutulacak entityleri createEntity fonksiyonu ile koymuştun bu yanlış,
@@ -63,19 +63,26 @@ public class Entity {
     }
 
     public enum Type{
-        GROUND("Tank"),
-        SURFACE("Ship"),
-        AIR("Plane"),
-        HQ("HEADQUARTER");
+        GROUND("Tank", "J2.2"),
+        SURFACE("Ship", "J2.3"),
+        AIR("Plane", "J2.1"),
+        HQ("HEADQUARTER", "J2.2");
 
         private String name;
+        private String ppliCode;
 
-        Type(String name){
+        Type(String name, String ppliCode){
             this.name = name;
+            this.ppliCode = ppliCode;
         }
         public String getName(){
             return name;
         }
+
+        public String getPpliCode(){
+            return ppliCode;
+        }
+
     }
 
     public enum Side{
@@ -143,7 +150,6 @@ public class Entity {
             pos = newPos;
             speed = newSpeed;
             type = newType;
-            setPpliCode(type);
 
             for (Component c : components){
                 if(c.getClass() == Radar.class)
@@ -573,7 +579,6 @@ public class Entity {
         speed = e.getSpeed();
         type = e.getType();
         components = e.getComponents();
-        setPpliCode(type);
 
         if(!isActive && e.isActive){
             w.app.hierarchyPanel.entityAdded(this);
@@ -601,24 +606,6 @@ public class Entity {
 //        detectedEntities = e.getDetectedEntities();
         // ORDERLARI falan da ekleyebilirsin
 
-    }
-
-    public void setPpliCode(Type type){
-        switch (type){
-            case AIR:
-                ppliCode = "J2.1";
-                break;
-            case HQ, GROUND:
-                ppliCode = "J2.2";
-                break;
-            case SURFACE:
-                ppliCode = "J2.3";
-                break;
-        }
-    }
-
-    public String getPpliCode(){
-        return ppliCode;
     }
 
     public void setId(String  id){

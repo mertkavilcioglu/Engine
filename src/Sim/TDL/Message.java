@@ -1,7 +1,6 @@
 package Sim.TDL;
 
 import App.VCSApp;
-import Sim.Entity;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +11,8 @@ public abstract class Message {
     private VCSApp app;
     //private Entity src, target; //todo DELETE THESE
     private String srcID, targetID;
-    private List<Entity> receiverList; //todo DELETE
+    //private List<Entity> receiverList; //todo DELETE
+    private List<String> targetIDList;
     private int counter = 0;
     private String msg;
     private boolean isFirstInfo = true;
@@ -23,7 +23,8 @@ public abstract class Message {
         FOLLOW_ORDER,
         ENTITY_INFO,
         RECEIVE_INFO,
-        ORDER_RESULT
+        ORDER_RESULT,
+        SURVEILLANCE_MSG
     }
 
     public MessageType type;
@@ -41,11 +42,11 @@ public abstract class Message {
 
         //app.logPanel.addMsgToLog(this); TODO
     }
-    public Message(MessageType type, VCSApp app, String  srcID, List<Entity> receivers, String msg){
+    public Message(MessageType type, VCSApp app, String  srcID, List<String> receivers, String msg){
         this.type = type;
         this.app = app;
         this.srcID = srcID;
-        this.receiverList = receivers;
+        this.targetIDList = receivers;
 
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -70,8 +71,8 @@ public abstract class Message {
         return targetID;
     }
 
-    public List<Entity> getReceiverList(){
-        return receiverList;
+    public List<String> getTargetIDList(){
+        return targetIDList;
     }
 
     public int getCounter(){

@@ -30,9 +30,13 @@ public class Radar extends Component {
                 e.isItDetected(hasVisual);
                 if (!(parentEntity.getKnownEntities().contains(e)) && e.isActive()){
                     parentEntity.addKnownEntity(e);
-                    if (dist <= linkRange) {
-                        if (e.getSide() == parentEntity.getSide() && parentEntity.getSide() == Entity.Side.ALLY) {
+                    if (parentEntity.getSide() == Entity.Side.ALLY) {
+                        if (e.getSide() == parentEntity.getSide() && dist <= linkRange) {
                             parentEntity.addLinkedEntity(e);
+                        } else if (e.getSide().equals(Entity.Side.ENEMY)){
+                            for (Entity entity : parentEntity.getLinkedEntities()){
+                                parentEntity.getTdlTransmitter().createSurveillanceMsg(parentEntity.w.app, parentEntity, entity.getId(), e);
+                            }
                         }
                     }
                 }
@@ -52,8 +56,10 @@ public class Radar extends Component {
                 }
             }
         }
-        if (!parentEntity.getKnownEntities().isEmpty())
-            parentEntity.getTdlTransmitter().createInfoMessage(parentEntity.w.app, parentEntity, parentEntity.getKnownEntities());
+        if (!parentEntity.getLinkedEntities().isEmpty())
+            for (Entity entity : parentEntity.getLinkedEntities()){
+                parentEntity.getTdlTransmitter().createInfoMessage(parentEntity.w.app, parentEntity, entity.getId());
+            }
     }
 
     @Override

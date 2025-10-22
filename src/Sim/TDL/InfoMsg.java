@@ -2,12 +2,7 @@ package Sim.TDL;
 
 import App.VCSApp;
 import Sim.Entity;
-import Sim.Radar;
 import Vec.Vec2int;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class InfoMsg extends Message{
 
@@ -18,14 +13,14 @@ public class InfoMsg extends Message{
     private int radarRange;
     private Entity.Type type;
 
-    public InfoMsg(VCSApp app, Entity src, List<Entity> receivers) {
-        super(MessageType.ENTITY_INFO, app, src.getId(), receivers, (String.format("%s: %s",src, src.getPpliCode())));
-        this.name = src.getName();
-        this.side = src.getSide();
-        this.pos = src.getPos();
-        this.speed = src.getSpeed();
+    public InfoMsg(VCSApp app, String srcID, String targetID, String srcName, Entity.Side srcSide, Vec2int srcPos, Vec2int srcSpeed, Entity.Type srcType) {
+        super(MessageType.ENTITY_INFO, app, srcID, targetID, (String.format("%s: %s",srcName, srcType.getPpliCode())));
+        this.name = srcName;
+        this.side = srcSide;
+        this.pos = srcPos;
+        this.speed = srcSpeed;
         //this.radarRange = ((Radar) src.getComponent("Radar")).getRange();
-        this.type = src.getType();
+        this.type = srcType;
     }
 
     @Override

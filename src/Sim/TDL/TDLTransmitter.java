@@ -39,13 +39,10 @@ public class TDLTransmitter {
         app.debugLog(String.format("Message sent from %s to %s\n", followMsg.getSrcID(), followMsg.getTargetID()));
     }
 
-    public void createInfoMessage(VCSApp app, Entity source, List<Entity> targetReceivers){
+    public void createInfoMessage(VCSApp app, Entity src, String targetID){
         //TODO nasıl createlenip ne şekilde ne zaman basılcağına bakmalı
-        InfoMsg infoMsg = new InfoMsg(app, source, targetReceivers);
+        InfoMsg infoMsg = new InfoMsg(app, src.getId(), targetID, src.getName(), src.getSide(), src.getPos(), src.getSpeed(), src.getType());
         messagesToSend.add(infoMsg);
-        for (Entity entity : targetReceivers){
-            //app.debugLog(String.format("Message sent from %s to %s\n", infoMsg.getSrc(), entity));
-        }
     }
 
     public void createReceiveMessage(VCSApp app, Entity source, Message.MessageType type){
@@ -62,6 +59,11 @@ public class TDLTransmitter {
         messagesToSend.add(resultMsg);
         app.debugLog(String.format("Message sent from %s to %s\n", resultMsg.getSrcID(), resultMsg.getTargetID()));
 
+    }
+
+    public void createSurveillanceMsg(VCSApp app, Entity source, String targetID, Entity seenEntity){
+        SurveillanceMsg surveillanceMsg = new SurveillanceMsg(app, source, targetID, seenEntity);
+        messagesToSend.add(surveillanceMsg);
     }
 
     public void sendMessage2(Message msg){
@@ -99,7 +101,10 @@ public class TDLTransmitter {
 
 
         if(!source.getLinkedEntities().isEmpty())
-            source.getTdlTransmitter().createInfoMessage(source.w.app , source, source.getLinkedEntities());
+            for (Entity entity : source.getLinkedEntities()){
+                String id = entity.getId();
+                source.getTdlTransmitter().createInfoMessage(source.w.app , source, id);
+            }
 
         if(!messagesToSend.isEmpty()){
             for(Message msg : messagesToSend){
