@@ -13,13 +13,15 @@ import java.util.concurrent.ThreadLocalRandom;
 public class LocalWorld {
 
     private ArrayList<Entity> entities = new ArrayList<>();
-    private HashMap<String, Entity> entityHashMap;
+    private HashMap<String, Entity> entityHashMap = new HashMap<>();
+    private Entity src;
 
-    public LocalWorld() {
+    public LocalWorld(Entity src) {
+        this.src = src;
     }
 
     public Entity createEntity(String id, String eName, Entity.Side eSide, Vec2int pos, Vec2int speed, Entity.Type type){
-        Entity ent = new Entity(eName, eSide,pos,speed, type);
+        Entity ent = new Entity(src.w, eName, eSide,pos,speed, type);
         ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
         if(ent.maxSpeed == 0)
             ent.maxSpeed = 4;
@@ -50,6 +52,7 @@ public class LocalWorld {
             updateEntity(msg.getSrcID(),((InfoMsg) msg).getName(), ((InfoMsg) msg).getSide(), ((InfoMsg) msg).getPos(), ((InfoMsg) msg).getSpeed(), ((InfoMsg) msg).getType());
         else
             createEntity(msg.getSrcID(),((InfoMsg) msg).getName(), ((InfoMsg) msg).getSide(), ((InfoMsg) msg).getPos(), ((InfoMsg) msg).getSpeed(), ((InfoMsg) msg).getType());
-    }
 
+        src.w.app.debugLog(String.format("Info Message of %s has taken by %s.\n", msg.getSrcID(), src.getName()));
+    }
 }

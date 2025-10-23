@@ -101,4 +101,7 @@ public abstract class Message {
 
     public abstract String getMsgDetail();
 
+    public void setTargetID(String tId){
+        targetID = tId;
+    }
 }

@@ -181,7 +181,7 @@ public class VCSApp {
 //        world.createdEntities.push(ent);
 //        world.changes.push(World.Change.CREATE);
         ent.setId(idManager.createId(ent));
-        debugLog(String.format("Id of %s : %d", ent.getName(), ent.getId()));
+        debugLog(String.format("Id of %s : %s", ent.getName(), ent.getId()));
         world.changes.push(new Entity(world, name, side, pos, speed, type, ent.getComponents(), false));
 
         world.changedEntities.push(ent);

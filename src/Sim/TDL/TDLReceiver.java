@@ -25,12 +25,13 @@ public class TDLReceiver {
 
     public void update(){
         if(!receivedMessages.isEmpty()){
+            source.w.app.debugLog("MSG read");
             readMessage(receivedMessages.poll());
         }
     }
 
     public void readMessage(Message msg){
-        if(msg.getTargetID().equals(source.getId()))
+        if(msg.getTargetID().equals(source.getId()) && msg.type != Message.MessageType.ENTITY_INFO)
             return;
             // Or relay, if requested
 

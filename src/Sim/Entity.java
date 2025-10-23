@@ -44,7 +44,7 @@ public class Entity {
 
     private boolean isActive = true;
 
-    private LocalWorld localWorld = new LocalWorld();
+    private LocalWorld localWorld = new LocalWorld(this);
     public boolean isLocal = false;
 
     public Entity(World w) {
@@ -63,13 +63,14 @@ public class Entity {
         this.components = (ArrayList<Component>) components.clone();
     }
 
-    public Entity(String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type){
+    public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type){
         this.name = name;
         this.side = side;
         this.pos = new Vec2int(pos.x, pos.y);
         this.speed = new Vec2int(speed.x, speed.y);
         this.type = type;
         //setPpliCode(type);
+        this.w = w;
     }
 
     public enum Type{
@@ -230,11 +231,12 @@ public class Entity {
         for (int i = 0; i < components.size(); i++) {
             components.get(i).update(deltaTime);
         }
-        
+
         if(!isLocal)
             localWorld.update(deltaTime);
 
         tdlTransmitter.update();
+        tdlReceiver.update();
 
         if (side == Side.ALLY && type != Type.HQ){
             if (w.app.headQuarter.getLinkedEntities().contains(this)){

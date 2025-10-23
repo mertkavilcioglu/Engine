@@ -58,7 +58,7 @@ public class Radar extends Component {
         }
         if (!parentEntity.getLinkedEntities().isEmpty())
             for (Entity entity : parentEntity.getLinkedEntities()){
-                parentEntity.getTdlTransmitter().createInfoMessage(parentEntity.w.app, parentEntity, entity.getId());
+                //parentEntity.getTdlTransmitter().createInfoMessage(parentEntity.w.app, parentEntity, entity.getId());
             }
     }
 
