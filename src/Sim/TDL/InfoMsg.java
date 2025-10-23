@@ -34,4 +34,24 @@ public class InfoMsg extends Message{
                 name, type.getName(), pos.toString(), speed.toString());
     }
 
+    public String getName(){
+        return name;
     }
+
+    public Entity.Side getSide(){
+        return side;
+    }
+
+    public Vec2int getPos(){
+        return pos;
+    }
+
+    public Vec2int getSpeed(){
+        return speed;
+    }
+
+    public Entity.Type getType(){
+        return type;
+    }
+
+}

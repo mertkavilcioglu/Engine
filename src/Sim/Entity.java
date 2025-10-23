@@ -43,8 +43,9 @@ public class Entity {
     //private String ppliCode;
 
     private boolean isActive = true;
-    //TODO: stack içinde tutulacak entityleri createEntity fonksiyonu ile koymuştun bu yanlış,
-    // bunları new Entity ile yapacak şekilde değiştir.
+
+    private LocalWorld localWorld = new LocalWorld();
+    public boolean isLocal = false;
 
     public Entity(World w) {
         this.w = w;
@@ -229,6 +230,9 @@ public class Entity {
         for (int i = 0; i < components.size(); i++) {
             components.get(i).update(deltaTime);
         }
+        
+        if(!isLocal)
+            localWorld.update(deltaTime);
 
         tdlTransmitter.update();
 
@@ -244,6 +248,7 @@ public class Entity {
                 }
             }
         }
+
 
         components.removeAll(componentsToRemove);
         componentsToRemove.clear();
@@ -623,6 +628,10 @@ public class Entity {
 
     public String  getId(){
         return id;
+    }
+
+    public LocalWorld getLocalWorld(){
+        return localWorld;
     }
 
 }

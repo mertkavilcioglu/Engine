@@ -56,6 +56,9 @@ public class TDLReceiver {
 //                }
                 //TODO create local world and write a create func for that world
                 // than with that func create a entity and add to linkedEntities
+
+                source.getLocalWorld().readEntityInfo(msg);
+
                 break;
             case RECEIVE_INFO:
                 msg.getApp().debugLog("Message arrived successfully.");
