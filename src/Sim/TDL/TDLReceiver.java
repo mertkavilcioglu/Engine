@@ -25,13 +25,13 @@ public class TDLReceiver {
 
     public void update(){
         if(!receivedMessages.isEmpty()){
-            source.w.app.debugLog("MSG read");
+            //source.w.app.debugLog("MSG read");
             readMessage(receivedMessages.poll());
         }
     }
 
     public void readMessage(Message msg){
-        if(msg.getTargetID().equals(source.getId()) && msg.type != Message.MessageType.ENTITY_INFO)
+        if(!msg.getTargetID().equals(source.getId()) && msg.type != Message.MessageType.ENTITY_INFO)
             return;
             // Or relay, if requested
 
@@ -58,7 +58,8 @@ public class TDLReceiver {
                 //TODO create local world and write a create func for that world
                 // than with that func create a entity and add to linkedEntities
 
-                source.getLocalWorld().readEntityInfo(msg);
+                if(!msg.getSrcID().equals(source.getId()))
+                    source.getLocalWorld().readEntityInfo(msg);
 
                 break;
             case RECEIVE_INFO:

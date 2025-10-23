@@ -54,7 +54,7 @@ public class LocalWorld {
         else
             createEntity(msg.getSrcID(),((InfoMsg) msg).getName(), ((InfoMsg) msg).getSide(), ((InfoMsg) msg).getPos(), ((InfoMsg) msg).getSpeed(), ((InfoMsg) msg).getType());
 
-        src.w.app.debugLog(String.format("Info Message of %s has taken by %s.\n", msg.getSrcID(), src.getName()));
+        src.w.app.debugLog(String.format("Info Message of %s has taken by %s.\n", msg.getSrcID(), src.getId()));
     }
 
     public void readSurveillanceInfo(Message msg){

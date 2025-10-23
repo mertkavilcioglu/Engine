@@ -53,6 +53,7 @@ public class World{
         ent.maxSpeed = 0;
 
         entities.add(ent);
+        ent.setId("HQ");
         return ent;
     }
 
