@@ -77,6 +77,7 @@ public class TDLReceiver {
                 break;
             case SURVEILLANCE_MSG:
                 //TODO with local create func create entity and add to knownentities of target
+                source.getLocalWorld().readSurveillanceInfo(msg);
                 break;
         }
     }

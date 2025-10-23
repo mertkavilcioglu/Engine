@@ -3,6 +3,7 @@ package Sim;
 import App.VCSApp;
 import Sim.TDL.InfoMsg;
 import Sim.TDL.Message;
+import Sim.TDL.SurveillanceMsg;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
@@ -54,5 +55,12 @@ public class LocalWorld {
             createEntity(msg.getSrcID(),((InfoMsg) msg).getName(), ((InfoMsg) msg).getSide(), ((InfoMsg) msg).getPos(), ((InfoMsg) msg).getSpeed(), ((InfoMsg) msg).getType());
 
         src.w.app.debugLog(String.format("Info Message of %s has taken by %s.\n", msg.getSrcID(), src.getName()));
+    }
+
+    public void readSurveillanceInfo(Message msg){
+        SurveillanceMsg sMsg = (SurveillanceMsg) msg;
+        if (entityHashMap.containsKey(sMsg.getSeenID())){
+          updateEntity(sMsg.getSeenID(), sMsg.getSeenName(), sMsg.getSeenSide(), sMsg.getSeenPos(), sMsg.getSeenSpeed(), sMsg.getSeenType());
+        } else createEntity(sMsg.getSeenID(), sMsg.getSeenName(), sMsg.getSeenSide(), sMsg.getSeenPos(), sMsg.getSeenSpeed(), sMsg.getSeenType());
     }
 }

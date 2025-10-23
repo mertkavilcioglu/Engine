@@ -26,6 +26,34 @@ public class SurveillanceMsg extends Message{
         this.targetID = targetID;
     }
 
+    private String getSrcName(){
+        return src.getName();
+    }
+
+    public String getSeenID(){
+        return seenID;
+    }
+
+    public String getSeenName(){
+        return seenName;
+    }
+
+    public Entity.Side getSeenSide() {
+        return seenSide;
+    }
+
+    public Entity.Type getSeenType() {
+        return seenType;
+    }
+
+    public Vec2int getSeenPos() {
+        return seenPos;
+    }
+
+    public Vec2int getSeenSpeed() {
+        return seenSpeed;
+    }
+
     @Override
     public String getMsgDetail() {
         return String.format(
