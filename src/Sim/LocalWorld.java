@@ -63,4 +63,12 @@ public class LocalWorld {
           updateEntity(sMsg.getSeenID(), sMsg.getSeenName(), sMsg.getSeenSide(), sMsg.getSeenPos(), sMsg.getSeenSpeed(), sMsg.getSeenType());
         } else createEntity(sMsg.getSeenID(), sMsg.getSeenName(), sMsg.getSeenSide(), sMsg.getSeenPos(), sMsg.getSeenSpeed(), sMsg.getSeenType());
     }
+
+    public HashMap<String, Entity> getEntityHashMap() {
+        return entityHashMap;
+    }
+
+    public ArrayList<Entity> getEntities() {
+        return entities;
+    }
 }

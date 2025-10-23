@@ -412,7 +412,7 @@ public class ActionPanel extends VCSPanel {
         enemyTargetPanel.removeAll();
         if (typeOfSelected == Entity.Type.AIR){
                 for (Entity keyEntity : enemyButtons.keySet()) {
-                    if (selectedOne.getKnownEntities().contains(keyEntity)) {
+                    if (app.headQuarter.getLocalWorld().getEntities().contains(keyEntity)) {
                         enemyTargetPanel.add(enemyButtons.get(keyEntity));
                         if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                             enemyButtons.get(keyEntity).setEnabled(false);
@@ -421,7 +421,7 @@ public class ActionPanel extends VCSPanel {
                 }
         } else if (typeOfSelected == Entity.Type.SURFACE) {
                 for (Entity keyEntity : enemyButtons.keySet()){
-                    if (selectedOne.getKnownEntities().contains(keyEntity)) {
+                    if (app.headQuarter.getLocalWorld().getEntities().contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.SURFACE){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
@@ -433,7 +433,7 @@ public class ActionPanel extends VCSPanel {
 
         } else if (typeOfSelected == Entity.Type.GROUND) {
                 for (Entity keyEntity : enemyButtons.keySet()){
-                    if (selectedOne.getKnownEntities().contains(keyEntity)) {
+                    if (app.headQuarter.getLocalWorld().getEntities().contains(keyEntity)) {
                         if (keyEntity.getType() == Entity.Type.GROUND){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
@@ -454,7 +454,7 @@ public class ActionPanel extends VCSPanel {
         allyTargetPanel.removeAll();
         for (Entity e : allCreatedEntites){
             if (selectedOne.getSide() == e.getSide()){
-                for (Entity entity : e.getKnownEntities()){
+                for (Entity entity : e.getLocalWorld().getEntities()){
                     detectedEntitiesFromRadar.add(entity);
                 }
             }
