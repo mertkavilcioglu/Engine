@@ -37,8 +37,7 @@ public class TDLReceiver {
 
         switch (msg.type){
             case ATTACK_ORDER:
-                //source.addOrder(new Attack(msg.getApp(), msg.getTargetReceiver(),
-                //        ((AttackMsg) msg).getTarget()));
+                source.addOrder(new Attack(msg.getApp(), source, ((AttackMsg) msg).getAttackTargetID()));
                 break;
             case FOLLOW_ORDER:
 //                source.addOrder(new Follow(msg.getApp(), msg.getTargetReceiver(),

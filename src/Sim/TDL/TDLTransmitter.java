@@ -26,8 +26,8 @@ public class TDLTransmitter {
         app.debugLog(String.format("Message sent from %s to %s", moveMsg.getSrcID(), moveMsg.getTargetID()));
     }
 
-    public void createAttackMessage(VCSApp app, String targetID, Entity attackTarget){
-        AttackMsg attackMsg = new AttackMsg(app, VCSApp.headQuarter.getId(), targetID, attackTarget);
+    public void createAttackMessage(VCSApp app, String targetID, String attackTargetID){
+        AttackMsg attackMsg = new AttackMsg(app, VCSApp.headQuarter.getId(), targetID, attackTargetID);
         //attackMsg.setCounter(calculateRangeCounter(attackMsg));
         //messagesToSend.add(attackMsg);
         sendMessage2(attackMsg);

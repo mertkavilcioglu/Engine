@@ -7,27 +7,16 @@ import Vec.Vec2int;
 
 public class Attack extends Order{
 
-    private Entity targetEntity;
+    private String attackTargetID;
     private boolean isExecute = false;
     private double dist;
     private Vec2int prevSpeed;
     private Vec2int targetPos;
 
-    public Attack(VCSApp app, Entity src, Entity target) {
-        super(app, src);
-        this.targetEntity = target;
+    public Attack(VCSApp app, Entity source, String  attackTargetID) {
+        super(app, source);
+        this.attackTargetID = attackTargetID;
         //attackEntity(target);
-    }
-
-    Entity findEntity(String trgtname) {
-        Entity entity = null;
-        for (int i = 0; i < app.world.entities.size(); i++) {
-            Entity e = app.world.entities.get(i);
-            if (e.getName().equals(trgtname)) {
-                entity = e;
-            }
-        }
-        return entity;
     }
 
     public void attackEntity(Entity targetEntity){
@@ -81,15 +70,15 @@ public class Attack extends Order{
         source.setCurrentOrderState(true);
     }
 
-    public Entity getTargetEntity(){
-        return targetEntity;
+    public String  getAttackTargetID(){
+        return attackTargetID;
     }
 
     @Override
     protected void printToLog(){
         if (!isExecute){
             source.getTdlTransmitter().createReceiveMessage(app, source, Message.MessageType.ATTACK_ORDER);
-            String msgAttack = String.format("%s going to attack %s.", source.getName(), targetEntity.getName());
+            String msgAttack = String.format("%s going to attack %s.", source.getName(), attackTargetID);
             app.log(msgAttack);
             source.setCurrentOrderState(false);
             prevSpeed = source.getSpeed();
@@ -100,12 +89,12 @@ public class Attack extends Order{
     @Override
     protected void actualUpdate() {
         printToLog();
-        attackEntity(targetEntity);
+        attackEntity(source.getLocalWorld().getEntityHashMap().get(attackTargetID));
     }
 
     @Override
     public String createTextToPrint() {
-        return String.format("Attack %s", targetEntity.toString());
+        return String.format("Attack %s", attackTargetID);
     }
 
     @Override

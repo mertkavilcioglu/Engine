@@ -399,7 +399,7 @@ public class ActionPanel extends VCSPanel {
             attackerEntity = selectedEntity;
             if (isAttackAction){
                 if (attackerEntity != null){
-                    attackerEntity.getTdlTransmitter().createAttackMessage(app,attackerEntity.getId(),targetEntity);
+                    attackerEntity.getTdlTransmitter().createAttackMessage(app,attackerEntity.getId(),targetEntity.getId());
                 }
             }
         });
@@ -597,10 +597,10 @@ public class ActionPanel extends VCSPanel {
                 if (o.toString().equals("Attack order")){
                     Attack a = (Attack) o;
                     if (selectedEntity.getSide() == Entity.Side.ALLY){
-                        JButton b = enemyButtons.get(a.getTargetEntity());
+                        JButton b = enemyButtons.get(a.getTargetEntity()); // TODO: Artık entity ref değil String entity ID alması lazım
                         b.setEnabled(true);
                     } else {
-                        JButton b = allyButtons.get(a.getTargetEntity());
+                        JButton b = allyButtons.get(a.getTargetEntity()); // TODO: Artık entity ref değil String entity ID alması lazım
                         b.setEnabled(true);
                     }
                 }
