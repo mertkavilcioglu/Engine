@@ -41,32 +41,7 @@ public class LoadSavePanel extends VCSPanel{
         loadButton.addActionListener(e -> {
             try {
                 if(e.getSource() == loadButton) {
-                    JFileChooser file_upload = new JFileChooser();
-                    file_upload.setAcceptAllFileFilterUsed(false);
-                    FileNameExtensionFilter restrict = new FileNameExtensionFilter(".txt files", "txt");
-                    file_upload.addChoosableFileFilter(restrict);
-                    int res = file_upload.showOpenDialog(null);
-                    if (res == JFileChooser.APPROVE_OPTION) {
-                        loadedFilePath = new File(file_upload.getSelectedFile().getAbsolutePath());
-                    }
-                    if (!app.world.entities.isEmpty()){
-                        for (Entity entity : app.world.entities){
-                            app.removeEntity(entity);
-                        }
-                        app.world.entities.removeAll(app.world.entitiesToRemove);
-                    }
-                    GetInput input = new GetInput();
-                    input.readInput(app.world, String.valueOf(loadedFilePath));
-                    for (Entity entity : app.world.entities) {
-                        if(entity.getType() == Entity.Type.HQ){
-                            isHaveHQ = true;
-                            app.headQuarter = entity;
-                        }
-                        app.hierarchyPanel.entityAdded(entity);
-                        app.actionPanel.createNewTargetButton(entity);
-                    }
-                    app.createHQ(isHaveHQ);
-                    app.mapView.repaint();
+                    load();
                 }
             } catch (HeadlessException ex) {
                 ex.printStackTrace();
@@ -83,6 +58,35 @@ public class LoadSavePanel extends VCSPanel{
         saveButton.addActionListener(e -> {
             save();
         });
+    }
+
+    public void load(){
+        JFileChooser file_upload = new JFileChooser();
+        file_upload.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter restrict = new FileNameExtensionFilter(".txt files", "txt");
+        file_upload.addChoosableFileFilter(restrict);
+        int res = file_upload.showOpenDialog(null);
+        if (res == JFileChooser.APPROVE_OPTION) {
+            loadedFilePath = new File(file_upload.getSelectedFile().getAbsolutePath());
+        }
+        if (!app.world.entities.isEmpty()){
+            for (Entity entity : app.world.entities){
+                app.removeEntity(entity);
+            }
+            app.world.entities.removeAll(app.world.entitiesToRemove);
+        }
+        GetInput input = new GetInput();
+        input.readInput(app.world, String.valueOf(loadedFilePath));
+        for (Entity entity : app.world.entities) {
+            if(entity.getType() == Entity.Type.HQ){
+                isHaveHQ = true;
+                app.headQuarter = entity;
+            }
+            app.hierarchyPanel.entityAdded(entity);
+            app.actionPanel.createNewTargetButton(entity);
+        }
+        app.createHQ(isHaveHQ);
+        app.mapView.repaint();
     }
 
     public void saveAs(){
