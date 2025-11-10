@@ -62,6 +62,8 @@ public class LocalWorld {
         if (entityHashMap.containsKey(sMsg.getSeenID())){
           updateEntity(sMsg.getSeenID(), sMsg.getSeenName(), sMsg.getSeenSide(), sMsg.getSeenPos(), sMsg.getSeenSpeed(), sMsg.getSeenType());
         } else createEntity(sMsg.getSeenID(), sMsg.getSeenName(), sMsg.getSeenSide(), sMsg.getSeenPos(), sMsg.getSeenSpeed(), sMsg.getSeenType());
+
+        src.w.app.debugLog(String.format("Surveillance Information of %s from %s taken by %s.\n", sMsg.getSeenID(), sMsg.getSrcID(), sMsg.getTargetID()));
     }
 
     public HashMap<String, Entity> getEntityHashMap() {

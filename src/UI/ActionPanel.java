@@ -412,7 +412,7 @@ public class ActionPanel extends VCSPanel {
         enemyTargetPanel.removeAll();
         if (typeOfSelected == Entity.Type.AIR){
                 for (Entity keyEntity : enemyButtons.keySet()) {
-                    if (app.headQuarter.getLocalWorld().getEntities().contains(keyEntity)) {
+                    if (app.headQuarter.getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
                         enemyTargetPanel.add(enemyButtons.get(keyEntity));
                         if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                             enemyButtons.get(keyEntity).setEnabled(false);
@@ -421,7 +421,7 @@ public class ActionPanel extends VCSPanel {
                 }
         } else if (typeOfSelected == Entity.Type.SURFACE) {
                 for (Entity keyEntity : enemyButtons.keySet()){
-                    if (app.headQuarter.getLocalWorld().getEntities().contains(keyEntity)) {
+                    if (app.headQuarter.getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
                         if (keyEntity.getType() == Entity.Type.SURFACE){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
@@ -433,7 +433,7 @@ public class ActionPanel extends VCSPanel {
 
         } else if (typeOfSelected == Entity.Type.GROUND) {
                 for (Entity keyEntity : enemyButtons.keySet()){
-                    if (app.headQuarter.getLocalWorld().getEntities().contains(keyEntity)) {
+                    if (app.headQuarter.getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
                         if (keyEntity.getType() == Entity.Type.GROUND){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
@@ -455,9 +455,11 @@ public class ActionPanel extends VCSPanel {
         for (Entity e : allCreatedEntites){
             if (selectedOne.getSide() == e.getSide()){
                 for (Entity entity : e.getLocalWorld().getEntities()){
-                    detectedEntitiesFromRadar.add(entity);
+                    if (entity.getSide().equals(Entity.Side.ALLY))
+                        detectedEntitiesFromRadar.add(entity);
                 }
-            }
+            } else if (selectedOne.getLocalWorld().getEntityHashMap().containsKey(e.getId()))
+                detectedEntitiesFromRadar.add(e);
         }
         if (typeOfSelected == Entity.Type.AIR){
                 for (Entity keyEntity : allyButtons.keySet()){

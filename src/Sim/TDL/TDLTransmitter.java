@@ -10,7 +10,7 @@ import java.util.List;
 public class TDLTransmitter {
 
     private Entity source;
-    private int range = 2000;
+    private int range = 500;
 
 //    private ArrayList<Message> messagesToSend = new ArrayList<>();
 //    private ArrayList<Message> messagesToRemove = new ArrayList<>();
