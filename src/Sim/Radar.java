@@ -28,38 +28,25 @@ public class Radar extends Component {
             if(dist <= range) {
                 hasVisual = true;
                 e.isItDetected(hasVisual);
-                if (!(parentEntity.getKnownEntities().contains(e)) && e.isActive()){
-                    parentEntity.addKnownEntity(e);
+                if (!(parentEntity.getLocalWorld().getEntities().contains(e)) && e.isActive()){
                     if (parentEntity.getSide() == Entity.Side.ALLY) {
                         if (e.getSide() == parentEntity.getSide() && dist <= linkRange) {
-                            parentEntity.addLinkedEntity(e);
                         } else if (e.getSide().equals(Entity.Side.ENEMY)){
-                            for (Entity entity : parentEntity.getLinkedEntities()){
+                            for (Entity entity : parentEntity.getLocalWorld().getEntities()){
                                 parentEntity.getTdlTransmitter().createSurveillanceMsg(parentEntity.w.app, parentEntity, entity.getId(), e);
                             }
                         }
                     }
                 }
-                else if(parentEntity.getKnownEntities().contains(e) && !e.isActive()){
-                    parentEntity.removeKnownEntity(e);
+                else if(parentEntity.getLocalWorld().getEntities().contains(e) && !e.isActive()){
                     hasVisual = false;
                     e.isItDetected(hasVisual);
                 }
-            } else if (parentEntity.getKnownEntities().contains(e)){
-                parentEntity.removeKnownEntity(e);
+            } else if (parentEntity.getLocalWorld().getEntities().contains(e)){
                 hasVisual = false;
                 e.isItDetected(hasVisual);
-                if (parentEntity.w.app.headQuarter.getLinkedEntities().contains(parentEntity)){
-                    for (Entity entity : parentEntity.getLinkedEntities()){
-                        entity.removeKnownEntity(e);
-                    }
-                }
             }
         }
-        if (!parentEntity.getLinkedEntities().isEmpty())
-            for (Entity entity : parentEntity.getLinkedEntities()){
-                //parentEntity.getTdlTransmitter().createInfoMessage(parentEntity.w.app, parentEntity, entity.getId());
-            }
     }
 
     @Override

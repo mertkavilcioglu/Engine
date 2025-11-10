@@ -530,7 +530,7 @@ public class ActionPanel extends VCSPanel {
             for (int i = 0; i < allCreatedEntites.size(); i++ ){
                 if (selectedEntity != allCreatedEntites.get(i)){
                     Entity ent = allCreatedEntites.get(i);
-                    if (selectedEntity.getKnownEntities().contains(ent)){
+                    if (selectedEntity.getLocalWorld().getEntities().contains(ent)){
                         followableEntityList.add(ent);
                         followTargetData.addElement(ent.getName());
                     }
@@ -635,7 +635,8 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void updateOrderMode(Entity selectedEntity){
-        if (selectedEntity.getType() != Entity.Type.HQ && ((selectedEntity.getSide() == Entity.Side.ENEMY) || app.headQuarter.getLinkedEntities().contains(selectedEntity))){
+        if (selectedEntity.getType() != Entity.Type.HQ && ((selectedEntity.getSide() == Entity.Side.ENEMY) ||
+                app.headQuarter.getLocalWorld().getEntityHashMap().containsKey(selectedEntity.getId()))){
             updateOrderButtonsState(true);
         } else updateOrderButtonsState(false);
     }

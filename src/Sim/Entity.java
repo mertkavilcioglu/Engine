@@ -34,10 +34,6 @@ public class Entity {
     private boolean isInLink = false;
     private boolean isDetected = false;
 
-    private ArrayList<Entity> knownEntities = new ArrayList<>();
-    private ArrayList<Entity> linkedEntities = new ArrayList<>();
-    private ArrayList<Entity> linkedEntitiesToRemove = new ArrayList<>();
-
     private TDLReceiver tdlReceiver = new TDLReceiver(this);
     private TDLTransmitter tdlTransmitter = new TDLTransmitter(this);
     //private String ppliCode;
@@ -226,6 +222,10 @@ public class Entity {
         if(!orders.isEmpty() && currentOrder != null)
             currentOrder.update();
 
+        for(Entity e : localWorld.getEntities()){
+            log(name + " knows: " + e.getId());
+        }
+
         move();
 
         for (int i = 0; i < components.size(); i++) {
@@ -238,25 +238,8 @@ public class Entity {
         tdlTransmitter.update();
         tdlReceiver.update();
 
-        if (side == Side.ALLY && type != Type.HQ){
-            if (w.app.headQuarter.getLinkedEntities().contains(this)){
-                for (Entity entity : linkedEntities){
-                    w.app.headQuarter.addLinkedEntity(entity);
-                    for (Entity e : knownEntities){
-                        if (e.getSide() == Side.ENEMY){
-                            entity.addKnownEntity(e);
-                        }
-                    }
-                }
-            }
-        }
-
-
         components.removeAll(componentsToRemove);
         componentsToRemove.clear();
-
-        linkedEntities.removeAll(linkedEntitiesToRemove);
-        linkedEntitiesToRemove.clear();
     }
 
     public void move(){
@@ -515,32 +498,6 @@ public class Entity {
         }
     }
 
-    public ArrayList<Entity> getKnownEntities(){
-        return knownEntities;
-    }
-
-    public ArrayList<Entity> getLinkedEntities(){
-        return linkedEntities;
-    }
-
-    public void addKnownEntity(Entity e){
-        if(!knownEntities.contains(e))
-            knownEntities.add(e);
-    }
-
-    public void addLinkedEntity(Entity e){
-        if(!linkedEntities.contains(e))
-            linkedEntities.add(e);
-    }
-
-    public void removeKnownEntity(Entity e){
-        knownEntities.remove(e);
-    }
-
-    public void removeLinkedEntity(Entity e){
-        linkedEntitiesToRemove.add(e);
-    }
-
     public TDLReceiver getTdlReceiver(){
         return tdlReceiver;
     }
@@ -557,16 +514,6 @@ public class Entity {
         isActive = a;
     }
 
-    public List<Entity> getAllyEntitiesInRange(){
-        List<Entity> allyEntities = new ArrayList<>();
-        if (isInLink){
-            for (Entity entity : w.app.headQuarter.getKnownEntities()){
-                if (entity.getSide() == Side.ALLY)
-                    allyEntities.add(entity);
-            }
-        } else return null;
-        return allyEntities;
-    }
 
     //TODO list mi tek tek mi kararsızım tek tek info mesaj atılabilir ama tek basar bakıcam
 //    public void sendInfoMessages(){
