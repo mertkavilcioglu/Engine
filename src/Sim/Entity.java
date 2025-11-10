@@ -358,7 +358,7 @@ public class Entity {
         for (int i = 0; i < ordersArray.length; i++){
             if (ordersArray[i].getClass() == Attack.class){
                 Attack attack = (Attack) ordersArray[i];
-                entities.add(attack.getTargetEntity()); //TODO: entity değil ID al
+                entities.add(w.entityHashMap.get(attack.getAttackTargetID())); //TODO: entity değil ID al
             }
         }
         return entities;

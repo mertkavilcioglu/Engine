@@ -6,10 +6,13 @@ import Sim.Entity;
 public abstract class Order {
     public final VCSApp app;
 
-    public final Entity source;
-    protected Order(VCSApp app, Entity source) {
+    public final Entity receiver;
+    public final Entity sender;
+
+    protected Order(VCSApp app, Entity receiver, Entity sender) {
         this.app = app;
-        this.source = source;
+        this.receiver = receiver;
+        this.sender = sender;
     }
 
 

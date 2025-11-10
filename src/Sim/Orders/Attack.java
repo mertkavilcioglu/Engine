@@ -13,8 +13,8 @@ public class Attack extends Order{
     private Vec2int prevSpeed;
     private Vec2int targetPos;
 
-    public Attack(VCSApp app, Entity source, String  attackTargetID) {
-        super(app, source);
+    public Attack(VCSApp app, Entity receiver, Entity sender, String  attackTargetID) {
+        super(app, receiver, sender);
         this.attackTargetID = attackTargetID;
         //attackEntity(target);
     }
@@ -25,49 +25,49 @@ public class Attack extends Order{
         if (targetEntity.isDetected()){
             targetPos = targetEntity.getPos();
         }
-        dist = source.getPos().distance(targetPos);
+        dist = receiver.getPos().distance(targetPos);
         if(dist <= 4.0){
             if (targetEntity.isDetected()){
-                source.getTdlTransmitter().createResultMessage(app, source, true);
-                String msgDestroy = String.format("%s destroy the target %s,", source.getName(), targetEntity.getName());
+                receiver.getTdlTransmitter().createResultMessage(app, receiver, true);
+                String msgDestroy = String.format("%s destroy the target %s,", receiver.getName(), targetEntity.getName());
                 app.log(msgDestroy);
                 destroy(targetEntity);
             } else {
-                source.getTdlTransmitter().createResultMessage(app, source, false);
-                String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), source.getName());
+                receiver.getTdlTransmitter().createResultMessage(app, receiver, false);
+                String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), receiver.getName());
                 app.log(notFoundMsg);
                 //TODO order bitince ya da yarım kalınca unitlere hareket belirleme
-                source.setSpeed(new Vec2int(0,0));
-                source.completeCurrentOrder();
-                source.setCurrentOrderState(true);
+                receiver.setSpeed(new Vec2int(0,0));
+                receiver.completeCurrentOrder();
+                receiver.setCurrentOrderState(true);
             }
 
 
         }
         else{
                 int targetSpeed;
-                if(source.maxSpeed <= targetEntity.maxSpeed)
+                if(receiver.maxSpeed <= targetEntity.maxSpeed)
                     targetSpeed = targetEntity.maxSpeed*2;
                 else
-                    targetSpeed = source.maxSpeed*2;
+                    targetSpeed = receiver.maxSpeed*2;
 
 
                 Vec2int newSpeed = new Vec2int();
-                if(source.getPos().distance(targetPos) <= source.maxSpeed){
+                if(receiver.getPos().distance(targetPos) <= receiver.maxSpeed){
                     newSpeed = new Vec2int(0,0);
-                    source.setPos(targetEntity.getPos());
+                    receiver.setPos(targetEntity.getPos());
                 }
                 else{
-                    newSpeed = source.getPos().vectorDiff(targetPos).normalize(targetSpeed);
-                    source.setSpeed(newSpeed);
+                    newSpeed = receiver.getPos().vectorDiff(targetPos).normalize(targetSpeed);
+                    receiver.setSpeed(newSpeed);
                 }
         }
     }
 
     public void destroy(Entity e){
         app.removeEntity(e);
-        source.completeCurrentOrder();
-        source.setCurrentOrderState(true);
+        receiver.completeCurrentOrder();
+        receiver.setCurrentOrderState(true);
     }
 
     public String  getAttackTargetID(){
@@ -77,11 +77,11 @@ public class Attack extends Order{
     @Override
     protected void printToLog(){
         if (!isExecute){
-            source.getTdlTransmitter().createReceiveMessage(app, source, Message.MessageType.ATTACK_ORDER);
-            String msgAttack = String.format("%s going to attack %s.", source.getName(), attackTargetID);
+            receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.ATTACK_ORDER);
+            String msgAttack = String.format("%s going to attack %s.", receiver.getName(), attackTargetID);
             app.log(msgAttack);
-            source.setCurrentOrderState(false);
-            prevSpeed = source.getSpeed();
+            receiver.setCurrentOrderState(false);
+            prevSpeed = receiver.getSpeed();
         }
         isExecute = true;
     }
@@ -89,7 +89,7 @@ public class Attack extends Order{
     @Override
     protected void actualUpdate() {
         printToLog();
-        attackEntity(source.getLocalWorld().getEntityHashMap().get(attackTargetID));
+        attackEntity(receiver.getLocalWorld().getEntityHashMap().get(attackTargetID));
     }
 
     @Override

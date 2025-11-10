@@ -4,6 +4,7 @@ import App.VCSApp;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -17,6 +18,7 @@ public class World{
 
     public ArrayList<Entity> entities = new ArrayList<>();
     public ArrayList<Entity> entitiesToRemove = new ArrayList<>();
+    public HashMap<String, Entity> entityHashMap = new HashMap<>();
     private Entity copiedEntity;
 
     public Stack<Entity> changedEntities = new Stack<>();
@@ -54,6 +56,7 @@ public class World{
 
         entities.add(ent);
         ent.setId("HQ");
+        entityHashMap.put(ent.getId(), ent);
         return ent;
     }
 
@@ -75,6 +78,7 @@ public class World{
             ent.maxSpeed = 4;
 
         entities.add(ent);
+        entityHashMap.put(ent.getId(), ent);
 
         return ent;
     }

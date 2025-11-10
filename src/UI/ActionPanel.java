@@ -597,10 +597,10 @@ public class ActionPanel extends VCSPanel {
                 if (o.toString().equals("Attack order")){
                     Attack a = (Attack) o;
                     if (selectedEntity.getSide() == Entity.Side.ALLY){
-                        JButton b = enemyButtons.get(a.getTargetEntity()); // TODO: Artık entity ref değil String entity ID alması lazım
+                        JButton b = enemyButtons.get(selectedEntity.w.entityHashMap.get(a.getAttackTargetID())); // TODO: Artık entity ref değil String entity ID alması lazım
                         b.setEnabled(true);
                     } else {
-                        JButton b = allyButtons.get(a.getTargetEntity()); // TODO: Artık entity ref değil String entity ID alması lazım
+                        JButton b = allyButtons.get(selectedEntity.w.entityHashMap.get(a.getAttackTargetID())); // TODO: Artık entity ref değil String entity ID alması lazım
                         b.setEnabled(true);
                     }
                 }

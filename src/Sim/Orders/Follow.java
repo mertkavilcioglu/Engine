@@ -12,16 +12,16 @@ public class Follow extends Order{
     private int numOfUpdate = 0;
     private int followTime;
 
-    public Follow(VCSApp app, Entity src, Entity target, int time) {
-        super(app, src);
+    public Follow(VCSApp app, Entity receiver, Entity sender, Entity target, int time) {
+        super(app, receiver, sender);
         this.targetEntity = target;
         this.followTime = time;
         if (followTime == 0){
-            String msgNotStarted = String.format("%s's follow order not started due to time problems.", source.getName());
+            String msgNotStarted = String.format("%s's follow order not started due to time problems.", this.receiver.getName());
             app.log(msgNotStarted);
             isExecute = true;
-            source.completeCurrentOrder();
-            source.setCurrentOrderState(true);
+            this.receiver.completeCurrentOrder();
+            this.receiver.setCurrentOrderState(true);
             return;
         }
     }
@@ -39,52 +39,52 @@ public class Follow extends Order{
 
 
     public void followEntity(Entity target){
-        double distX = target.getPos().x - source.getPos().x;
-        double distY = target.getPos().y - source.getPos().y;
-        double dist = source.getPos().distance(target.getPos());
+        double distX = target.getPos().x - receiver.getPos().x;
+        double distY = target.getPos().y - receiver.getPos().y;
+        double dist = receiver.getPos().distance(target.getPos());
         if (followTime > numOfUpdate){
             if(dist <= 3.0){
                 int time = followTime - numOfUpdate;
 
-                String reachString = String.format("%s has reached the target and will continue tracking for %d seconds.", source.getName(), time);
+                String reachString = String.format("%s has reached the target and will continue tracking for %d seconds.", receiver.getName(), time);
                 app.log(reachString);
                 //source.setSpeed(new Vec2int(0,0));
             }
             else{
                 int targetSpeed;
-                if(source.maxSpeed <= targetEntity.maxSpeed)
+                if(receiver.maxSpeed <= targetEntity.maxSpeed)
                     targetSpeed = targetEntity.maxSpeed*2;
                 else
-                    targetSpeed = source.maxSpeed*2;
-                Vec2int newSpeed = source.getPos().vectorDiff(target.getPos()).normalize(targetSpeed);
-                source.setSpeed(newSpeed);
+                    targetSpeed = receiver.maxSpeed*2;
+                Vec2int newSpeed = receiver.getPos().vectorDiff(target.getPos()).normalize(targetSpeed);
+                receiver.setSpeed(newSpeed);
             }
         }
         else if (followTime == numOfUpdate){
             if(dist <= 3.0){
-                source.getTdlTransmitter().createResultMessage(app, source, true);
-                String reachString = String.format("%s has reached the target.", source.getName());
+                receiver.getTdlTransmitter().createResultMessage(app, receiver, true);
+                String reachString = String.format("%s has reached the target.", receiver.getName());
                 app.log(reachString);
-                source.setSpeed(new Vec2int(0,0));
+                receiver.setSpeed(new Vec2int(0,0));
             }
             else{
-                source.getTdlTransmitter().createResultMessage(app, source, false);
-                String timeOutString = String.format("%s stopped following the target %s because time was out.", source.getName(), target.getName());
+                receiver.getTdlTransmitter().createResultMessage(app, receiver, false);
+                String timeOutString = String.format("%s stopped following the target %s because time was out.", receiver.getName(), target.getName());
                 app.log(timeOutString);
             }
-            source.completeCurrentOrder();
-            source.setCurrentOrderState(true);
+            receiver.completeCurrentOrder();
+            receiver.setCurrentOrderState(true);
         }
 
     }
 
     @Override
     protected void printToLog(){
-        String followString = String.format("%s is following %s.",source.getName(), targetEntity.getName());
+        String followString = String.format("%s is following %s.", receiver.getName(), targetEntity.getName());
         if (!isExecute){
-            source.getTdlTransmitter().createReceiveMessage(app, source, Message.MessageType.FOLLOW_ORDER);
+            receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.FOLLOW_ORDER);
             app.log(followString);
-            source.setCurrentOrderState(false);
+            receiver.setCurrentOrderState(false);
         }
         isExecute = true;
     }

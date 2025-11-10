@@ -10,8 +10,8 @@ public class Move extends Order{
     private Vec2int destination;
     private boolean isExecute = false;
 
-    public Move(VCSApp app, Entity src, Vec2int coordinates) {
-        super(app, src);
+    public Move(VCSApp app, Entity receiver, Entity sender, Vec2int coordinates) {
+        super(app, receiver, sender);
         this.destination = coordinates;
     }
 
@@ -19,13 +19,13 @@ public class Move extends Order{
     public void moveTo(Vec2int destination){
         if(destination == null )
             return;
-        double dist = source.getPos().distance(destination);
+        double dist = receiver.getPos().distance(destination);
         if(dist <= 2.0){
-            source.getTdlTransmitter().createResultMessage(app, source, true);
-            app.log(source.getName() + " reached the target.");
-            source.setSpeed(new Vec2int(0,0));
-            source.completeCurrentOrder();
-            source.setCurrentOrderState(true);
+            receiver.getTdlTransmitter().createResultMessage(app, receiver, true);
+            app.log(receiver.getName() + " reached the target.");
+            receiver.setSpeed(new Vec2int(0,0));
+            receiver.completeCurrentOrder();
+            receiver.setCurrentOrderState(true);
             return;
         }
         else{
@@ -36,22 +36,22 @@ public class Move extends Order{
     public void updateSpeedToMovePosition(Vec2int destination){
 
         Vec2int newSpeed = new Vec2int();
-        if(source.getPos().distance(destination) <= source.maxSpeed){
+        if(receiver.getPos().distance(destination) <= receiver.maxSpeed){
             newSpeed = new Vec2int(0,0);
-            source.setPos(destination);
+            receiver.setPos(destination);
         }
 
         else
-            newSpeed = source.getPos().vectorDiff(destination).normalize(source.maxSpeed);
-        source.setSpeed(newSpeed);
+            newSpeed = receiver.getPos().vectorDiff(destination).normalize(receiver.maxSpeed);
+        receiver.setSpeed(newSpeed);
     }
 
     @Override
     protected void printToLog(){
         if (!isExecute){
-            source.getTdlTransmitter().createReceiveMessage(app, source, Message.MessageType.MOVE_ORDER);
-            app.log(source.getName() + " moving to " + destination);
-            source.setCurrentOrderState(false);
+            receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.MOVE_ORDER);
+            app.log(receiver.getName() + " moving to " + destination);
+            receiver.setCurrentOrderState(false);
         }
         isExecute = true;
     }
