@@ -11,7 +11,7 @@ public class AttackMsg extends Message {
     public AttackMsg(VCSApp app, String srcID, String receiverID, String attackTargetID) {
         super(MessageType.ATTACK_ORDER, app, srcID, receiverID, (String.format("%s: %s",srcID, "J12.1")));
         this.attackTargetID = attackTargetID;
-
+        //TODO: HEDEFE HQ SALDIRIYOR ???????
     }
 
     public String  getAttackTargetID(){

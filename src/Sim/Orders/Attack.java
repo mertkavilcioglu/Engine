@@ -22,9 +22,9 @@ public class Attack extends Order{
     public void attackEntity(Entity targetEntity){
         if(targetEntity == null )
             return;
-        if (targetEntity.isDetected()){
+        //if (targetEntity.isDetected()){
             targetPos = targetEntity.getPos();
-        }
+        //}
         dist = receiver.getPos().distance(targetPos);
         if(dist <= 4.0){
             if (targetEntity.isDetected()){
@@ -37,7 +37,7 @@ public class Attack extends Order{
                 String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), receiver.getName());
                 app.log(notFoundMsg);
                 //TODO order bitince ya da yarım kalınca unitlere hareket belirleme
-                receiver.setSpeed(new Vec2int(0,0));
+                    receiver.setSpeed(new Vec2int(0,0));
                 receiver.completeCurrentOrder();
                 receiver.setCurrentOrderState(true);
             }

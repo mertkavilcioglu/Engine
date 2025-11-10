@@ -5,6 +5,7 @@ import Sim.Orders.Attack;
 import Sim.Orders.Follow;
 import Sim.Orders.Move;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -24,20 +25,25 @@ public class TDLReceiver {
     }
 
     public void update(){
-        if(!receivedMessages.isEmpty()){
+        while(!receivedMessages.isEmpty()){ //TODO: VEYA BİR KOTA KOY, HER UPDATE'DE 20 MESAJ OKU GİBİ
             //source.w.app.debugLog("MSG read");
             readMessage(receivedMessages.poll());
         }
     }
 
     public void readMessage(Message msg){
-        if(!msg.getTargetID().equals(source.getId()) && msg.type != Message.MessageType.ENTITY_INFO)
+        source.w.app.debugLogError("Message reading with type: " + msg.type.toString());
+        if(!msg.getTargetID().equals(source.getId()) && msg.type != Message.MessageType.ENTITY_INFO){
             return;
+
+        }
+
             // Or relay, if requested
 
         switch (msg.type){
             case ATTACK_ORDER:
                 source.addOrder(new Attack(msg.getApp(), source, source.w.entityHashMap.get(msg.getSrcID()), ((AttackMsg) msg).getAttackTargetID()));
+                System.out.println("read the attack message");
                 break;
             case FOLLOW_ORDER:
 //                source.addOrder(new Follow(msg.getApp(), msg.getTargetReceiver(),

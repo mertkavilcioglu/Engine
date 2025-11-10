@@ -74,12 +74,12 @@ public class TDLTransmitter {
         sendMessage2(surveillanceMsg);
     }
 
-    public void sendMessage2(Message msg){
+    public void  sendMessage2(Message msg){
         //TODO: range içindeki herkesin mesaj listesine mesajı gönder,
         // receive classında ise her update içinde en üstteki mesajı oku
         for(Entity e : source.w.entities){
-            if(e == source)
-                continue;
+//            if(e == source);
+//                //continue; //BURASI EMIR ALMA MESJLARINI BOZUYOR
             if(source.getPos().distance(e.getPos()) < range){
                 e.getTdlReceiver().receiveMessage2(msg);
             }
