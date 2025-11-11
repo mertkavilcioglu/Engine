@@ -32,6 +32,7 @@ public class Radar extends Component {
                     if (parentEntity.getSide() == Entity.Side.ALLY) {
                         if (e.getSide() == parentEntity.getSide() && dist <= linkRange) {
                         } else if (e.getSide().equals(Entity.Side.ENEMY)){
+                            parentEntity.getLocalWorld().createEntity(e.getId(), e.getName(), e.getSide(), e.getPos(), e.getSpeed(), e.getType());
                             for (Entity entity : parentEntity.getLocalWorld().getEntities()){
                                 parentEntity.getTdlTransmitter().createSurveillanceMsg(parentEntity.w.app, parentEntity, entity.getId(), e);
                             }
