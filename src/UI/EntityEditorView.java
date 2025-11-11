@@ -347,6 +347,15 @@ public class EntityEditorView extends VCSPanel {
             ePositionPanel.setDataY(e.getPos());
         eSpeedPanel.setData(new Vec2int());
         addSideBox.setSelectedIndex(0);
+
+        if(e.getComponents().isEmpty()){
+            if(radarPanel != null && !radarPanel.getIsFocused()){
+                remove(radarPanel);
+                radarPanel = null;
+            }
+            revalidate();
+        }
+
         for(Component c : e.getComponents()){
             if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
                 if(radarPanel == null){
