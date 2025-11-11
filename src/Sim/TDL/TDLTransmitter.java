@@ -84,6 +84,10 @@ public class TDLTransmitter {
                 e.getTdlReceiver().receiveMessage2(msg);
             }
         }
+
+        if(source.w.entityHashMap.get(msg.getTargetID()).getPos().distance(source.getPos()) > range){
+           relayMessage(msg);
+        }
     }
 
 
@@ -173,6 +177,49 @@ public class TDLTransmitter {
 //
 //        return counter;
 //    }
+
+
+        public int relayMessage(Message msg){ //TODO: silme burayı, shortest path için lazım olacak
+        int counter  = 0;
+        Entity targetReceiver = source.w.entityHashMap.get(msg.getTargetID());
+        Entity temp = targetReceiver;
+        Entity src = source.w.entityHashMap.get(msg.getSrcID());
+        VCSApp app = msg.getApp();
+        double posDiff;
+
+        if(src.getLocalWorld().getEntities().contains(targetReceiver)){
+            while(src.getPos().distance(targetReceiver.getPos()) >
+                    src.getTdlTransmitter().getTransmitterRange()){
+                posDiff = app.mapView.getWidth();
+                for(Entity e : src.getLocalWorld().getEntities()){
+                    if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getTransmitterRange()){
+                        // HAS VISUAL ON TARGET
+                        double newDiff = e.getPos().distance(src.getPos());
+                        if(newDiff < posDiff){
+                            posDiff = newDiff;
+                            temp = e;
+                        }
+                    }
+                }
+                targetReceiver = temp;
+                counter++;
+                app.debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
+            }
+        }
+        app.debugLog("Connection is done, forwarding...");
+
+        if(targetReceiver.getPos().distance(source.getPos()) <= range){
+            targetReceiver.getTdlReceiver().receiveMessage2(msg);
+            source.w.app.debugLog("MESSAGE RECEIVED FROM THE RELAY...");
+        }
+        else{
+            targetReceiver.getTdlTransmitter().relayMessage(msg);
+        }
+        //TODO: BURALARI DAHA RUNLAYAMADIN PC BOZULDUGU İCİN. TEST ET!!!!!!!
+        return counter;
+    }
+
+
 
     public int getTransmitterRange(){
         return range;
