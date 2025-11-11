@@ -23,11 +23,11 @@ public class Attack extends Order{
         if(targetEntity == null )
             return;
         //if (targetEntity.isDetected()){
-            targetPos = targetEntity.getPos();
+        targetPos = receiver.getLocalWorld().getEntityHashMap().get(targetEntity.getId()).getPos();
         //}
         dist = receiver.getPos().distance(targetPos);
         if(dist <= 4.0){
-            if (targetEntity.isDetected()){
+            if (receiver.getLocalWorld().getEntities().contains(targetEntity)){
                 receiver.getTdlTransmitter().createResultMessage(app, receiver, true);
                 String msgDestroy = String.format("%s destroy the target %s,", receiver.getName(), targetEntity.getName());
                 app.log(msgDestroy);

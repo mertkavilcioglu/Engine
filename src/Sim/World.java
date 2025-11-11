@@ -102,6 +102,10 @@ public class World{
         copiedEntity = e;
     }
 
+    public HashMap<String, Entity> getEntityHashMap(){
+            return entityHashMap;
+    }
+
     public void revert() {
         if(changedEntities.isEmpty())
             return;

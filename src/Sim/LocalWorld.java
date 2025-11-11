@@ -46,6 +46,7 @@ public class LocalWorld {
         ent.setPos(pos);
         ent.setSpeed(speed);
         ent.setType(type);
+        entityHashMap.replace(id, ent);
     }
 
     public void readEntityInfo(Message msg){

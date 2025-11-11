@@ -42,7 +42,7 @@ public class TDLReceiver {
 
         switch (msg.type){
             case ATTACK_ORDER:
-                source.addOrder(new Attack(msg.getApp(), source, source.w.entityHashMap.get(msg.getSrcID()), ((AttackMsg) msg).getAttackTargetID()));
+                source.addOrder(new Attack(msg.getApp(), source, msg.getApp().headQuarter, ((AttackMsg) msg).getAttackTargetID()));
                 System.out.println("read the attack message");
                 break;
             case FOLLOW_ORDER:
@@ -64,7 +64,8 @@ public class TDLReceiver {
                 // than with that func create a entity and add to linkedEntities
 
                 if(!msg.getSrcID().equals(source.getId()))
-                    source.getLocalWorld().readEntityInfo(msg);
+                    if (source.getSide().equals(((InfoMsg) msg).getSide()))
+                        source.getLocalWorld().readEntityInfo(msg);
 
                 break;
             case RECEIVE_INFO:
