@@ -222,9 +222,9 @@ public class Entity {
         if(!orders.isEmpty() && currentOrder != null)
             currentOrder.update();
 
-        for(Entity e : localWorld.getEntities()){
-            log(name + " knows: " + e.getId());
-        }
+//        for(Entity e : localWorld.getEntities()){
+//            log(name + " knows: " + e.getId());
+//        }
 
         move();
 

@@ -85,9 +85,14 @@ public class TDLTransmitter {
             }
         }
 
-        if(source.w.entityHashMap.get(msg.getTargetID()).getPos().distance(source.getPos()) > range){
-           relayMessage(msg);
-        }
+//        if(msg.type != Message.MessageType.ENTITY_INFO &&
+//        source.w.entityHashMap.get(msg.getTargetID()).getPos().distance(source.getPos()) > range){
+//           relayMessage(msg);
+//        } //todo: info bilgisinin relayini hallet önce. infoda target olmadığı için hashmapten target range
+        //todo:      içinde mi kontrol edemiyi kotalarda, bildiği bütün kişilerin infosunu bağırsın
+        //todo f1 cont. : böylelikle herkes, bildiği kişilerin bildiklerini de öğrenmiş olur ama bu mantıklı mı bilmiyorum
+        //todo: bilmeyen kişinin bana bunun infosunu ver demesi saçma çünkü bilmiyor,
+        // her entity için bildiklerim bildiklerimi biliyor mu kontrolü yapıp eksik varsa gerekli infoyu iletebilir
     }
 
 
@@ -179,8 +184,8 @@ public class TDLTransmitter {
 //    }
 
 
-        public int relayMessage(Message msg){ //TODO: silme burayı, shortest path için lazım olacak
-        int counter  = 0;
+        public void relayMessage(Message msg){ //TODO: silme burayı, shortest path için lazım olacak
+        //int counter  = 0; //todo, info mesaj ulaşmadıysa hedefli info oluştur ve yolla, diğerleri için sadece relay
         Entity targetReceiver = source.w.entityHashMap.get(msg.getTargetID());
         Entity temp = targetReceiver;
         Entity src = source.w.entityHashMap.get(msg.getSrcID());
@@ -188,22 +193,19 @@ public class TDLTransmitter {
         double posDiff;
 
         if(src.getLocalWorld().getEntities().contains(targetReceiver)){
-            while(src.getPos().distance(targetReceiver.getPos()) >
-                    src.getTdlTransmitter().getTransmitterRange()){
-                posDiff = app.mapView.getWidth();
-                for(Entity e : src.getLocalWorld().getEntities()){
-                    if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getTransmitterRange()){
-                        // HAS VISUAL ON TARGET
-                        double newDiff = e.getPos().distance(src.getPos());
-                        if(newDiff < posDiff){
-                            posDiff = newDiff;
-                            temp = e;
-                        }
+            posDiff = app.mapView.getWidth();
+            for(Entity e : src.getLocalWorld().getEntities()){
+                if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getTransmitterRange()){
+                    // HAS VISUAL ON TARGET
+                    double newDiff = e.getPos().distance(src.getPos());
+                    if(newDiff < posDiff){
+                        posDiff = newDiff;
+                        temp = e;
                     }
                 }
                 targetReceiver = temp;
-                counter++;
-                app.debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
+//                counter++;
+//                app.debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
             }
         }
         app.debugLog("Connection is done, forwarding...");
@@ -216,7 +218,6 @@ public class TDLTransmitter {
             targetReceiver.getTdlTransmitter().relayMessage(msg);
         }
         //TODO: BURALARI DAHA RUNLAYAMADIN PC BOZULDUGU İCİN. TEST ET!!!!!!!
-        return counter;
     }
 
 

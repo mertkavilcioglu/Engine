@@ -32,7 +32,7 @@ public class TDLReceiver {
     }
 
     public void readMessage(Message msg){
-        source.w.app.debugLogError("Message reading with type: " + msg.type.toString());
+        //source.w.app.debugLogError("Message reading with type: " + msg.type.toString());
         if(!msg.getTargetID().equals(source.getId()) && msg.type != Message.MessageType.ENTITY_INFO){
             return;
 
