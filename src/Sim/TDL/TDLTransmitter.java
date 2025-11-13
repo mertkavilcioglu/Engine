@@ -187,12 +187,12 @@ public class TDLTransmitter {
         public void relayMessage(Message msg){ //TODO: silme burayı, shortest path için lazım olacak
         //int counter  = 0; //todo, info mesaj ulaşmadıysa hedefli info oluştur ve yolla, diğerleri için sadece relay
         Entity targetReceiver = source.w.entityHashMap.get(msg.getTargetID());
-        Entity temp = targetReceiver;
+        Entity relay = targetReceiver;
         Entity src = source.w.entityHashMap.get(msg.getSrcID());
         VCSApp app = msg.getApp();
         double posDiff;
 
-        if(src.getLocalWorld().getEntities().contains(targetReceiver)){
+        if(src.getLocalWorld().getEntities().contains(targetReceiver)){ // gönderici, alıcıyı biliyorsa
             posDiff = app.mapView.getWidth();
             for(Entity e : src.getLocalWorld().getEntities()){
                 if(e.getPos().distance(targetReceiver.getPos()) < e.getTdlTransmitter().getTransmitterRange()){
@@ -200,10 +200,10 @@ public class TDLTransmitter {
                     double newDiff = e.getPos().distance(src.getPos());
                     if(newDiff < posDiff){
                         posDiff = newDiff;
-                        temp = e;
+                        relay = e;
                     }
                 }
-                targetReceiver = temp;
+                targetReceiver = relay; // relay for next forwarding
 //                counter++;
 //                app.debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
             }
