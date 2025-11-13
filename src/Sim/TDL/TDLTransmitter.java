@@ -221,6 +221,51 @@ public class TDLTransmitter {
     }
 
 
+        // INFO ICIN CALISMAZ, INFO ALMASI GEREKEN KIŞI BILINMIYORSA
+    //Not: Relay hesaplamasi hedeften source'a doğru yapılıyor, geriye dogru yani.
+        public void relay2(Message msg){
+        int counter  = 0;
+        Entity targetReceiver = source.w.entityHashMap.get(msg.getTargetID());
+        Entity temp = targetReceiver;
+        Entity src = source.w.entityHashMap.get(msg.getSrcID());
+        Entity nextRelay = targetReceiver;
+        VCSApp app = msg.getApp();
+        double posDiff;
+
+        if(src.getLocalWorld().getEntities().contains(targetReceiver)){
+            while(src.getPos().distance(nextRelay.getPos()) > src.getTdlTransmitter().getTransmitterRange()){
+                posDiff = app.mapView.getWidth();
+                for(Entity e : src.getLocalWorld().getEntities()){
+                    if(e.getPos().distance(nextRelay.getPos()) < e.getTdlTransmitter().getTransmitterRange()){
+                        // HAS VISUAL ON TARGET
+                        double newDiff = e.getPos().distance(src.getPos());
+                        if(newDiff < posDiff){
+                            posDiff = newDiff;
+                            temp = e;
+                        }
+                    }
+                }
+                nextRelay = temp;
+                //counter++;
+                //app.debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
+
+            }
+
+
+            if(nextRelay.getPos().distance(targetReceiver.getPos()) > nextRelay.getTdlTransmitter().getTransmitterRange()){
+                nextRelay.getTdlTransmitter().relay2(msg);
+            }
+            else{
+                targetReceiver.getTdlReceiver().receiveMessage2(msg);
+            }
+        }
+        app.debugLog("Connection is done, forwarding...");
+    }
+
+
+
+
+
 
     public int getTransmitterRange(){
         return range;
