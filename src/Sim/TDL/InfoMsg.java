@@ -28,10 +28,11 @@ public class InfoMsg extends Message{
         return String.format(
                 "Precise Participant Location and Identification (PPLI):\n" +
                         "Unit Name: %s\n" +
+                        "Unit ID: %s\n" +
                         "Unit Type: %s\n" +
                         "Unit Position: %s\n" +
                         "Unit Speed: %s",
-                name, type.getName(), pos.toString(), speed.toString());
+                name, type.getName(),getSrcID(), pos.toString(), speed.toString());
     }
 
     public String getName(){

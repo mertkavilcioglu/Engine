@@ -15,7 +15,7 @@ public class SurveillanceMsg extends Message{
     private Entity.Type seenType;
 
     public SurveillanceMsg(VCSApp app, Entity src, String targetID, Entity seenEntity) {
-        super(MessageType.SURVEILLANCE_MSG, app, src.getId(), targetID, (src.getName() + (": ")));
+        super(MessageType.SURVEILLANCE_MSG, app, src.getId(), targetID, (String.format("%s: %s", src.getName(), seenEntity.getType().getTrackCode())));
         this.seenID = seenEntity.getId();
         this.seenName = seenEntity.getName();
         this.seenSide = seenEntity.getSide();

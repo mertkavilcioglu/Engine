@@ -70,17 +70,19 @@ public class Entity {
     }
 
     public enum Type{
-        GROUND("Tank", "J2.2"),
-        SURFACE("Ship", "J2.3"),
-        AIR("Plane", "J2.1"),
-        HQ("HEADQUARTER", "J2.2");
+        GROUND("Tank", "J2.2", "J3.2"),
+        SURFACE("Ship", "J2.3", "J3.3"),
+        AIR("Plane", "J2.1", "J3.1"),
+        HQ("HEADQUARTER", "J2.2", "J3.2");
 
         private String name;
         private String ppliCode;
+        private String trackCode;
 
-        Type(String name, String ppliCode){
+        Type(String name, String ppliCode, String trackCode){
             this.name = name;
             this.ppliCode = ppliCode;
+            this.trackCode = trackCode;
         }
         public String getName(){
             return name;
@@ -88,6 +90,10 @@ public class Entity {
 
         public String getPpliCode(){
             return ppliCode;
+        }
+
+        public String getTrackCode(){
+            return trackCode;
         }
 
     }
