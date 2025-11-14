@@ -16,6 +16,7 @@ public class Attack extends Order{
     public Attack(VCSApp app, Entity receiver, Entity sender, String  attackTargetID) {
         super(app, receiver, sender);
         this.attackTargetID = attackTargetID;
+        receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.ATTACK_ORDER);
         //attackEntity(target);
     }
 
@@ -77,7 +78,7 @@ public class Attack extends Order{
     @Override
     protected void printToLog(){
         if (!isExecute){
-            receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.ATTACK_ORDER);
+            receiver.getTdlTransmitter().createMissionStartMessage(app, receiver.getId(), "J13.1");
             String msgAttack = String.format("%s going to attack %s.", receiver.getName(), attackTargetID);
             app.log(msgAttack);
             receiver.setCurrentOrderState(false);

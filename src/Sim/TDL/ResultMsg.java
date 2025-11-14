@@ -8,7 +8,7 @@ public class ResultMsg extends Message{
     private boolean isDone;
 
     public ResultMsg(VCSApp app, Entity src, Entity receiver, boolean isDone) {
-        super(MessageType.ORDER_RESULT, app, src.getId(), receiver.getId(), (src + ": Result Msg"));
+        super(MessageType.ORDER_RESULT, app, src.getId(), receiver.getId(), (src + ": J13.0"));
         this.isDone = isDone;
     }
 

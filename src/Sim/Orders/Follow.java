@@ -16,6 +16,7 @@ public class Follow extends Order{
         super(app, receiver, sender);
         this.targetEntity = target;
         this.followTime = time;
+        receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.FOLLOW_ORDER);
         if (followTime == 0){
             String msgNotStarted = String.format("%s's follow order not started due to time problems.", this.receiver.getName());
             app.log(msgNotStarted);
@@ -82,7 +83,7 @@ public class Follow extends Order{
     protected void printToLog(){
         String followString = String.format("%s is following %s.", receiver.getName(), targetEntity.getName());
         if (!isExecute){
-            receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.FOLLOW_ORDER);
+            receiver.getTdlTransmitter().createMissionStartMessage(app, receiver.getId(), "J13.2");
             app.log(followString);
             receiver.setCurrentOrderState(false);
         }

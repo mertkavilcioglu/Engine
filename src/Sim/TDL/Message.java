@@ -24,7 +24,8 @@ public abstract class Message {
         ENTITY_INFO,
         RECEIVE_INFO,
         ORDER_RESULT,
-        SURVEILLANCE_MSG
+        SURVEILLANCE_MSG,
+        MISSION_START
     }
 
     public MessageType type;

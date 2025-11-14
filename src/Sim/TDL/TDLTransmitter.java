@@ -74,6 +74,11 @@ public class TDLTransmitter {
         sendMessage2(surveillanceMsg);
     }
 
+    public void createMissionStartMessage(VCSApp app, String srcID, String missionType){
+        MissionStartMsg missionStartMsg = new MissionStartMsg(app, srcID, app.headQuarter.getId(), missionType);
+        sendMessage2(missionStartMsg);
+    }
+
     public void  sendMessage2(Message msg){
         //TODO: range içindeki herkesin mesaj listesine mesajı gönder,
         // receive classında ise her update içinde en üstteki mesajı oku

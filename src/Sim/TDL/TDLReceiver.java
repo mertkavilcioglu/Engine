@@ -54,15 +54,6 @@ public class TDLReceiver {
 //                        ((MoveMsg) msg).getPos()));
                 break;
             case ENTITY_INFO:
-                //source.addLinkedEntity(msg.getSrc());
-//                for (Entity e : msg.getSrc().getLinkedEntities()){
-//                    if (!source.getLinkedEntities().contains(e) && e != source){
-//                        //source.addLinkedEntity(e);
-//                    }
-//                }
-                //TODO create local world and write a create func for that world
-                // than with that func create a entity and add to linkedEntities
-
                 if(!msg.getSrcID().equals(source.getId()))
                     if (source.getSide().equals(((InfoMsg) msg).getSide()))
                         source.getLocalWorld().readEntityInfo(msg);

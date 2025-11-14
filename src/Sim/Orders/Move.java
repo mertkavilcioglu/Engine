@@ -13,6 +13,7 @@ public class Move extends Order{
     public Move(VCSApp app, Entity receiver, Entity sender, Vec2int coordinates) {
         super(app, receiver, sender);
         this.destination = coordinates;
+        receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.MOVE_ORDER);
     }
 
 
@@ -49,7 +50,7 @@ public class Move extends Order{
     @Override
     protected void printToLog(){
         if (!isExecute){
-            receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.MOVE_ORDER);
+            receiver.getTdlTransmitter().createMissionStartMessage(app, receiver.getId(), "J13.3");
             app.log(receiver.getName() + " moving to " + destination);
             receiver.setCurrentOrderState(false);
         }

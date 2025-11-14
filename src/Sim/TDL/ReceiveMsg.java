@@ -15,11 +15,11 @@ public class ReceiveMsg extends Message{
 
     public String receiveDetail(){
         if (order == MessageType.ATTACK_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Attack\n%s going to execute the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
+            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Attack\n%s receive the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
         } else if (order == MessageType.MOVE_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Move\n%s going to execute the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
+            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Move\n%s receive the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
         }else if (order == MessageType.FOLLOW_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Follow\n%s going to execute the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
+            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Follow\n%s receive the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
         }else return null;
     }
 
