@@ -1,6 +1,7 @@
 package Sim;
 
 import App.VCSApp;
+import Sim.Managers.IDManager;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
@@ -76,6 +77,8 @@ public class World{
         ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
         if(ent.maxSpeed == 0)
             ent.maxSpeed = 4;
+
+        ent.setId(app.idManager.createId(ent));
 
         entities.add(ent);
         entityHashMap.put(ent.getId(), ent);

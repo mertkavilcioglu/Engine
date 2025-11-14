@@ -77,13 +77,33 @@ public class TDLTransmitter {
     public void  sendMessage2(Message msg){
         //TODO: range içindeki herkesin mesaj listesine mesajı gönder,
         // receive classında ise her update içinde en üstteki mesajı oku
-        for(Entity e : source.w.entities){
-//            if(e == source);
-//                //continue; //BURASI EMIR ALMA MESJLARINI BOZUYOR
-            if(source.getPos().distance(e.getPos()) < range){
-                e.getTdlReceiver().receiveMessage2(msg);
+        if (!source.isLocal()){
+            if (!msg.getTargetID().equals(" ")){
+                String targetID = msg.getTargetID();
+                for(Entity e : source.w.entityHashMap.values()){
+//                   if(e == source);
+//                      //continue; //BURASI EMIR ALMA MESJLARINI BOZUYOR
+                    if (e.getId().equals(targetID) && (source.getPos().distance(e.getPos()) < range) && !e.isLocal()) {
+                        msg.getApp().logPanel.toLog(msg);
+                        e.getTdlReceiver().receiveMessage2(msg);
+                    }
+                }
+            } else if (msg.type.equals(Message.MessageType.ENTITY_INFO)){
+                for (Entity e : source.w.entityHashMap.values()){
+                    if ((source.getPos().distance(e.getPos()) < range) && !e.isLocal() && !e.equals(source)){
+                        if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
+                            msg.setTargetID(e.getId());
+                        } else continue;
+                        msg.getApp().logPanel.toLog(msg);
+                        e.getTdlReceiver().receiveMessage2(msg);
+                    }
+                }
             }
         }
+
+
+
+
 
 //        if(msg.type != Message.MessageType.ENTITY_INFO &&
 //        source.w.entityHashMap.get(msg.getTargetID()).getPos().distance(source.getPos()) > range){
@@ -93,6 +113,9 @@ public class TDLTransmitter {
         //todo f1 cont. : böylelikle herkes, bildiği kişilerin bildiklerini de öğrenmiş olur ama bu mantıklı mı bilmiyorum
         //todo: bilmeyen kişinin bana bunun infosunu ver demesi saçma çünkü bilmiyor,
         // her entity için bildiklerim bildiklerimi biliyor mu kontrolü yapıp eksik varsa gerekli infoyu iletebilir
+
+
+
     }
 
 

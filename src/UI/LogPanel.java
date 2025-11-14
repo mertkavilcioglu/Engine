@@ -104,6 +104,16 @@ public class LogPanel extends VCSPanel {
 //        messageList.ensureIndexIsVisible(messageModel.size() - 1);
 //    }
 
+    public void toLog(Message message){
+        if(message.getSrcID().equals("HQ") || message.getSrcID().charAt(0) == 'A')
+            if (!message.getTargetID().equals(null) && (message.getTargetID().equals("HQ") || message.getTargetID().charAt(0) == 'A'))
+                messageModel.addElement(message);
+        //if (message.getApp().world.getEntityHashMap().get(message.getSrcID()).getSide().equals(Entity.Side.ALLY))
+
+
+        messageList.ensureIndexIsVisible(messageModel.size() - 1);
+    }
+
     public void messageToLog(String message){
         String text = message + "\n";
         coloredText(logArea, text, Color.WHITE);

@@ -33,7 +33,7 @@ public class VCSApp {
     public UIColorManager uiColorManager;
     static public Entity headQuarter;
     private ShortcutManager shortcutManager;
-    private IDManager idManager;
+    public IDManager idManager;
 
     public Timer simTimer;
 
@@ -180,7 +180,7 @@ public class VCSApp {
         Entity ent = world.createEntity(name, side, pos, speed, type);
 //        world.createdEntities.push(ent);
 //        world.changes.push(World.Change.CREATE);
-        ent.setId(idManager.createId(ent));
+        //ent.setId(idManager.createId(ent));
         debugLog(String.format("Id of %s : %s", ent.getName(), ent.getId()));
         world.changes.push(new Entity(world, name, side, pos, speed, type, ent.getComponents(), false));
 

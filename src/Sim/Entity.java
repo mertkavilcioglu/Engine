@@ -238,8 +238,9 @@ public class Entity {
             components.get(i).update(deltaTime);
         }
 
-        if(!isLocal)
+        if(!isLocal) {
             localWorld.update(deltaTime);
+        }
 
         tdlTransmitter.update();
         tdlReceiver.update();
@@ -587,6 +588,10 @@ public class Entity {
 
     public LocalWorld getLocalWorld(){
         return localWorld;
+    }
+
+    public boolean isLocal(){
+        return isLocal;
     }
 
 }
