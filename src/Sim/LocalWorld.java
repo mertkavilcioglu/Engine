@@ -61,6 +61,8 @@ public class LocalWorld {
 
     public void readKnownInfo(Message msg){
         for(Entity ent : ((KnownInfosMsg) msg).getKnownEntities()){
+            if(ent.getId().equals(src.getId()))
+                continue;
             if(entityHashMap.containsKey(ent.getId()))
                 updateEntity(ent.getId(), ent.getName(), ent.getSide(), ent.getPos(), ent.getSpeed(), ent.getType());
             else
