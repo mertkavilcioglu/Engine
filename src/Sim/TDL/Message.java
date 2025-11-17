@@ -9,9 +9,7 @@ import java.util.List;
 public abstract class Message {
 
     private VCSApp app;
-    //private Entity src, target; //todo DELETE THESE
     private String srcID, targetID;
-    //private List<Entity> receiverList; //todo DELETE
     private List<String> targetIDList;
     private int counter = 0;
     private String msg;
@@ -25,7 +23,8 @@ public abstract class Message {
         RECEIVE_INFO,
         ORDER_RESULT,
         SURVEILLANCE_MSG,
-        MISSION_START
+        MISSION_START,
+        KNOWN_INFO
     }
 
     public MessageType type;

@@ -77,6 +77,10 @@ public class TDLReceiver {
                 //TODO with local create func create entity and add to knownentities of target
                 source.getLocalWorld().readSurveillanceInfo(msg);
                 break;
+            case KNOWN_INFO:
+                if(!msg.getSrcID().equals(source.getId()))
+                    if (source.getSide().equals(((InfoMsg) msg).getSide()))
+                        source.getLocalWorld().readKnownInfo(msg);
         }
     }
 

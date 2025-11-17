@@ -58,6 +58,14 @@ public class TDLTransmitter {
         sendMessage2(infoMsg);
     }
 
+    public void createKnownInfoMessage(VCSApp app, Entity src, Entity[] knownEntities){
+        //TODO nasıl createlenip ne şekilde ne zaman basılcağına bakmalı
+        String targetID = " ";
+        KnownInfosMsg knownInfoMsg = new KnownInfosMsg(app, src.getId(), targetID, src.getName(), src.getType(), src.getLocalWorld().getEntities());
+        //messagesToSend.add(infoMsg);
+        sendMessage2(knownInfoMsg);
+    }
+
     public void createReceiveMessage(VCSApp app, Entity source, Message.MessageType type){
         ReceiveMsg receiveMsg = new ReceiveMsg(app, source, VCSApp.headQuarter, type);
         //receiveMsg.setCounter(calculateRangeCounter(receiveMsg));
@@ -153,11 +161,8 @@ public class TDLTransmitter {
         accSelfInfo += deltaTime;
 
         if(accAllInfo >= ACC_ALL_INFO_TIME){
-            // bildiklerini ve kendini bağır
             for(Entity ent : source.getLocalWorld().getEntities()){
-                if(!Objects.equals(ent.getId(), source.getId())){
-                    createInfoMessage(source.w.app, ent);
-                }
+                createInfoMessage(source.w.app, ent);
             }
             createInfoMessage(source.w.app, source);
             accAllInfo -= ACC_ALL_INFO_TIME;
@@ -167,10 +172,6 @@ public class TDLTransmitter {
             createInfoMessage(source.w.app, source);
             accSelfInfo -= ACC_SELF_INFO_TIME;
         }
-
-
-
-
     }
 
 
