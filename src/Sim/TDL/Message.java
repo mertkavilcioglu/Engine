@@ -2,20 +2,24 @@ package Sim.TDL;
 
 import App.VCSApp;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Message {
 
-    private VCSApp app;
+    private final VCSApp app;
     //private Entity src, target; //todo DELETE THESE
-    private String srcID, targetID;
+    private final String srcID;
+    private String targetID;
     //private List<Entity> receiverList; //todo DELETE
     private List<String> targetIDList;
     private int counter = 0;
-    private String msg;
-    private boolean isFirstInfo = true;
+    private final String msg;
+    private ArrayList<String> messages;
+    private final boolean isFirstInfo = true;
 
     public enum MessageType{
         ATTACK_ORDER,
@@ -30,7 +34,7 @@ public abstract class Message {
 
     public MessageType type;
 
-    public Message(MessageType type, VCSApp app, String srcID, String targetID, String msg){
+    public Message(MessageType type, VCSApp app, String srcID, String targetID, String msg1, String msg2){
         this.type = type;
         this.app = app;
         this.srcID = srcID;
@@ -39,11 +43,17 @@ public abstract class Message {
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formattedDate = myDateObj.format(myFormatObj);
-        this.msg = String.format("[%s] %s",formattedDate, msg);
+        this.msg = String.format("[%s] %s:",formattedDate, msg1);
+
+        messages = new ArrayList<>();
+        messages.add(msg);
+        messages.add(msg2);
+
+
 
         //app.logPanel.addMsgToLog(this); TODO
     }
-    public Message(MessageType type, VCSApp app, String  srcID, List<String> receivers, String msg){
+    public Message(MessageType type, VCSApp app, String  srcID, List<String> receivers, String msg1, String msg2){
         this.type = type;
         this.app = app;
         this.srcID = srcID;
@@ -52,7 +62,11 @@ public abstract class Message {
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formattedDate = myDateObj.format(myFormatObj);
-        this.msg = String.format("[%s] %s",formattedDate, msg);
+        this.msg = String.format("[%s] %s:",formattedDate, msg1);
+
+        messages = new ArrayList<>();
+        messages.add(msg);
+        messages.add(msg2);
 
 //        if (src.getInfoMsgSendEntities().isEmpty()){
 //            isFirstInfo = true;
@@ -88,6 +102,10 @@ public abstract class Message {
         return msg;
     }
 
+    public ArrayList<String> getMsg2() {
+        return messages;
+    }
+
 //    public void infoToLog(boolean isFirstInfo){
 //        if (isFirstInfo){
 
@@ -101,6 +119,7 @@ public abstract class Message {
 //    }
 
     public abstract String getMsgDetail();
+    public abstract Color getColor();
 
     public void setTargetID(String tId){
         targetID = tId;

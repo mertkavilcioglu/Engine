@@ -43,10 +43,12 @@ public class Radar extends Component {
                 else if(parentEntity.getLocalWorld().getEntities().contains(e) && !e.isActive()){
                     hasVisual = false;
                     e.isItDetected(hasVisual);
+                    parentEntity.getLocalWorld().removeEntityFromLocal(e.getId());
                 }
             } else if (parentEntity.getLocalWorld().getEntities().contains(e)){
                 hasVisual = false;
                 e.isItDetected(hasVisual);
+                parentEntity.getLocalWorld().removeEntityFromLocal(e.getId());
             }
         }
     }

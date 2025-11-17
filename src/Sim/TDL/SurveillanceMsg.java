@@ -4,6 +4,8 @@ import App.VCSApp;
 import Sim.Entity;
 import Vec.Vec2int;
 
+import java.awt.*;
+
 public class SurveillanceMsg extends Message{
     private Entity src;
     private String targetID;
@@ -15,7 +17,7 @@ public class SurveillanceMsg extends Message{
     private Entity.Type seenType;
 
     public SurveillanceMsg(VCSApp app, Entity src, String targetID, Entity seenEntity) {
-        super(MessageType.SURVEILLANCE_MSG, app, src.getId(), targetID, (String.format("%s: %s", src.getName(), seenEntity.getType().getTrackCode())));
+        super(MessageType.SURVEILLANCE_MSG, app, src.getId(), targetID, src.getId(), seenEntity.getType().getTrackCode());
         this.seenID = seenEntity.getId();
         this.seenName = seenEntity.getName();
         this.seenSide = seenEntity.getSide();
@@ -67,5 +69,10 @@ public class SurveillanceMsg extends Message{
                 src.getId(), targetID, seenID, seenType.getName(),
                 seenPos.toString(), seenSpeed.toString()
         );
+    }
+
+    @Override
+    public Color getColor() {
+        return Color.RED;
     }
 }

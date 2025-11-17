@@ -6,6 +6,7 @@ import Sim.TDL.Message;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.synth.SynthRadioButtonMenuItemUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -13,6 +14,8 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LogPanel extends VCSPanel {
     private JTextPane logArea;
@@ -39,7 +42,15 @@ public class LogPanel extends VCSPanel {
                 JLabel lbl = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof Message){
                     Message m = (Message) value;
-                    lbl.setText(m.getMsg());
+                    ArrayList<String> mes = m.getMsg2();
+                    String s1 = mes.get(0);
+                    String s2 = mes.get(1);
+                    Color c = m.getColor();
+                    String hex = String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
+                    String html = String.format("<html><span style='color:white;'> %s </span> <span style='color:%s;'> %s </span></html>", s1, hex, s2);
+                    lbl.setText(html);
+
+
                 } return lbl;
             }
         });

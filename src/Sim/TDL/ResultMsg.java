@@ -3,12 +3,14 @@ package Sim.TDL;
 import App.VCSApp;
 import Sim.Entity;
 
+import java.awt.*;
+
 public class ResultMsg extends Message{
 //TODO içini doldur
     private boolean isDone;
 
     public ResultMsg(VCSApp app, Entity src, Entity receiver, boolean isDone) {
-        super(MessageType.ORDER_RESULT, app, src.getId(), receiver.getId(), (src + ": J13.0"));
+        super(MessageType.ORDER_RESULT, app, src.getId(), receiver.getId(), src.getId(), "J13.0");
         this.isDone = isDone;
     }
 
@@ -25,5 +27,10 @@ public class ResultMsg extends Message{
     @Override
     public String getMsgDetail() {
         return resultDetail();
+    }
+
+    @Override
+    public Color getColor() {
+        return Color.BLUE;
     }
 }

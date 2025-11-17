@@ -4,6 +4,8 @@ import App.VCSApp;
 import Sim.Entity;
 import Vec.Vec2int;
 
+import java.awt.*;
+
 public class InfoMsg extends Message{
 
     private String name;
@@ -14,7 +16,7 @@ public class InfoMsg extends Message{
     private Entity.Type type;
 
     public InfoMsg(VCSApp app, String srcID, String targetID, String srcName, Entity.Side srcSide, Vec2int srcPos, Vec2int srcSpeed, Entity.Type srcType) {
-        super(MessageType.ENTITY_INFO, app, srcID, targetID, (String.format("%s: %s",srcName, srcType.getPpliCode())));
+        super(MessageType.ENTITY_INFO, app, srcID, targetID, srcID, srcType.getPpliCode());
         this.name = srcName;
         this.side = srcSide;
         this.pos = srcPos;
@@ -55,4 +57,8 @@ public class InfoMsg extends Message{
         return type;
     }
 
+    @Override
+    public Color getColor() {
+        return Color.WHITE;
+    }
 }

@@ -2,11 +2,13 @@ package Sim.TDL;
 
 import App.VCSApp;
 
+import java.awt.*;
+
 public class MissionStartMsg extends Message{
     private String missionType;
 
     public MissionStartMsg(VCSApp app, String srcID, String targetID, String msg) {
-        super(MessageType.MISSION_START, app, srcID, targetID, String.format("%s: %s", srcID, msg));
+        super(MessageType.MISSION_START, app, srcID, targetID, srcID, msg);
         missionType = msg;
     }
 
@@ -23,5 +25,10 @@ public class MissionStartMsg extends Message{
                 "Mission Given By: %s\n" +
                         "Unit going to execute the order.",
                 missionName, getSrcID(), getTargetID());
+    }
+
+    @Override
+    public Color getColor() {
+        return Color.LIGHT_GRAY;
     }
 }

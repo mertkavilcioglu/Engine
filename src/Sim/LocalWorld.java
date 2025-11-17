@@ -74,4 +74,9 @@ public class LocalWorld {
     public ArrayList<Entity> getEntities() {
         return entities;
     }
+
+    public void removeEntityFromLocal(String id){
+        Entity entity = entityHashMap.remove(id);
+        entities.remove(entity);
+    }
 }
