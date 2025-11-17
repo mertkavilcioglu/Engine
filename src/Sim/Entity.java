@@ -242,7 +242,7 @@ public class Entity {
             localWorld.update(deltaTime);
         }
 
-        tdlTransmitter.update();
+        tdlTransmitter.update(deltaTime);
         tdlReceiver.update();
 
         components.removeAll(componentsToRemove);

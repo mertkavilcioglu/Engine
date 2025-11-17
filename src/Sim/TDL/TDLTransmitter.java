@@ -5,12 +5,20 @@ import Sim.Entity;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class TDLTransmitter {
 
     private Entity source;
     private int range = 500;
+
+    // Accumulators:
+    private int accSelfInfo = 0;
+    private final int ACC_SELF_INFO_TIME = 2000;
+    private int accAllInfo = 0;
+    private final int ACC_ALL_INFO_TIME = 4000;
 
 //    private ArrayList<Message> messagesToSend = new ArrayList<>();
 //    private ArrayList<Message> messagesToRemove = new ArrayList<>();
@@ -139,45 +147,32 @@ public class TDLTransmitter {
 //        //msg.getApp().debugLog(msg.getMsg() + " message received!!!");
 //    }
 
-    public void update(){
+    public void update(int deltaTime){
 
-        createInfoMessage(source.w.app, source);
+        accAllInfo += deltaTime;
+        accSelfInfo += deltaTime;
 
-//        for(Entity e : source.w.entities){
-//            if(source.getPos().distance(e.getPos()) <= range && e != source)
-//                source.addLinkedEntity(e);
-//        }
-//
-//        for(Entity e : source.getLinkedEntities()){
-//            if(source.getPos().distance(e.getPos()) > range)
-//                source.removeLinkedEntity(e);
-//        }
-//
-//
-//        if(!source.getLinkedEntities().isEmpty())
-//            for (Entity entity : source.getLinkedEntities()){
-//                String id = entity.getId();
-//                source.getTdlTransmitter().createInfoMessage(source.w.app , source, id);
-//            }
-//
-//        if(!messagesToSend.isEmpty()){
-//            for(Message msg : messagesToSend){
-//                if(msg.getCounter() > 0){
-//                    msg.setCounter(msg.getCounter() - 1);
-//                    msg.getApp().debugLog(String.format("Message of %s forwarded to relay.", msg.getSrcID()));
-//                }
-//                else{
-//                    sendMessage2(msg);
-//                    messagesToRemove.add(msg);
-//                }
-//            }
-//        }
-//        if(!messagesToRemove.isEmpty()){
-//            messagesToSend.removeAll(messagesToRemove);
-//        }
+        if(accAllInfo >= ACC_ALL_INFO_TIME){
+            // bildiklerini ve kendini bağır
+            for(Entity ent : source.getLocalWorld().getEntities()){
+                if(!Objects.equals(ent.getId(), source.getId())){
+                    createInfoMessage(source.w.app, ent);
+                }
+            }
+            createInfoMessage(source.w.app, source);
+            accAllInfo -= ACC_ALL_INFO_TIME;
+            accSelfInfo -= ACC_SELF_INFO_TIME;
+        }
+        else if(accSelfInfo >= ACC_SELF_INFO_TIME){
+            createInfoMessage(source.w.app, source);
+            accSelfInfo -= ACC_SELF_INFO_TIME;
+        }
+
+
 
 
     }
+
 
 //    public int calculateRangeCounter(Message msg){ TODO: silme burayı, shortest path için lazım olacak
 //        int counter  = 0;
@@ -212,8 +207,8 @@ public class TDLTransmitter {
 //    }
 
 
-        public void relayMessage(Message msg){ //TODO: silme burayı, shortest path için lazım olacak
-        //int counter  = 0; //todo, info mesaj ulaşmadıysa hedefli info oluştur ve yolla, diğerleri için sadece relay
+        public void relayMessage(Message msg){
+        //int counter  = 0;
         Entity targetReceiver = source.w.entityHashMap.get(msg.getTargetID());
         Entity relay = targetReceiver;
         Entity src = source.w.entityHashMap.get(msg.getSrcID());
@@ -249,7 +244,6 @@ public class TDLTransmitter {
     }
 
 
-        // INFO ICIN CALISMAZ, INFO ALMASI GEREKEN KIŞI BILINMIYORSA
     //Not: Relay hesaplamasi hedeften source'a doğru yapılıyor, geriye dogru yani.
         public void relay2(Message msg){
         int counter  = 0;
