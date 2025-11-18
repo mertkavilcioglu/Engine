@@ -176,12 +176,25 @@ public class LogPanel extends VCSPanel {
     }
 
     public void showMsgDetails(Message message){
-        JOptionPane.showMessageDialog(
-                null,
-                message.getMsgDetail(),
-                message.getClass().getSimpleName(),
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        if(message.type.equals(Message.MessageType.KNOWN_INFO)){
+            JTextArea textArea = new JTextArea(message.getMsgDetail());
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
+            textArea.setEditable(false);
+            scrollPane.setPreferredSize( new Dimension( 500, 500 ) );
+            JOptionPane.showMessageDialog(null, scrollPane, "Units Reported by " + message.getSrcID(),
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    message.getMsgDetail(),
+                    message.getClass().getSimpleName(),
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        }
 
         //for unselect item after popup closed
         messageList.clearSelection();

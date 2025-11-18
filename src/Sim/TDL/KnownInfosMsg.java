@@ -27,7 +27,7 @@ public class KnownInfosMsg extends Message{
 
         for(Entity e : knownEntities){
             String newInfo = String.format(
-                    "Precise Participant Location and Identification (PPLI):\n" +
+                    "::::::::::UNIT INFO::::::::::\n" +
                             "Unit Name: %s\n" +
                             "Unit ID: %s\n" +
                             "Unit Type: %s\n" +
