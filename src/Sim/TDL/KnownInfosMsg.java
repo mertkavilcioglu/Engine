@@ -33,7 +33,7 @@ public class KnownInfosMsg extends Message{
                             "Unit Type: %s\n" +
                             "Unit Position: %s\n" +
                             "Unit Speed: %s\n\n",
-                    e.getName(), e.getType().getName(),getSrcID(), e.getPos().toString(), e.getSpeed().toString());
+                    e.getName(), e.getId(), e.getType().getName(), e.getPos().toString(), e.getSpeed().toString());
             result = String.format("%s%s", result, newInfo);
         }
         getApp().debugLog(result);

@@ -34,7 +34,7 @@ public class InfoMsg extends Message{
                         "Unit Type: %s\n" +
                         "Unit Position: %s\n" +
                         "Unit Speed: %s",
-                name, type.getName(),getSrcID(), pos.toString(), speed.toString());
+                name, getSrcID(), type.getName(), pos.toString(), speed.toString());
     }
 
     public String getName(){
