@@ -2,6 +2,7 @@ package Sim;
 
 import App.VCSApp;
 import Sim.TDL.InfoMsg;
+import Sim.TDL.KnownInfosMsg;
 import Sim.TDL.Message;
 import Sim.TDL.SurveillanceMsg;
 import Vec.Vec2int;
@@ -57,6 +58,18 @@ public class LocalWorld {
 
         src.w.app.debugLog(String.format("Info Message of %s has taken by %s.\n", msg.getSrcID(), src.getId()));
     }
+
+    public void readKnownInfo(Message msg){
+        for(Entity ent : ((KnownInfosMsg) msg).getKnownEntities()){
+            if(ent.getId().equals(src.getId()))
+                continue;
+            if(entityHashMap.containsKey(ent.getId()))
+                updateEntity(ent.getId(), ent.getName(), ent.getSide(), ent.getPos(), ent.getSpeed(), ent.getType());
+            else
+                createEntity(ent.getId(), ent.getName(), ent.getSide(), ent.getPos(), ent.getSpeed(), ent.getType());
+        }
+    }
+
 
     public void readSurveillanceInfo(Message msg){
         SurveillanceMsg sMsg = (SurveillanceMsg) msg;

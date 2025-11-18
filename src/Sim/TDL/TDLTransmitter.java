@@ -58,6 +58,15 @@ public class TDLTransmitter {
         sendMessage2(infoMsg);
     }
 
+    public void createKnownInfoMessage(VCSApp app, Entity src, ArrayList<Entity> knownEntities){
+        String targetID = " ";
+        ArrayList<Entity> selfIncludedList = (ArrayList<Entity>) knownEntities.clone();
+        selfIncludedList.addFirst(source);
+        KnownInfosMsg knownInfoMsg = new KnownInfosMsg(app, src.getSide(), src.getId(), targetID, src.getName(), selfIncludedList);
+        //messagesToSend.add(infoMsg);
+        sendMessage2(knownInfoMsg);
+    }
+
     public void createReceiveMessage(VCSApp app, Entity source, Message.MessageType type){
         ReceiveMsg receiveMsg = new ReceiveMsg(app, source, VCSApp.headQuarter, type);
         //receiveMsg.setCounter(calculateRangeCounter(receiveMsg));
@@ -107,10 +116,21 @@ public class TDLTransmitter {
                         if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
                             msg.setTargetID(e.getId());
                         } else continue;
-                        msg.getApp().logPanel.toLog(msg);
                         e.getTdlReceiver().receiveMessage2(msg);
                     }
                 }
+                msg.getApp().logPanel.toLog(msg);
+            }
+            else  if (msg.type.equals(Message.MessageType.KNOWN_INFO)){
+                for (Entity e : source.w.entityHashMap.values()){
+                    if ((source.getPos().distance(e.getPos()) < range) && !e.isLocal() && !e.equals(source)){
+                        if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
+                            msg.setTargetID(e.getId());
+                        } else continue;
+                        e.getTdlReceiver().receiveMessage2(msg);
+                    }
+                }
+                msg.getApp().logPanel.toLog(msg);
             }
         }
 
@@ -153,13 +173,8 @@ public class TDLTransmitter {
         accSelfInfo += deltaTime;
 
         if(accAllInfo >= ACC_ALL_INFO_TIME){
-            // bildiklerini ve kendini bağır
-            for(Entity ent : source.getLocalWorld().getEntities()){
-                if(!Objects.equals(ent.getId(), source.getId())){
-                    createInfoMessage(source.w.app, ent);
-                }
-            }
-            createInfoMessage(source.w.app, source);
+            createKnownInfoMessage(source.w.app, source, source.getLocalWorld().getEntities());
+            //createInfoMessage(source.w.app, source);
             accAllInfo -= ACC_ALL_INFO_TIME;
             accSelfInfo -= ACC_SELF_INFO_TIME;
         }
@@ -167,10 +182,6 @@ public class TDLTransmitter {
             createInfoMessage(source.w.app, source);
             accSelfInfo -= ACC_SELF_INFO_TIME;
         }
-
-
-
-
     }
 
 
