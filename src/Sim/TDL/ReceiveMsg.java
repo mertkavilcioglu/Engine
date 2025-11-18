@@ -32,6 +32,6 @@ public class ReceiveMsg extends Message{
 
     @Override
     public Color getColor() {
-        return Color.CYAN;
+        return getApp().uiColorManager.J0_COLOR;
     }
 }

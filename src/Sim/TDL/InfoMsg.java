@@ -59,6 +59,6 @@ public class InfoMsg extends Message{
 
     @Override
     public Color getColor() {
-        return Color.WHITE;
+        return getApp().uiColorManager.J2_COLOR;
     }
 }

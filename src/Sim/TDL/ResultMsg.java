@@ -31,6 +31,6 @@ public class ResultMsg extends Message{
 
     @Override
     public Color getColor() {
-        return Color.BLUE;
+        return getApp().uiColorManager.J13_COLOR;
     }
 }
