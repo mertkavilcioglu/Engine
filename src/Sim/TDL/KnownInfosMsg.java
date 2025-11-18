@@ -4,6 +4,7 @@ import App.VCSApp;
 import Sim.Entity;
 import Vec.Vec2int;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 //TODO: Infoda bulunan bilgileri arraylist içinde ver ve popup içinde ayrı ayrı bas her ent için
@@ -15,7 +16,7 @@ public class KnownInfosMsg extends Message{
     private Entity.Side side;
 
     public KnownInfosMsg(VCSApp app, Entity.Side side, String srcID, String targetID, String srcName, ArrayList<Entity> knownEntities) {
-        super(MessageType.KNOWN_INFO, app, srcID, targetID,  (String.format("%s: %s",srcName, "J2.0")));
+        super(MessageType.KNOWN_INFO, app, srcID, targetID, srcID, "J2.0");
         this.knownEntities = knownEntities;
         this.side = side;
     }
@@ -37,6 +38,11 @@ public class KnownInfosMsg extends Message{
         }
         getApp().debugLog(result);
         return result;
+    }
+
+    @Override
+    public Color getColor() {
+        return Color.WHITE;
     }
 
     public ArrayList<Entity> getKnownEntities() {
