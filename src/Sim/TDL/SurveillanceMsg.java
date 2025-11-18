@@ -73,6 +73,6 @@ public class SurveillanceMsg extends Message{
 
     @Override
     public Color getColor() {
-        return Color.RED;
+        return getApp().uiColorManager.J3_COLOR;
     }
 }

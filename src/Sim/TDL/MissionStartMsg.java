@@ -29,6 +29,6 @@ public class MissionStartMsg extends Message{
 
     @Override
     public Color getColor() {
-        return Color.LIGHT_GRAY;
+        return getApp().uiColorManager.J13_COLOR;
     }
 }

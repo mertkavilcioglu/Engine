@@ -30,6 +30,6 @@ public class FollowMsg extends Message{
 
     @Override
     public Color getColor() {
-        return Color.YELLOW;
+        return getApp().uiColorManager.J12_COLOR;
     }
 }

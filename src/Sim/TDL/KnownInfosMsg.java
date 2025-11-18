@@ -42,7 +42,7 @@ public class KnownInfosMsg extends Message{
 
     @Override
     public Color getColor() {
-        return Color.WHITE;
+        return getApp().uiColorManager.J2_COLOR;
     }
 
     public ArrayList<Entity> getKnownEntities() {

@@ -26,6 +26,6 @@ public class MoveMsg extends Message{
 
     @Override
     public Color getColor() {
-        return Color.YELLOW;
+        return getApp().uiColorManager.J12_COLOR;
     }
 }
