@@ -31,9 +31,47 @@ public class World{
         toSendList.add(msg);
     }
     public void processSendList() {
-        for (Message m: toSendList) {
+        for (Message msg: toSendList) {
             // check ranges from source
             // put read q
+
+            Entity source = entityHashMap.get(msg.getSrcID());
+            int range = source.getTdlTransmitter().getTransmitterRange();
+
+            if (!source.isLocal()){
+                if (!msg.getTargetID().equals(" ")){
+                    String targetID = msg.getTargetID();
+                    for(Entity e : source.w.entityHashMap.values()){
+//                   if(e == source);
+//                      //continue; //BURASI EMIR ALMA MESJLARINI BOZUYOR
+                        if (e.getId().equals(targetID) && (source.getPos().distance(e.getPos()) < range) && !e.isLocal()) {
+                            msg.getApp().logPanel.toLog(msg);
+                            e.getTdlReceiver().receiveMessage2(msg);
+                        }
+                    }
+                } else if (msg.type.equals(Message.MessageType.ENTITY_INFO)){
+                    for (Entity e : source.w.entityHashMap.values()){
+                        if ((source.getPos().distance(e.getPos()) < range) && !e.isLocal() && !e.equals(source)){
+                            if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
+                                msg.setTargetID(e.getId());
+                            } else continue;
+                            e.getTdlReceiver().receiveMessage2(msg);
+                        }
+                    }
+                    msg.getApp().logPanel.toLog(msg);
+                }
+                else  if (msg.type.equals(Message.MessageType.KNOWN_INFO)){
+                    for (Entity e : source.w.entityHashMap.values()){
+                        if ((source.getPos().distance(e.getPos()) < range) && !e.isLocal() && !e.equals(source)){
+                            if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
+                                msg.setTargetID(e.getId());
+                            } else continue;
+                            e.getTdlReceiver().receiveMessage2(msg);
+                        }
+                    }
+                    msg.getApp().logPanel.toLog(msg);
+                }
+            }
         }
     }
 

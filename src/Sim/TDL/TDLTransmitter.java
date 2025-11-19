@@ -20,8 +20,6 @@ public class TDLTransmitter {
     private int accAllInfo = 0;
     private final int ACC_ALL_INFO_TIME = 4000;
 
-//    private ArrayList<Message> messagesToSend = new ArrayList<>();
-//    private ArrayList<Message> messagesToRemove = new ArrayList<>();
     public TDLTransmitter(Entity source){
         this.source = source;
     }
@@ -133,22 +131,6 @@ public class TDLTransmitter {
                 msg.getApp().logPanel.toLog(msg);
             }
         }
-
-
-
-
-
-//        if(msg.type != Message.MessageType.ENTITY_INFO &&
-//        source.w.entityHashMap.get(msg.getTargetID()).getPos().distance(source.getPos()) > range){
-//           relayMessage(msg);
-//        } //todo: info bilgisinin relayini hallet önce. infoda target olmadığı için hashmapten target range
-        //todo:      içinde mi kontrol edemiyi kotalarda, bildiği bütün kişilerin infosunu bağırsın
-        //todo f1 cont. : böylelikle herkes, bildiği kişilerin bildiklerini de öğrenmiş olur ama bu mantıklı mı bilmiyorum
-        //todo: bilmeyen kişinin bana bunun infosunu ver demesi saçma çünkü bilmiyor,
-        // her entity için bildiklerim bildiklerimi biliyor mu kontrolü yapıp eksik varsa gerekli infoyu iletebilir
-
-
-
     }
 
 
