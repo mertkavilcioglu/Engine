@@ -28,15 +28,11 @@ public class Radar extends Component {
             if(dist <= range) {
                 hasVisual = true;
                 e.isItDetected(hasVisual);
-                if (!(parentEntity.getLocalWorld().getEntities().contains(e)) && e.isActive()){
+                if (!(parentEntity.getLocalWorld().getEntityHashMap().containsKey(e.getId())) && e.isActive()){
                     if (parentEntity.getSide() == Entity.Side.ALLY) {
                         if (e.getSide() == parentEntity.getSide() && dist <= linkRange) {
                         } else if (e.getSide().equals(Entity.Side.ENEMY)){
                             parentEntity.getLocalWorld().createEntity(e.getId(), e.getName(), e.getSide(), e.getPos(), e.getSpeed(), e.getType());
-                            for (Entity entity : parentEntity.getLocalWorld().getEntities()){
-                                if(entity.getSide().equals(parentEntity.getSide()))
-                                    parentEntity.getTdlTransmitter().createSurveillanceMsg(parentEntity.w.app, parentEntity, entity.getId(), e);
-                            }
                         }
                     }
                 }
@@ -45,6 +41,13 @@ public class Radar extends Component {
                     e.isItDetected(hasVisual);
                     parentEntity.getLocalWorld().removeEntityFromLocal(e.getId());
                 }
+                if (parentEntity.getSide() != e.getSide() && parentEntity.getSide().equals(Entity.Side.ALLY)){
+                    for (Entity entity : parentEntity.getLocalWorld().getEntities()){
+                        if(entity.getSide().equals(parentEntity.getSide()))
+                            parentEntity.getTdlTransmitter().createSurveillanceMsg(parentEntity.w.app, parentEntity, entity.getId(), e);
+                    }
+                }
+
             } else if (parentEntity.getLocalWorld().getEntities().contains(e)){
                 hasVisual = false;
                 e.isItDetected(hasVisual);

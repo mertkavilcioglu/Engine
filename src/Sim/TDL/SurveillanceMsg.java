@@ -61,12 +61,11 @@ public class SurveillanceMsg extends Message{
         return String.format(
                 "Surveillance Message:\n" +
                         "From: %s\n" +
-                        "To: %s\n" +
                         "Seen Entity: %s\n" +
                         "Type: %s\n" +
                         "Position: %s\n" +
                         "Speed: %s\n",
-                src.getId(), targetID, seenID, seenType.getName(),
+                src.getId(), seenID, seenType.getName(),
                 seenPos.toString(), seenSpeed.toString()
         );
     }
