@@ -3,6 +3,7 @@ package Sim;
 import App.VCSApp;
 import Sim.Managers.IDManager;
 import Sim.TDL.Message;
+import Sim.TDL.TDLReceiverComp;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
@@ -73,6 +74,11 @@ public class World{
                 }
             }
         }
+    }
+
+    public void registerReceiver(TDLReceiverComp rec){
+
+        // TODO: Register the all receivers in the world and use these registers for processing
     }
 
     public Entity createEntity2(String name, Entity.Side side) {
