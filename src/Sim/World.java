@@ -2,6 +2,7 @@ package Sim;
 
 import App.VCSApp;
 import Sim.Managers.IDManager;
+import Sim.TDL.Message;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
@@ -25,7 +26,18 @@ public class World{
     public Stack<Entity> changedEntities = new Stack<>();
     public Stack<Entity> changes = new Stack<>();
 
-        public Entity createEntity2(String name, Entity.Side side) {
+    private ArrayList<Message> toSendList = new ArrayList<>();
+    public void send(Message msg) {
+        toSendList.add(msg);
+    }
+    public void processSendList() {
+        for (Message m: toSendList) {
+            // check ranges from source
+            // put read q
+        }
+    }
+
+    public Entity createEntity2(String name, Entity.Side side) {
         Entity ent = new Entity(this);
         ent.setName(name);
         ent.setSide(side);

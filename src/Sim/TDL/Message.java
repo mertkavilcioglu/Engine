@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class Message {
 
     private VCSApp app;
-    private String srcID, targetID;
+    private String srcID, targetID; // yakıştı mı?!
     private List<String> targetIDList;
     private int counter = 0;
     private final String msg;

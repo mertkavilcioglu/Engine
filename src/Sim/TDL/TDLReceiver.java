@@ -27,6 +27,7 @@ public class TDLReceiver {
     public void update(){
         while(!receivedMessages.isEmpty()){ //TODO: VEYA BİR KOTA KOY, HER UPDATE'DE 20 MESAJ OKU GİBİ
             //source.w.app.debugLog("MSG read");
+            // TODO BB global debug nasıl olmalı?
             readMessage(receivedMessages.poll());
         }
     }
@@ -66,7 +67,7 @@ public class TDLReceiver {
             case ORDER_RESULT:
                 ResultMsg rm = (ResultMsg) msg;
                 if (rm.getOrderResult()){
-                    msg.getApp().debugLog("Order done!");
+                    msg.getApp().debugLog("Order done!"); // TODO BB which order ?
                     //order tamamlanmış okey
                 } else {
                     msg.getApp().debugLog("Order not done!");

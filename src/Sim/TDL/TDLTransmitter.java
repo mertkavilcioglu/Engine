@@ -12,7 +12,7 @@ import java.util.Objects;
 public class TDLTransmitter {
 
     private Entity source;
-    private int range = 500;
+    private int range = 250;
 
     // Accumulators:
     private int accSelfInfo = 0;

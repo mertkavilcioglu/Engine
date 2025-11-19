@@ -31,7 +31,7 @@ public class VCSApp {
     public MapPixelPosPanel mapPixelPosPanel;
     public PixelColor pixelColor;
     public UIColorManager uiColorManager;
-    static public Entity headQuarter;
+    static public Entity headQuarter; // TODO BB Bilemedim
     private ShortcutManager shortcutManager;
     public IDManager idManager;
 
@@ -151,6 +151,7 @@ public class VCSApp {
                         //System.out.println("Timer::update - THREAD : " + Thread.currentThread().getName());
                         // update world
                         world.update(delta);
+                        world.processSendList();
                         pixelColor.update(delta);
                         hierarchyPanel.update(delta);
                         editorPanel.update();
