@@ -10,7 +10,7 @@ public class Radar extends Component {
     private int linkRange = 0;
 
     public Radar(Entity parent, ArrayList<Entity> entities) {
-        super(parent, entities);
+        super(parent, entities, ComponentType.RADAR);
         linkRange = parentEntity.getTdlTransmitter().getTransmitterRange();
     }
 

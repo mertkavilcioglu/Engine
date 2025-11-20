@@ -1,6 +1,6 @@
 package UI;
 
-import Vec.Vec2int;
+import Sim.Component;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,7 +13,7 @@ import java.awt.event.FocusEvent;
 import java.util.Arrays;
 import java.util.List;
 
-public class RadarEditor extends JPanel {
+public class ComponentEditor extends JPanel {
     private int data;
     private JLabel nameLbl;
     private JLabel lbl;
@@ -22,9 +22,10 @@ public class RadarEditor extends JPanel {
     private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
     private Color borderColor;
     private boolean isFocused = false;
+    private Component.ComponentType type;
 
     //TODO radar comp. eklenmemişse radarsız oluştur, radar varsa ama invalidse kırmızı yap
-    public RadarEditor(String label, EntityEditorView editor){
+    public ComponentEditor(String label, EntityEditorView editor, Component.ComponentType type, String defaultRange){
         borderColor = editor.borderColor;
         setBackground(editor.panelComponentColor);
         nameLbl = new JLabel(label);
@@ -34,7 +35,9 @@ public class RadarEditor extends JPanel {
         lbl.setBackground(editor.panelColor);
         txt = new JTextField();
         setBorder(BorderFactory.createLineBorder(editor.borderColor, 1));
+        txt.setText(defaultRange);
 
+        this.type = type;
         this.setLayout(new GridLayout(3,1));
         this.add(nameLbl);
         JPanel vecPnl = new JPanel(new GridLayout(1,3));
@@ -45,8 +48,8 @@ public class RadarEditor extends JPanel {
         JButton removeButton = new JButton("X");
         removeButton.setBackground(editor.app.uiColorManager.BUTTON_COLOR);
         removeButton.addActionListener(e -> {
-            editor.removeComponent(this, "Radar");
-            editor.app.mapView.getSelectedEntity().removeComponent("Radar");
+            editor.removeComponent(this, type.name);
+            editor.app.mapView.getSelectedEntity().removeComponent(type.name);
             editor.updateSelectedEntity();
         });
         vecPnl.add(removeButton);

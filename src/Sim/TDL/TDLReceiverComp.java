@@ -13,7 +13,7 @@ public class TDLReceiverComp extends Component {
     private Queue<Message> receivedMessages = new LinkedList<>();
 
     public TDLReceiverComp(Entity parent, ArrayList<Entity> entities) {
-        super(parent, entities);
+        super(parent, entities, ComponentType.RECEIVER);
         parent.w.registerReceiver(this);
     }
 
