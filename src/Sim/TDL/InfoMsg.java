@@ -2,6 +2,7 @@ package Sim.TDL;
 
 import App.VCSApp;
 import Sim.Entity;
+import UI.UIColorManager;
 import Vec.Vec2int;
 
 import java.awt.*;
@@ -59,6 +60,6 @@ public class InfoMsg extends Message{
 
     @Override
     public Color getColor() {
-        return getApp().uiColorManager.J2_COLOR;
+        return UIColorManager.J2_COLOR;
     }
 }

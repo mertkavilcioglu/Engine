@@ -2,6 +2,7 @@ package Sim.TDL;
 
 import App.VCSApp;
 import Sim.Entity;
+import UI.UIColorManager;
 
 import java.awt.*;
 
@@ -30,6 +31,6 @@ public class FollowMsg extends Message{
 
     @Override
     public Color getColor() {
-        return getApp().uiColorManager.J12_COLOR;
+        return UIColorManager.J12_COLOR;
     }
 }

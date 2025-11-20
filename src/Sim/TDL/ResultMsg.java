@@ -2,6 +2,7 @@ package Sim.TDL;
 
 import App.VCSApp;
 import Sim.Entity;
+import UI.UIColorManager;
 
 import java.awt.*;
 
@@ -31,6 +32,6 @@ public class ResultMsg extends Message{
 
     @Override
     public Color getColor() {
-        return getApp().uiColorManager.J13_COLOR;
+        return UIColorManager.J13_COLOR;
     }
 }
