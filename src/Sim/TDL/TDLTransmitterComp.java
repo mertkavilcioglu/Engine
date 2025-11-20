@@ -3,6 +3,7 @@ package Sim.TDL;
 import App.VCSApp;
 import Sim.Component;
 import Sim.Entity;
+import Sim.Orders.Order;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
@@ -23,24 +24,8 @@ public class TDLTransmitterComp extends Component {
     public void send(Message msg) {
         parentEntity.w.send(msg);
     }
-    @Override
-    public void update(int deltaTime) {
-        accAllInfo += deltaTime;
-        accSelfInfo += deltaTime;
 
-        if(accAllInfo >= ACC_ALL_INFO_TIME){
-            createKnownInfoMessage(parentEntity.w.app, parentEntity, parentEntity.getLocalWorld().getEntities());
-            //createInfoMessage(source.w.app, source);
-            accAllInfo -= ACC_ALL_INFO_TIME;
-            accSelfInfo -= ACC_SELF_INFO_TIME;
-        }
-        else if(accSelfInfo >= ACC_SELF_INFO_TIME){
-            createInfoMessage(parentEntity.w.app, parentEntity);
-            accSelfInfo -= ACC_SELF_INFO_TIME;
-        }
-    }
-
-    public void createMoveMessage(VCSApp app, Entity targetReceiver, Vec2int pos){
+    public void createMoveMessage2(VCSApp app, Entity targetReceiver, Vec2int pos){
         MoveMsg moveMsg = new MoveMsg(app, VCSApp.headQuarter, targetReceiver, pos);
         //moveMsg.setCounter(calculateRangeCounter(moveMsg));
 //        messagesToSend.add(moveMsg);
@@ -48,7 +33,7 @@ public class TDLTransmitterComp extends Component {
         app.debugLog(String.format("Message sent from %s to %s", moveMsg.getSrcID(), moveMsg.getTargetID()));
     }
 
-    public void createAttackMessage(VCSApp app, String targetID, String attackTargetID){
+    public void createAttackMessage2(VCSApp app, String targetID, String attackTargetID){
         AttackMsg attackMsg = new AttackMsg(app, VCSApp.headQuarter.getId(), targetID, attackTargetID);
         //attackMsg.setCounter(calculateRangeCounter(attackMsg));
         //messagesToSend.add(attackMsg);
@@ -56,7 +41,7 @@ public class TDLTransmitterComp extends Component {
         app.debugLog(String.format("Message sent from %s to %s", attackMsg.getSrcID(), attackMsg.getTargetID()));
     }
 
-    public void createFollowMessage(VCSApp app, Entity targetReceiver, Entity followEntity, int time){
+    public void createFollowMessage2(VCSApp app, Entity targetReceiver, Entity followEntity, int time){
         FollowMsg followMsg = new FollowMsg(app, VCSApp.headQuarter, targetReceiver, followEntity, time);
         //followMsg.setCounter(calculateRangeCounter(followMsg));
         //messagesToSend.add(followMsg);
@@ -64,7 +49,7 @@ public class TDLTransmitterComp extends Component {
         app.debugLog(String.format("Message sent from %s to %s\n", followMsg.getSrcID(), followMsg.getTargetID()));
     }
 
-    public void createInfoMessage(VCSApp app, Entity src){
+    public void createInfoMessage2(VCSApp app, Entity src){
         //TODO nasıl createlenip ne şekilde ne zaman basılcağına bakmalı
         String targetID = " ";
         InfoMsg infoMsg = new InfoMsg(app, src.getId(), targetID, src.getName(), src.getSide(), src.getPos(), src.getSpeed(), src.getType());
@@ -72,7 +57,7 @@ public class TDLTransmitterComp extends Component {
         send(infoMsg);
     }
 
-    public void createKnownInfoMessage(VCSApp app, Entity src, ArrayList<Entity> knownEntities){
+    public void createKnownInfoMessage2(VCSApp app, Entity src, ArrayList<Entity> knownEntities){
         String targetID = " ";
         ArrayList<Entity> selfIncludedList = (ArrayList<Entity>) knownEntities.clone();
         selfIncludedList.addFirst(parentEntity);
@@ -81,7 +66,7 @@ public class TDLTransmitterComp extends Component {
         send(knownInfoMsg);
     }
 
-    public void createReceiveMessage(VCSApp app, Entity source, Message.MessageType type){
+    public void createReceiveMessage2(VCSApp app, Entity source, Message.MessageType type){
         ReceiveMsg receiveMsg = new ReceiveMsg(app, source, VCSApp.headQuarter, type);
         //receiveMsg.setCounter(calculateRangeCounter(receiveMsg));
         //messagesToSend.add(receiveMsg);
@@ -90,23 +75,38 @@ public class TDLTransmitterComp extends Component {
 
     }
 
-    public void createResultMessage(VCSApp app, Entity source, boolean isDone){
-        ResultMsg resultMsg = new ResultMsg(app, source, VCSApp.headQuarter, isDone);
+    public void createResultMessage2(VCSApp app, Entity source, boolean isDone, Order.OrderType type){
+        ResultMsg resultMsg = new ResultMsg(app, source, app.headQuarter, isDone, type);
         //resultMsg.setCounter(calculateRangeCounter(resultMsg));
         //messagesToSend.add(resultMsg);
         send(resultMsg);
-        app.debugLog(String.format("Message sent from %s to %s\n", resultMsg.getSrcID(), resultMsg.getTargetID()));
-
     }
 
-    public void createSurveillanceMsg(VCSApp app, Entity source, String targetID, Entity seenEntity){
+    public void createSurveillanceMsg2(VCSApp app, Entity source, String targetID, Entity seenEntity){
         SurveillanceMsg surveillanceMsg = new SurveillanceMsg(app, source, targetID, seenEntity);
         //messagesToSend.add(surveillanceMsg);
         send(surveillanceMsg);
     }
 
-    public void createMissionStartMessage(VCSApp app, String srcID, String missionType){
+    public void createMissionStartMessage2(VCSApp app, String srcID, String missionType){
         MissionStartMsg missionStartMsg = new MissionStartMsg(app, srcID, app.headQuarter.getId(), missionType);
         send(missionStartMsg);
+    }
+
+    @Override
+    public void update(int deltaTime) {
+        accAllInfo += deltaTime;
+        accSelfInfo += deltaTime;
+
+        if(accAllInfo >= ACC_ALL_INFO_TIME){
+            createKnownInfoMessage2(parentEntity.w.app, parentEntity, parentEntity.getLocalWorld().getEntities());
+            //createInfoMessage(source.w.app, source);
+            accAllInfo -= ACC_ALL_INFO_TIME;
+            accSelfInfo -= ACC_SELF_INFO_TIME;
+        }
+        else if(accSelfInfo >= ACC_SELF_INFO_TIME){
+            createInfoMessage2(parentEntity.w.app, parentEntity);
+            accSelfInfo -= ACC_SELF_INFO_TIME;
+        }
     }
 }

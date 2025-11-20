@@ -2,12 +2,10 @@ package Sim.TDL;
 
 import App.VCSApp;
 import Sim.Entity;
+import Sim.Orders.Order;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
 
 public class TDLTransmitter {
 
@@ -74,8 +72,8 @@ public class TDLTransmitter {
 
     }
 
-    public void createResultMessage(VCSApp app, Entity source, boolean isDone){
-        ResultMsg resultMsg = new ResultMsg(app, source, VCSApp.headQuarter, isDone);
+    public void createResultMessage(VCSApp app, Entity source, boolean isDone, Order.OrderType type){
+        ResultMsg resultMsg = new ResultMsg(app, source, VCSApp.headQuarter, isDone, type);
         //resultMsg.setCounter(calculateRangeCounter(resultMsg));
         //messagesToSend.add(resultMsg);
         sendMessage2(resultMsg);

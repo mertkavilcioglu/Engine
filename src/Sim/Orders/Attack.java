@@ -14,7 +14,7 @@ public class Attack extends Order{
     private Vec2int targetPos;
 
     public Attack(VCSApp app, Entity receiver, Entity sender, String  attackTargetID) {
-        super(app, receiver, sender);
+        super(app, receiver, sender, OrderType.ATTACK);
         this.attackTargetID = attackTargetID;
         receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.ATTACK_ORDER);
         //attackEntity(target);
@@ -29,12 +29,12 @@ public class Attack extends Order{
         dist = receiver.getPos().distance(targetPos);
         if(dist <= 4.0){
             if (receiver.getLocalWorld().getEntities().contains(targetEntity)){
-                receiver.getTdlTransmitter().createResultMessage(app, receiver, true);
+                receiver.getTdlTransmitter().createResultMessage(app, receiver, true, OrderType.ATTACK);
                 String msgDestroy = String.format("%s destroy the target %s,", receiver.getName(), targetEntity.getName());
                 app.log(msgDestroy);
                 destroy(targetEntity);
             } else {
-                receiver.getTdlTransmitter().createResultMessage(app, receiver, false);
+                receiver.getTdlTransmitter().createResultMessage(app, receiver, false, OrderType.ATTACK);
                 String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), receiver.getName());
                 app.log(notFoundMsg);
                 //TODO order bitince ya da yarım kalınca unitlere hareket belirleme

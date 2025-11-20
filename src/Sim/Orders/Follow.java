@@ -13,7 +13,7 @@ public class Follow extends Order{
     private int followTime;
 
     public Follow(VCSApp app, Entity receiver, Entity sender, Entity target, int time) {
-        super(app, receiver, sender);
+        super(app, receiver, sender, OrderType.FOLLOW);
         this.targetEntity = target;
         this.followTime = time;
         receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.FOLLOW_ORDER);
@@ -63,13 +63,13 @@ public class Follow extends Order{
         }
         else if (followTime == numOfUpdate){
             if(dist <= 3.0){
-                receiver.getTdlTransmitter().createResultMessage(app, receiver, true);
+                receiver.getTdlTransmitter().createResultMessage(app, receiver, true, OrderType.FOLLOW);
                 String reachString = String.format("%s has reached the target.", receiver.getName());
                 app.log(reachString);
                 receiver.setSpeed(new Vec2int(0,0));
             }
             else{
-                receiver.getTdlTransmitter().createResultMessage(app, receiver, false);
+                receiver.getTdlTransmitter().createResultMessage(app, receiver, false, OrderType.FOLLOW);
                 String timeOutString = String.format("%s stopped following the target %s because time was out.", receiver.getName(), target.getName());
                 app.log(timeOutString);
             }

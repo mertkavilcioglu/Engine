@@ -9,10 +9,28 @@ public abstract class Order {
     public final Entity receiver;
     public final Entity sender;
 
-    protected Order(VCSApp app, Entity receiver, Entity sender) {
+    public enum OrderType{
+        ATTACK("Attack Order"),
+        MOVE("Move Order"),
+        FOLLOW("Follow Order");
+
+        private String name;
+
+        OrderType(String name){
+            this.name = name;
+        }
+        public String getName(){
+            return name;
+        }
+    }
+
+    public OrderType orderType;
+
+    protected Order(VCSApp app, Entity receiver, Entity sender, OrderType type) {
         this.app = app;
         this.receiver = receiver;
         this.sender = sender;
+        orderType = type;
     }
 
 
