@@ -1,7 +1,6 @@
 package Sim;
 
 import App.VCSApp;
-import Sim.Managers.IDManager;
 import Sim.TDL.Message;
 import Sim.TDL.TDLReceiverComp;
 import Vec.Vec2int;
@@ -76,9 +75,27 @@ public class World{
         }
     }
 
-    public void registerReceiver(TDLReceiverComp rec){
+    private ArrayList<TDLReceiverComp> regesteredReceivers = new ArrayList<>();
+    public void processSendList2(){
+        for (Message msg : toSendList){
+            Entity source = entityHashMap.get(msg.getSrcID());
+            int transmitterRange = source.getTdlTransmitter().getTransmitterRange();
 
+            for(Entity entity : entities){
+                if (source.getPos().distance(entity.getPos()) < transmitterRange){
+                    for (TDLReceiverComp r : regesteredReceivers){
+                        if (r.parentEntity.equals(entity)){
+                            r.receiveMessage(msg);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void registerReceiver(TDLReceiverComp rec){
         // TODO: Register the all receivers in the world and use these registers for processing
+        regesteredReceivers.add(rec);
     }
 
     public Entity createEntity2(String name, Entity.Side side) {

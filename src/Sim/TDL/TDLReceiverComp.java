@@ -17,21 +17,11 @@ public class TDLReceiverComp extends Component {
         parent.w.registerReceiver(this);
     }
 
-
     public void receiveMessage(Message msg){
         receivedMessages.add(msg);
     }
 
-    @Override
-    public void update(int deltaTime) {
-        while(!receivedMessages.isEmpty()){ //TODO: VEYA BİR KOTA KOY, HER UPDATE'DE 20 MESAJ OKU GİBİ
-            //source.w.app.debugLog("MSG read");
-            // TODO BB global debug nasıl olmalı?
-            readMessage(receivedMessages.poll());
-        }
-    }
     public void readMessage(Message msg){
-        //source.w.app.debugLogError("Message reading with type: " + msg.type.toString());
         if(!msg.getTargetID().equals(parentEntity.getId()) && msg.type != Message.MessageType.ENTITY_INFO){
             return;
 
@@ -84,6 +74,15 @@ public class TDLReceiverComp extends Component {
                     }
                 break;
 
+        }
+    }
+
+    @Override
+    public void update(int deltaTime) {
+        while(!receivedMessages.isEmpty()){ //TODO: VEYA BİR KOTA KOY, HER UPDATE'DE 20 MESAJ OKU GİBİ
+            //source.w.app.debugLog("MSG read");
+            // TODO BB global debug nasıl olmalı?
+            readMessage(receivedMessages.poll());
         }
     }
 

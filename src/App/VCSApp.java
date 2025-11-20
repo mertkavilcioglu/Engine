@@ -151,7 +151,7 @@ public class VCSApp {
                         //System.out.println("Timer::update - THREAD : " + Thread.currentThread().getName());
                         // update world
                         world.update(delta);
-                        world.processSendList();
+                        world.processSendList2();
                         pixelColor.update(delta);
                         hierarchyPanel.update(delta);
                         editorPanel.update();
