@@ -13,8 +13,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class EntityEditorView extends VCSPanel {
-    private String[] components = {"Radar"};
-    private RadarEditor radarPanel = null;
+    private Component.ComponentType components;
+    private ComponentEditor radarPanel = null;
     private JButton addComponentButton;
     private JPanel addSidePanel;
     private JPanel addTypePanel;
@@ -226,16 +226,15 @@ public class EntityEditorView extends VCSPanel {
         addComponentButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
 
         JPopupMenu popupMenu = new JPopupMenu();
-        for (String comp : components){
-            JMenuItem item = new JMenuItem(comp);
+        for (Component.ComponentType comp : Component.ComponentType.values()){
+            JMenuItem item = new JMenuItem(comp.name);
             item.addActionListener(e -> {
                 switch (comp){
-                    case "Radar":
+                    case RADAR:
                         if(radarPanel == null){
-                            radarPanel = new RadarEditor("Radar:", this);
+                            radarPanel = new ComponentEditor(comp.name, this, Component.ComponentType.RADAR, "5000");
                             remove(addComponentButton);
                             add(radarPanel);
-                            radarPanel.getTxt().setText("5000");
 //                            if(!app.mapView.getSelectedEntity().hasComponent("Radar")){
 //                                app.mapView.getSelectedEntity().addComponents(new Radar(app.mapView.getSelectedEntity(),
 //                                        app.world.entities));
@@ -244,15 +243,20 @@ public class EntityEditorView extends VCSPanel {
                             add(addComponentButton);
                             revalidate();
                             radarPanel.txt.requestFocus();
-                            break;
                         }
+                        break;
+                    case RECEIVER:
+                        break;
+
+                    case TRANSMITTER:
+                        break;
                 }
             });
             popupMenu.add(item);
         }
         addComponentButton.addActionListener(e -> {
             int x=0;
-            int y = popupMenu.getPreferredSize().height;
+            int y = addComponentButton.getPreferredSize().height;
             popupMenu.show(addComponentButton,x,y);
         });
         add(addComponentButton, BorderLayout.CENTER);
@@ -321,7 +325,7 @@ public class EntityEditorView extends VCSPanel {
 
     }
 
-    public void setRadarPanel(RadarEditor rdr){
+    public void setRadarPanel(ComponentEditor rdr){
         radarPanel = rdr;
     }
 
@@ -359,7 +363,7 @@ public class EntityEditorView extends VCSPanel {
         for(Component c : e.getComponents()){
             if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
                 if(radarPanel == null){
-                    radarPanel = new RadarEditor("Range:", this);
+                    radarPanel = new ComponentEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
                     remove(addComponentButton);
                     add(radarPanel);
                     add(addComponentButton);
@@ -431,7 +435,7 @@ public class EntityEditorView extends VCSPanel {
             for(Component c : e.getComponents()){
                 if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
                     if(radarPanel == null){
-                        radarPanel = new RadarEditor("Radar:", this);
+                        radarPanel = new ComponentEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
                         remove(addComponentButton);
                         add(radarPanel);
                         add(addComponentButton);

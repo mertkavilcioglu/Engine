@@ -16,7 +16,7 @@ public class TDLTransmitterComp extends Component {
 
 
     public TDLTransmitterComp(Entity parent, ArrayList<Entity> entities) {
-        super(parent, entities);
+        super(parent, entities, ComponentType.TRANSMITTER);
         //parent.w.registerTransmitter(this);
     }
 
