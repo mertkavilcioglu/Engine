@@ -31,7 +31,7 @@ public class VCSApp {
     public MapPixelPosPanel mapPixelPosPanel;
     public PixelColor pixelColor;
     public UIColorManager uiColorManager;
-    static public Entity headQuarter; // TODO BB Bilemedim
+    private Entity headQuarter; // TODO BB Bilemedim
     private ShortcutManager shortcutManager;
     public IDManager idManager;
 
@@ -290,6 +290,14 @@ public class VCSApp {
             headQuarter = world.createCommander(null, 5000);
             hierarchyPanel.entityAdded(headQuarter);
         }
+    }
+
+    public Entity getHQ(){
+        return headQuarter;
+    }
+
+    public void setHQ(Entity entity){
+        headQuarter = entity;
     }
 
     public ShortcutManager getShortcutManager(){
