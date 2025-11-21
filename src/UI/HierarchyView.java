@@ -181,7 +181,7 @@ public class HierarchyView extends VCSPanel {
 
     public void entityRemoved(Entity e){
         //REMOVE
-        if(leaves.get(e).getRoot() != null && rootNode.isNodeChild(leaves.get(e).getRoot())) {
+        if(leaves.get(e) != null && leaves.get(e).getRoot() != null && rootNode.isNodeChild(leaves.get(e).getRoot())) {
             rootNode.remove(leaves.get(e).getRoot());
             model.reload(rootNode);
             repaint();

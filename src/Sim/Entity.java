@@ -48,8 +48,7 @@ public class Entity {
     public Entity(World w) {
         this.w = w;
         nodeInfo = new NodeInfo();
-        setTransmitter(this, w.entities);
-        setReceiver(this, w.entities);
+
     }
 
     public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type, ArrayList<Component> components,  boolean active){
@@ -61,8 +60,7 @@ public class Entity {
         this.type = type;
         this.isActive = active;
         this.components = (ArrayList<Component>) components.clone();
-        setTransmitter(this, w.entities);
-        setReceiver(this, w.entities);
+
     }
 
     public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type){
@@ -73,8 +71,7 @@ public class Entity {
         this.type = type;
         //setPpliCode(type);
         this.w = w;
-        setTransmitter(this, w.entities);
-        setReceiver(this, w.entities);
+
     }
 
     public enum Type{
@@ -248,10 +245,11 @@ public class Entity {
 
         if(!isLocal) {
             localWorld.update(deltaTime);
+            transmitter.update(deltaTime);
+            receiver.update(deltaTime);
         }
 
-        transmitter.update(deltaTime);
-        receiver.update(deltaTime);
+
 
         components.removeAll(componentsToRemove);
         componentsToRemove.clear();

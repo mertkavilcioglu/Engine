@@ -91,6 +91,7 @@ public class World{
                 }
             }
         }
+        toSendList.clear();
     }
 
     public void registerReceiver(TDLReceiverComp rec){
@@ -130,6 +131,8 @@ public class World{
 
         entities.add(ent);
         ent.setId("HQ");
+        ent.setTransmitter(ent, entities);
+        ent.setReceiver(ent, entities);
         entityHashMap.put(ent.getId(), ent);
         return ent;
     }
@@ -151,7 +154,11 @@ public class World{
         if(ent.maxSpeed == 0)
             ent.maxSpeed = 4;
 
+
         ent.setId(app.idManager.createId(ent));
+
+        ent.setTransmitter(ent, entities);
+        ent.setReceiver(ent, entities);
 
         entities.add(ent);
         entityHashMap.put(ent.getId(), ent);
