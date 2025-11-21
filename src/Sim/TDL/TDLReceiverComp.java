@@ -17,7 +17,7 @@ public class TDLReceiverComp extends Component {
         parent.w.registerReceiver(this);
     }
 
-    public void receiveMessage(Message msg){
+    public void receiveMessage2(Message msg){
         receivedMessages.add(msg);
     }
 

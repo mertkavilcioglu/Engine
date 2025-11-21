@@ -6,6 +6,7 @@ import Sim.Entity;
 import Sim.Orders.Order;
 import Vec.Vec2int;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 
 public class TDLTransmitterComp extends Component {
@@ -14,6 +15,7 @@ public class TDLTransmitterComp extends Component {
     private final int ACC_SELF_INFO_TIME = 2000;
     private int accAllInfo = 0;
     private final int ACC_ALL_INFO_TIME = 4000;
+    private int range = 300;
 
 
     public TDLTransmitterComp(Entity parent, ArrayList<Entity> entities) {
@@ -108,5 +110,9 @@ public class TDLTransmitterComp extends Component {
             createInfoMessage2(parentEntity.w.app, parentEntity);
             accSelfInfo -= ACC_SELF_INFO_TIME;
         }
+    }
+
+    public int getTransmitterRange(){
+        return range;
     }
 }

@@ -11,7 +11,7 @@ public class Radar extends Component {
 
     public Radar(Entity parent, ArrayList<Entity> entities) {
         super(parent, entities, ComponentType.RADAR);
-        linkRange = parentEntity.getTdlTransmitter().getTransmitterRange();
+        linkRange = parentEntity.getTdlTransmitter2().getTransmitterRange();
     }
 
 
@@ -35,7 +35,7 @@ public class Radar extends Component {
                             parentEntity.getLocalWorld().createEntity(e.getId(), e.getName(), e.getSide(), e.getPos(), e.getSpeed(), e.getType());
                             for (Entity entity : parentEntity.getLocalWorld().getEntities()){
                                 if(entity.getSide().equals(parentEntity.getSide()))
-                                    parentEntity.getTdlTransmitter().createSurveillanceMsg(parentEntity.w.app, parentEntity, entity.getId(), e);
+                                    parentEntity.getTdlTransmitter2().createSurveillanceMsg2(parentEntity.w.app, parentEntity, entity.getId(), e);
                             }
                         }
                     }

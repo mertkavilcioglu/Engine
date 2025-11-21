@@ -36,7 +36,7 @@ public class World{
             // put read q
 
             Entity source = entityHashMap.get(msg.getSrcID());
-            int range = source.getTdlTransmitter().getTransmitterRange();
+            int range = source.getTdlTransmitter2().getTransmitterRange();
 
             if (!source.isLocal()){
                 if (!msg.getTargetID().equals(" ")){
@@ -46,7 +46,7 @@ public class World{
 //                      //continue; //BURASI EMIR ALMA MESJLARINI BOZUYOR
                         if (e.getId().equals(targetID) && (source.getPos().distance(e.getPos()) < range) && !e.isLocal()) {
                             msg.getApp().logPanel.toLog(msg);
-                            e.getTdlReceiver().receiveMessage2(msg);
+                            e.getTdlReceiver2().receiveMessage2(msg);
                         }
                     }
                 } else if (msg.type.equals(Message.MessageType.ENTITY_INFO)){
@@ -55,7 +55,7 @@ public class World{
                             if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
                                 msg.setTargetID(e.getId());
                             } else continue;
-                            e.getTdlReceiver().receiveMessage2(msg);
+                            e.getTdlReceiver2().receiveMessage2(msg);
                         }
                     }
                     msg.getApp().logPanel.toLog(msg);
@@ -66,7 +66,7 @@ public class World{
                             if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
                                 msg.setTargetID(e.getId());
                             } else continue;
-                            e.getTdlReceiver().receiveMessage2(msg);
+                            e.getTdlReceiver2().receiveMessage2(msg);
                         }
                     }
                     msg.getApp().logPanel.toLog(msg);
@@ -79,13 +79,13 @@ public class World{
     public void processSendList2(){
         for (Message msg : toSendList){
             Entity source = entityHashMap.get(msg.getSrcID());
-            int transmitterRange = source.getTdlTransmitter().getTransmitterRange();
+            int transmitterRange = source.getTdlTransmitter2().getTransmitterRange();
 
             for(Entity entity : entities){
                 if (source.getPos().distance(entity.getPos()) < transmitterRange){
                     for (TDLReceiverComp r : regesteredReceivers){
                         if (r.parentEntity.equals(entity)){
-                            r.receiveMessage(msg);
+                            r.receiveMessage2(msg);
                         }
                     }
                 }
@@ -155,6 +155,11 @@ public class World{
 
         entities.add(ent);
         entityHashMap.put(ent.getId(), ent);
+
+//        if(!ent.isLocal){
+//            ent.setTransmitter(ent, entities);
+//            ent.setReceiver(ent, entities);
+//        }
 
         return ent;
     }

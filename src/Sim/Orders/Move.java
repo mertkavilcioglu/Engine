@@ -13,7 +13,7 @@ public class Move extends Order{
     public Move(VCSApp app, Entity receiver, Entity sender, Vec2int coordinates) {
         super(app, receiver, sender, OrderType.MOVE);
         this.destination = coordinates;
-        receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.MOVE_ORDER);
+        receiver.getTdlTransmitter2().createReceiveMessage2(app, receiver, Message.MessageType.MOVE_ORDER);
     }
 
 
@@ -22,7 +22,7 @@ public class Move extends Order{
             return;
         double dist = receiver.getPos().distance(destination);
         if(dist <= 2.0){
-            receiver.getTdlTransmitter().createResultMessage(app, receiver, true, OrderType.MOVE);
+            receiver.getTdlTransmitter2().createResultMessage2(app, receiver, true, OrderType.MOVE);
             app.log(receiver.getName() + " reached the target.");
             receiver.setSpeed(new Vec2int(0,0));
             receiver.completeCurrentOrder();
@@ -50,7 +50,7 @@ public class Move extends Order{
     @Override
     protected void printToLog(){
         if (!isExecute){
-            receiver.getTdlTransmitter().createMissionStartMessage(app, receiver.getId(), "J13.3");
+            receiver.getTdlTransmitter2().createMissionStartMessage2(app, receiver.getId(), "J13.3");
             app.log(receiver.getName() + " moving to " + destination);
             receiver.setCurrentOrderState(false);
         }

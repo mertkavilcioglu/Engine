@@ -228,6 +228,8 @@ public class EntityEditorView extends VCSPanel {
         JPopupMenu popupMenu = new JPopupMenu();
         for (Component.ComponentType comp : Component.ComponentType.values()){
             JMenuItem item = new JMenuItem(comp.name);
+            if(comp.name.equals(Component.ComponentType.RECEIVER.name) ||comp.name.equals(Component.ComponentType.TRANSMITTER.name))
+                item.setEnabled(false);
             item.addActionListener(e -> {
                 switch (comp){
                     case RADAR:

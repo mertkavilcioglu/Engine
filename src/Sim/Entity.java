@@ -3,7 +3,9 @@ package Sim;
 import Sim.Orders.Attack;
 import Sim.Orders.Order;
 import Sim.TDL.TDLReceiver;
+import Sim.TDL.TDLReceiverComp;
 import Sim.TDL.TDLTransmitter;
+import Sim.TDL.TDLTransmitterComp;
 import Var.RGB;
 import Vec.Vec2int;
 
@@ -34,8 +36,8 @@ public class Entity {
     private boolean isInLink = false;
     private boolean isDetected = false;
 
-    private TDLReceiver tdlReceiver = new TDLReceiver(this);
-    private TDLTransmitter tdlTransmitter = new TDLTransmitter(this);
+    private TDLReceiverComp receiver;
+    private TDLTransmitterComp transmitter;
     //private String ppliCode;
 
     private boolean isActive = true;
@@ -46,6 +48,8 @@ public class Entity {
     public Entity(World w) {
         this.w = w;
         nodeInfo = new NodeInfo();
+        setTransmitter(this, w.entities);
+        setReceiver(this, w.entities);
     }
 
     public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type, ArrayList<Component> components,  boolean active){
@@ -57,6 +61,8 @@ public class Entity {
         this.type = type;
         this.isActive = active;
         this.components = (ArrayList<Component>) components.clone();
+        setTransmitter(this, w.entities);
+        setReceiver(this, w.entities);
     }
 
     public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type){
@@ -67,6 +73,8 @@ public class Entity {
         this.type = type;
         //setPpliCode(type);
         this.w = w;
+        setTransmitter(this, w.entities);
+        setReceiver(this, w.entities);
     }
 
     public enum Type{
@@ -242,8 +250,8 @@ public class Entity {
             localWorld.update(deltaTime);
         }
 
-        tdlTransmitter.update(deltaTime);
-        tdlReceiver.update();
+        transmitter.update(deltaTime);
+        receiver.update(deltaTime);
 
         components.removeAll(componentsToRemove);
         componentsToRemove.clear();
@@ -505,12 +513,20 @@ public class Entity {
         }
     }
 
-    public TDLReceiver getTdlReceiver(){
-        return tdlReceiver;
+    public TDLReceiverComp getTdlReceiver2(){
+        return receiver;
     }
 
-    public TDLTransmitter getTdlTransmitter(){
-        return tdlTransmitter;
+    public TDLTransmitterComp getTdlTransmitter2(){
+        return transmitter;
+    }
+
+    public void setReceiver(Entity parent, ArrayList<Entity> entities){
+        receiver = new TDLReceiverComp(parent, entities);
+    }
+
+    public void setTransmitter(Entity parent, ArrayList<Entity> entities){
+        transmitter = new TDLTransmitterComp(parent, entities);
     }
 
     public boolean isActive(){

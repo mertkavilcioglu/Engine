@@ -16,7 +16,7 @@ public class Follow extends Order{
         super(app, receiver, sender, OrderType.FOLLOW);
         this.targetEntity = target;
         this.followTime = time;
-        receiver.getTdlTransmitter().createReceiveMessage(app, receiver, Message.MessageType.FOLLOW_ORDER);
+        receiver.getTdlTransmitter2().createReceiveMessage2(app, receiver, Message.MessageType.FOLLOW_ORDER);
         if (followTime == 0){
             String msgNotStarted = String.format("%s's follow order not started due to time problems.", this.receiver.getName());
             app.log(msgNotStarted);
@@ -63,13 +63,13 @@ public class Follow extends Order{
         }
         else if (followTime == numOfUpdate){
             if(dist <= 3.0){
-                receiver.getTdlTransmitter().createResultMessage(app, receiver, true, OrderType.FOLLOW);
+                receiver.getTdlTransmitter2().createResultMessage2(app, receiver, true, OrderType.FOLLOW);
                 String reachString = String.format("%s has reached the target.", receiver.getName());
                 app.log(reachString);
                 receiver.setSpeed(new Vec2int(0,0));
             }
             else{
-                receiver.getTdlTransmitter().createResultMessage(app, receiver, false, OrderType.FOLLOW);
+                receiver.getTdlTransmitter2().createResultMessage2(app, receiver, false, OrderType.FOLLOW);
                 String timeOutString = String.format("%s stopped following the target %s because time was out.", receiver.getName(), target.getName());
                 app.log(timeOutString);
             }
@@ -83,7 +83,7 @@ public class Follow extends Order{
     protected void printToLog(){
         String followString = String.format("%s is following %s.", receiver.getName(), targetEntity.getName());
         if (!isExecute){
-            receiver.getTdlTransmitter().createMissionStartMessage(app, receiver.getId(), "J13.2");
+            receiver.getTdlTransmitter2().createMissionStartMessage2(app, receiver.getId(), "J13.2");
             app.log(followString);
             receiver.setCurrentOrderState(false);
         }
