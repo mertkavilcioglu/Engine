@@ -45,7 +45,7 @@ public class World{
 //                   if(e == source);
 //                      //continue; //BURASI EMIR ALMA MESJLARINI BOZUYOR
                         if (e.getId().equals(targetID) && (source.getPos().distance(e.getPos()) < range) && !e.isLocal()) {
-                            msg.getApp().logPanel.toLog(msg);
+                            app.logPanel.toLog(msg);
                             e.getTdlReceiver2().receiveMessage2(msg);
                         }
                     }
@@ -85,9 +85,15 @@ public class World{
                 if (source.getPos().distance(entity.getPos()) < transmitterRange){
                     for (TDLReceiverComp r : regesteredReceivers){
                         if (r.parentEntity.equals(entity)){
-                            r.receiveMessage2(msg);
+                            if (!entity.getId().equals(msg.getSrcID())){
+                                if (msg.getTargetID().equals(" ")) {
+                                    msg.setTargetID(entity.getId());
+                                }
+                                r.receiveMessage2(msg);
+                            }
                         }
                     }
+                    app.logPanel.toLog(msg);
                 }
             }
         }

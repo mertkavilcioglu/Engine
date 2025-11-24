@@ -25,10 +25,11 @@ public class TDLTransmitterComp extends Component {
 
     public void send(Message msg) {
         parentEntity.w.send(msg);
+//        parentEntity.w.app.logPanel.toLog(msg);
     }
 
     public void createMoveMessage2(VCSApp app, Entity targetReceiver, Vec2int pos){
-        MoveMsg moveMsg = new MoveMsg(app, VCSApp.headQuarter, targetReceiver, pos);
+        MoveMsg moveMsg = new MoveMsg(app, app.getHQ(), targetReceiver, pos);
         //moveMsg.setCounter(calculateRangeCounter(moveMsg));
 //        messagesToSend.add(moveMsg);
         send(moveMsg);
@@ -36,7 +37,7 @@ public class TDLTransmitterComp extends Component {
     }
 
     public void createAttackMessage2(VCSApp app, String targetID, String attackTargetID){
-        AttackMsg attackMsg = new AttackMsg(app, VCSApp.headQuarter.getId(), targetID, attackTargetID);
+        AttackMsg attackMsg = new AttackMsg(app, app.getHQ().getId(), targetID, attackTargetID);
         //attackMsg.setCounter(calculateRangeCounter(attackMsg));
         //messagesToSend.add(attackMsg);
         send(attackMsg);
@@ -44,7 +45,7 @@ public class TDLTransmitterComp extends Component {
     }
 
     public void createFollowMessage2(VCSApp app, Entity targetReceiver, Entity followEntity, int time){
-        FollowMsg followMsg = new FollowMsg(app, VCSApp.headQuarter, targetReceiver, followEntity, time);
+        FollowMsg followMsg = new FollowMsg(app, app.getHQ(), targetReceiver, followEntity, time);
         //followMsg.setCounter(calculateRangeCounter(followMsg));
         //messagesToSend.add(followMsg);
         send(followMsg);
@@ -69,7 +70,7 @@ public class TDLTransmitterComp extends Component {
     }
 
     public void createReceiveMessage2(VCSApp app, Entity source, Message.MessageType type){
-        ReceiveMsg receiveMsg = new ReceiveMsg(app, source, VCSApp.headQuarter, type);
+        ReceiveMsg receiveMsg = new ReceiveMsg(app, source, app.getHQ(), type);
         //receiveMsg.setCounter(calculateRangeCounter(receiveMsg));
         //messagesToSend.add(receiveMsg);
         send(receiveMsg);
@@ -78,7 +79,7 @@ public class TDLTransmitterComp extends Component {
     }
 
     public void createResultMessage2(VCSApp app, Entity source, boolean isDone, Order.OrderType type){
-        ResultMsg resultMsg = new ResultMsg(app, source, app.headQuarter, isDone, type);
+        ResultMsg resultMsg = new ResultMsg(app, source, app.getHQ(), isDone, type);
         //resultMsg.setCounter(calculateRangeCounter(resultMsg));
         //messagesToSend.add(resultMsg);
         send(resultMsg);
@@ -91,7 +92,7 @@ public class TDLTransmitterComp extends Component {
     }
 
     public void createMissionStartMessage2(VCSApp app, String srcID, String missionType){
-        MissionStartMsg missionStartMsg = new MissionStartMsg(app, srcID, app.headQuarter.getId(), missionType);
+        MissionStartMsg missionStartMsg = new MissionStartMsg(app, srcID, app.getHQ().getId(), missionType);
         send(missionStartMsg);
     }
 

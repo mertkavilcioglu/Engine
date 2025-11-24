@@ -80,7 +80,7 @@ public class LoadSavePanel extends VCSPanel{
         for (Entity entity : app.world.entities) {
             if(entity.getType() == Entity.Type.HQ){
                 isHaveHQ = true;
-                app.headQuarter = entity;
+                app.setHQ(entity);
             }
             app.hierarchyPanel.entityAdded(entity);
             app.actionPanel.createNewTargetButton(entity);

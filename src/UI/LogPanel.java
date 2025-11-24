@@ -117,8 +117,10 @@ public class LogPanel extends VCSPanel {
 
     public void toLog(Message message){
         if(message.getSrcID().equals("HQ") || message.getSrcID().charAt(0) == 'A')
-            if (!message.getTargetID().equals(null) && (message.getTargetID().equals("HQ") || message.getTargetID().charAt(0) == 'A'))
+            if (!message.getTargetID().equals(null) && (message.getTargetID().equals("HQ") || message.getTargetID().charAt(0) == 'A')){
                 messageModel.addElement(message);
+            }
+
         //if (message.getApp().world.getEntityHashMap().get(message.getSrcID()).getSide().equals(Entity.Side.ALLY))
 
 

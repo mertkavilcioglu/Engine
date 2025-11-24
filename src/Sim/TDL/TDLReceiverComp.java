@@ -31,7 +31,7 @@ public class TDLReceiverComp extends Component {
 
         switch (msg.type){
             case ATTACK_ORDER:
-                parentEntity.addOrder(new Attack(msg.getApp(), parentEntity, msg.getApp().headQuarter, ((AttackMsg) msg).getAttackTargetID()));
+                parentEntity.addOrder(new Attack(msg.getApp(), parentEntity, msg.getApp().getHQ(), ((AttackMsg) msg).getAttackTargetID()));
                 System.out.println("read the attack message");
                 break;
             case FOLLOW_ORDER:

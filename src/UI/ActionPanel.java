@@ -412,7 +412,7 @@ public class ActionPanel extends VCSPanel {
         enemyTargetPanel.removeAll();
         if (typeOfSelected == Entity.Type.AIR){
                 for (Entity keyEntity : enemyButtons.keySet()) {
-                    if (app.headQuarter.getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
+                    if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
                         enemyTargetPanel.add(enemyButtons.get(keyEntity));
                         if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                             enemyButtons.get(keyEntity).setEnabled(false);
@@ -421,7 +421,7 @@ public class ActionPanel extends VCSPanel {
                 }
         } else if (typeOfSelected == Entity.Type.SURFACE) {
                 for (Entity keyEntity : enemyButtons.keySet()){
-                    if (app.headQuarter.getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
+                    if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
                         if (keyEntity.getType() == Entity.Type.SURFACE){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
@@ -433,7 +433,7 @@ public class ActionPanel extends VCSPanel {
 
         } else if (typeOfSelected == Entity.Type.GROUND) {
                 for (Entity keyEntity : enemyButtons.keySet()){
-                    if (app.headQuarter.getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
+                    if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
                         if (keyEntity.getType() == Entity.Type.GROUND){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
@@ -638,7 +638,7 @@ public class ActionPanel extends VCSPanel {
 
     public void updateOrderMode(Entity selectedEntity){
         if (selectedEntity.getType() != Entity.Type.HQ && ((selectedEntity.getSide() == Entity.Side.ENEMY) ||
-                app.headQuarter.getLocalWorld().getEntityHashMap().containsKey(selectedEntity.getId()))){
+                app.getHQ().getLocalWorld().getEntityHashMap().containsKey(selectedEntity.getId()))){
             updateOrderButtonsState(true);
         } else updateOrderButtonsState(false);
     }
