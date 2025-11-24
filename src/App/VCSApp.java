@@ -42,7 +42,7 @@ public class VCSApp {
         System.out.println("App::run");
         boolean isWorking = true;
         int time = 0;
-        int updateInterval = 1000;
+        int updateInterval = 100; // 1000
 
         while (isWorking) {
             try {
@@ -140,7 +140,7 @@ public class VCSApp {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                int delta = 1000;
+                int delta = 100; // 1000
                 int x = 0;
 
                 mapView.initializeTheMap();
@@ -158,7 +158,7 @@ public class VCSApp {
 
                         //world.entities.removeAll(world.entitiesToRemove);
                         for(Entity ent : world.entitiesToRemove){
-                            ent.setActive(false);
+                            world.entityHashMap.get(ent.getId()).setActive(false);
                         }
                         world.entitiesToRemove.clear();
                         renderToWindow();
@@ -218,7 +218,7 @@ public class VCSApp {
 
     public void removeEntity(Entity e){
         world.entitiesToRemove.add(e);
-        hierarchyPanel.entityRemoved(e);
+        //hierarchyPanel.entityRemoved(e);
         actionPanel.deleteEntityFromTarget(e);
         mapView.getHoveredEntities().remove(e);
         editorPanel.disablePanelData();
