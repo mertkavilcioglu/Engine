@@ -21,7 +21,7 @@ public class HierarchyView extends VCSPanel {
     public JTree tree;
     private DefaultMutableTreeNode rootNode;
     private DefaultTreeModel model; // data of tree
-    private HashMap<Entity, NodeInfo> leaves = new HashMap<>();
+    private HashMap<String, NodeInfo> leaves = new HashMap<>();
 
     public HierarchyView(VCSApp app){
         super(app);
@@ -94,7 +94,7 @@ public class HierarchyView extends VCSPanel {
         velNode.add(velXnode);
         velNode.add(velYnode);
 
-        leaves.put(e, e.getNodeInfo());
+        leaves.put(e.getId(), e.getNodeInfo());
         e.getNodeInfo().assignNode("posX", posXnode);
         e.getNodeInfo().assignNode("posY", posYnode);
         e.getNodeInfo().assignNode("velX", velXnode);
@@ -171,7 +171,7 @@ public class HierarchyView extends VCSPanel {
     public void entityAdded(Entity e){
         DefaultMutableTreeNode node = createNode(e);
         rootNode.add(node);
-        leaves.put(e, e.getNodeInfo());
+        leaves.put(e.getId(), e.getNodeInfo());
         model.reload(rootNode);
     }
 
@@ -181,8 +181,8 @@ public class HierarchyView extends VCSPanel {
 
     public void entityRemoved(Entity e){
         //REMOVE
-        if(/*leaves.get(e) != null && */leaves.get(e).getRoot() != null && rootNode.isNodeChild(leaves.get(e).getRoot())) {
-            rootNode.remove(leaves.get(e).getRoot());
+        if(/*leaves.get(e) != null && */leaves.get(e.getId()).getRoot() != null && rootNode.isNodeChild(leaves.get(e.getId()).getRoot())) {
+            rootNode.remove(leaves.get(e.getId()).getRoot());
             model.reload(rootNode);
             repaint();
         }
@@ -206,18 +206,18 @@ public class HierarchyView extends VCSPanel {
 
     public void update(int deltaTime){;
         for(Entity e : app.world.entities){
-            leaves.get(e).getNode("posX").setUserObject(e.getPos().x);
-            leaves.get(e).getNode("posY").setUserObject(e.getPos().y);
-            model.nodeChanged(leaves.get(e).getNode("posX"));
-            model.nodeChanged(leaves.get(e).getNode("posY"));
+            leaves.get(e.getId()).getNode("posX").setUserObject(e.getPos().x);
+            leaves.get(e.getId()).getNode("posY").setUserObject(e.getPos().y);
+            model.nodeChanged(leaves.get(e.getId()).getNode("posX"));
+            model.nodeChanged(leaves.get(e.getId()).getNode("posY"));
 
-            leaves.get(e).getNode("velX").setUserObject(e.getSpeed().x);
-            leaves.get(e).getNode("velY").setUserObject(e.getSpeed().y);
-            model.nodeChanged(leaves.get(e).getNode("velX"));
-            model.nodeChanged(leaves.get(e).getNode("velY"));
+            leaves.get(e.getId()).getNode("velX").setUserObject(e.getSpeed().x);
+            leaves.get(e.getId()).getNode("velY").setUserObject(e.getSpeed().y);
+            model.nodeChanged(leaves.get(e.getId()).getNode("velX"));
+            model.nodeChanged(leaves.get(e.getId()).getNode("velY"));
 
-            leaves.get(e).getNode("side").setUserObject(e.getSide().getName());
-            model.nodeChanged(leaves.get(e).getNode("side"));
+            leaves.get(e.getId()).getNode("side").setUserObject(e.getSide().getName());
+            model.nodeChanged(leaves.get(e.getId()).getNode("side"));
         }
 
 
@@ -225,7 +225,7 @@ public class HierarchyView extends VCSPanel {
 
     public void selectNode(Entity key){
         if(key != null){
-            TreePath path = new TreePath(leaves.get(key).getRoot().getPath());
+            TreePath path = new TreePath(leaves.get(key.getId()).getRoot().getPath());
             tree.setSelectionPath(path);
         }
     }
