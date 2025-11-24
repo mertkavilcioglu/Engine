@@ -3,6 +3,8 @@ package Sim.TDL;
 import Sim.Component;
 import Sim.Entity;
 import Sim.Orders.Attack;
+import Sim.Orders.Follow;
+import Sim.Orders.Move;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -31,16 +33,17 @@ public class TDLReceiverComp extends Component {
 
         switch (msg.type){
             case ATTACK_ORDER:
-                parentEntity.addOrder(new Attack(msg.getApp(), parentEntity, msg.getApp().getHQ(), ((AttackMsg) msg).getAttackTargetID()));
+                parentEntity.addOrder(new Attack(msg.getApp(), parentEntity,
+                        msg.getApp().getHQ(), ((AttackMsg) msg).getAttackTargetID()));
                 System.out.println("read the attack message");
                 break;
             case FOLLOW_ORDER:
-//                source.addOrder(new Follow(msg.getApp(), msg.getTargetReceiver(),
-//                        ((FollowMsg) msg).getFollowTarget(), ((FollowMsg) msg).getTime()));
+                parentEntity.addOrder(new Follow(msg.getApp(),parentEntity,
+                        msg.getApp().getHQ(), ((FollowMsg) msg).getFollowTarget(), ((FollowMsg) msg).getTime()));
                 break;
             case MOVE_ORDER:
-//                source.addOrder(new Move(msg.getApp(), msg.getTargetReceiver(),
-//                        ((MoveMsg) msg).getPos()));
+                parentEntity.addOrder(new Move(msg.getApp(), parentEntity,
+                        msg.getApp().getHQ(), ((MoveMsg) msg).getPos()));
                 break;
             case ENTITY_INFO:
                 if(!msg.getSrcID().equals(parentEntity.getId()))
