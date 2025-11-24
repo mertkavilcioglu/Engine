@@ -93,9 +93,9 @@ public class World{
                             }
                         }
                     }
-                    app.logPanel.toLog(msg);
                 }
             }
+            app.logPanel.toLog(msg);
         }
         toSendList.clear();
     }
