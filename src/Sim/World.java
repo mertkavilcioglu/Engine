@@ -87,24 +87,20 @@ public class World{
             Message message = null;
 
 
-            for(Entity entity : entities){
-                if (!entity.getId().equals(msg.getSrcID())){
-                    if (source.getPos().distance(entity.getPos()) < transmitterRange){
-                        for (TDLReceiverComp r : regesteredReceivers){
-                            if (r.parentEntity.equals(entity)){
-                                if (msg.type.equals(Message.MessageType.ENTITY_INFO) || msg.type.equals(Message.MessageType.KNOWN_INFO) || msg.type.equals(Message.MessageType.SURVEILLANCE_MSG)){
-                                    message = msg.copy();
-                                    message.setTargetID(r.parentEntity.getId());
-                                    r.receiveMessage2(message);
-                                } else r.receiveMessage2(msg);
-                            }
-                        }
+            for(TDLReceiverComp r : regesteredReceivers){
+                if (!r.parentEntity.getId().equals(msg.getSrcID())){
+                    if (source.getPos().distance(r.parentEntity.getPos()) < transmitterRange){
+                        if (msg.type.equals(Message.MessageType.ENTITY_INFO) || msg.type.equals(Message.MessageType.KNOWN_INFO) || msg.type.equals(Message.MessageType.SURVEILLANCE_MSG)){
+                            message = msg.copy();
+                            message.setTargetID(r.parentEntity.getId());
+                            r.receiveMessage2(message);
+                        } else r.receiveMessage2(msg);
                     }
                 }
             }
-            if (message.equals(null)){
-                app.logPanel.toLog(msg);
-            } else app.logPanel.toLog(message);
+            if (!message.equals(null)){
+                app.logPanel.toLog(message);
+            } else app.logPanel.toLog(msg);
         }
         toSendList.clear();
     }
