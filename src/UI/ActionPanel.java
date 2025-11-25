@@ -407,10 +407,10 @@ public class ActionPanel extends VCSPanel {
 
     //mapdeki entitylerin sideları ve typelarına göre targetların gösterilmesi
     public void showTargetButtonsForAlly(Entity selectedOne){
-        if (selectedOne.getSide() != Entity.Side.ALLY) showTargetButtonsForEnemy(selectedOne);
+        if (!selectedOne.getSide().equals(Entity.Side.ALLY)) showTargetButtonsForEnemy(selectedOne);
         Entity.Type typeOfSelected = selectedOne.getType();
         enemyTargetPanel.removeAll();
-        if (typeOfSelected == Entity.Type.AIR){
+        if (typeOfSelected.equals(Entity.Type.AIR)){
                 for (Entity keyEntity : enemyButtons.keySet()) {
                     if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
                         enemyTargetPanel.add(enemyButtons.get(keyEntity));
@@ -419,10 +419,10 @@ public class ActionPanel extends VCSPanel {
                         }
                     }
                 }
-        } else if (typeOfSelected == Entity.Type.SURFACE) {
+        } else if (typeOfSelected.equals(Entity.Type.SURFACE)) {
                 for (Entity keyEntity : enemyButtons.keySet()){
                     if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
-                        if (keyEntity.getType() == Entity.Type.SURFACE){
+                        if (keyEntity.getType().equals(Entity.Type.SURFACE)){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                                 enemyButtons.get(keyEntity).setEnabled(false);
@@ -431,10 +431,10 @@ public class ActionPanel extends VCSPanel {
                     }
                 }
 
-        } else if (typeOfSelected == Entity.Type.GROUND) {
+        } else if (typeOfSelected.equals(Entity.Type.GROUND)) {
                 for (Entity keyEntity : enemyButtons.keySet()){
                     if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
-                        if (keyEntity.getType() == Entity.Type.GROUND){
+                        if (keyEntity.getType().equals(Entity.Type.GROUND)){
                             enemyTargetPanel.add(enemyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                                 enemyButtons.get(keyEntity).setEnabled(false);
@@ -449,11 +449,11 @@ public class ActionPanel extends VCSPanel {
 
     public void showTargetButtonsForEnemy(Entity selectedOne){
         List<Entity> detectedEntitiesFromRadar = new ArrayList<>();
-        if (selectedOne.getSide() != Entity.Side.ENEMY) showTargetButtonsForAlly(selectedOne);
+        if (!selectedOne.getSide().equals(Entity.Side.ENEMY)) showTargetButtonsForAlly(selectedOne);
         Entity.Type typeOfSelected = selectedOne.getType();
         allyTargetPanel.removeAll();
         for (Entity e : allCreatedEntites){
-            if (selectedOne.getSide() == e.getSide()){
+            if (selectedOne.getSide().equals(e.getSide())){
                 for (Entity entity : e.getLocalWorld().getEntities()){
                     if (entity.getSide().equals(Entity.Side.ALLY))
                         detectedEntitiesFromRadar.add(entity);
@@ -461,7 +461,7 @@ public class ActionPanel extends VCSPanel {
             } else if (selectedOne.getLocalWorld().getEntityHashMap().containsKey(e.getId()))
                 detectedEntitiesFromRadar.add(e);
         }
-        if (typeOfSelected == Entity.Type.AIR){
+        if (typeOfSelected.equals(Entity.Type.AIR)){
                 for (Entity keyEntity : allyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         allyTargetPanel.add(allyButtons.get(keyEntity));
@@ -470,10 +470,10 @@ public class ActionPanel extends VCSPanel {
                         }
                     }
                 }
-        } else if (typeOfSelected == Entity.Type.SURFACE) {
+        } else if (typeOfSelected.equals(Entity.Type.SURFACE)) {
                 for (Entity keyEntity : allyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
-                        if (keyEntity.getType() == Entity.Type.SURFACE){
+                        if (keyEntity.getType().equals(Entity.Type.SURFACE)){
                             allyTargetPanel.add(allyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                                 allyButtons.get(keyEntity).setEnabled(false);
@@ -481,10 +481,10 @@ public class ActionPanel extends VCSPanel {
                         }
                     }
                 }
-        } else if (typeOfSelected == Entity.Type.GROUND) {
+        } else if (typeOfSelected.equals(Entity.Type.GROUND)) {
                 for (Entity keyEntity : allyButtons.keySet()){
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
-                        if (keyEntity.getType() == Entity.Type.GROUND){
+                        if (keyEntity.getType().equals(Entity.Type.GROUND)){
                             allyTargetPanel.add(allyButtons.get(keyEntity));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                                 allyButtons.get(keyEntity).setEnabled(false);
@@ -503,11 +503,11 @@ public class ActionPanel extends VCSPanel {
             return;
         //for attack panel
         JButton deletedButton;
-        if (entity.getSide() == Entity.Side.ALLY){
+        if (entity.getSide().equals(Entity.Side.ALLY)){
             deletedButton = allyButtons.remove(entity);
             if(deletedButton != null)
                 allyTargetPanel.remove(deletedButton);
-        } else if (entity.getSide() == Entity.Side.ENEMY) {
+        } else if (entity.getSide().equals(Entity.Side.ENEMY)) {
             deletedButton = enemyButtons.remove(entity);
             if(deletedButton != null)
                 enemyTargetPanel.remove(deletedButton);
@@ -529,12 +529,11 @@ public class ActionPanel extends VCSPanel {
 
     public void setFollowTargets(){
         if (selectedEntity != null){
-            for (int i = 0; i < allCreatedEntites.size(); i++ ){
-                if (selectedEntity != allCreatedEntites.get(i)){
-                    Entity ent = allCreatedEntites.get(i);
-                    if (selectedEntity.getLocalWorld().getEntities().contains(ent)){
-                        followableEntityList.add(ent);
-                        followTargetData.addElement(ent.getName());
+            for (Entity entity : allCreatedEntites){
+                if (!selectedEntity.equals(entity)){
+                    if (selectedEntity.getLocalWorld().getEntityHashMap().containsKey(entity.getId())){
+                        followableEntityList.add(entity);
+                        followTargetData.addElement(entity.getName());
                     }
                 }
             }
