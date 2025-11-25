@@ -31,4 +31,9 @@ public class AttackMsg extends Message {
         //return getApp().uiColorManager.J12_COLOR;
         return UIColorManager.J12_COLOR;
     }
+
+    @Override
+    public Message copy() {
+        return null;
+    }
 }

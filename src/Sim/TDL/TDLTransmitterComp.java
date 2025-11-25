@@ -85,8 +85,9 @@ public class TDLTransmitterComp extends Component {
         send(resultMsg);
     }
 
-    public void createSurveillanceMsg2(VCSApp app, Entity source, String targetID, Entity seenEntity){
-        SurveillanceMsg surveillanceMsg = new SurveillanceMsg(app, source, targetID, seenEntity);
+    public void createSurveillanceMsg2(VCSApp app, Entity source, Entity hostileEntity){
+        String targetID = " ";
+        SurveillanceMsg surveillanceMsg = new SurveillanceMsg(app, source, targetID, hostileEntity);
         //messagesToSend.add(surveillanceMsg);
         send(surveillanceMsg);
     }

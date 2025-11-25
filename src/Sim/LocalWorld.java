@@ -1,6 +1,5 @@
 package Sim;
 
-import App.VCSApp;
 import Sim.TDL.InfoMsg;
 import Sim.TDL.KnownInfosMsg;
 import Sim.TDL.Message;
@@ -9,8 +8,6 @@ import Vec.Vec2int;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Stack;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class LocalWorld {
 
@@ -73,11 +70,11 @@ public class LocalWorld {
 
     public void readSurveillanceInfo(Message msg){
         SurveillanceMsg sMsg = (SurveillanceMsg) msg;
-        if (entityHashMap.containsKey(sMsg.getSeenID())){
-          updateEntity(sMsg.getSeenID(), sMsg.getSeenName(), sMsg.getSeenSide(), sMsg.getSeenPos(), sMsg.getSeenSpeed(), sMsg.getSeenType());
-        } else createEntity(sMsg.getSeenID(), sMsg.getSeenName(), sMsg.getSeenSide(), sMsg.getSeenPos(), sMsg.getSeenSpeed(), sMsg.getSeenType());
+        if (entityHashMap.containsKey(sMsg.getHostileID())){
+          updateEntity(sMsg.getHostileID(), sMsg.getHostileName(), sMsg.getHostileSide(), sMsg.getHostilePos(), sMsg.getHostileSpeed(), sMsg.getHostileType());
+        } else createEntity(sMsg.getHostileID(), sMsg.getHostileName(), sMsg.getHostileSide(), sMsg.getHostilePos(), sMsg.getHostileSpeed(), sMsg.getHostileType());
 
-        src.w.app.debugLog(String.format("Surveillance Information of %s from %s taken by %s.\n", sMsg.getSeenID(), sMsg.getSrcID(), sMsg.getTargetID()));
+        src.w.app.debugLog(String.format("Surveillance Information of %s from %s taken by %s.\n", sMsg.getHostileID(), sMsg.getSrcID(), sMsg.getTargetID()));
     }
 
     public HashMap<String, Entity> getEntityHashMap() {

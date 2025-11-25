@@ -22,6 +22,12 @@ public class KnownInfosMsg extends Message{
         this.side = side;
     }
 
+    public KnownInfosMsg(KnownInfosMsg other){
+        super(other);
+        this.knownEntities = other.knownEntities;
+        this.side = other.side;
+    }
+
     @Override
     public String getMsgDetail() {
         String result = "";
@@ -52,5 +58,10 @@ public class KnownInfosMsg extends Message{
 
     public Entity.Side getSide() {
         return side;
+    }
+
+    @Override
+    public Message copy() {
+        return new KnownInfosMsg(this);
     }
 }

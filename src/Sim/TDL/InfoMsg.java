@@ -26,6 +26,15 @@ public class InfoMsg extends Message{
         this.type = srcType;
     }
 
+    public InfoMsg(InfoMsg other){
+        super(other);
+        this.name = other.getName();
+        this.pos = other.getPos();
+        this.side = other.getSide();
+        this.speed = other.getSpeed();
+        this.type = other.getType();
+    }
+
     @Override
     public String getMsgDetail() {
         return String.format(
@@ -61,5 +70,10 @@ public class InfoMsg extends Message{
     @Override
     public Color getColor() {
         return UIColorManager.J2_COLOR;
+    }
+
+    @Override
+    public Message copy() {
+        return new InfoMsg(this);
     }
 }

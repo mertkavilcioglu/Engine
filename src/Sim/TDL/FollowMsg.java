@@ -33,4 +33,9 @@ public class FollowMsg extends Message{
     public Color getColor() {
         return UIColorManager.J12_COLOR;
     }
+
+    @Override
+    public Message copy() {
+        return null;
+    }
 }
