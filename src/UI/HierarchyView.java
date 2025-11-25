@@ -104,7 +104,7 @@ public class HierarchyView extends VCSPanel {
 
         leaf.add(velNode);
 
-        for(Component c : e.getComponents()){
+        for(Component c : e.getComponents().values()){
             if(c instanceof Radar){
                 if(((Radar) c).getRange() != 0){
                     DefaultMutableTreeNode radarNode = new DefaultMutableTreeNode("Radar:");
@@ -125,7 +125,7 @@ public class HierarchyView extends VCSPanel {
         switch (comp){
             case "Radar":
                 if(!e.getComponents().isEmpty()){
-                    for(Component c : e.getComponents()){
+                    for(Component c : e.getComponents().values()){
                         if(c instanceof Radar){
                             if(((Radar) c).getRange() != 0){
                                 if(e.getNodeInfo().getNode("radarRoot") == null){
@@ -147,7 +147,7 @@ public class HierarchyView extends VCSPanel {
                                     e.getNodeInfo().getNode("radarRange").setUserObject(0);
                                     e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("radarRoot"));
                                     e.getNodeInfo().assignNode("radarRoot", null);
-                                    e.removeComponent("Radar");
+                                    e.removeComponent(Component.ComponentType.RADAR);
                                 }
                             }
                         }

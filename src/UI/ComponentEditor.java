@@ -49,7 +49,7 @@ public class ComponentEditor extends JPanel {
         removeButton.setBackground(editor.app.uiColorManager.BUTTON_COLOR);
         removeButton.addActionListener(e -> {
             editor.removeComponent(this, type.name);
-            editor.app.mapView.getSelectedEntity().removeComponent(type.name);
+            editor.app.mapView.getSelectedEntity().removeComponent(type);
             editor.updateSelectedEntity();
         });
         vecPnl.add(removeButton);

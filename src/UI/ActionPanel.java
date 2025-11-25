@@ -4,6 +4,7 @@ import App.VCSApp;
 import Sim.Entity;
 import Sim.Orders.Attack;
 import Sim.Orders.Order;
+import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -206,7 +207,7 @@ public class ActionPanel extends VCSPanel {
             }
 //            selectedEntity.addOrder(new Follow(app, selectedEntity, choosenEntity, followTime));
 //            refreshCurrentOrderPanel();
-            selectedEntity.getTdlTransmitter2().createFollowMessage2(app, selectedEntity, choosenEntity, followTime);
+            ((TDLTransmitterComp) selectedEntity.getComponent(Sim.Component.ComponentType.TRANSMITTER)).createFollowMessage2(app, selectedEntity, choosenEntity, followTime);
         });
         createButtonPanel.setBackground(panelBgColor);
         createButtonPanel.add(followOrderCreateButton);
@@ -318,7 +319,7 @@ public class ActionPanel extends VCSPanel {
                 if (selectedEntity != null){
 //                    selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y)));
 //                    refreshCurrentOrderPanel();
-                    selectedEntity.getTdlTransmitter2().createMoveMessage2(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y));
+                    ((TDLTransmitterComp) selectedEntity.getComponent(Sim.Component.ComponentType.TRANSMITTER)).createMoveMessage2(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y));
                     setMoveMode(false);
                 }
             }
@@ -399,7 +400,7 @@ public class ActionPanel extends VCSPanel {
             attackerEntity = selectedEntity;
             if (isAttackAction){
                 if (attackerEntity != null){
-                    attackerEntity.getTdlTransmitter2().createAttackMessage2(app,attackerEntity.getId(),targetEntity.getId());
+                    ((TDLTransmitterComp) attackerEntity.getComponent(Sim.Component.ComponentType.TRANSMITTER)).createAttackMessage2(app,attackerEntity.getId(),targetEntity.getId());
                 }
             }
         });

@@ -18,7 +18,7 @@ public class Entity {
     private Vec2int pos;
     private Vec2int speed;
     private Type type;
-    private ArrayList<Component> components = new ArrayList<>();
+    private HashMap<Component.ComponentType, Component> components = new HashMap<>();
     public ArrayList<Component> componentsToRemove = new ArrayList<>();
     private List<Entity> detectedEntities = new ArrayList<>();
     private ArrayList<Entity> infoMsgSendEntities = new ArrayList<>();
@@ -36,8 +36,6 @@ public class Entity {
     private boolean isInLink = false;
     private boolean isDetected = false;
 
-    private TDLReceiverComp receiver;
-    private TDLTransmitterComp transmitter;
     //private String ppliCode;
 
     private boolean isActive = true;
@@ -51,7 +49,7 @@ public class Entity {
 
     }
 
-    public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type, ArrayList<Component> components,  boolean active){
+    public Entity(World w, String name, Entity.Side side, Vec2int pos, Vec2int speed, Entity.Type type, HashMap<Component.ComponentType, Component> components,  boolean active){
         this.w = w;
         this.name = name;
         this.side = side;
@@ -59,7 +57,7 @@ public class Entity {
         this.speed = speed;
         this.type = type;
         this.isActive = active;
-        this.components = (ArrayList<Component>) components.clone();
+        this.components = (HashMap<Component.ComponentType, Component>) components.clone();
 
     }
 
@@ -131,34 +129,26 @@ public class Entity {
         orders.add(order);
     }
 
-    public void removeComponent(String s){
-        switch (s){
-            case "Radar":
-                for (Component c : components){
-                    if(c instanceof Radar){
-                        componentsToRemove.add(c);
-                    }
-                }
-                break;
+    public void removeComponent(Component.ComponentType type){
+        for(Component c : components.values()){
+            if(c.type == type){
+                componentsToRemove.add(c);
+            }
         }
     }
 
-    public void removeComponentInstantly(String s){
-        switch (s){
-            case "Radar":
-                for (Component c : components){
-                    if(c instanceof Radar){
-                        components.remove(c);
-                    }
-                }
-                break;
+    public void removeComponentInstantly(Component.ComponentType type){
+        for(Component c : components.values()){
+            if(c.type == type){
+                components.remove(c.type);
+            }
         }
     }
 
     public void updateEntity(String newName, Side newSide, Vec2int newPos, Vec2int newSpeed, int newRange, Type newType){
         if (newName.equals("HEADQUARTER")){
             pos = newPos;
-            for (Component c : components){
+            for (Component c : components.values()){
                 if(c.getClass() == Radar.class)
                     ((Radar) c).setRange(newRange);
             }
@@ -169,7 +159,7 @@ public class Entity {
             speed = newSpeed;
             type = newType;
 
-            for (Component c : components){
+            for (Component c : components.values()){
                 if(c.getClass() == Radar.class)
                     ((Radar) c).setRange(newRange);
             }
@@ -230,6 +220,7 @@ public class Entity {
         if(!isActive)
             return;
 
+
         if(!orders.isEmpty() && currentOrder != null)
             currentOrder.update();
 
@@ -239,19 +230,19 @@ public class Entity {
 
         move();
 
-        for (int i = 0; i < components.size(); i++) {
-            components.get(i).update(deltaTime);
+        for(Component c : components.values()){
+            c.update(deltaTime);
         }
 
         if(!isLocal) {
             localWorld.update(deltaTime);
-            transmitter.update(deltaTime);
-            receiver.update(deltaTime);
         }
 
 
-
-        components.removeAll(componentsToRemove);
+        for(Component c : componentsToRemove){
+            components.remove(c.type);
+        }
+        //components.removeAll(componentsToRemove);
         componentsToRemove.clear();
     }
 
@@ -389,7 +380,7 @@ public class Entity {
     public Vec2int getSpeed(){return speed;}
 
     public void addComponents(Component c) {
-        this.components.add(c);
+        this.components.put(c.type, c);
     }
 
     public void setSide(Side side){
@@ -454,7 +445,7 @@ public class Entity {
         return nodeInfo;
     }
 
-    public ArrayList<Component> getComponents(){
+    public HashMap<Component.ComponentType, Component> getComponents(){
         return components;
     }
 
@@ -462,32 +453,13 @@ public class Entity {
         return currentPixelColor;
     }
 
-    public boolean hasComponent(String componentToSearch){
-        for(Component c : components){
-            if(componentToSearch.equals("Radar")){
-                if(c instanceof Radar && ((Radar) c).getRange() != 0){
-                    return true;
-                }
-                else{
-                    return false;
-                }
-            }
-
-        }
-        return false;
+    public boolean hasComponent(Component.ComponentType type){
+        return components.containsKey(type);
     }
 
-    public Component getComponent(String componentToGet){
-        for(Component c : components){
-            if(componentToGet.equals("Radar")){
-                if(c instanceof Radar){
-                    return c;
-                }
-                else{
-                    return null;
-                }
-            }
-
+    public Component getComponent(Component.ComponentType componentToGet){
+        if(components.containsKey(componentToGet)){
+            return components.get(componentToGet);
         }
         return null;
     }
@@ -509,22 +481,6 @@ public class Entity {
             pos = previousPositions.getLast();
             previousPositions.pop();
         }
-    }
-
-    public TDLReceiverComp getTdlReceiver2(){
-        return receiver;
-    }
-
-    public TDLTransmitterComp getTdlTransmitter2(){
-        return transmitter;
-    }
-
-    public void setReceiver(Entity parent, ArrayList<Entity> entities){
-        receiver = new TDLReceiverComp(parent, entities);
-    }
-
-    public void setTransmitter(Entity parent, ArrayList<Entity> entities){
-        transmitter = new TDLTransmitterComp(parent, entities);
     }
 
     public boolean isActive(){
