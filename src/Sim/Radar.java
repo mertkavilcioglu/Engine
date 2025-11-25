@@ -1,5 +1,7 @@
 package Sim;
 
+import Sim.TDL.TDLReceiverComp;
+import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ public class Radar extends Component {
 
     public Radar(Entity parent, ArrayList<Entity> entities) {
         super(parent, entities, ComponentType.RADAR);
-        linkRange = parentEntity.getTdlTransmitter2().getTransmitterRange();
+        linkRange = ((TDLTransmitterComp) parentEntity.getComponent(ComponentType.TRANSMITTER)).getTransmitterRange();
     }
 
 
@@ -35,7 +37,7 @@ public class Radar extends Component {
                             parentEntity.getLocalWorld().createEntity(e.getId(), e.getName(), e.getSide(), e.getPos(), e.getSpeed(), e.getType());
                             for (Entity entity : parentEntity.getLocalWorld().getEntities()){
                                 if(entity.getSide().equals(parentEntity.getSide()))
-                                    parentEntity.getTdlTransmitter2().createSurveillanceMsg2(parentEntity.w.app, parentEntity, entity.getId(), e);
+                                    ((TDLTransmitterComp) parentEntity.getComponent(ComponentType.TRANSMITTER)).createSurveillanceMsg2(parentEntity.w.app, parentEntity, entity.getId(), e);
                             }
                         }
                     }

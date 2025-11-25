@@ -1,7 +1,9 @@
 package UI;
 
 import App.VCSApp;
+import Sim.Component;
 import Sim.Entity;
+import Sim.TDL.TDLTransmitterComp;
 import Sim.World;
 import Var.RGB;
 import Vec.Vec2int;
@@ -369,8 +371,8 @@ public class MapView extends VCSPanel {
 
                 int tdlRangeWidth;
 
-                if(e.getTdlTransmitter2() != null)
-                    tdlRangeWidth = e.getTdlTransmitter2().getTransmitterRange() * 2;
+                if(e.hasComponent(Component.ComponentType.TRANSMITTER))
+                    tdlRangeWidth = ((TDLTransmitterComp) e.getComponent(Component.ComponentType.TRANSMITTER)).getTransmitterRange() * 2;
                 else
                     tdlRangeWidth = 0;
 

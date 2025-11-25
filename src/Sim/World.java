@@ -3,6 +3,7 @@ package Sim;
 import App.VCSApp;
 import Sim.TDL.Message;
 import Sim.TDL.TDLReceiverComp;
+import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class World{
             // put read q
 
             Entity source = entityHashMap.get(msg.getSrcID());
-            int range = source.getTdlTransmitter2().getTransmitterRange();
+            int range = ((TDLTransmitterComp) source.getComponent(Component.ComponentType.TRANSMITTER)).getTransmitterRange();
 
             if (!source.isLocal()){
                 if (!msg.getTargetID().equals(" ")){
@@ -46,7 +47,7 @@ public class World{
 //                      //continue; //BURASI EMIR ALMA MESJLARINI BOZUYOR
                         if (e.getId().equals(targetID) && (source.getPos().distance(e.getPos()) < range) && !e.isLocal()) {
                             app.logPanel.toLog(msg);
-                            e.getTdlReceiver2().receiveMessage2(msg);
+                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
                         }
                     }
                 } else if (msg.type.equals(Message.MessageType.ENTITY_INFO)){
@@ -55,7 +56,7 @@ public class World{
                             if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
                                 msg.setTargetID(e.getId());
                             } else continue;
-                            e.getTdlReceiver2().receiveMessage2(msg);
+                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
                         }
                     }
                     msg.getApp().logPanel.toLog(msg);
@@ -66,7 +67,7 @@ public class World{
                             if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
                                 msg.setTargetID(e.getId());
                             } else continue;
-                            e.getTdlReceiver2().receiveMessage2(msg);
+                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
                         }
                     }
                     msg.getApp().logPanel.toLog(msg);
@@ -78,8 +79,12 @@ public class World{
     private ArrayList<TDLReceiverComp> regesteredReceivers = new ArrayList<>();
     public void processSendList2(){
         for (Message msg : toSendList){
+            int transmitterRange = 0;
             Entity source = entityHashMap.get(msg.getSrcID());
-            int transmitterRange = source.getTdlTransmitter2().getTransmitterRange();
+            if(source.hasComponent(Component.ComponentType.TRANSMITTER)){
+                transmitterRange = ((TDLTransmitterComp) source.getComponent(Component.ComponentType.TRANSMITTER)).getTransmitterRange();
+            }
+
 
             for(Entity entity : entities){
                 if (source.getPos().distance(entity.getPos()) < transmitterRange){
@@ -137,9 +142,11 @@ public class World{
 
         entities.add(ent);
         ent.setId("HQ");
-        ent.setTransmitter(ent, entities);
-        ent.setReceiver(ent, entities);
+//        ent.setTransmitter(ent, entities);
+//        ent.setReceiver(ent, entities);
         entityHashMap.put(ent.getId(), ent);
+        ent.addComponents(new TDLReceiverComp(ent, entities ));
+        ent.addComponents(new TDLTransmitterComp(ent, entities));
         return ent;
     }
 
@@ -163,8 +170,8 @@ public class World{
 
         ent.setId(app.idManager.createId(ent));
 
-        ent.setTransmitter(ent, entities);
-        ent.setReceiver(ent, entities);
+//        ent.setTransmitter(ent, entities);
+//        ent.setReceiver(ent, entities);
 
         entities.add(ent);
         entityHashMap.put(ent.getId(), ent);
@@ -173,6 +180,9 @@ public class World{
 //            ent.setTransmitter(ent, entities);
 //            ent.setReceiver(ent, entities);
 //        }
+
+        ent.addComponents(new TDLReceiverComp(ent, entities ));
+        ent.addComponents(new TDLTransmitterComp(ent, entities));
 
         return ent;
     }

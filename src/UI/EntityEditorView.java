@@ -362,7 +362,7 @@ public class EntityEditorView extends VCSPanel {
             revalidate();
         }
 
-        for(Component c : e.getComponents()){
+        for(Component c : e.getComponents().values()){
             if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
                 if(radarPanel == null){
                     radarPanel = new ComponentEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
@@ -434,7 +434,7 @@ public class EntityEditorView extends VCSPanel {
                 }
             }
 
-            for(Component c : e.getComponents()){
+            for(Component c : e.getComponents().values()){
                 if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
                     if(radarPanel == null){
                         radarPanel = new ComponentEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
@@ -527,7 +527,7 @@ public class EntityEditorView extends VCSPanel {
             if(radarPanel != null){
                 range = radarPanel.readData();
 
-                if(!selectedEntity.hasComponent("Radar")){
+                if(!selectedEntity.hasComponent(Component.ComponentType.RADAR)){
                     selectedEntity.addComponents(new Radar(selectedEntity,
                             app.world.entities));
                     //debugLog("added radar");

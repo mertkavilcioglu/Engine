@@ -249,7 +249,7 @@ public class VCSApp {
             for (Sim.Entity ent : world.entities) {
                 String posStr;
                 posStr = ent.getPos().toString().substring(1, ent.getPos().toString().length() - 1);
-                for (Component c : ent.getComponents()){
+                for (Component c : ent.getComponents().values()){
                     if(c instanceof Radar){
                         if(((Radar) c).getRange() != 0){
                             range = ((Radar) c).getRange();

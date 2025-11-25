@@ -1,8 +1,10 @@
 package Sim.Orders;
 
 import App.VCSApp;
+import Sim.Component;
 import Sim.Entity;
 import Sim.TDL.Message;
+import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
 public class Attack extends Order{
@@ -16,7 +18,7 @@ public class Attack extends Order{
     public Attack(VCSApp app, Entity receiver, Entity sender, String  attackTargetID) {
         super(app, receiver, sender, OrderType.ATTACK);
         this.attackTargetID = attackTargetID;
-        receiver.getTdlTransmitter2().createReceiveMessage2(app, receiver, Message.MessageType.ATTACK_ORDER);
+        ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(app, receiver, Message.MessageType.ATTACK_ORDER);
         //attackEntity(target);
     }
 
@@ -29,12 +31,12 @@ public class Attack extends Order{
         dist = receiver.getPos().distance(targetPos);
         if(dist <= 4.0){
             if (receiver.getLocalWorld().getEntities().contains(targetEntity)){
-                receiver.getTdlTransmitter2().createResultMessage2(app, receiver, true, OrderType.ATTACK);
+                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, true, OrderType.ATTACK);
                 String msgDestroy = String.format("%s destroy the target %s,", receiver.getName(), targetEntity.getName());
                 app.log(msgDestroy);
                 destroy(targetEntity);
             } else {
-                receiver.getTdlTransmitter2().createResultMessage2(app, receiver, false, OrderType.ATTACK);
+                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, false, OrderType.ATTACK);
                 String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), receiver.getName());
                 app.log(notFoundMsg);
                 //TODO order bitince ya da yarım kalınca unitlere hareket belirleme
@@ -78,7 +80,7 @@ public class Attack extends Order{
     @Override
     protected void printToLog(){
         if (!isExecute){
-            receiver.getTdlTransmitter2().createMissionStartMessage2(app, receiver.getId(), "J13.1");
+            ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createMissionStartMessage2(app, receiver.getId(), "J13.1");
             String msgAttack = String.format("%s going to attack %s.", receiver.getName(), attackTargetID);
             app.log(msgAttack);
             receiver.setCurrentOrderState(false);
