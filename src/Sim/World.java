@@ -185,8 +185,10 @@ public class World{
 //            ent.setReceiver(ent, entities);
 //        }
 
-        ent.addComponents(new TDLReceiverComp(ent, entities ));
-        ent.addComponents(new TDLTransmitterComp(ent, entities));
+        if(eSide == Entity.Side.ALLY){
+            ent.addComponents(new TDLReceiverComp(ent, entities ));
+            ent.addComponents(new TDLTransmitterComp(ent, entities));
+        }
 
         return ent;
     }
