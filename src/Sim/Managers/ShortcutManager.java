@@ -3,7 +3,6 @@ package Sim.Managers;
 import App.VCSApp;
 import Sim.Component;
 import Sim.Entity;
-import Sim.Radar;
 import Sim.World;
 import UI.MapView;
 import Vec.Vec2int;
@@ -78,7 +77,7 @@ public class ShortcutManager {
                 Entity clone = app.createEntity(newName, copiedEntity.getSide(), newPos, copiedEntity.getSpeed(), copiedEntity.getType());
 
                 for (Component c : copiedEntity.getComponents().values()){
-                    clone.addComponents(c);
+                    clone.addComponent(c);
                 }
                 app.editorPanel.updatePanelData(clone);
                 app.editorPanel.updateSelectedEntity();

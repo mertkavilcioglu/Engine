@@ -118,7 +118,7 @@ public class World{
         Vec2int speed = ThreadLocalRandom.current().nextInt() % 2 == 0 ? new Vec2int(4,4) : new Vec2int(-4,-4);
         ent.setSpeed(speed);
         Radar r = new Radar(ent,entities);
-        ent.addComponents(r);
+        ent.addComponent(r);
         ent.setType(Entity.Type.AIR);
 
         ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
@@ -145,8 +145,8 @@ public class World{
 //        ent.setTransmitter(ent, entities);
 //        ent.setReceiver(ent, entities);
         entityHashMap.put(ent.getId(), ent);
-        ent.addComponents(new TDLReceiverComp(ent, entities ));
-        ent.addComponents(new TDLTransmitterComp(ent, entities));
+        ent.addComponent(new TDLReceiverComp(ent, entities ));
+        ent.addComponent(new TDLTransmitterComp(ent, entities));
         return ent;
     }
 
@@ -181,8 +181,8 @@ public class World{
 //            ent.setReceiver(ent, entities);
 //        }
 
-        ent.addComponents(new TDLReceiverComp(ent, entities ));
-        ent.addComponents(new TDLTransmitterComp(ent, entities));
+        ent.addComponent(new TDLReceiverComp(ent, entities ));
+        ent.addComponent(new TDLTransmitterComp(ent, entities));
 
         return ent;
     }

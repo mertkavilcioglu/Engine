@@ -116,4 +116,8 @@ public class TDLTransmitterComp extends Component {
     public int getTransmitterRange(){
         return range;
     }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
 }

@@ -371,7 +371,8 @@ public class MapView extends VCSPanel {
 
                 int tdlRangeWidth;
 
-                if(e.hasComponent(Component.ComponentType.TRANSMITTER))
+                if((e.hasComponent(Component.ComponentType.TRANSMITTER) && !e.componentsToRemove.contains(e.getComponent(Component.ComponentType.TRANSMITTER)))
+                ||(e.hasComponent(Component.ComponentType.TRANSMITTER) && app.editorPanel.getTransmitterEditor() != null))
                     tdlRangeWidth = ((TDLTransmitterComp) e.getComponent(Component.ComponentType.TRANSMITTER)).getTransmitterRange() * 2;
                 else
                     tdlRangeWidth = 0;

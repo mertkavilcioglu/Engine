@@ -2,10 +2,7 @@ package Sim;
 
 import Sim.Orders.Attack;
 import Sim.Orders.Order;
-import Sim.TDL.TDLReceiver;
-import Sim.TDL.TDLReceiverComp;
-import Sim.TDL.TDLTransmitter;
-import Sim.TDL.TDLTransmitterComp;
+import UI.EntityEditorView;
 import Var.RGB;
 import Vec.Vec2int;
 
@@ -240,6 +237,26 @@ public class Entity {
 
 
         for(Component c : componentsToRemove){
+            EntityEditorView editorView = w.app.editorPanel;
+
+            switch (c.type){
+                case RADAR:
+                    if(editorView.getRadarEditor() != null)
+                        return;
+                    break;
+
+                case TRANSMITTER:
+                    if(editorView.getTransmitterEditor() != null)
+                        return;
+                    break;
+
+                case RECEIVER:
+                    if(editorView.getReceiverEditor() != null)
+                        return;
+                    break;
+
+            }
+
             components.remove(c.type);
         }
         //components.removeAll(componentsToRemove);
@@ -379,7 +396,7 @@ public class Entity {
 
     public Vec2int getSpeed(){return speed;}
 
-    public void addComponents(Component c) {
+    public void addComponent(Component c) {
         this.components.put(c.type, c);
     }
 

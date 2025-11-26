@@ -4,6 +4,7 @@ import App.VCSApp;
 import Sim.Component;
 import Sim.Entity;
 import Sim.Radar;
+import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -14,7 +15,9 @@ import java.awt.event.*;
 
 public class EntityEditorView extends VCSPanel {
     private Component.ComponentType components;
-    private ComponentEditor radarPanel = null;
+    private RadarEditor radarEditor = null;
+    private TransmitterEditor transmitterEditor = null;
+    private ReceiverEditor receiverEditor = null;
     private JButton addComponentButton;
     private JPanel addSidePanel;
     private JPanel addTypePanel;
@@ -229,14 +232,14 @@ public class EntityEditorView extends VCSPanel {
         for (Component.ComponentType comp : Component.ComponentType.values()){
             JMenuItem item = new JMenuItem(comp.name);
             if(comp.name.equals(Component.ComponentType.RECEIVER.name) ||comp.name.equals(Component.ComponentType.TRANSMITTER.name))
-                item.setEnabled(false);
+                ;//item.setEnabled(false);
             item.addActionListener(e -> {
                 switch (comp){
                     case RADAR:
-                        if(radarPanel == null){
-                            radarPanel = new ComponentEditor(comp.name, this, Component.ComponentType.RADAR, "5000");
+                        if(radarEditor == null){
+                            radarEditor = new RadarEditor(comp.name, this, Component.ComponentType.RADAR, "5000");
                             remove(addComponentButton);
-                            add(radarPanel);
+                            add(radarEditor);
 //                            if(!app.mapView.getSelectedEntity().hasComponent("Radar")){
 //                                app.mapView.getSelectedEntity().addComponents(new Radar(app.mapView.getSelectedEntity(),
 //                                        app.world.entities));
@@ -244,13 +247,29 @@ public class EntityEditorView extends VCSPanel {
                             updateSelectedEntity();
                             add(addComponentButton);
                             revalidate();
-                            radarPanel.txt.requestFocus();
+                            radarEditor.txt.requestFocus();
                         }
                         break;
                     case RECEIVER:
                         break;
 
                     case TRANSMITTER:
+                        debugLog("BASTIM");
+                        if(transmitterEditor == null){
+                            debugLog("NULL PANEL");
+                            transmitterEditor = new TransmitterEditor(comp.name, this, Component.ComponentType.TRANSMITTER, "300");
+                            remove(addComponentButton);
+                            add(transmitterEditor);
+//                            if(!app.mapView.getSelectedEntity().hasComponent("Radar")){
+//                                app.mapView.getSelectedEntity().addComponents(new Radar(app.mapView.getSelectedEntity(),
+//                                        app.world.entities));
+//                            }
+                            updateSelectedEntity();
+                            add(addComponentButton);
+                            revalidate();
+                            transmitterEditor.txt.requestFocus();
+                        }
+                        else debugLog("NULL DEĞİLMİŞ YA");
                         break;
                 }
             });
@@ -311,24 +330,41 @@ public class EntityEditorView extends VCSPanel {
         //updatePanelData(app.mapView.getSelectedEntity());
     }
 
-    public void removeComponent(JPanel panel, String compName){
+    public void removeComponent(JPanel panel, Component.ComponentType type) {
         remove(panel);
         remove(addComponentButton);
         add(addComponentButton);
-        switch (compName){
-            case "Radar":
-                if(radarPanel != null){
-                    radarPanel = null;
-                    break;
+        switch (type){
+            case RADAR:
+                if(radarEditor != null){
+                    radarEditor = null;
+
                 }
+                break;
+            case TRANSMITTER:
+                if(transmitterEditor != null)
+                    transmitterEditor = null;
+                break;
+            case RECEIVER:
+                if(receiverEditor != null)
+                    receiverEditor = null;
+                break;
         }
         revalidate();
         repaint();
 
     }
 
-    public void setRadarPanel(ComponentEditor rdr){
-        radarPanel = rdr;
+    public void setRadarEditor(RadarEditor rdr){
+        radarEditor = rdr;
+    }
+
+    public void setReceiverEditor(ReceiverEditor receiverEditor) {
+        this.receiverEditor = receiverEditor;
+    }
+
+    public void setTransmitterEditor(TransmitterEditor transmitterEditor) {
+        this.transmitterEditor = transmitterEditor;
     }
 
     @Override
@@ -355,32 +391,32 @@ public class EntityEditorView extends VCSPanel {
         addSideBox.setSelectedIndex(0);
 
         if(e.getComponents().isEmpty()){
-            if(radarPanel != null && !radarPanel.getIsFocused()){
-                remove(radarPanel);
-                radarPanel = null;
+            if(radarEditor != null && !radarEditor.getIsFocused()){
+                remove(radarEditor);
+                radarEditor = null;
             }
             revalidate();
         }
 
         for(Component c : e.getComponents().values()){
             if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
-                if(radarPanel == null){
-                    radarPanel = new ComponentEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
+                if(radarEditor == null){
+                    radarEditor = new RadarEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
                     remove(addComponentButton);
-                    add(radarPanel);
+                    add(radarEditor);
                     add(addComponentButton);
-                    radarPanel.setData(((Radar) c).getRange());
+                    radarEditor.setData(((Radar) c).getRange());
                     revalidate();
                 }
-                else if(!radarPanel.getIsFocused()){
-                    radarPanel.setData(((Radar) c).getRange());
+                else if(!radarEditor.getIsFocused()){
+                    radarEditor.setData(((Radar) c).getRange());
                     revalidate();
                 }
             }
             else{
-                if(radarPanel != null && !radarPanel.getIsFocused()){
-                    remove(radarPanel);
-                    radarPanel = null;
+                if(radarEditor != null && !radarEditor.getIsFocused()){
+                    remove(radarEditor);
+                    radarEditor = null;
                 }
                 revalidate();
             }
@@ -436,32 +472,32 @@ public class EntityEditorView extends VCSPanel {
 
             for(Component c : e.getComponents().values()){
                 if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
-                    if(radarPanel == null){
-                        radarPanel = new ComponentEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
+                    if(radarEditor == null){
+                        radarEditor = new RadarEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
                         remove(addComponentButton);
-                        add(radarPanel);
+                        add(radarEditor);
                         add(addComponentButton);
-                        radarPanel.setData(((Radar) c).getRange());
+                        radarEditor.setData(((Radar) c).getRange());
                         revalidate();
                     }
-                    else if(!radarPanel.getIsFocused()){
-                        radarPanel.setData(((Radar) c).getRange());
+                    else if(!radarEditor.getIsFocused()){
+                        radarEditor.setData(((Radar) c).getRange());
                         revalidate();
                     }
                 }
                 else{
-                    if(radarPanel != null && !radarPanel.getIsFocused()){
-                        remove(radarPanel);
-                        radarPanel = null;
+                    if(radarEditor != null && !radarEditor.getIsFocused()){
+                        remove(radarEditor);
+                        radarEditor = null;
                     }
                     revalidate();
                 }
             }
 
             if(e.getComponents().isEmpty()){
-                if(radarPanel != null && !radarPanel.getIsFocused()){
-                    remove(radarPanel);
-                    radarPanel = null;
+                if(radarEditor != null && !radarEditor.getIsFocused()){
+                    remove(radarEditor);
+                    radarEditor = null;
                 }
                 revalidate();
             }
@@ -482,9 +518,9 @@ public class EntityEditorView extends VCSPanel {
         ePositionPanel.setData(new Vec2int());
         eSpeedPanel.setData(new Vec2int());
 
-        if(radarPanel != null){
-            remove(radarPanel);
-            radarPanel = null;
+        if(radarEditor != null){
+            remove(radarEditor);
+            radarEditor = null;
         }
         revalidate();
 
@@ -523,20 +559,39 @@ public class EntityEditorView extends VCSPanel {
             String name = eNamePanel.readData();
             Vec2int pos = ePositionPanel.readData();
             Vec2int speed = eSpeedPanel.readData();
-            int range = 0;
-            if(radarPanel != null){
-                range = radarPanel.readData();
+
+            int radarRange = 0;
+            if(radarEditor != null){
+                radarRange = radarEditor.readData();
 
                 if(!selectedEntity.hasComponent(Component.ComponentType.RADAR)){
-                    selectedEntity.addComponents(new Radar(selectedEntity,
+                    selectedEntity.addComponent(new Radar(selectedEntity,
                             app.world.entities));
                     //debugLog("added radar");
                 }
             }
+
+            int transmitterRange = 0;
+            if(transmitterEditor != null){
+                transmitterRange = transmitterEditor.readData();
+
+                if(!selectedEntity.hasComponent(Component.ComponentType.TRANSMITTER)){
+                    TDLTransmitterComp transmitter = new TDLTransmitterComp(selectedEntity,
+                            app.world.entities);
+                    transmitter.setRange(transmitterRange);
+                    selectedEntity.addComponent(transmitter);
+                }
+                else{
+                    ((TDLTransmitterComp) selectedEntity.getComponent(Component.ComponentType.TRANSMITTER)).
+                            setRange(transmitterRange);
+                }
+
+            }
+
             int sideInt = addSideBox.getSelectedIndex();
             type = (String) addTypeBox.getSelectedItem();
             if(app.pixelColor.isLocationValidForType(type, pos) && name != null){
-                app.updateSelectedEntity(name, intToSide(sideInt), pos, speed, range, strToType(type));
+                app.updateSelectedEntity(name, intToSide(sideInt), pos, speed, radarRange, strToType(type));
             }
             else if(!app.pixelColor.isLocationValidForType(type, pos)){
                 ePositionPanel.error();
@@ -561,10 +616,20 @@ public class EntityEditorView extends VCSPanel {
             ex.printStackTrace();
             ePositionPanel.dataValidate();
             eSpeedPanel.dataValidate();
-            if(radarPanel != null)
-                radarPanel.dataValidate();
+            if(radarEditor != null)
+                radarEditor.dataValidate();
         }
     }
 
+    public TransmitterEditor getTransmitterEditor() {
+        return transmitterEditor;
+    }
 
+    public RadarEditor getRadarEditor() {
+        return radarEditor;
+    }
+
+    public ReceiverEditor getReceiverEditor() {
+        return receiverEditor;
+    }
 }
