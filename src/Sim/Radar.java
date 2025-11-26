@@ -9,11 +9,9 @@ import java.util.List;
 
 public class Radar extends Component {
     private int range = 50;
-    private int linkRange = 0;
 
     public Radar(Entity parent, ArrayList<Entity> entities) {
         super(parent, entities, ComponentType.RADAR);
-        linkRange = ((TDLTransmitterComp) parentEntity.getComponent(ComponentType.TRANSMITTER)).getTransmitterRange();
     }
 
 
@@ -32,7 +30,7 @@ public class Radar extends Component {
                 e.isItDetected(hasVisual);
                 if (!(parentEntity.getLocalWorld().getEntities().contains(e)) && e.isActive()){
                     if (parentEntity.getSide() == Entity.Side.ALLY) {
-                        if (e.getSide() == parentEntity.getSide() && dist <= linkRange) {
+                        if (e.getSide() == parentEntity.getSide()){
                         } else if (e.getSide().equals(Entity.Side.ENEMY)){
                             parentEntity.getLocalWorld().createEntity(e.getId(), e.getName(), e.getSide(), e.getPos(), e.getSpeed(), e.getType());
                             for (Entity entity : parentEntity.getLocalWorld().getEntities()){

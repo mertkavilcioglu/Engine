@@ -4,6 +4,7 @@ import App.VCSApp;
 import Sim.Component;
 import Sim.Entity;
 import Sim.Radar;
+import Sim.TDL.TDLReceiverComp;
 import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
@@ -47,7 +48,7 @@ public class EntityEditorView extends VCSPanel {
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
         int targetWidth = Toolkit.getDefaultToolkit().getScreenSize().width / 8;
-        int targetHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+        int targetHeight = Toolkit.getDefaultToolkit().getScreenSize().height * 5 / 8;
         this.setPreferredSize(new Dimension(targetWidth, targetHeight));
 
         //BoxLayout lay = new BoxLayout(this,BoxLayout.Y_AXIS);
@@ -70,7 +71,6 @@ public class EntityEditorView extends VCSPanel {
         eNamePanel.setBackground(panelColor);
         ePositionPanel.setBackground(panelColor);
         eSpeedPanel.setBackground(panelColor);
-
 
 
         String sides[] = {"Ally", "Enemy"};
@@ -105,83 +105,6 @@ public class EntityEditorView extends VCSPanel {
         add(addTypePanel);
         add(ePositionPanel);
         add(eSpeedPanel);
-        JButton createButton = new JButton("Create");
-
-//        createButton.addActionListener(e -> {
-//            //app.attackTest();
-//            try{
-//                String name = eNamePanel.readData();
-//                Vec2int pos = ePositionPanel.readData();
-//                Vec2int speed = eSpeedPanel.readData();
-//                int range = 0;
-//                if(radarPanel != null)
-//                    range = radarPanel.readData();
-//                int sideInt = addSideBox.getSelectedIndex();
-//
-//                type = (String) addTypeBox.getSelectedItem();
-//                if(app.pixelColor.isLocationValidForType(type, pos)){
-//                    app.createEntity(name, intToSide(sideInt), pos, speed, strToType(type));
-//                    //log("New unit named " + name + " created.");
-//                }
-//                else if(!app.pixelColor.isLocationValidForType(type, pos)){
-//                    ePositionPanel.error();
-//                }
-//
-//            }
-//            catch (Exception ex){
-//                ePositionPanel.dataValidate();
-//                eSpeedPanel.dataValidate();
-//                if(radarPanel != null)
-//                    radarPanel.dataValidate();
-//            }
-//        });
-        //add(createButton);
-//        updateButton.setBackground(app.uiColorManager.BUTTON_COLOR);
-//        updateButton.setFocusable(false);
-//        updateButton.addActionListener(e -> {
-//            try{
-//                Vec2int oldPos = app.mapView.getSelectedEntity().getPos();
-//                String name = eNamePanel.readData();
-//                Vec2int pos = ePositionPanel.readData();
-//                Vec2int speed = eSpeedPanel.readData();
-//                int range = 0;
-//                if(radarPanel != null)
-//                    range = radarPanel.readData();
-//
-//                int sideInt = addSideBox.getSelectedIndex();
-//                type = (String) addTypeBox.getSelectedItem();
-//                if(app.pixelColor.isLocationValidForType(type, pos) && name != null){
-//                    app.updateSelectedEntity(name, intToSide(sideInt), pos, speed, range, strToType(type));
-//                }
-//                else if(!app.pixelColor.isLocationValidForType(type, pos)){
-//                    ePositionPanel.error();
-//                }
-//                app.hierarchyPanel.updateComponent("Radar", app.mapView.getSelectedEntity());
-//
-//                if(!app.mapView.getSelectedEntity().getPreviousPositions().isEmpty() &&
-//                        app.mapView.getSelectedEntity().getPreviousPositions().getLast().x != pos.x &&
-//                        app.mapView.getSelectedEntity().getPreviousPositions().getLast().y != pos.y){
-//                    app.mapView.getSelectedEntity().getPreviousPositions().push(oldPos);
-//
-//                    Entity selectedEntity = app.mapView.getSelectedEntity();
-//                    app.world.changedEntities.push(selectedEntity);
-//                    app.world.changes.push(new Entity(app.world, selectedEntity.getName(), selectedEntity.getSide(), selectedEntity.getPos(),
-//                                selectedEntity.getSpeed(), selectedEntity.getType(), selectedEntity.getComponents(), true));
-//                }
-//                app.hierarchyPanel.update(1000);
-//            }
-//            catch (Exception ex){
-//                System.out.println("CATCHED SMT");
-//                System.out.println(ex.getLocalizedMessage());
-//                ex.printStackTrace();
-//                ePositionPanel.dataValidate();
-//                eSpeedPanel.dataValidate();
-//                if(radarPanel != null)
-//                    radarPanel.dataValidate();
-//            }
-//        });
-//        updateButton.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-        //add(updateButton);
 
         addSideBox.addActionListener(new ActionListener() {
             @Override
@@ -251,25 +174,26 @@ public class EntityEditorView extends VCSPanel {
                         }
                         break;
                     case RECEIVER:
+                        if(receiverEditor == null){
+                            receiverEditor = new ReceiverEditor(comp.name, this, Component.ComponentType.RECEIVER);
+                            remove(addComponentButton);
+                            add(receiverEditor);
+                            updateSelectedEntity();
+                            add(addComponentButton);
+                            revalidate();
+                        }
                         break;
 
                     case TRANSMITTER:
-                        debugLog("BASTIM");
                         if(transmitterEditor == null){
-                            debugLog("NULL PANEL");
                             transmitterEditor = new TransmitterEditor(comp.name, this, Component.ComponentType.TRANSMITTER, "300");
                             remove(addComponentButton);
                             add(transmitterEditor);
-//                            if(!app.mapView.getSelectedEntity().hasComponent("Radar")){
-//                                app.mapView.getSelectedEntity().addComponents(new Radar(app.mapView.getSelectedEntity(),
-//                                        app.world.entities));
-//                            }
                             updateSelectedEntity();
                             add(addComponentButton);
                             revalidate();
                             transmitterEditor.txt.requestFocus();
                         }
-                        else debugLog("NULL DEĞİLMİŞ YA");
                         break;
                 }
             });
@@ -586,6 +510,15 @@ public class EntityEditorView extends VCSPanel {
                             setRange(transmitterRange);
                 }
 
+            }
+
+            if(receiverEditor != null){
+
+                if(!selectedEntity.hasComponent(Component.ComponentType.RECEIVER)){
+                    selectedEntity.addComponent(new TDLReceiverComp(selectedEntity,
+                            app.world.entities));
+                    //debugLog("added radar");
+                }
             }
 
             int sideInt = addSideBox.getSelectedIndex();

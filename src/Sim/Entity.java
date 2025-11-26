@@ -217,6 +217,9 @@ public class Entity {
         if(!isActive)
             return;
 
+//        if(type != Type.HQ){
+//            w.app.debugLogError(String.format("Comp: %d", components.size()));
+//        }
 
         if(!orders.isEmpty() && currentOrder != null)
             currentOrder.update();
@@ -241,18 +244,24 @@ public class Entity {
 
             switch (c.type){
                 case RADAR:
-                    if(editorView.getRadarEditor() != null)
-                        return;
+                    if(editorView.getRadarEditor() != null){
+                        componentsToRemove.remove(c);
+                        continue;
+                    }
                     break;
 
                 case TRANSMITTER:
-                    if(editorView.getTransmitterEditor() != null)
-                        return;
+                    if(editorView.getTransmitterEditor() != null){
+                        componentsToRemove.remove(c);
+                        continue;
+                    }
                     break;
 
                 case RECEIVER:
-                    if(editorView.getReceiverEditor() != null)
-                        return;
+                    if(editorView.getReceiverEditor() != null) {
+                        componentsToRemove.remove(c);
+                        continue;
+                    }
                     break;
 
             }

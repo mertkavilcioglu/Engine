@@ -108,8 +108,17 @@ public class VCSApp {
 
         hierarchyPanel.add(hierarchyScroll);
 
+        JScrollPane editorScroll = new JScrollPane(editorPanel);
+        editorScroll.getViewport().setBackground(uiColorManager.DARK_PANEL_COLOR);
+        editorScroll.setBorder(null);
+        editorScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        editorScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        editorScroll.setVerticalScrollBar(new JScrollBar(Adjustable.VERTICAL,0,0,0,0));
+        editorScroll.setWheelScrollingEnabled(false);
+        window.add(editorScroll, BorderLayout.EAST);
+
         window.add(mapView,BorderLayout.CENTER);
-        window.add(editorPanel, BorderLayout.EAST);
+        //window.add(editorPanel, BorderLayout.EAST);
         window.add(hierarchyPanel, BorderLayout.WEST);
         window.add(mergeSouthPanel, BorderLayout.SOUTH);
         window.add(mergeNorthPanel, BorderLayout.NORTH);

@@ -55,7 +55,6 @@ public class RadarEditor extends JPanel {
         defaultBorder = txt.getBorder();
         add(new JLabel(" "));
         editor.setRadarEditor(this);
-
         txt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
