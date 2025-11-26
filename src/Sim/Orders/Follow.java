@@ -25,6 +25,7 @@ public class Follow extends Order{
             isExecute = true;
             this.receiver.completeCurrentOrder();
             this.receiver.setCurrentOrderState(true);
+            finish(this.receiver);
             return;
         }
     }
@@ -77,6 +78,7 @@ public class Follow extends Order{
             }
             receiver.completeCurrentOrder();
             receiver.setCurrentOrderState(true);
+            finish(receiver);
         }
 
     }

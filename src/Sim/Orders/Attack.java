@@ -43,6 +43,7 @@ public class Attack extends Order{
                     receiver.setSpeed(new Vec2int(0,0));
                 receiver.completeCurrentOrder();
                 receiver.setCurrentOrderState(true);
+                finish(receiver);
             }
 
 
@@ -71,6 +72,7 @@ public class Attack extends Order{
         app.removeEntity(e);
         receiver.completeCurrentOrder();
         receiver.setCurrentOrderState(true);
+        finish(receiver);
     }
 
     public String  getAttackTargetID(){

@@ -98,7 +98,7 @@ public class World{
                     }
                 }
             }
-            if (!message.equals(null)){
+            if (message != null){
                 app.logPanel.toLog(message);
             } else app.logPanel.toLog(msg);
         }

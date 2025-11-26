@@ -28,8 +28,8 @@ public class ActionPanel extends VCSPanel {
     private JPanel allyTargetPanel;
     private JPanel enemyTargetPanel;
     private JButton targetButton;
-    private Map<Entity, JButton> allyButtons = new HashMap<>();
-    private Map<Entity, JButton> enemyButtons = new HashMap<>();
+    private Map<String, JButton> allyButtons = new HashMap<>();
+    private Map<String, JButton> enemyButtons = new HashMap<>();
     private Entity targetEntity;
     private Entity attackerEntity;
 
@@ -72,9 +72,6 @@ public class ActionPanel extends VCSPanel {
     Vec2int coordinatesToMove;
     private Color panelBgColor;
     private Color borderColor;
-
-    //to update current order panel when an order is completed.
-    public Timer timer = new Timer(300, e-> currentOrderRefresher());
 
 
     public ActionPanel(VCSApp app){
@@ -348,13 +345,11 @@ public class ActionPanel extends VCSPanel {
         if(sideOfEntity == Entity.Side.ENEMY) isEnemy = true;
         else if (sideOfEntity == Entity.Side.ALLY) isEnemy = false;
 
-        timer.start();
-
         updateOrderMode(selectedEntity);
 
 
         selectedUnitLabel.setText("Selected Entity: " + selectedEntity.getName());
-        refreshCurrentOrderPanel();
+        refreshCurrentOrderPanel(entity);
         orderDetailLayout.show(orderDetailPanel, "empty");
     }
 
@@ -368,7 +363,6 @@ public class ActionPanel extends VCSPanel {
             isRootSelected = true;
             clearCurrentOrderPanel();
         }else isRootSelected = false;
-        timer.stop();
     }
 
     public void disablePanel(){
@@ -378,7 +372,6 @@ public class ActionPanel extends VCSPanel {
         orderDetailLayout.show(orderDetailPanel, "empty");
         isRootSelected = true;
         clearCurrentOrderPanel();
-        timer.stop();
     }
 
     //for creating new button for each available targets based on their assigned sides
@@ -388,10 +381,10 @@ public class ActionPanel extends VCSPanel {
         allCreatedEntites.add(entity);
         //createFollowButtonList(entity);
         if (entity.getSide() == Entity.Side.ALLY){
-            allyButtons.put(entity, targetButton);
+            allyButtons.put(entity.getId(), targetButton);
             allyTargetPanel.add(targetButton);
         } else {
-            enemyButtons.put(entity, targetButton);
+            enemyButtons.put(entity.getId(), targetButton);
             enemyTargetPanel.add(targetButton);
         }
         //action listener for create attack order
@@ -412,33 +405,35 @@ public class ActionPanel extends VCSPanel {
         Entity.Type typeOfSelected = selectedOne.getType();
         enemyTargetPanel.removeAll();
         if (typeOfSelected.equals(Entity.Type.AIR)){
-                for (Entity keyEntity : enemyButtons.keySet()) {
-                    if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
-                        enemyTargetPanel.add(enemyButtons.get(keyEntity));
-                        if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
-                            enemyButtons.get(keyEntity).setEnabled(false);
+                for (String entityID : enemyButtons.keySet()) {
+                    if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(entityID)) {
+                        enemyTargetPanel.add(enemyButtons.get(entityID));
+                        if (selectedOne.getEntitiesToAttack().contains(app.world.getEntityHashMap().get(entityID))){
+                            enemyButtons.get(entityID).setEnabled(false);
                         }
                     }
                 }
         } else if (typeOfSelected.equals(Entity.Type.SURFACE)) {
-                for (Entity keyEntity : enemyButtons.keySet()){
-                    if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
+                for (String entityID : enemyButtons.keySet()){
+                    Entity keyEntity = app.world.getEntityHashMap().get(entityID);
+                    if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(entityID)) {
                         if (keyEntity.getType().equals(Entity.Type.SURFACE)){
-                            enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                            enemyTargetPanel.add(enemyButtons.get(entityID));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
-                                enemyButtons.get(keyEntity).setEnabled(false);
+                                enemyButtons.get(entityID).setEnabled(false);
                             }
                         }
                     }
                 }
 
         } else if (typeOfSelected.equals(Entity.Type.GROUND)) {
-                for (Entity keyEntity : enemyButtons.keySet()){
-                    if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(keyEntity.getId())) {
+                for (String entityID : enemyButtons.keySet()){
+                    Entity keyEntity = app.world.getEntityHashMap().get(entityID);
+                    if (app.getHQ().getLocalWorld().getEntityHashMap().containsKey(entityID)) {
                         if (keyEntity.getType().equals(Entity.Type.GROUND)){
-                            enemyTargetPanel.add(enemyButtons.get(keyEntity));
+                            enemyTargetPanel.add(enemyButtons.get(entityID));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
-                                enemyButtons.get(keyEntity).setEnabled(false);
+                                enemyButtons.get(entityID).setEnabled(false);
                             }
                         }
                     }
@@ -463,32 +458,35 @@ public class ActionPanel extends VCSPanel {
                 detectedEntitiesFromRadar.add(e);
         }
         if (typeOfSelected.equals(Entity.Type.AIR)){
-                for (Entity keyEntity : allyButtons.keySet()){
+                for (String entityID : allyButtons.keySet()){
+                    Entity keyEntity = app.world.getEntityHashMap().get(entityID);
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
-                        allyTargetPanel.add(allyButtons.get(keyEntity));
+                        allyTargetPanel.add(allyButtons.get(keyEntity.getId()));
                         if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
-                            allyButtons.get(keyEntity).setEnabled(false);
+                            allyButtons.get(keyEntity.getId()).setEnabled(false);
                         }
                     }
                 }
         } else if (typeOfSelected.equals(Entity.Type.SURFACE)) {
-                for (Entity keyEntity : allyButtons.keySet()){
+                for (String entityID : allyButtons.keySet()){
+                    Entity keyEntity = app.world.getEntityHashMap().get(entityID);
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType().equals(Entity.Type.SURFACE)){
-                            allyTargetPanel.add(allyButtons.get(keyEntity));
+                            allyTargetPanel.add(allyButtons.get(keyEntity.getId()));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
-                                allyButtons.get(keyEntity).setEnabled(false);
+                                allyButtons.get(keyEntity.getId()).setEnabled(false);
                             }
                         }
                     }
                 }
         } else if (typeOfSelected.equals(Entity.Type.GROUND)) {
-                for (Entity keyEntity : allyButtons.keySet()){
+                for (String entityID : allyButtons.keySet()){
+                    Entity keyEntity = app.world.getEntityHashMap().get(entityID);
                     if (detectedEntitiesFromRadar.contains(keyEntity)) {
                         if (keyEntity.getType().equals(Entity.Type.GROUND)){
-                            allyTargetPanel.add(allyButtons.get(keyEntity));
+                            allyTargetPanel.add(allyButtons.get(keyEntity.getId()));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
-                                allyButtons.get(keyEntity).setEnabled(false);
+                                allyButtons.get(keyEntity.getId()).setEnabled(false);
                             }
                         }
                     }
@@ -505,11 +503,11 @@ public class ActionPanel extends VCSPanel {
         //for attack panel
         JButton deletedButton;
         if (entity.getSide().equals(Entity.Side.ALLY)){
-            deletedButton = allyButtons.remove(entity);
+            deletedButton = allyButtons.remove(entity.getId());
             if(deletedButton != null)
                 allyTargetPanel.remove(deletedButton);
         } else if (entity.getSide().equals(Entity.Side.ENEMY)) {
-            deletedButton = enemyButtons.remove(entity);
+            deletedButton = enemyButtons.remove(entity.getId());
             if(deletedButton != null)
                 enemyTargetPanel.remove(deletedButton);
         }
@@ -541,18 +539,9 @@ public class ActionPanel extends VCSPanel {
         }
     }
 
-    public void currentOrderRefresher(){
-        showTargetButtonsForAlly(selectedEntity);
-        boolean isDone = selectedEntity.getCurrentOrderState();
-        if (!isPaused){
-            if (isDone){
-                refreshCurrentOrderPanel();
-            }
-        }
-    }
-
     //change the current order panel based on the selected entity
-    public void refreshCurrentOrderPanel(){
+    public void refreshCurrentOrderPanel(Entity selectedEntity){
+        showTargetButtonsForAlly(selectedEntity);
         orderModel.removeAllElements();
         if (selectedEntity != null){
             Queue<Order> currentOrders = selectedEntity.getOrders();
@@ -608,7 +597,7 @@ public class ActionPanel extends VCSPanel {
                 }
         }
         selectedEntity.removeOrder((ArrayList<Order>) toDelete);
-        refreshCurrentOrderPanel();
+        refreshCurrentOrderPanel(selectedEntity);
     }
 
     public void setIfPaused(boolean isPaused){
@@ -646,5 +635,15 @@ public class ActionPanel extends VCSPanel {
     @Override
     public void selectedEntityChanged(Entity entity) {
 
+    }
+
+    public void update() {
+        if (selectedEntity != null) {
+            if (!selectedEntity.getOrders().isEmpty()) {
+                if (currentOrderList.isSelectionEmpty()) {
+                    refreshCurrentOrderPanel(selectedEntity);
+                }
+            }
+        }
     }
 }
