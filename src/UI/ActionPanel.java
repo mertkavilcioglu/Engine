@@ -8,15 +8,12 @@ import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 public class ActionPanel extends VCSPanel {
-    //left panel
-    private JPanel giveOrderPanel;
     private JButton attackButton;
     private JButton moveButton;
     private JButton followButton;
@@ -27,23 +24,16 @@ public class ActionPanel extends VCSPanel {
     //attack part of middle panel
     private JPanel allyTargetPanel;
     private JPanel enemyTargetPanel;
-    private JButton targetButton;
     private Map<String, JButton> allyButtons = new HashMap<>();
     private Map<String, JButton> enemyButtons = new HashMap<>();
     private Entity targetEntity;
     private Entity attackerEntity;
 
-    //move part of middle panel
-    private JPanel movePanel;
     private Vec2intEditor moveEditor;
     private JButton enableFromMapButton;
-    private JButton disableFromMapButton;
 
-    //follow part of middle panel
-    private JPanel followPanel;
     private JComboBox<String> followTargetBox;
     private DefaultComboBoxModel<String> followTargetData;
-    private JLabel followTimeLabel;
     private JTextField followTimeText;
     private JButton followOrderCreateButton;
     private ArrayList<Entity> allCreatedEntites = new ArrayList<>();
@@ -70,23 +60,22 @@ public class ActionPanel extends VCSPanel {
     Entity.Side sideOfEntity;
     Entity.Type typeOfEntity;
     Vec2int coordinatesToMove;
-    private Color panelBgColor;
-    private Color borderColor;
 
 
     public ActionPanel(VCSApp app){
         super(app);
         this.setLayout(new BorderLayout());
 
-        borderColor = app.uiColorManager.DARK_MAP_BG_BLUE_COLOR;
-        panelBgColor = app.uiColorManager.DARK_PANEL_COLOR;
+        Color borderColor = UIColorManager.DARK_MAP_BG_BLUE_COLOR;
+        Color panelBgColor = UIColorManager.DARK_PANEL_COLOR;
         setBackground(panelBgColor);
         selectedUnitLabel = new JLabel("No unit selected.", SwingConstants.CENTER);
         selectedUnitLabel.setForeground(Color.WHITE);
         JPanel mergePanel = new JPanel(new GridLayout(1,3,0,0));
         mergePanel.setBackground(panelBgColor);
 
-        giveOrderPanel = new JPanel(new GridLayout(3,1, 0, 20));
+        //left panel
+        JPanel giveOrderPanel = new JPanel(new GridLayout(3, 1, 0, 20));
         giveOrderPanel.setBackground(panelBgColor);
 
         attackButton = new JButton("Attack");
@@ -122,7 +111,8 @@ public class ActionPanel extends VCSPanel {
         enemyTargetPanel.setBorder(chooseTargetTitledBorder);
         enemyTargetPanel.setBackground(panelBgColor);
 
-        movePanel = new JPanel();
+        //move part of middle panel
+        JPanel movePanel = new JPanel();
         movePanel.setLayout(new BoxLayout(movePanel, BoxLayout.Y_AXIS));
         movePanel.setBackground(panelBgColor);
 
@@ -135,7 +125,7 @@ public class ActionPanel extends VCSPanel {
         chooseModeLabel.setForeground(Color.WHITE);
         chooseModeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         enableFromMapButton = new JButton("ON");
-        disableFromMapButton = new JButton("OFF");
+        JButton disableFromMapButton = new JButton("OFF");
         setButtonColor(enableFromMapButton);
         enableFromMapButton.setFocusable(false);
         setButtonColor(disableFromMapButton);
@@ -159,7 +149,8 @@ public class ActionPanel extends VCSPanel {
         movePanel.add(moveConfirmButton);
         movePanel.add(moveFomMapPanel);
 
-        followPanel = new JPanel();
+        //follow part of middle panel
+        JPanel followPanel = new JPanel();
         followPanel.setLayout(new BoxLayout(followPanel, BoxLayout.Y_AXIS));
         followPanel.setBackground(panelBgColor);
 
@@ -180,7 +171,7 @@ public class ActionPanel extends VCSPanel {
         comboPanel.add(followTargetBox, BorderLayout.CENTER);
         JPanel timePanel = new JPanel(new FlowLayout());
         timePanel.setBackground(panelBgColor);
-        followTimeLabel = new JLabel("Follow Time(s):");
+        JLabel followTimeLabel = new JLabel("Follow Time(s):");
         followTimeLabel.setBackground(panelBgColor);
         followTimeLabel.setForeground(Color.WHITE);
         followTimeText = new JTextField(10);
@@ -193,7 +184,6 @@ public class ActionPanel extends VCSPanel {
         followOrderCreateButton.addActionListener(e -> {
             if (selectedEntity == null) return;
             int followIndex = followTargetBox.getSelectedIndex();
-            if ((followIndex < 0 && followIndex >= followableEntityList.size())) return;
             Entity choosenEntity = followableEntityList.get(followIndex);
             int followTime;
             try {
@@ -240,8 +230,7 @@ public class ActionPanel extends VCSPanel {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel lbl = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value instanceof Order){
-                    Order o = (Order) value;
+                if (value instanceof Order o){
                     lbl.setText(o.createTextToPrint());
                 } return lbl;
             }
@@ -262,9 +251,7 @@ public class ActionPanel extends VCSPanel {
         selectedOrderDeleteButton = new JButton("Delete");
         setButtonColor(selectedOrderDeleteButton);
         selectedOrderDeleteButton.setEnabled(false);
-        selectedOrderDeleteButton.addActionListener(e -> {
-            deleteSelectedOrders();
-        });
+        selectedOrderDeleteButton.addActionListener(e -> deleteSelectedOrders());
 
         currentOrderPanel.add(currentOrderScroll, BorderLayout.CENTER);
         currentOrderPanel.add(selectedOrderDeleteButton, BorderLayout.SOUTH);
@@ -286,17 +273,13 @@ public class ActionPanel extends VCSPanel {
         });
 
         moveButton.setFocusable(false);
-        moveButton.addActionListener(e -> {
-            orderDetailLayout.show(orderDetailPanel, "move");
-        });
+        moveButton.addActionListener(e -> orderDetailLayout.show(orderDetailPanel, "move"));
         enableFromMapButton.addActionListener(e -> {
             setMoveMode(true);
             enableFromMapButton.setBackground(Color.GRAY);
             enableFromMapButton.setForeground(Color.lightGray);
         });
-        disableFromMapButton.addActionListener(e -> {
-            setMoveMode(false);
-        });
+        disableFromMapButton.addActionListener(e -> setMoveMode(false));
 
         followButton.setFocusable(false);
         followButton.addActionListener(e -> {
@@ -376,7 +359,7 @@ public class ActionPanel extends VCSPanel {
 
     //for creating new button for each available targets based on their assigned sides
     public void createNewTargetButton(Entity entity){
-        targetButton = new JButton(entity.getName());
+        JButton targetButton = new JButton(entity.getName());
         setButtonColor(targetButton);
         allCreatedEntites.add(entity);
         //createFollowButtonList(entity);
@@ -543,11 +526,9 @@ public class ActionPanel extends VCSPanel {
     public void refreshCurrentOrderPanel(Entity selectedEntity){
         showTargetButtonsForAlly(selectedEntity);
         orderModel.removeAllElements();
-        if (selectedEntity != null){
-            Queue<Order> currentOrders = selectedEntity.getOrders();
-            for (Order order : currentOrders){
-                orderModel.addElement(order);
-            }
+        Queue<Order> currentOrders = selectedEntity.getOrders();
+        for (Order order : currentOrders){
+            orderModel.addElement(order);
         }
         currentOrderPanel.revalidate();
         currentOrderPanel.repaint();
@@ -587,13 +568,13 @@ public class ActionPanel extends VCSPanel {
                 app.log(deleteLog);
                 if (o.toString().equals("Attack order")){
                     Attack a = (Attack) o;
+                    JButton b;
                     if (selectedEntity.getSide() == Entity.Side.ALLY){
-                        JButton b = enemyButtons.get(a.getAttackTargetID()); // TODO: Artık entity ref değil String entity ID alması lazım
-                        b.setEnabled(true);
+                        b = enemyButtons.get(a.getAttackTargetID());
                     } else {
-                        JButton b = allyButtons.get(a.getAttackTargetID()); // TODO: Artık entity ref değil String entity ID alması lazım
-                        b.setEnabled(true);
+                        b = allyButtons.get(a.getAttackTargetID());
                     }
+                    b.setEnabled(true);
                 }
         }
         selectedEntity.removeOrder((ArrayList<Order>) toDelete);
@@ -621,15 +602,13 @@ public class ActionPanel extends VCSPanel {
     }
 
     private void setButtonColor(JButton button){
-        button.setBackground(app.uiColorManager.BUTTON_COLOR);
-        button.setForeground(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR);
+        button.setBackground(UIColorManager.BUTTON_COLOR);
+        button.setForeground(UIColorManager.DARK_MAP_BG_BLUE_COLOR);
     }
 
     public void updateOrderMode(Entity selectedEntity){
-        if (selectedEntity.getType() != Entity.Type.HQ && ((selectedEntity.getSide() == Entity.Side.ENEMY) ||
-                app.getHQ().getLocalWorld().getEntityHashMap().containsKey(selectedEntity.getId()))){
-            updateOrderButtonsState(true);
-        } else updateOrderButtonsState(false);
+        updateOrderButtonsState((selectedEntity.getType() != Entity.Type.HQ) && ((selectedEntity.getSide() == Entity.Side.ENEMY) ||
+                app.getHQ().getLocalWorld().getEntityHashMap().containsKey(selectedEntity.getId())));
     }
 
     @Override
