@@ -16,7 +16,7 @@ public class Entity {
     private Vec2int speed;
     private Type type;
     private HashMap<Component.ComponentType, Component> components = new HashMap<>();
-    public ArrayList<Component> componentsToRemove = new ArrayList<>();
+    public HashMap<Component.ComponentType, Component> componentsToRemove = new HashMap<>();
     private List<Entity> detectedEntities = new ArrayList<>();
     private ArrayList<Entity> infoMsgSendEntities = new ArrayList<>();
     private RGB currentPixelColor;
@@ -129,7 +129,7 @@ public class Entity {
     public void removeComponent(Component.ComponentType type){
         for(Component c : components.values()){
             if(c.type == type){
-                componentsToRemove.add(c);
+                componentsToRemove.put(c.type, c);
             }
         }
     }
@@ -238,27 +238,27 @@ public class Entity {
             c.update(deltaTime);
         }
 
-        for(Component c : componentsToRemove){
+        for(Component c : componentsToRemove.values()){
             EntityEditorView editorView = w.app.editorPanel;
 
             switch (c.type){
                 case RADAR:
                     if(editorView.getRadarEditor() != null){
-                        componentsToRemove.remove(c);
+                        componentsToRemove.remove(c.type);
                         continue;
                     }
                     break;
 
                 case TRANSMITTER:
                     if(editorView.getTransmitterEditor() != null){
-                        componentsToRemove.remove(c);
+                        componentsToRemove.remove(c.type);
                         continue;
                     }
                     break;
 
                 case RECEIVER:
                     if(editorView.getReceiverEditor() != null) {
-                        componentsToRemove.remove(c);
+                        componentsToRemove.remove(c.type);
                         continue;
                     }
                     break;

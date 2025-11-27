@@ -402,29 +402,58 @@ public class EntityEditorView extends VCSPanel {
                         add(radarEditor);
                         add(addComponentButton);
                         radarEditor.setData(((Radar) c).getRange());
-                        revalidate();
                     }
                     else if(!radarEditor.getIsFocused()){
                         radarEditor.setData(((Radar) c).getRange());
-                        revalidate();
                     }
                 }
-                else{
-                    if(radarEditor != null && !radarEditor.getIsFocused()){
-                        remove(radarEditor);
-                        radarEditor = null;
+                else if(c instanceof TDLTransmitterComp){
+                    if(transmitterEditor == null){
+                        transmitterEditor = new TransmitterEditor("Transmitter:", this, Component.ComponentType.TRANSMITTER, "300");
+                        remove(addComponentButton);
+                        add(transmitterEditor);
+                        add(addComponentButton);
+                        transmitterEditor.setData(((TDLTransmitterComp) c).getTransmitterRange());
                     }
-                    revalidate();
+                    else if(!transmitterEditor.getIsFocused()){
+                        transmitterEditor.setData(((TDLTransmitterComp) c).getTransmitterRange());
+                    }
+                }
+                else if(c instanceof TDLReceiverComp){
+                    if(receiverEditor == null){
+                        receiverEditor = new ReceiverEditor("Receiver:", this, Component.ComponentType.RECEIVER);
+                        remove(addComponentButton);
+                        add(receiverEditor);
+                        add(addComponentButton);
+                    }
                 }
             }
 
-            if(e.getComponents().isEmpty()){
+            if(!e.getComponents().containsKey(Component.ComponentType.RADAR) ||
+                    e.componentsToRemove.containsKey(Component.ComponentType.RADAR)){
                 if(radarEditor != null && !radarEditor.getIsFocused()){
                     remove(radarEditor);
                     radarEditor = null;
                 }
-                revalidate();
             }
+
+            if(!e.getComponents().containsKey(Component.ComponentType.TRANSMITTER) ||
+                    e.componentsToRemove.containsKey(Component.ComponentType.TRANSMITTER)){
+                if(transmitterEditor != null && !transmitterEditor.getIsFocused()){
+                    remove(transmitterEditor);
+                    transmitterEditor = null;
+                }
+            }
+
+            if(!e.getComponents().containsKey(Component.ComponentType.RECEIVER) ||
+                    e.componentsToRemove.containsKey(Component.ComponentType.RECEIVER)){
+                if(receiverEditor != null){
+                    remove(receiverEditor);
+                    receiverEditor = null;
+                }
+            }
+
+            revalidate();
 
             //updateButton.setEnabled(true);
             addComponentButton.setEnabled(true);
@@ -445,6 +474,16 @@ public class EntityEditorView extends VCSPanel {
         if(radarEditor != null){
             remove(radarEditor);
             radarEditor = null;
+        }
+
+        if(transmitterEditor != null){
+            remove(transmitterEditor);
+            transmitterEditor = null;
+        }
+
+        if(receiverEditor != null){
+            remove(receiverEditor);
+            receiverEditor = null;
         }
         revalidate();
 
