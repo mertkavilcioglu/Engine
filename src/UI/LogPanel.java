@@ -6,7 +6,6 @@ import Sim.TDL.Message;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.plaf.synth.SynthRadioButtonMenuItemUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -15,22 +14,21 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.List;
 
 public class LogPanel extends VCSPanel {
     private JTextPane logArea;
-    private DefaultListModel<Message> messageModel;
-    private JList<Message> messageList;
+    private final DefaultListModel<Message> messageModel;
+    private final JList<Message> messageList;
 
     public LogPanel(VCSApp app) {
         super(app);
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setPreferredSize(new Dimension(getWidth(),getHeight()));
         this.setBorder(BorderFactory.createLineBorder(Color.black,1));
-        this.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+        this.setBackground(UIColorManager.DARK_PANEL_COLOR);
         logArea = new JTextPane();
         logArea.setEditable(false);
-        logArea.setCaretColor(app.uiColorManager.DARK_PANEL_COLOR);
+        logArea.setCaretColor(UIColorManager.DARK_PANEL_COLOR);
         logArea.setForeground(Color.WHITE);
 
         messageModel = new DefaultListModel<>();
@@ -40,8 +38,7 @@ public class LogPanel extends VCSPanel {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel lbl = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value instanceof Message){
-                    Message m = (Message) value;
+                if (value instanceof Message m){
                     ArrayList<String> mes = m.getMsg2();
                     String s1 = mes.get(0);
                     String s2 = mes.get(1);
@@ -58,14 +55,14 @@ public class LogPanel extends VCSPanel {
 
         TitledBorder logTitledBorder = new TitledBorder("Log: ");
         logTitledBorder.setTitleColor(Color.WHITE);
-        logTitledBorder.setBorder(BorderFactory.createLineBorder(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR,2));
+        logTitledBorder.setBorder(BorderFactory.createLineBorder(UIColorManager.DARK_MAP_BG_BLUE_COLOR,2));
 
         TitledBorder debugTitledBorder = new TitledBorder("Debug: ");
         debugTitledBorder.setTitleColor(Color.WHITE);
-        debugTitledBorder.setBorder(BorderFactory.createLineBorder(app.uiColorManager.DARK_MAP_BG_BLUE_COLOR,2));
+        debugTitledBorder.setBorder(BorderFactory.createLineBorder(UIColorManager.DARK_MAP_BG_BLUE_COLOR,2));
 
         messageList.setBorder(logTitledBorder);
-        messageList.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+        messageList.setBackground(UIColorManager.DARK_PANEL_COLOR);
         messageList.setForeground(Color.WHITE);
         messageList.addMouseListener(new MouseAdapter() {
             @Override
@@ -84,14 +81,14 @@ public class LogPanel extends VCSPanel {
         });
 
         logArea.setBorder(debugTitledBorder);
-        logArea.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+        logArea.setBackground(UIColorManager.DARK_PANEL_COLOR);
         JScrollPane scrollList = new JScrollPane(messageList);
-        scrollList.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
-        scrollList.getViewport().getView().setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+        scrollList.setBackground(UIColorManager.DARK_PANEL_COLOR);
+        scrollList.getViewport().getView().setBackground(UIColorManager.DARK_PANEL_COLOR);
         scrollList.setBorder(null);
         JScrollPane scrollPane = new JScrollPane(logArea);
-        scrollPane.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
-        scrollPane.getViewport().getView().setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+        scrollPane.setBackground(UIColorManager.DARK_PANEL_COLOR);
+        scrollPane.getViewport().getView().setBackground(UIColorManager.DARK_PANEL_COLOR);
         scrollPane.setBorder(null);
         //this.add(label);
         int width = this.getWidth();
@@ -117,14 +114,10 @@ public class LogPanel extends VCSPanel {
 
     public void toLog(Message message){
         if(message.getSrcID().equals("HQ") || message.getSrcID().charAt(0) == 'A')
-            if (!message.getTargetID().equals(null) && (message.getTargetID().equals("HQ") || message.getTargetID().charAt(0) == 'A')){
-                messageModel.addElement(message);
+            if (message.getTargetID() != null && (message.getTargetID().equals("HQ") || message.getTargetID().charAt(0) == 'A')){
+                messageModel.insertElementAt(message, 0);
             }
-
-        //if (message.getApp().world.getEntityHashMap().get(message.getSrcID()).getSide().equals(Entity.Side.ALLY))
-
-
-        //messageList.ensureIndexIsVisible(messageModel.size() - 1); //TODO performans sorunu yaratıyor başka türlü bir autoscroll ya da üste ekleme gibi çözümler bul!!
+        //messageList.ensureIndexIsVisible(messageModel.size() - 1);
     }
 
     public void messageToLog(String message){
@@ -165,17 +158,17 @@ public class LogPanel extends VCSPanel {
 
     //TODO log a mesaj kodlarını list olarak bastır seçilen mesajın pop up ı mesaj içeriğini barındırsın
     //TODO mesajlaşma standardlarını belirle
-    public void linkMsg(Message msg){
-        if (msg.type == Message.MessageType.ATTACK_ORDER){
-
-        } else if (msg.type == Message.MessageType.MOVE_ORDER) {
-
-        } else if (msg.type == Message.MessageType.FOLLOW_ORDER) {
-
-        } else if (msg.type == Message.MessageType.ENTITY_INFO) {
-
-        } else debugLogError("Wrong Message Type!");
-    }
+//    public void linkMsg(Message msg){
+//        if (msg.type == Message.MessageType.ATTACK_ORDER){
+//
+//        } else if (msg.type == Message.MessageType.MOVE_ORDER) {
+//
+//        } else if (msg.type == Message.MessageType.FOLLOW_ORDER) {
+//
+//        } else if (msg.type == Message.MessageType.ENTITY_INFO) {
+//
+//        } else debugLogError("Wrong Message Type!");
+//    }
 
     public void showMsgDetails(Message message){
         if(message.type.equals(Message.MessageType.KNOWN_INFO)){
