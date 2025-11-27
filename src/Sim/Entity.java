@@ -230,14 +230,13 @@ public class Entity {
 
         move();
 
-        for(Component c : components.values()){
-            c.update(deltaTime);
-        }
-
         if(!isLocal) {
             localWorld.update(deltaTime);
         }
 
+        for(Component c : components.values()){
+            c.update(deltaTime);
+        }
 
         for(Component c : componentsToRemove){
             EntityEditorView editorView = w.app.editorPanel;

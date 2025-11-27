@@ -31,11 +31,16 @@ public abstract class Order {
         this.receiver = receiver;
         this.sender = sender;
         orderType = type;
+        app.actionPanel.refreshCurrentOrderPanel(receiver);
     }
 
 
     public void update() {
         actualUpdate();
+    }
+
+    protected void finish(Entity entity){
+        app.actionPanel.refreshCurrentOrderPanel(entity);
     }
 
     protected abstract void printToLog();

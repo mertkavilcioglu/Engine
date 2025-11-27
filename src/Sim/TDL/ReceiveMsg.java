@@ -35,4 +35,9 @@ public class ReceiveMsg extends Message{
     public Color getColor() {
         return UIColorManager.J0_COLOR;
     }
+
+    @Override
+    public Message copy() {
+        return null;
+    }
 }

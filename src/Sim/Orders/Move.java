@@ -29,6 +29,7 @@ public class Move extends Order{
             receiver.setSpeed(new Vec2int(0,0));
             receiver.completeCurrentOrder();
             receiver.setCurrentOrderState(true);
+            finish(receiver);
             return;
         }
         else{

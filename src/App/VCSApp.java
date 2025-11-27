@@ -164,6 +164,7 @@ public class VCSApp {
                         pixelColor.update(delta);
                         hierarchyPanel.update(delta);
                         editorPanel.update();
+                        actionPanel.update();
 
                         //world.entities.removeAll(world.entitiesToRemove);
                         for(Entity ent : world.entitiesToRemove){

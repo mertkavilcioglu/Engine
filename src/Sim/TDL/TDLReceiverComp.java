@@ -24,7 +24,7 @@ public class TDLReceiverComp extends Component {
     }
 
     public void readMessage(Message msg){
-        if(!msg.getTargetID().equals(parentEntity.getId()) && msg.type != Message.MessageType.ENTITY_INFO){
+        if(!msg.getTargetID().equals(parentEntity.getId())){
             return;
 
         }

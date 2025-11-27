@@ -124,7 +124,7 @@ public class LogPanel extends VCSPanel {
         //if (message.getApp().world.getEntityHashMap().get(message.getSrcID()).getSide().equals(Entity.Side.ALLY))
 
 
-        messageList.ensureIndexIsVisible(messageModel.size() - 1);
+        //messageList.ensureIndexIsVisible(messageModel.size() - 1); //TODO performans sorunu yaratıyor başka türlü bir autoscroll ya da üste ekleme gibi çözümler bul!!
     }
 
     public void messageToLog(String message){

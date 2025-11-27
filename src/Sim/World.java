@@ -84,23 +84,23 @@ public class World{
             if(source.hasComponent(Component.ComponentType.TRANSMITTER)){
                 transmitterRange = ((TDLTransmitterComp) source.getComponent(Component.ComponentType.TRANSMITTER)).getTransmitterRange();
             }
+            Message message = null;
 
 
-            for(Entity entity : entities){
-                if (source.getPos().distance(entity.getPos()) < transmitterRange){
-                    for (TDLReceiverComp r : regesteredReceivers){
-                        if (r.parentEntity.equals(entity)){
-                            if (!entity.getId().equals(msg.getSrcID())){
-                                if (msg.getTargetID().equals(" ")) {
-                                    msg.setTargetID(entity.getId());
-                                }
-                                r.receiveMessage2(msg);
-                            }
-                        }
+            for(TDLReceiverComp r : regesteredReceivers){
+                if (!r.parentEntity.getId().equals(msg.getSrcID())){
+                    if (source.getPos().distance(r.parentEntity.getPos()) < transmitterRange){
+                        if (msg.type.equals(Message.MessageType.ENTITY_INFO) || msg.type.equals(Message.MessageType.KNOWN_INFO) || msg.type.equals(Message.MessageType.SURVEILLANCE_MSG)){
+                            message = msg.copy();
+                            message.setTargetID(r.parentEntity.getId());
+                            r.receiveMessage2(message);
+                        } else r.receiveMessage2(msg);
                     }
                 }
             }
-            app.logPanel.toLog(msg);
+            if (message != null){
+                app.logPanel.toLog(message);
+            } else app.logPanel.toLog(msg);
         }
         toSendList.clear();
     }
@@ -181,8 +181,10 @@ public class World{
 //            ent.setReceiver(ent, entities);
 //        }
 
-        ent.addComponent(new TDLReceiverComp(ent, entities ));
-        ent.addComponent(new TDLTransmitterComp(ent, entities));
+        if(eSide == Entity.Side.ALLY){
+            ent.addComponent(new TDLReceiverComp(ent, entities ));
+            ent.addComponent(new TDLTransmitterComp(ent, entities));
+        }
 
         return ent;
     }

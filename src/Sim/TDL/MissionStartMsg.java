@@ -32,4 +32,9 @@ public class MissionStartMsg extends Message{
     public Color getColor() {
         return UIColorManager.J13_COLOR;
     }
+
+    @Override
+    public Message copy() {
+        return null;
+    }
 }
