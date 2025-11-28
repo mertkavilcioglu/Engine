@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 
 public class EntityEditorView extends VCSPanel {
     private Component.ComponentType components;
@@ -311,47 +312,75 @@ public class EntityEditorView extends VCSPanel {
             ePositionPanel.setDataX(e.getPos());
         if(!ePositionPanel.getIsFocusedY())
             ePositionPanel.setDataY(e.getPos());
-        eSpeedPanel.setData(new Vec2int());
+        eSpeedPanel.setData(new Vec2int(0,0));
         addSideBox.setSelectedIndex(0);
 
-        if(e.getComponents().isEmpty()){
+        HashMap<Component.ComponentType, Component> components = e.getComponents();
+        if(components.containsKey(Component.ComponentType.RADAR) && ((Radar) components.get(Component.ComponentType.RADAR)).getRange() != 0 ){
+            if(radarEditor == null){
+                radarEditor = new RadarEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
+                remove(addComponentButton);
+                add(radarEditor);
+                add(addComponentButton);
+                radarEditor.setData(((Radar) components.get(Component.ComponentType.RADAR)).getRange());
+            }
+            else if(!radarEditor.getIsFocused()){
+                radarEditor.setData(((Radar) components.get(Component.ComponentType.RADAR)).getRange());
+            }
+        }
+        if(components.containsKey(Component.ComponentType.TRANSMITTER)){
+            if(transmitterEditor == null){
+                transmitterEditor = new TransmitterEditor("Transmitter:", this, Component.ComponentType.TRANSMITTER, "300");
+                remove(addComponentButton);
+                add(transmitterEditor);
+                add(addComponentButton);
+                transmitterEditor.setData(((TDLTransmitterComp) components.get(Component.ComponentType.TRANSMITTER)).getTransmitterRange());
+            }
+            else if(!transmitterEditor.getIsFocused()){
+                transmitterEditor.setData(((TDLTransmitterComp) components.get(Component.ComponentType.TRANSMITTER)).getTransmitterRange());
+            }
+        }
+        if(components.containsKey(Component.ComponentType.RECEIVER)){
+            if(receiverEditor == null){
+                receiverEditor = new ReceiverEditor("Receiver:", this, Component.ComponentType.RECEIVER);
+                remove(addComponentButton);
+                add(receiverEditor);
+                add(addComponentButton);
+            }
+        }
+
+        if(!e.getComponents().containsKey(Component.ComponentType.RADAR) ||
+                e.componentsToRemove.containsKey(Component.ComponentType.RADAR)){
             if(radarEditor != null && !radarEditor.getIsFocused()){
                 remove(radarEditor);
                 radarEditor = null;
             }
-            revalidate();
         }
 
-        for(Component c : e.getComponents().values()){
-            if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
-                if(radarEditor == null){
-                    radarEditor = new RadarEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
-                    remove(addComponentButton);
-                    add(radarEditor);
-                    add(addComponentButton);
-                    radarEditor.setData(((Radar) c).getRange());
-                    revalidate();
-                }
-                else if(!radarEditor.getIsFocused()){
-                    radarEditor.setData(((Radar) c).getRange());
-                    revalidate();
-                }
-            }
-            else{
-                if(radarEditor != null && !radarEditor.getIsFocused()){
-                    remove(radarEditor);
-                    radarEditor = null;
-                }
-                revalidate();
+        if(!e.getComponents().containsKey(Component.ComponentType.TRANSMITTER) ||
+                (e.componentsToRemove.containsKey(Component.ComponentType.TRANSMITTER))){
+            if(transmitterEditor != null && !transmitterEditor.getIsFocused()){
+                remove(transmitterEditor);
+                transmitterEditor = null;
             }
         }
+
+        if(!e.getComponents().containsKey(Component.ComponentType.RECEIVER) ||
+                e.componentsToRemove.containsKey(Component.ComponentType.RECEIVER)){
+            if(receiverEditor != null){
+                remove(receiverEditor);
+                receiverEditor = null;
+            }
+        }
+
+        revalidate();
         //updateButton.setEnabled(true);
         addComponentButton.setEnabled(true);
         eNamePanel.getInputField().setEnabled(false);
         ePositionPanel.setInputEnabled(true);
         eSpeedPanel.setInputEnabled(false);
         addSideBox.setEnabled(false);
-        addTypeBox.setVisible(false);
+        addTypeBox.setVisible(true);
         addTypeBox.setEnabled(false);
     }
 
@@ -394,38 +423,72 @@ public class EntityEditorView extends VCSPanel {
                 }
             }
 
-            for(Component c : e.getComponents().values()){
-                if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
-                    if(radarEditor == null){
-                        radarEditor = new RadarEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
-                        remove(addComponentButton);
-                        add(radarEditor);
-                        add(addComponentButton);
-                        radarEditor.setData(((Radar) c).getRange());
-                    }
-                    else if(!radarEditor.getIsFocused()){
-                        radarEditor.setData(((Radar) c).getRange());
-                    }
+//            for(Component c : e.getComponents().values()){
+//                if(c instanceof Radar && ((Radar) c).getRange() != 0 ){
+//                    if(radarEditor == null){
+//                        radarEditor = new RadarEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
+//                        remove(addComponentButton);
+//                        add(radarEditor);
+//                        add(addComponentButton);
+//                        radarEditor.setData(((Radar) c).getRange());
+//                    }
+//                    else if(!radarEditor.getIsFocused()){
+//                        radarEditor.setData(((Radar) c).getRange());
+//                    }
+//                }
+//                else if(c instanceof TDLReceiverComp){
+//                    if(receiverEditor == null){
+//                        receiverEditor = new ReceiverEditor("Receiver:", this, Component.ComponentType.RECEIVER);
+//                        remove(addComponentButton);
+//                        add(receiverEditor);
+//                        add(addComponentButton);
+//                    }
+//                }
+//                else if(c instanceof TDLTransmitterComp){
+//                    if(transmitterEditor == null){
+//                        transmitterEditor = new TransmitterEditor("Transmitter:", this, Component.ComponentType.TRANSMITTER, "300");
+//                        remove(addComponentButton);
+//                        add(transmitterEditor);
+//                        add(addComponentButton);
+//                        transmitterEditor.setData(((TDLTransmitterComp) c).getTransmitterRange());
+//                    }
+//                    else if(!transmitterEditor.getIsFocused()){
+//                        transmitterEditor.setData(((TDLTransmitterComp) c).getTransmitterRange());
+//                    }
+//                }
+//            }
+
+            HashMap<Component.ComponentType, Component> components = e.getComponents();
+            if(components.containsKey(Component.ComponentType.RADAR) && ((Radar) components.get(Component.ComponentType.RADAR)).getRange() != 0 ){
+                if(radarEditor == null){
+                    radarEditor = new RadarEditor("Radar:", this, Component.ComponentType.RADAR, "5000");
+                    remove(addComponentButton);
+                    add(radarEditor);
+                    add(addComponentButton);
+                    radarEditor.setData(((Radar) components.get(Component.ComponentType.RADAR)).getRange());
                 }
-                else if(c instanceof TDLTransmitterComp){
-                    if(transmitterEditor == null){
-                        transmitterEditor = new TransmitterEditor("Transmitter:", this, Component.ComponentType.TRANSMITTER, "300");
-                        remove(addComponentButton);
-                        add(transmitterEditor);
-                        add(addComponentButton);
-                        transmitterEditor.setData(((TDLTransmitterComp) c).getTransmitterRange());
-                    }
-                    else if(!transmitterEditor.getIsFocused()){
-                        transmitterEditor.setData(((TDLTransmitterComp) c).getTransmitterRange());
-                    }
+                else if(!radarEditor.getIsFocused()){
+                    radarEditor.setData(((Radar) components.get(Component.ComponentType.RADAR)).getRange());
                 }
-                else if(c instanceof TDLReceiverComp){
-                    if(receiverEditor == null){
-                        receiverEditor = new ReceiverEditor("Receiver:", this, Component.ComponentType.RECEIVER);
-                        remove(addComponentButton);
-                        add(receiverEditor);
-                        add(addComponentButton);
-                    }
+            }
+            if(components.containsKey(Component.ComponentType.TRANSMITTER)){
+                if(transmitterEditor == null){
+                    transmitterEditor = new TransmitterEditor("Transmitter:", this, Component.ComponentType.TRANSMITTER, "300");
+                    remove(addComponentButton);
+                    add(transmitterEditor);
+                    add(addComponentButton);
+                    transmitterEditor.setData(((TDLTransmitterComp) components.get(Component.ComponentType.TRANSMITTER)).getTransmitterRange());
+                }
+                else if(!transmitterEditor.getIsFocused()){
+                    transmitterEditor.setData(((TDLTransmitterComp) components.get(Component.ComponentType.TRANSMITTER)).getTransmitterRange());
+                }
+            }
+            if(components.containsKey(Component.ComponentType.RECEIVER)){
+                if(receiverEditor == null){
+                    receiverEditor = new ReceiverEditor("Receiver:", this, Component.ComponentType.RECEIVER);
+                    remove(addComponentButton);
+                    add(receiverEditor);
+                    add(addComponentButton);
                 }
             }
 
