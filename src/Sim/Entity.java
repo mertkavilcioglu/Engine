@@ -406,6 +406,7 @@ public class Entity {
 
     public void addComponent(Component c) {
         this.components.put(c.type, c);
+        componentsToRemove.remove(c.type);
     }
 
     public void setSide(Side side){

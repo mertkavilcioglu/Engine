@@ -438,7 +438,7 @@ public class EntityEditorView extends VCSPanel {
             }
 
             if(!e.getComponents().containsKey(Component.ComponentType.TRANSMITTER) ||
-                    e.componentsToRemove.containsKey(Component.ComponentType.TRANSMITTER)){
+                    (e.componentsToRemove.containsKey(Component.ComponentType.TRANSMITTER))){
                 if(transmitterEditor != null && !transmitterEditor.getIsFocused()){
                     remove(transmitterEditor);
                     transmitterEditor = null;
@@ -526,6 +526,7 @@ public class EntityEditorView extends VCSPanel {
             int radarRange = 0;
             if(radarEditor != null){
                 radarRange = radarEditor.readData();
+                selectedEntity.componentsToRemove.remove(Component.ComponentType.RADAR);
 
                 if(!selectedEntity.hasComponent(Component.ComponentType.RADAR)){
                     selectedEntity.addComponent(new Radar(selectedEntity,
@@ -537,6 +538,7 @@ public class EntityEditorView extends VCSPanel {
             int transmitterRange = 0;
             if(transmitterEditor != null){
                 transmitterRange = transmitterEditor.readData();
+                selectedEntity.componentsToRemove.remove(Component.ComponentType.TRANSMITTER);
 
                 if(!selectedEntity.hasComponent(Component.ComponentType.TRANSMITTER)){
                     TDLTransmitterComp transmitter = new TDLTransmitterComp(selectedEntity,
@@ -552,7 +554,7 @@ public class EntityEditorView extends VCSPanel {
             }
 
             if(receiverEditor != null){
-
+                selectedEntity.componentsToRemove.remove(Component.ComponentType.RECEIVER);
                 if(!selectedEntity.hasComponent(Component.ComponentType.RECEIVER)){
                     selectedEntity.addComponent(new TDLReceiverComp(selectedEntity,
                             app.world.entities));
