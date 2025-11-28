@@ -1,8 +1,5 @@
 package Sim;
 
-import Vec.Vec2int;
-
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 public abstract class Component {
@@ -28,5 +25,7 @@ public abstract class Component {
     }
 
     public abstract void update(int deltaTime);
+
+    public abstract Component copyTo(Entity e);
 
 }

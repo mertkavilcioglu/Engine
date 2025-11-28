@@ -53,6 +53,11 @@ public class Radar extends Component {
         detect(entities);
     }
 
+    @Override
+    public Radar copyTo(Entity e) {
+        return new Radar(e, entities);
+    }
+
     public void setRange(int r){
         range = r;
     }

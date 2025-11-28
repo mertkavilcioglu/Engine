@@ -130,6 +130,11 @@ public class TDLTransmitterComp extends Component {
         }
     }
 
+    @Override
+    public TDLTransmitterComp copyTo(Entity e) {
+        return new TDLTransmitterComp(e, entities);
+    }
+
     public int getTransmitterRange(){
         return range;
     }

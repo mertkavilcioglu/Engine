@@ -77,7 +77,8 @@ public class ShortcutManager {
                 Entity clone = app.createEntity(newName, copiedEntity.getSide(), newPos, copiedEntity.getSpeed(), copiedEntity.getType());
 
                 for (Component c : copiedEntity.getComponents().values()){
-                    clone.addComponent(c);
+                    clone.addComponent(c.copyTo(clone));
+                    app.debugLog("added"+c.toString());
                 }
                 app.editorPanel.updatePanelData(clone);
                 app.editorPanel.updateSelectedEntity();
