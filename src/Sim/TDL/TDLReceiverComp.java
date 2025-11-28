@@ -24,59 +24,58 @@ public class TDLReceiverComp extends Component {
     }
 
     public void readMessage(Message msg){
-        if(!msg.getTargetID().equals(parentEntity.getId())){
+        if(!msg.getTargetID().equals(parentEntity.getId()) && !msg.type.equals(Message.MessageType.RELAY)){
             return;
-
-        }
-
-        // Or relay, if requested
-
-        switch (msg.type){
-            case ATTACK_ORDER:
-                parentEntity.addOrder(new Attack(msg.getApp(), parentEntity,
-                        msg.getApp().getHQ(), ((AttackMsg) msg).getAttackTargetID()));
-                System.out.println("read the attack message");
-                break;
-            case FOLLOW_ORDER:
-                parentEntity.addOrder(new Follow(msg.getApp(),parentEntity,
-                        msg.getApp().getHQ(), ((FollowMsg) msg).getFollowTarget(), ((FollowMsg) msg).getTime()));
-                break;
-            case MOVE_ORDER:
-                parentEntity.addOrder(new Move(msg.getApp(), parentEntity,
-                        msg.getApp().getHQ(), ((MoveMsg) msg).getPos()));
-                break;
-            case ENTITY_INFO:
-                if(!msg.getSrcID().equals(parentEntity.getId()))
-                    if (parentEntity.getSide().equals(((InfoMsg) msg).getSide()))
-                        parentEntity.getLocalWorld().readEntityInfo(msg);
-
-                break;
-            case RECEIVE_INFO:
-                msg.getApp().debugLog("Message arrived successfully.");
-                //TODO orderının receivelendiğini öğreninice nolcak bilmiyorum
-                break;
-            case ORDER_RESULT:
-                ResultMsg rm = (ResultMsg) msg;
-                if (rm.getOrderResult()){
-                    msg.getApp().debugLog("Order done!"); // TODO BB which order ?
-                    //order tamamlanmış okey
-                } else {
-                    msg.getApp().debugLog("Order not done!");
-                    //TODO order tamalanamamış, nedeni ve ne orderı olduğuna bakılıp tekrar emir verilinebilir
-                }
-                break;
-            case SURVEILLANCE_MSG:
-                //TODO with local create func create entity and add to knownentities of target
-                parentEntity.getLocalWorld().readSurveillanceInfo(msg);
-                break;
-
-            case KNOWN_INFO:
-                if(!msg.getSrcID().equals(parentEntity.getId()))
-                    if (parentEntity.getSide().equals(((KnownInfosMsg) msg).getSide())){
-                        parentEntity.getLocalWorld().readKnownInfo(msg);
+        } else if (!msg.getTargetID().equals(parentEntity.getId()) && msg.type.equals(Message.MessageType.RELAY)) {
+            ((TDLTransmitterComp) parentEntity.getComponent(ComponentType.TRANSMITTER)).createRelayMessage(msg.getApp(), parentEntity.getId(), ((RelayMsg) msg).getRealMsg());
+        } else {
+            if (msg.type.equals(Message.MessageType.RELAY)){
+                msg = ((RelayMsg) msg).getRealMsg();
+            }
+            switch (msg.type){
+                case ATTACK_ORDER:
+                    parentEntity.addOrder(new Attack(msg.getApp(), parentEntity,
+                            msg.getApp().getHQ(), ((AttackMsg) msg).getAttackTargetID()));
+                    System.out.println("read the attack message");
+                    break;
+                case FOLLOW_ORDER:
+                    parentEntity.addOrder(new Follow(msg.getApp(),parentEntity,
+                            msg.getApp().getHQ(), ((FollowMsg) msg).getFollowTarget(), ((FollowMsg) msg).getTime()));
+                    break;
+                case MOVE_ORDER:
+                    parentEntity.addOrder(new Move(msg.getApp(), parentEntity,
+                            msg.getApp().getHQ(), ((MoveMsg) msg).getPos()));
+                    break;
+                case ENTITY_INFO:
+                    if(!msg.getSrcID().equals(parentEntity.getId()))
+                        if (parentEntity.getSide().equals(((InfoMsg) msg).getSide()))
+                            parentEntity.getLocalWorld().readEntityInfo(msg);
+                    break;
+                case RECEIVE_INFO:
+                    msg.getApp().debugLog("Message arrived successfully.");
+                    //TODO orderının receivelendiğini öğreninice nolcak bilmiyorum
+                    break;
+                case ORDER_RESULT:
+                    ResultMsg rm = (ResultMsg) msg;
+                    if (rm.getOrderResult()){
+                        msg.getApp().debugLog("Order done!"); // TODO BB which order ?
+                        //order tamamlanmış okey
+                    } else {
+                        msg.getApp().debugLog("Order not done!");
+                        //TODO order tamalanamamış, nedeni ve ne orderı olduğuna bakılıp tekrar emir verilinebilir
                     }
-                break;
-
+                    break;
+                case SURVEILLANCE_MSG:
+                    //TODO with local create func create entity and add to knownentities of target
+                    parentEntity.getLocalWorld().readSurveillanceInfo(msg);
+                    break;
+                case KNOWN_INFO:
+                    if(!msg.getSrcID().equals(parentEntity.getId()))
+                        if (parentEntity.getSide().equals(((KnownInfosMsg) msg).getSide())){
+                            parentEntity.getLocalWorld().readKnownInfo(msg);
+                        }
+                    break;
+            }
         }
     }
 

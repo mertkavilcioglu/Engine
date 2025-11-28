@@ -2,6 +2,7 @@ package Sim;
 
 import App.VCSApp;
 import Sim.TDL.Message;
+import Sim.TDL.RelayMsg;
 import Sim.TDL.TDLReceiverComp;
 import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
@@ -31,50 +32,50 @@ public class World{
     public void send(Message msg) {
         toSendList.add(msg);
     }
-    public void processSendList() {
-        for (Message msg: toSendList) {
-            // check ranges from source
-            // put read q
-
-            Entity source = entityHashMap.get(msg.getSrcID());
-            int range = ((TDLTransmitterComp) source.getComponent(Component.ComponentType.TRANSMITTER)).getTransmitterRange();
-
-            if (!source.isLocal()){
-                if (!msg.getTargetID().equals(" ")){
-                    String targetID = msg.getTargetID();
-                    for(Entity e : source.w.entityHashMap.values()){
+//    public void processSendList() {
+//        for (Message msg: toSendList) {
+//            // check ranges from source
+//            // put read q
+//
+//            Entity source = entityHashMap.get(msg.getSrcID());
+//            int range = ((TDLTransmitterComp) source.getComponent(Component.ComponentType.TRANSMITTER)).getTransmitterRange();
+//
+//            if (!source.isLocal()){
+//                if (!msg.getTargetID().equals(" ")){
+//                    String targetID = msg.getTargetID();
+//                    for(Entity e : source.w.entityHashMap.values()){
 //                   if(e == source);
-//                      //continue; //BURASI EMIR ALMA MESJLARINI BOZUYOR
-                        if (e.getId().equals(targetID) && (source.getPos().distance(e.getPos()) < range) && !e.isLocal()) {
-                            app.logPanel.toLog(msg);
-                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
-                        }
-                    }
-                } else if (msg.type.equals(Message.MessageType.ENTITY_INFO)){
-                    for (Entity e : source.w.entityHashMap.values()){
-                        if ((source.getPos().distance(e.getPos()) < range) && !e.isLocal() && !e.equals(source)){
-                            if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
-                                msg.setTargetID(e.getId());
-                            } else continue;
-                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
-                        }
-                    }
-                    msg.getApp().logPanel.toLog(msg);
-                }
-                else  if (msg.type.equals(Message.MessageType.KNOWN_INFO)){
-                    for (Entity e : source.w.entityHashMap.values()){
-                        if ((source.getPos().distance(e.getPos()) < range) && !e.isLocal() && !e.equals(source)){
-                            if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
-                                msg.setTargetID(e.getId());
-                            } else continue;
-                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
-                        }
-                    }
-                    msg.getApp().logPanel.toLog(msg);
-                }
-            }
-        }
-    }
+//                      continue; //BURASI EMIR ALMA MESJLARINI BOZUYOR
+//                        if (e.getId().equals(targetID) && (source.getPos().distance(e.getPos()) < range) && !e.isLocal()) {
+//                            app.logPanel.toLog(msg);
+//                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
+//                        }
+//                    }
+//                } else if (msg.type.equals(Message.MessageType.ENTITY_INFO)){
+//                    for (Entity e : source.w.entityHashMap.values()){
+//                        if ((source.getPos().distance(e.getPos()) < range) && !e.isLocal() && !e.equals(source)){
+//                            if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
+//                                msg.setTargetID(e.getId());
+//                            } else continue;
+//                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
+//                        }
+//                    }
+//                    msg.getApp().logPanel.toLog(msg);
+//                }
+//                else  if (msg.type.equals(Message.MessageType.KNOWN_INFO)){
+//                    for (Entity e : source.w.entityHashMap.values()){
+//                        if ((source.getPos().distance(e.getPos()) < range) && !e.isLocal() && !e.equals(source)){
+//                            if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
+//                                msg.setTargetID(e.getId());
+//                            } else continue;
+//                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
+//                        }
+//                    }
+//                    msg.getApp().logPanel.toLog(msg);
+//                }
+//            }
+//        }
+//    }
 
     private ArrayList<TDLReceiverComp> regesteredReceivers = new ArrayList<>();
     public void processSendList2(){
@@ -86,15 +87,20 @@ public class World{
             }
             Message message = null;
 
-
             for(TDLReceiverComp r : regesteredReceivers){
                 if (!r.parentEntity.getId().equals(msg.getSrcID())){
-                    if (source.getPos().distance(r.parentEntity.getPos()) < transmitterRange){
-                        if (msg.type.equals(Message.MessageType.ENTITY_INFO) || msg.type.equals(Message.MessageType.KNOWN_INFO) || msg.type.equals(Message.MessageType.SURVEILLANCE_MSG)){
+                    if (msg.type.equals(Message.MessageType.ENTITY_INFO) || msg.type.equals(Message.MessageType.KNOWN_INFO) || msg.type.equals(Message.MessageType.SURVEILLANCE_MSG)){
+                        if (source.getPos().distance(r.parentEntity.getPos()) < transmitterRange){
                             message = msg.copy();
                             message.setTargetID(r.parentEntity.getId());
                             r.receiveMessage2(message);
-                        } else r.receiveMessage2(msg);
+                        }
+                    } else {
+                        if (msg.getTargetID().equals(r.parentEntity.getId())){
+                            if (source.getPos().distance(r.parentEntity.getPos()) < transmitterRange){
+                                r.receiveMessage2(msg);
+                            } else relay2(msg);
+                        }
                     }
                 }
             }
@@ -106,8 +112,52 @@ public class World{
     }
 
     public void registerReceiver(TDLReceiverComp rec){
-        // TODO: Register the all receivers in the world and use these registers for processing
         regesteredReceivers.add(rec);
+    }
+
+    public void relay2(Message msg){
+        Entity targetReceiver = entityHashMap.get(msg.getTargetID());
+        Entity temp = targetReceiver;
+        Entity src = entityHashMap.get(msg.getSrcID());
+        Entity nextRelay = targetReceiver;
+        VCSApp app = msg.getApp();
+        double posDiff = src.getPos().distance(targetReceiver.getPos());
+        boolean isInRange = true;
+        int srcTransmitterRange = ((TDLTransmitterComp) src.getComponent(Component.ComponentType.TRANSMITTER)).getTransmitterRange();
+
+        ArrayList<Entity> inRangeEntities = new ArrayList<>();
+        for (Entity entity : entities){
+            if (src.getPos().distance(entity.getPos()) < srcTransmitterRange){
+                if (src.getLocalWorld().getEntityHashMap().containsKey(entity.getId()) && entity.getSide() != Entity.Side.ENEMY)
+                    inRangeEntities.add(entity);
+            }
+        }
+
+        if(src.getLocalWorld().getEntityHashMap().containsKey(targetReceiver.getId())){
+            while(src.getPos().distance(nextRelay.getPos()) > srcTransmitterRange && !inRangeEntities.isEmpty()){
+                for(Entity e : inRangeEntities){
+                    if (e.getSide().equals(Entity.Side.ENEMY)) continue;
+                    if(e.getPos().distance(src.getPos()) < ((TDLTransmitterComp) e.getComponent(Component.ComponentType.TRANSMITTER)).getTransmitterRange()){
+                        // HAS VISUAL ON TARGET
+                        double newDiff = e.getPos().distance(nextRelay.getPos());
+                        if(newDiff < posDiff){
+                            posDiff = newDiff;
+                            temp = e;
+                        }
+                    }
+                }
+                nextRelay = temp;
+                //counter++;
+                //app.debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
+
+            }
+
+            if (msg.type.equals(Message.MessageType.RELAY)){
+                ((TDLTransmitterComp) nextRelay.getComponent(Component.ComponentType.TRANSMITTER)).createRelayMessage(app, nextRelay.getId(), ((RelayMsg) msg).getRealMsg());
+            } else  ((TDLTransmitterComp) nextRelay.getComponent(Component.ComponentType.TRANSMITTER)).createRelayMessage(app, nextRelay.getId(), msg);
+
+        }
+
     }
 
     public Entity createEntity2(String name, Entity.Side side) {
@@ -142,8 +192,7 @@ public class World{
 
         entities.add(ent);
         ent.setId("HQ");
-//        ent.setTransmitter(ent, entities);
-//        ent.setReceiver(ent, entities);
+
         entityHashMap.put(ent.getId(), ent);
         ent.addComponent(new TDLReceiverComp(ent, entities ));
         ent.addComponent(new TDLTransmitterComp(ent, entities));
@@ -170,16 +219,8 @@ public class World{
 
         ent.setId(app.idManager.createId(ent));
 
-//        ent.setTransmitter(ent, entities);
-//        ent.setReceiver(ent, entities);
-
         entities.add(ent);
         entityHashMap.put(ent.getId(), ent);
-
-//        if(!ent.isLocal){
-//            ent.setTransmitter(ent, entities);
-//            ent.setReceiver(ent, entities);
-//        }
 
         if(eSide == Entity.Side.ALLY){
             ent.addComponent(new TDLReceiverComp(ent, entities ));
@@ -190,8 +231,6 @@ public class World{
     }
 
     public void update(int deltaTime) {
-        //System.out.println("World::update - THREAD : " + Thread.currentThread().getName());
-        //System.out.println("Sim.World::update");
         for (int i = 0; i < entities.size(); i++) {
             entities.get(i).update(deltaTime);
         }

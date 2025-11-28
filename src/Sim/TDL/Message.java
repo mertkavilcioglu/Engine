@@ -10,13 +10,13 @@ import java.util.List;
 
 public abstract class Message {
 
+    private static int counter = 0;
+    private final int msgID;
     private VCSApp app;
     private String srcID, targetID; // yakıştı mı?!
     private List<String> targetIDList;
-    private int counter = 0;
     private final String msg;
     private ArrayList<String> messages;
-    private final boolean isFirstInfo = true;
     private String msg1;
     private String msg2;
 
@@ -29,7 +29,8 @@ public abstract class Message {
         ORDER_RESULT,
         SURVEILLANCE_MSG,
         MISSION_START,
-        KNOWN_INFO
+        KNOWN_INFO,
+        RELAY
     }
 
     public MessageType type;
@@ -41,6 +42,7 @@ public abstract class Message {
         this.targetID = targetID;
         this.msg1 = msg1;
         this.msg2 = msg2;
+        msgID = counter++;
 
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -63,6 +65,7 @@ public abstract class Message {
         this.targetID = other.getTargetID();
         this.msg1 = other.msg1;
         this.msg2 = other.msg2;
+        msgID = counter++;
 
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -81,6 +84,7 @@ public abstract class Message {
         this.targetIDList = receivers;
         this.msg1 = msg1;
         this.msg2 = msg2;
+        msgID = counter++;
 
 
         LocalDateTime myDateObj = LocalDateTime.now();
@@ -91,12 +95,6 @@ public abstract class Message {
         messages = new ArrayList<>();
         messages.add(msg);
         messages.add(msg2);
-
-//        if (src.getInfoMsgSendEntities().isEmpty()){
-//            isFirstInfo = true;
-//            infoToLog(isFirstInfo);
-//        }
-
     }
     public VCSApp getApp(){
         return app;
@@ -114,14 +112,6 @@ public abstract class Message {
         return targetIDList;
     }
 
-    public int getCounter(){
-        return counter;
-    }
-
-    public void setCounter(int c){
-        counter = c;
-    }
-
     public String getMsg(){
         return msg;
     }
@@ -129,18 +119,6 @@ public abstract class Message {
     public ArrayList<String> getMsg2() {
         return messages;
     }
-
-//    public void infoToLog(boolean isFirstInfo){
-//        if (isFirstInfo){
-
-// TODO:           app.logPanel.addMsgToLog(this);
-
-//            for (Entity e : receiverList){
-//                if (!src.getInfoMsgSendEntities().contains(e)) src.setInfoMsgSendEntities(e);
-//            }
-//        }
-//        isFirstInfo = false;
-//    }
 
     public abstract String getMsgDetail();
     public abstract Color getColor();
@@ -150,4 +128,8 @@ public abstract class Message {
     }
 
     public abstract Message copy();
+
+    public int getMsgID(){
+        return msgID;
+    }
 }

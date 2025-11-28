@@ -8,6 +8,7 @@ import Vec.Vec2int;
 
 import javax.print.DocFlavor;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TDLTransmitterComp extends Component {
 
@@ -16,6 +17,8 @@ public class TDLTransmitterComp extends Component {
     private int accAllInfo = 0;
     private final int ACC_ALL_INFO_TIME = 4000;
     private int range = 300;
+    private boolean isRelayCreated = false;
+    private HashMap<Integer, RelayMsg> relayMessages = new HashMap<>();
 
 
     public TDLTransmitterComp(Entity parent, ArrayList<Entity> entities) {
@@ -97,6 +100,12 @@ public class TDLTransmitterComp extends Component {
         send(missionStartMsg);
     }
 
+    public void createRelayMessage(VCSApp app, String relaySrcID, Message msg){
+        isRelayCreated = true;
+        RelayMsg relayMsg = new RelayMsg(app, relaySrcID, msg.getTargetID(), msg);
+        relayMessages.put(relayMsg.getMsgID(), relayMsg);
+    }
+
     @Override
     public void update(int deltaTime) {
         accAllInfo += deltaTime;
@@ -111,6 +120,13 @@ public class TDLTransmitterComp extends Component {
         else if(accSelfInfo >= ACC_SELF_INFO_TIME){
             createInfoMessage2(parentEntity.w.app, parentEntity);
             accSelfInfo -= ACC_SELF_INFO_TIME;
+        }
+
+        if (isRelayCreated){
+            for (int id : relayMessages.keySet()){
+                send(relayMessages.remove(id));
+            }
+            isRelayCreated = false;
         }
     }
 
