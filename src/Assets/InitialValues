@@ -7,24 +7,12 @@ HEADQUARTER
 ALLY_PLANE
 Ally
 Plane
-453,238
+502,185
 0,0
-0
-ALLY_PLANE - Copy
-Ally
+100
+ENEMY_PLANE
+Enemy
 Plane
-400,238
+602,237
 0,0
-0
-ALLY_PLANE - Copy
-Ally
-Plane
-338,239
-0,0
-0
-ALLY_PLANE - Copy
-Ally
-Plane
-265,233
-0,0
-0
+100

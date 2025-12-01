@@ -14,6 +14,7 @@ public class Attack extends Order{
     private double dist;
     private Vec2int prevSpeed;
     private Vec2int targetPos;
+    private Entity currentAttackTarget;
 
     public Attack(VCSApp app, Entity receiver, Entity sender, String  attackTargetID) {
         super(app, receiver, sender, OrderType.ATTACK);
@@ -23,12 +24,29 @@ public class Attack extends Order{
     }
 
     public void attackEntity(Entity targetEntity){
-        if(targetEntity == null )
-            return;
+        if(targetEntity == null ){
+            if(targetPos != null){
+                double prevDist = receiver.getPos().distance(targetPos);
+                if(prevDist <= 4.0){
+                    ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 404, OrderType.ATTACK);
+                    String notFoundMsg = String.format("%s not found at the last location by %s.", currentAttackTarget.getName(), receiver.getName());
+                    app.log(notFoundMsg);
+                    //TODO order bitince ya da yarım kalınca unitlere hareket belirleme
+                    receiver.setSpeed(new Vec2int(0,0));
+                    receiver.completeCurrentOrder();
+                    receiver.setCurrentOrderState(true);
+                    finish(receiver);
+                    app.mapView.setTargetPos(null);
+                }
+            }
+                return;
+        }
+        currentAttackTarget = targetEntity;
         //if (targetEntity.isDetected()){
         targetPos = receiver.getLocalWorld().getEntityHashMap().get(targetEntity.getId()).getPos();
         //}
         dist = receiver.getPos().distance(targetPos);
+        app.mapView.setTargetPos(targetPos);
         if(dist <= 4.0){
             if (receiver.getLocalWorld().getEntities().contains(targetEntity)){
                 ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.ATTACK);
