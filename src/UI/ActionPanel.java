@@ -4,6 +4,7 @@ import App.VCSApp;
 import Sim.Entity;
 import Sim.Orders.Attack;
 import Sim.Orders.Order;
+import Sim.TDL.Message;
 import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
@@ -570,7 +571,8 @@ public class ActionPanel extends VCSPanel {
                 Order o = toDelete.get(i);
                 String deleteLog = String.format("%s of %s is deleted.", o.toString(), selectedEntity.getName());
                 app.log(deleteLog);
-                if (o.toString().equals("Attack order")){
+                ((TDLTransmitterComp) app.getHQ().getComponent(Sim.Component.ComponentType.TRANSMITTER)).createMissionAbortMessage(app, app.getHQ().getId(), selectedEntity.getId(), o.orderType);
+                if (o.orderType.equals(Order.OrderType.ATTACK)){
                     Attack a = (Attack) o;
                     JButton b;
                     if (selectedEntity.getSide() == Entity.Side.ALLY){

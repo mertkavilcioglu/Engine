@@ -30,7 +30,9 @@ public abstract class Message {
         SURVEILLANCE_MSG,
         MISSION_START,
         KNOWN_INFO,
-        RELAY
+        RELAY,
+        MISSION_ABORT,
+        ACK
     }
 
     public MessageType type;

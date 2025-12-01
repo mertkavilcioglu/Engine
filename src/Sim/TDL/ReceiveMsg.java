@@ -23,7 +23,9 @@ public class ReceiveMsg extends Message{
             return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Move\n%s receive the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
         }else if (order == MessageType.FOLLOW_ORDER){
             return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Follow\n%s receive the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
-        }else return null;
+        } else if (order == MessageType.MISSION_ABORT) {
+            return String.format("Receive The Order Abort Message:\nFrom: %s\nTo: %s\n%s abort the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
+        } else return null;
     }
 
     @Override

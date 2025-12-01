@@ -106,6 +106,11 @@ public class TDLTransmitterComp extends Component {
         relayMessages.put(relayMsg.getMsgID(), relayMsg);
     }
 
+    public void createMissionAbortMessage(VCSApp app, String srcID, String targetID, Order.OrderType type){
+        MissionAbortMsg abortMsg = new MissionAbortMsg(app, srcID, targetID, type);
+        send(abortMsg);
+    }
+
     @Override
     public void update(int deltaTime) {
         accAllInfo += deltaTime;

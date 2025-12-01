@@ -75,6 +75,8 @@ public class TDLReceiverComp extends Component {
                             parentEntity.getLocalWorld().readKnownInfo(msg);
                         }
                     break;
+                case MISSION_ABORT:
+                    ((TDLTransmitterComp) parentEntity.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(msg.getApp(), parentEntity, Message.MessageType.MISSION_ABORT);
             }
         }
     }
