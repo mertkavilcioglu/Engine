@@ -50,6 +50,13 @@ public class MapView extends VCSPanel {
     private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private String screenResolution = String.format("%dx%d", gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
 
+
+    public Vec2int targetPos = null;
+
+    public void setTargetPos(Vec2int targetPos) {
+        this.targetPos = targetPos;
+    }
+
     public enum Mode {
         NORMAL,
         MOVE_POS_CAPTURE
@@ -384,6 +391,12 @@ public class MapView extends VCSPanel {
                     g.drawRect(pos.x - half, pos.y - half, targetWidthForHover, targetWidthForHover);
                     g.setColor(Color.YELLOW);
                     g.drawOval(pos.x - tdlRangeWidth/2, pos.y - tdlRangeWidth/2, tdlRangeWidth, tdlRangeWidth);
+                }
+
+                // ATTACK POINT DEBUG
+                if(targetPos != null){
+                    g.setColor(Color.GREEN);
+                    g.drawRect(targetPos.x, targetPos.y, 4,4);
                 }
             }
         }
