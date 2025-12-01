@@ -6,7 +6,7 @@ import UI.UIColorManager;
 import java.awt.*;
 
 public class MissionStartMsg extends Message{
-    private String missionType;
+    private final String missionType;
 
     public MissionStartMsg(VCSApp app, String srcID, String targetID, String msg) {
         super(MessageType.MISSION_START, app, srcID, targetID, srcID, msg);
@@ -17,14 +17,15 @@ public class MissionStartMsg extends Message{
     public String getMsgDetail() {
         String missionName;
         if (missionType.equals("J13.1")){
-            missionName = "Offensive";
+            missionName = "Attack";
         } else if (missionType.equals("J13.2")) {
             missionName = "Escort";
         }else missionName = "Move";
-        return String.format("%s Mission Start Message:\n" +
-                "Mission Perform By: %s\n" +
-                "Mission Given By: %s\n" +
-                        "Unit going to execute the order.",
+        return String.format("""
+                        %s Mission Start Message:
+                        Mission Perform By: %s
+                        Mission Given By: %s
+                        Unit going to execute the order.""",
                 missionName, getSrcID(), getTargetID());
     }
 
