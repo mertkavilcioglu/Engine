@@ -77,7 +77,7 @@ public class World{
 //        }
 //    }
 
-    private ArrayList<TDLReceiverComp> regesteredReceivers = new ArrayList<>();
+    private ArrayList<TDLReceiverComp> regesteredReceivers = new ArrayList<>(); // TODO hashmap ve unregister
     public void processSendList2(){
         for (Message msg : toSendList){
             int transmitterRange = 0;

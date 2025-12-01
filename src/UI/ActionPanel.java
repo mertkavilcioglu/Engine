@@ -14,6 +14,8 @@ import java.util.*;
 import java.util.List;
 
 public class ActionPanel extends VCSPanel {
+    //left panel
+    JPanel giveOrderPanel;
     private JButton attackButton;
     private JButton moveButton;
     private JButton followButton;
@@ -75,7 +77,7 @@ public class ActionPanel extends VCSPanel {
         mergePanel.setBackground(panelBgColor);
 
         //left panel
-        JPanel giveOrderPanel = new JPanel(new GridLayout(3, 1, 0, 20));
+        giveOrderPanel = new JPanel(new GridLayout(3, 1, 0, 20));
         giveOrderPanel.setBackground(panelBgColor);
 
         attackButton = new JButton("Attack");
@@ -539,6 +541,8 @@ public class ActionPanel extends VCSPanel {
         attackButton.setEnabled(state);
         moveButton.setEnabled(state);
         followButton.setEnabled(state);
+        giveOrderPanel.revalidate();
+        giveOrderPanel.repaint();
     }
 
     private void updateDeleteButtonState(){
@@ -609,6 +613,8 @@ public class ActionPanel extends VCSPanel {
     public void updateOrderMode(Entity selectedEntity){
         updateOrderButtonsState((selectedEntity.getType() != Entity.Type.HQ) && ((selectedEntity.getSide() == Entity.Side.ENEMY) ||
                 app.getHQ().getLocalWorld().getEntityHashMap().containsKey(selectedEntity.getId())));
+        revalidate();
+        repaint();
     }
 
     @Override
@@ -618,6 +624,7 @@ public class ActionPanel extends VCSPanel {
 
     public void update() {
         if (selectedEntity != null) {
+            updateOrderMode(selectedEntity);
             if (!selectedEntity.getOrders().isEmpty()) {
                 if (currentOrderList.isSelectionEmpty()) {
                     refreshCurrentOrderPanel(selectedEntity);
