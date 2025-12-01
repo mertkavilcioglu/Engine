@@ -57,10 +57,10 @@ public class TDLReceiverComp extends Component {
                     break;
                 case ORDER_RESULT:
                     ResultMsg rm = (ResultMsg) msg;
-                    if (rm.getOrderResult()){
+                    if (rm.getOrderResult() == 0){
                         msg.getApp().debugLog("Order done!"); // TODO BB which order ?
                         //order tamamlanmış okey
-                    } else {
+                    } else{
                         msg.getApp().debugLog("Order not done!");
                         //TODO order tamalanamamış, nedeni ve ne orderı olduğuna bakılıp tekrar emir verilinebilir
                     }

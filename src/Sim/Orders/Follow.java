@@ -66,13 +66,13 @@ public class Follow extends Order{
         }
         else if (followTime == numOfUpdate){
             if(dist <= 3.0){
-                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, true, OrderType.FOLLOW);
+                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.FOLLOW);
                 String reachString = String.format("%s has reached the target.", receiver.getName());
                 app.log(reachString);
                 receiver.setSpeed(new Vec2int(0,0));
             }
             else{
-                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, false, OrderType.FOLLOW);
+                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 408, OrderType.FOLLOW);
                 String timeOutString = String.format("%s stopped following the target %s because time was out.", receiver.getName(), target.getName());
                 app.log(timeOutString);
             }

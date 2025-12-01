@@ -31,12 +31,12 @@ public class Attack extends Order{
         dist = receiver.getPos().distance(targetPos);
         if(dist <= 4.0){
             if (receiver.getLocalWorld().getEntities().contains(targetEntity)){
-                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, true, OrderType.ATTACK);
+                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.ATTACK);
                 String msgDestroy = String.format("%s destroy the target %s,", receiver.getName(), targetEntity.getName());
                 app.log(msgDestroy);
                 destroy(targetEntity);
             } else {
-                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, false, OrderType.ATTACK);
+                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 404, OrderType.ATTACK);
                 String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), receiver.getName());
                 app.log(notFoundMsg);
                 //TODO order bitince ya da yarım kalınca unitlere hareket belirleme

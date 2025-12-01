@@ -24,7 +24,7 @@ public class Move extends Order{
             return;
         double dist = receiver.getPos().distance(destination);
         if(dist <= 2.0){
-            ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, true, OrderType.MOVE);
+            ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.MOVE);
             app.log(receiver.getName() + " reached the target.");
             receiver.setSpeed(new Vec2int(0,0));
             receiver.completeCurrentOrder();
