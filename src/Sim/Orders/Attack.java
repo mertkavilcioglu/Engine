@@ -28,9 +28,10 @@ public class Attack extends Order{
             if(targetPos != null){
                 double prevDist = receiver.getPos().distance(targetPos);
                 if(prevDist <= 4.0){
-                    ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, false, OrderType.ATTACK);
+                    ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 404, OrderType.ATTACK);
                     String notFoundMsg = String.format("%s not found at the last location by %s.", currentAttackTarget.getName(), receiver.getName());
                     app.log(notFoundMsg);
+                    //TODO order bitince ya da yarım kalınca unitlere hareket belirleme
                     receiver.setSpeed(new Vec2int(0,0));
                     receiver.completeCurrentOrder();
                     receiver.setCurrentOrderState(true);
