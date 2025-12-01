@@ -81,8 +81,8 @@ public class TDLTransmitterComp extends Component {
 
     }
 
-    public void createResultMessage2(VCSApp app, Entity source, boolean isDone, Order.OrderType type){
-        ResultMsg resultMsg = new ResultMsg(app, source, app.getHQ(), isDone, type);
+    public void createResultMessage2(VCSApp app, Entity source, int finishStat, Order.OrderType type){
+        ResultMsg resultMsg = new ResultMsg(app, source, app.getHQ(), finishStat, type);
         //resultMsg.setCounter(calculateRangeCounter(resultMsg));
         //messagesToSend.add(resultMsg);
         send(resultMsg);
