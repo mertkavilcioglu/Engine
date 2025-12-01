@@ -88,4 +88,9 @@ public class TDLReceiverComp extends Component {
         }
     }
 
+    @Override
+    public TDLReceiverComp copyTo(Entity e) {
+        return new TDLReceiverComp(e, entities);
+    }
+
 }
