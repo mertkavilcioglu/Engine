@@ -15,7 +15,6 @@ public class Move extends Order{
     public Move(VCSApp app, Entity receiver, Entity sender, Vec2int coordinates) {
         super(app, receiver, sender, OrderType.MOVE);
         this.destination = coordinates;
-        ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(app, receiver, Message.MessageType.MOVE_ORDER);
     }
 
 

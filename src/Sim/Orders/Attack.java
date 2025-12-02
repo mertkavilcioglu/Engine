@@ -19,7 +19,6 @@ public class Attack extends Order{
     public Attack(VCSApp app, Entity receiver, Entity sender, String  attackTargetID) {
         super(app, receiver, sender, OrderType.ATTACK);
         this.attackTargetID = attackTargetID;
-        ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(app, receiver, Message.MessageType.ATTACK_ORDER);
         //attackEntity(target);
     }
 

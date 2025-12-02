@@ -18,7 +18,6 @@ public class Follow extends Order{
         super(app, receiver, sender, OrderType.FOLLOW);
         this.targetEntity = target;
         this.followTime = time;
-        ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(app, receiver, Message.MessageType.FOLLOW_ORDER);
         if (followTime == 0){
             String msgNotStarted = String.format("%s's follow order not started due to time problems.", this.receiver.getName());
             app.log(msgNotStarted);

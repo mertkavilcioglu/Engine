@@ -37,19 +37,23 @@ public class TDLReceiverComp extends Component {
                     parentEntity.addOrder(new Attack(msg.getApp(), parentEntity,
                             msg.getApp().getHQ(), ((AttackMsg) msg).getAttackTargetID()));
                     System.out.println("read the attack message");
+                    ((TDLTransmitterComp) parentEntity.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(msg.getApp(), parentEntity, Message.MessageType.ATTACK_ORDER);
                     break;
                 case FOLLOW_ORDER:
                     parentEntity.addOrder(new Follow(msg.getApp(),parentEntity,
                             msg.getApp().getHQ(), ((FollowMsg) msg).getFollowTarget(), ((FollowMsg) msg).getTime()));
+                    ((TDLTransmitterComp) parentEntity.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(msg.getApp(), parentEntity, Message.MessageType.FOLLOW_ORDER);
                     break;
                 case MOVE_ORDER:
                     parentEntity.addOrder(new Move(msg.getApp(), parentEntity,
                             msg.getApp().getHQ(), ((MoveMsg) msg).getPos()));
+                    ((TDLTransmitterComp) parentEntity.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(msg.getApp(), parentEntity, Message.MessageType.MOVE_ORDER);
                     break;
                 case ENTITY_INFO:
                     if(!msg.getSrcID().equals(parentEntity.getId()))
                         if (parentEntity.getSide().equals(((InfoMsg) msg).getSide()))
                             parentEntity.getLocalWorld().readEntityInfo(msg);
+                    ((TDLTransmitterComp) parentEntity.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(msg.getApp(), parentEntity, Message.MessageType.ENTITY_INFO);
                     break;
                 case RECEIVE_INFO:
                     msg.getApp().debugLog("Message arrived successfully.");
@@ -68,11 +72,14 @@ public class TDLReceiverComp extends Component {
                 case SURVEILLANCE_MSG:
                     //TODO with local create func create entity and add to knownentities of target
                     parentEntity.getLocalWorld().readSurveillanceInfo(msg);
+                    ((TDLTransmitterComp) parentEntity.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(msg.getApp(), parentEntity, Message.MessageType.SURVEILLANCE_MSG);
                     break;
                 case KNOWN_INFO:
                     if(!msg.getSrcID().equals(parentEntity.getId()))
                         if (parentEntity.getSide().equals(((KnownInfosMsg) msg).getSide())){
                             parentEntity.getLocalWorld().readKnownInfo(msg);
+                            ((TDLTransmitterComp) parentEntity.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(msg.getApp(), parentEntity, Message.MessageType.KNOWN_INFO);
+
                         }
                     break;
                 case MISSION_ABORT:

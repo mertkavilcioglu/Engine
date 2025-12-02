@@ -31,8 +31,7 @@ public abstract class Message {
         MISSION_START,
         KNOWN_INFO,
         RELAY,
-        MISSION_ABORT,
-        ACK
+        MISSION_ABORT
     }
 
     public MessageType type;

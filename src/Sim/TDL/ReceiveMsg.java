@@ -7,24 +7,48 @@ import UI.UIColorManager;
 import java.awt.*;
 
 public class ReceiveMsg extends Message{
-    private final MessageType order;
+    private final MessageType msgType;
 
-    public ReceiveMsg(VCSApp app, Entity src, Entity receiver, MessageType orderType) {
-        super(MessageType.RECEIVE_INFO, app, src.getId(), receiver.getId(), src.getId(), "J1.0");
-        //super.setMsg("J1.0");
-        this.order = orderType;
+    public ReceiveMsg(VCSApp app, Entity src, Entity receiver, MessageType msgType) {
+        super(MessageType.RECEIVE_INFO, app, src.getId(), receiver.getId(), src.getId(), "J0.1");
+        this.msgType = msgType;
     }
 
     public String receiveDetail(){
-        if (order == MessageType.ATTACK_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Attack\n%s receive the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
-        } else if (order == MessageType.MOVE_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Move\n%s receive the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
-        }else if (order == MessageType.FOLLOW_ORDER){
-            return String.format("Receive The Order Message:\nFrom: %s\nTo: %s\nOrder Type: Follow\n%s receive the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
-        } else if (order == MessageType.MISSION_ABORT) {
-            return String.format("Receive The Order Abort Message:\nFrom: %s\nTo: %s\n%s abort the order from %s.", getSrcID(), getTargetID(), getSrcID(), getTargetID());
-        } else return null;
+        String detailMsg;
+        switch (msgType){
+            case ATTACK_ORDER:
+                detailMsg = String.format("Acknowledgment Message:\nFrom: %s\nTo: %s\nReceived Message Type: Attack Order\n", getSrcID(), getTargetID());
+                break;
+            case MOVE_ORDER:
+                detailMsg = String.format("Acknowledgment Message:\nFrom: %s\nTo: %s\nReceived Message Type: Move Order\n", getSrcID(), getTargetID());
+                break;
+            case FOLLOW_ORDER:
+                detailMsg = String.format("Acknowledgment Message:\nFrom: %s\nTo: %s\nReceived Message Type: Follow Order\n", getSrcID(), getTargetID());
+                break;
+            case MISSION_ABORT:
+                detailMsg = String.format("Acknowledgment Message:\nFrom: %s\nTo: %s\nReceived Message Type: Mission Abort\n", getSrcID(), getTargetID());
+                break;
+            case ENTITY_INFO:
+                detailMsg = String.format("Acknowledgment Message:\nFrom: %s\nTo: %s\nReceived Message Type: Entity Info", getSrcID(), getTargetID());
+                break;
+            case KNOWN_INFO:
+                detailMsg = String.format("Acknowledgment Message:\nFrom: %s\nTo: %s\nReceived Message Type: Info of Known", getSrcID(), getTargetID());
+                break;
+            case SURVEILLANCE_MSG:
+                detailMsg = String.format("Acknowledgment Message:\nFrom: %s\nTo: %s\nReceived Message Type: Surveillance", getSrcID(), getTargetID());
+                break;
+            case RELAY:
+                detailMsg = String.format("Acknowledgment Message:\nFrom: %s\nTo: %s\nReceived Message Type: Relay", getSrcID(), getTargetID());
+                break;
+            default:
+                detailMsg = String.format("Acknowledgment Message:\nFrom: %s\nTo: %s\nReceived Message Type: Invalid", getSrcID(), getTargetID());
+        }
+        return detailMsg;
+    }
+
+    public MessageType getMsgType(){
+        return msgType;
     }
 
     @Override
