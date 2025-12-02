@@ -7,8 +7,7 @@ import UI.UIColorManager;
 import java.awt.*;
 
 public class ReceiveMsg extends Message{
-//TODO içini doldur
-    private MessageType order;
+    private final MessageType order;
 
     public ReceiveMsg(VCSApp app, Entity src, Entity receiver, MessageType orderType) {
         super(MessageType.RECEIVE_INFO, app, src.getId(), receiver.getId(), src.getId(), "J1.0");

@@ -3,7 +3,6 @@ package Sim.TDL;
 import App.VCSApp;
 import Sim.Entity;
 import UI.UIColorManager;
-import Vec.Vec2int;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,10 +12,10 @@ import java.util.ArrayList;
 
 public class KnownInfosMsg extends Message{
 
-    private  ArrayList<Entity> knownEntities;
-    private Entity.Side side;
+    private final ArrayList<Entity> knownEntities;
+    private final Entity.Side side;
 
-    public KnownInfosMsg(VCSApp app, Entity.Side side, String srcID, String targetID, String srcName, ArrayList<Entity> knownEntities) {
+    public KnownInfosMsg(VCSApp app, Entity.Side side, String srcID, String targetID, ArrayList<Entity> knownEntities) {
         super(MessageType.KNOWN_INFO, app, srcID, targetID, srcID, "J2.0");
         this.knownEntities = knownEntities;
         this.side = side;
@@ -34,12 +33,13 @@ public class KnownInfosMsg extends Message{
 
         for(Entity e : knownEntities){
             String newInfo = String.format(
-                    "::::::::::UNIT INFO::::::::::\n" +
-                            "Unit Name: %s\n" +
-                            "Unit ID: %s\n" +
-                            "Unit Type: %s\n" +
-                            "Unit Position: %s\n" +
-                            "Unit Speed: %s\n\n",
+                    """
+                            ::::::::::UNIT INFO::::::::::
+                            Unit Name: %s
+                            Unit ID: %s
+                            Unit Type: %s
+                            Unit Position: %s
+                            Unit Speed: %s""",
                     e.getName(), e.getId(), e.getType().getName(), e.getPos().toString(), e.getSpeed().toString());
             result = String.format("%s%s", result, newInfo);
         }

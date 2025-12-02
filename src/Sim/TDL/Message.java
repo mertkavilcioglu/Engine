@@ -79,25 +79,6 @@ public abstract class Message {
         messages.add(msg2);
     }
 
-    public Message(MessageType type, VCSApp app, String  srcID, List<String> receivers, String msg1, String msg2){
-        this.type = type;
-        this.app = app;
-        this.srcID = srcID;
-        this.targetIDList = receivers;
-        this.msg1 = msg1;
-        this.msg2 = msg2;
-        msgID = counter++;
-
-
-        LocalDateTime myDateObj = LocalDateTime.now();
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String formattedDate = myDateObj.format(myFormatObj);
-        this.msg = String.format("[%s] %s:",formattedDate, msg1);
-
-        messages = new ArrayList<>();
-        messages.add(msg);
-        messages.add(msg2);
-    }
     public VCSApp getApp(){
         return app;
     }
@@ -108,10 +89,6 @@ public abstract class Message {
 
     public String getTargetID(){
         return targetID;
-    }
-
-    public List<String> getTargetIDList(){
-        return targetIDList;
     }
 
     public String getMsg(){

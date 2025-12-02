@@ -13,7 +13,6 @@ public class InfoMsg extends Message{
     private Entity.Side side;
     private Vec2int pos;
     private Vec2int speed;
-    private int radarRange;
     private Entity.Type type;
 
     public InfoMsg(VCSApp app, String srcID, String targetID, String srcName, Entity.Side srcSide, Vec2int srcPos, Vec2int srcSpeed, Entity.Type srcType) {
@@ -38,12 +37,13 @@ public class InfoMsg extends Message{
     @Override
     public String getMsgDetail() {
         return String.format(
-                "Precise Participant Location and Identification (PPLI):\n" +
-                        "Unit Name: %s\n" +
-                        "Unit ID: %s\n" +
-                        "Unit Type: %s\n" +
-                        "Unit Position: %s\n" +
-                        "Unit Speed: %s",
+                """
+                        Precise Participant Location and Identification (PPLI):
+                        Unit Name: %s
+                        Unit ID: %s
+                        Unit Type: %s
+                        Unit Position: %s
+                        Unit Speed: %s""",
                 name, getSrcID(), type.getName(), pos.toString(), speed.toString());
     }
 

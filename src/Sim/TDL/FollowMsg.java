@@ -7,8 +7,8 @@ import UI.UIColorManager;
 import java.awt.*;
 
 public class FollowMsg extends Message{
-    private Entity followTarget;
-    private int time;
+    private final Entity followTarget;
+    private final int time;
 
     public FollowMsg(VCSApp app, Entity src, Entity receiver, Entity followTarget, int time) {
         super(MessageType.FOLLOW_ORDER, app, src.getId(), receiver.getId(), src.getId(), "J12.2");

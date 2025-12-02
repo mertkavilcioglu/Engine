@@ -6,7 +6,7 @@ import UI.UIColorManager;
 import java.awt.*;
 
 public class RelayMsg extends Message{
-    private Message realMsg;
+    private final Message realMsg;
 
     public RelayMsg(VCSApp app, String relaySrcID, String relayTargetID, Message msg) {
         super(MessageType.RELAY, app, relaySrcID, relayTargetID, relaySrcID, "J0.5");

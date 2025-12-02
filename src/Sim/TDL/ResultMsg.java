@@ -8,7 +8,7 @@ import UI.UIColorManager;
 import java.awt.*;
 
 public class ResultMsg extends Message{
-    private int finishStat; // 0 for success, 404 for attack target not found, 408 for follow time out
+    private final int finishStat; // 0 for success, 404 for attack target not found, 408 for follow time out
     Order.OrderType orderType;
 
     public ResultMsg(VCSApp app, Entity src, Entity receiver, int finishStat, Order.OrderType orderType) {

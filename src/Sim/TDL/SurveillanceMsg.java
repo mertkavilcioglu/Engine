@@ -41,10 +41,6 @@ public class SurveillanceMsg extends Message{
         this.targetID = other.getTargetID();
     }
 
-    private String getSrcName(){
-        return src.getName();
-    }
-
     public String getHostileID(){
         return hostileID;
     }
@@ -72,13 +68,14 @@ public class SurveillanceMsg extends Message{
     @Override
     public String getMsgDetail() {
         return String.format(
-                "Surveillance Message:\n" +
-                        "From: %s\n" +
-                        "Hostile's Informations:\n" +
-                        "Entity: %s\n" +
-                        "Type: %s\n" +
-                        "Position: %s\n" +
-                        "Speed: %s\n",
+                """
+                        Surveillance Message:
+                        From: %s
+                        Hostile's Information:
+                        Entity: %s
+                        Type: %s
+                        Position: %s
+                        Speed: %s""",
                 src.getId(), hostileID, hostileType.getName(),
                 hostilePos.toString(), hostileSpeed.toString()
         );

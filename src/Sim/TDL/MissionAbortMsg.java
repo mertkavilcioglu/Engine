@@ -6,7 +6,7 @@ import Sim.Orders.Order;
 import java.awt.*;
 
 public class MissionAbortMsg extends Message{
-    private Order.OrderType orderType;
+    private final Order.OrderType orderType;
 
     public MissionAbortMsg(VCSApp app, String srcID, String targetID, Order.OrderType orderType) {
         super(MessageType.MISSION_ABORT, app, srcID, targetID, srcID, "J12.0");

@@ -8,8 +8,7 @@ import Vec.Vec2int;
 import java.awt.*;
 
 public class MoveMsg extends Message{
-
-    private Vec2int pos;
+    private final Vec2int pos;
 
     public MoveMsg(VCSApp app, Entity src, Entity receiver, Vec2int pos) {
         super(MessageType.MOVE_ORDER, app, src.getId(), receiver.getId(), src.getId(), "J12.3");

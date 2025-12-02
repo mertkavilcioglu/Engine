@@ -1,14 +1,13 @@
 package Sim.TDL;
 
 import App.VCSApp;
-import Sim.Entity;
 import UI.UIColorManager;
 
 import java.awt.*;
 
 public class AttackMsg extends Message {
 
-    private String attackTargetID;
+    private final String attackTargetID;
     //private String attackCode = "J12.1";
 
     public AttackMsg(VCSApp app, String srcID, String receiverID, String attackTargetID) {

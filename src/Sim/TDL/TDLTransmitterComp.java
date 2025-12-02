@@ -6,7 +6,6 @@ import Sim.Entity;
 import Sim.Orders.Order;
 import Vec.Vec2int;
 
-import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -67,7 +66,7 @@ public class TDLTransmitterComp extends Component {
         String targetID = " ";
         ArrayList<Entity> selfIncludedList = (ArrayList<Entity>) knownEntities.clone();
         selfIncludedList.addFirst(parentEntity);
-        KnownInfosMsg knownInfoMsg = new KnownInfosMsg(app, src.getSide(), src.getId(), targetID, src.getName(), selfIncludedList);
+        KnownInfosMsg knownInfoMsg = new KnownInfosMsg(app, src.getSide(), src.getId(), targetID, selfIncludedList);
         //messagesToSend.add(infoMsg);
         send(knownInfoMsg);
     }
