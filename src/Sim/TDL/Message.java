@@ -34,6 +34,29 @@ public abstract class Message {
         MISSION_ABORT
     }
 
+    public enum MessageClass{
+        ALL("ALL"),
+        J0("J0"), // Relay
+        J1("J1"), // Message received (or ack)
+        J2("J2"), // PPLI
+        J3("J3"), // Surveillance
+        J4("J4"), //
+        J12("J12"), // Attack, Follow, Move, Abort
+        J13("J13"), // Mission Start, Result
+        ;
+        private String code;
+
+        MessageClass(String code){
+            this.code = code;
+        }
+        public String getCode(){
+            return code;
+        }
+
+    }
+
+
+
     public MessageType type;
 
     public Message(MessageType type, VCSApp app, String srcID, String targetID, String msg1, String msg2){
