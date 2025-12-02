@@ -32,52 +32,8 @@ public class World{
     public void send(Message msg) {
         toSendList.add(msg);
     }
-//    public void processSendList() {
-//        for (Message msg: toSendList) {
-//            // check ranges from source
-//            // put read q
-//
-//            Entity source = entityHashMap.get(msg.getSrcID());
-//            int range = ((TDLTransmitterComp) source.getComponent(Component.ComponentType.TRANSMITTER)).getTransmitterRange();
-//
-//            if (!source.isLocal()){
-//                if (!msg.getTargetID().equals(" ")){
-//                    String targetID = msg.getTargetID();
-//                    for(Entity e : source.w.entityHashMap.values()){
-//                   if(e == source);
-//                      continue; //BURASI EMIR ALMA MESJLARINI BOZUYOR
-//                        if (e.getId().equals(targetID) && (source.getPos().distance(e.getPos()) < range) && !e.isLocal()) {
-//                            app.logPanel.toLog(msg);
-//                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
-//                        }
-//                    }
-//                } else if (msg.type.equals(Message.MessageType.ENTITY_INFO)){
-//                    for (Entity e : source.w.entityHashMap.values()){
-//                        if ((source.getPos().distance(e.getPos()) < range) && !e.isLocal() && !e.equals(source)){
-//                            if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
-//                                msg.setTargetID(e.getId());
-//                            } else continue;
-//                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
-//                        }
-//                    }
-//                    msg.getApp().logPanel.toLog(msg);
-//                }
-//                else  if (msg.type.equals(Message.MessageType.KNOWN_INFO)){
-//                    for (Entity e : source.w.entityHashMap.values()){
-//                        if ((source.getPos().distance(e.getPos()) < range) && !e.isLocal() && !e.equals(source)){
-//                            if (!source.getId().equals(e.getId()) && ((source.getId().equals("HQ") || source.getId().charAt(0) == 'A') && (e.getId().equals("HQ") || e.getId().charAt(0) == 'A'))) {
-//                                msg.setTargetID(e.getId());
-//                            } else continue;
-//                            ((TDLReceiverComp) e.getComponent(Component.ComponentType.RECEIVER)).receiveMessage2(msg);
-//                        }
-//                    }
-//                    msg.getApp().logPanel.toLog(msg);
-//                }
-//            }
-//        }
-//    }
 
-    private ArrayList<TDLReceiverComp> regesteredReceivers = new ArrayList<>(); // TODO hashmap ve unregister
+    private HashMap<TDLReceiverComp, Entity> regesteredReceivers = new HashMap<>(); // TODO hashmap ve unregister
     public void processSendList2(){
         for (Message msg : toSendList){
             int transmitterRange = 0;
@@ -87,7 +43,7 @@ public class World{
             }
             Message message = null;
 
-            for(TDLReceiverComp r : regesteredReceivers){
+            for(TDLReceiverComp r : regesteredReceivers.keySet()){
                 if (!r.parentEntity.getId().equals(msg.getSrcID())){
                     if (msg.type.equals(Message.MessageType.ENTITY_INFO) || msg.type.equals(Message.MessageType.KNOWN_INFO) || msg.type.equals(Message.MessageType.SURVEILLANCE_MSG)){
                         if (source.getPos().distance(r.parentEntity.getPos()) < transmitterRange){
@@ -111,8 +67,12 @@ public class World{
         toSendList.clear();
     }
 
-    public void registerReceiver(TDLReceiverComp rec){
-        regesteredReceivers.add(rec);
+    public void registerReceiver(TDLReceiverComp rec, Entity owner){
+        regesteredReceivers.put(rec, owner);
+    }
+
+    public void unregisterReceiver(TDLReceiverComp rec){
+        regesteredReceivers.remove(rec);
     }
 
     public void relay2(Message msg){

@@ -16,7 +16,7 @@ public class TDLReceiverComp extends Component {
 
     public TDLReceiverComp(Entity parent, ArrayList<Entity> entities) {
         super(parent, entities, ComponentType.RECEIVER);
-        parent.w.registerReceiver(this);
+        parent.w.registerReceiver(this, parentEntity);
     }
 
     public void receiveMessage2(Message msg){

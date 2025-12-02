@@ -4,6 +4,7 @@ import Sim.*;
 import Sim.Component;
 import Sim.Managers.IDManager;
 import Sim.Managers.ShortcutManager;
+import Sim.TDL.TDLReceiverComp;
 import UI.*;
 import Vec.Vec2int;
 
@@ -169,6 +170,7 @@ public class VCSApp {
                         //world.entities.removeAll(world.entitiesToRemove);
                         for(Entity ent : world.entitiesToRemove){
                             world.entityHashMap.get(ent.getId()).setActive(false);
+                            world.unregisterReceiver(((TDLReceiverComp) ent.getComponent(Component.ComponentType.RECEIVER)));
                         }
                         world.entitiesToRemove.clear();
                         renderToWindow();
