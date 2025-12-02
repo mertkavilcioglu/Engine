@@ -171,8 +171,9 @@ public class Entity {
     }
 
     public void completeCurrentOrder(){
-        orders.poll();
+        Order doneOrder = orders.poll();
         currentOrder = orders.peek();
+        w.app.actionPanel.enableTargetButtonState(this, doneOrder);
     }
 
     public Vec2int nextStep(Vec2int pos, Vec2int nextPos){

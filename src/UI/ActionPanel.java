@@ -573,18 +573,22 @@ public class ActionPanel extends VCSPanel {
                 app.log(deleteLog);
                 ((TDLTransmitterComp) app.getHQ().getComponent(Sim.Component.ComponentType.TRANSMITTER)).createMissionAbortMessage(app, app.getHQ().getId(), selectedEntity.getId(), o.orderType);
                 if (o.orderType.equals(Order.OrderType.ATTACK)){
-                    Attack a = (Attack) o;
-                    JButton b;
-                    if (selectedEntity.getSide() == Entity.Side.ALLY){
-                        b = enemyButtons.get(a.getAttackTargetID());
-                    } else {
-                        b = allyButtons.get(a.getAttackTargetID());
-                    }
-                    b.setEnabled(true);
+                    enableTargetButtonState(selectedEntity, o);
                 }
         }
         selectedEntity.removeOrder((ArrayList<Order>) toDelete);
         refreshCurrentOrderPanel(selectedEntity);
+    }
+
+    public void enableTargetButtonState(Entity entity, Order order){
+        JButton button;
+        Attack attackOrder = (Attack) order;
+        if (entity.getSide() == Entity.Side.ALLY){
+            button = enemyButtons.get(attackOrder.getAttackTargetID());
+        } else {
+            button = allyButtons.get(attackOrder.getAttackTargetID());
+        }
+        button.setEnabled(true);
     }
 
     public void setIfPaused(boolean isPaused){
