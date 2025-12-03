@@ -21,13 +21,12 @@ import java.util.HashMap;
 
 public class LogPanel extends VCSPanel {
     private JTextPane logArea;
-    private final DefaultListModel<Message> messageModelAll;
-    private final JList<Message> messageList;
+
     private Border defaultBorder;
     private HashMap<Message.MessageClass, JButton> filterButtons = new HashMap<>();
-    private HashMap<Message.MessageClass, JScrollPane> filteredLists = new HashMap<>();
+    private HashMap<Message.MessageClass, JScrollPane> filteredListScrollPanes = new HashMap<>();
     private JPanel filteredLogPanel = new JPanel();
-    private JScrollPane currentList = null;
+    private JScrollPane currentListScroll = null;
     //TODO: selected filter paneli ekle globale, select filter fonksiyonu ekle
     // parametre olarak msg class alsın, filtreler hashmapi ekle ve gelen parametreye göre
     // gösterilen filtred paneli güncelle
@@ -58,9 +57,12 @@ public class LogPanel extends VCSPanel {
         logArea.setBackground(UIColorManager.DARK_PANEL_COLOR);
         int width = this.getWidth();
 
-        {
-            messageModelAll = new DefaultListModel<>();
-            messageList = new JList<>(messageModelAll);
+        for(Message.MessageClass m : Message.MessageClass.values()){ //TODO: FOR DÖNGÜSÜ *******************************************************
+            DefaultListModel<Message> messageModel;
+            JList<Message> messageList;
+            //TODO:*****EKSİK KALDI Bİ GÖZ AT
+            messageModel = new DefaultListModel<>();
+            messageList = new JList<>(messageModel);
             messageList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             messageList.setCellRenderer(new DefaultListCellRenderer() {
                 @Override
@@ -103,8 +105,9 @@ public class LogPanel extends VCSPanel {
             scrollListAll.getViewport().getView().setBackground(UIColorManager.DARK_PANEL_COLOR);
             scrollListAll.setBorder(null);
             scrollListAll.setPreferredSize(new Dimension(width / 2, getHeight()));
-            filteredLists.put(Message.MessageClass.ALL, scrollListAll);
-            currentList = scrollListAll;
+
+            filteredListScrollPanes.put(m, scrollListAll);
+            currentListScroll = scrollListAll;
         }
 
         JScrollPane debugPanel = new JScrollPane(logArea);
@@ -125,7 +128,7 @@ public class LogPanel extends VCSPanel {
         filterButtonsPanel.setLayout(new GridLayout(Message.MessageClass.values().length, 1));
 
         for(Message.MessageClass mc : Message.MessageClass.values()){
-            JButton button = new JButton(mc.getCode());
+            JButton button = new JButton(mc.getMessageClass());
             button.setBackground(UIColorManager.BUTTON_COLOR);
             defaultBorder = button.getBorder();
             filterButtons.put(mc, button);
@@ -134,6 +137,7 @@ public class LogPanel extends VCSPanel {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     selectedButtonVisual(button);
+                    selectFilter(mc);
                 }
             });
             filterButtonsPanel.add(button);
@@ -151,18 +155,21 @@ public class LogPanel extends VCSPanel {
 
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, filteredLogPanel, filterButtonsPanel);
-        splitPane.setResizeWeight(1);
+        splitPane.setResizeWeight(0.99);
         splitPane.setDividerSize(0);
         splitPane.setBorder(logTitledBorder);
         splitPane.setBackground(UIColorManager.DARK_PANEL_COLOR);
         messagePanel.add(splitPane, BorderLayout.CENTER);
+
+        selectedButtonVisual(filterButtons.get(Message.MessageClass.ALL));
     }
 
     private void selectFilter(Message.MessageClass messageClass) {
-        if(currentList != null){
-            filteredLogPanel.remove(currentList);
-            currentList = filteredLists.get(messageClass);
-            filteredLogPanel.add(currentList);
+        if(currentListScroll != null){
+            filteredLogPanel.remove(currentListScroll);
+            currentListScroll = filteredListScrollPanes.get(messageClass);
+            filteredLogPanel.add(currentListScroll);
+            currentListScroll.repaint();
         }
     }
 
@@ -181,7 +188,13 @@ public class LogPanel extends VCSPanel {
     public void toLog(Message message){
         if(message.getSrcID().equals("HQ") || message.getSrcID().charAt(0) == 'A')
             if (message.getTargetID() != null && (message.getTargetID().equals("HQ") || message.getTargetID().charAt(0) == 'A')){
-                messageModelAll.insertElementAt(message, 0);
+                ((DefaultListModel<Message>) ((JList<Message>) filteredListScrollPanes.
+                        get(Message.MessageClass.ALL).getViewport().getView()).getModel()).
+                        insertElementAt(message, 0); // All listesine ekler
+
+                ((DefaultListModel<Message>) ((JList<Message>) filteredListScrollPanes.
+                        get(message.type.getMessageClass()).getViewport().getView()).getModel()).
+                        insertElementAt(message, 0); // Kendi filtered listesine ekler
             }
         //messageList.ensureIndexIsVisible(messageModel.size() - 1);
     }
@@ -215,8 +228,14 @@ public class LogPanel extends VCSPanel {
      public void clearLogArea(){
         try {
             logArea.getStyledDocument().remove(0, logArea.getStyledDocument().getLength());
-            messageModelAll.removeAllElements();
-            messageList.repaint();
+
+            for(Message.MessageClass c : Message.MessageClass.values()){
+                JList<Message> list = ((JList<Message>) filteredListScrollPanes.get(c).getViewport().getView());
+                DefaultListModel<Message> model = ((DefaultListModel) list.getModel());
+
+                model.removeAllElements();
+                list.repaint();
+            }
         } catch (BadLocationException e){
             e.printStackTrace();
         }
@@ -244,7 +263,7 @@ public class LogPanel extends VCSPanel {
         }
 
         //for unselect item after popup closed
-        messageList.clearSelection();
+        ((JList<Message>) currentListScroll.getViewport().getView()).clearSelection();
     }
 
     @Override

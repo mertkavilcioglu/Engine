@@ -21,36 +21,43 @@ public abstract class Message {
     private String msg2;
 
     public enum MessageType{
-        ATTACK_ORDER,
-        MOVE_ORDER,
-        FOLLOW_ORDER,
-        ENTITY_INFO,
-        RECEIVE_INFO,
-        ORDER_RESULT,
-        SURVEILLANCE_MSG,
-        MISSION_START,
-        KNOWN_INFO,
-        RELAY,
-        MISSION_ABORT
+        ATTACK_ORDER(MessageClass.J12),
+        MOVE_ORDER(MessageClass.J12),
+        FOLLOW_ORDER(MessageClass.J12),
+        ENTITY_INFO(MessageClass.J2),
+        RECEIVE_INFO(MessageClass.J0),
+        ORDER_RESULT(MessageClass.J13),
+        SURVEILLANCE_MSG(MessageClass.J3),
+        MISSION_START(MessageClass.J13),
+        KNOWN_INFO(MessageClass.J2),
+        RELAY(MessageClass.J0),
+        MISSION_ABORT(MessageClass.J12);
+
+        private MessageClass msgClass;
+
+        MessageType(MessageClass msgClass){
+            this.msgClass = msgClass;
+        }
+        public MessageClass getMessageClass(){
+            return msgClass;
+        }
     }
 
     public enum MessageClass{
         ALL("ALL"),
         J0("J0"), // Relay
-        J1("J1"), // Message received (or ack)
         J2("J2"), // PPLI
         J3("J3"), // Surveillance
-        J4("J4"), //
         J12("J12"), // Attack, Follow, Move, Abort
         J13("J13"), // Mission Start, Result
         ;
-        private String code;
+        private String messageClass;
 
-        MessageClass(String code){
-            this.code = code;
+        MessageClass(String messageClass){
+            this.messageClass = messageClass;
         }
-        public String getCode(){
-            return code;
+        public String getMessageClass(){
+            return messageClass;
         }
 
     }
