@@ -65,10 +65,11 @@ public class PlayPausePanel extends VCSPanel{
             if (!app.loadSavePanel.isAnyFile()){
                 if (isFirstPlay){
                     saveInitial();
+                    app.logPanel.clearLogArea();
                 }
             }
             isFirstPlay = false;
-            app.logPanel.clearLogArea();
+            //app.logPanel.clearLogArea();
             if(app.mapView.getInitialPoints().isEmpty()){
                 app.mapView.saveInitialPoints();
             }

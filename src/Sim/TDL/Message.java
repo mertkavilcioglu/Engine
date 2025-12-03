@@ -45,9 +45,9 @@ public abstract class Message {
 
     public enum MessageClass{
         ALL("ALL"),
-        J0("J0"), // Relay
+        J0("J0"), // Relay, ACK,
         J2("J2"), // PPLI
-        J3("J3"), // Surveillance
+        J3("J3"), // Surveillance & Track
         J12("J12"), // Attack, Follow, Move, Abort
         J13("J13"), // Mission Start, Result
         ;
