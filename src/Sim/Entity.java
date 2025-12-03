@@ -173,7 +173,8 @@ public class Entity {
     public void completeCurrentOrder(){
         Order doneOrder = orders.poll();
         currentOrder = orders.peek();
-        w.app.actionPanel.enableTargetButtonState(this, doneOrder);
+        if (doneOrder.orderType.equals(Order.OrderType.ATTACK))
+            w.app.actionPanel.enableTargetButtonState(this, doneOrder);
     }
 
     public Vec2int nextStep(Vec2int pos, Vec2int nextPos){

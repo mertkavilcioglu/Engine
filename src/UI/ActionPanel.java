@@ -583,6 +583,9 @@ public class ActionPanel extends VCSPanel {
     public void enableTargetButtonState(Entity entity, Order order){
         JButton button;
         Attack attackOrder = (Attack) order;
+        if (attackOrder.getFinishStat() == 0){
+            return;
+        }
         if (entity.getSide() == Entity.Side.ALLY){
             button = enemyButtons.get(attackOrder.getAttackTargetID());
         } else {

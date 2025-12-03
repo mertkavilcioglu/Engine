@@ -15,6 +15,7 @@ public class Attack extends Order{
     private Vec2int prevSpeed;
     private Vec2int targetPos;
     private Entity currentAttackTarget;
+    private int finishStat;
 
     public Attack(VCSApp app, Entity receiver, Entity sender, String  attackTargetID) {
         super(app, receiver, sender, OrderType.ATTACK);
@@ -28,6 +29,7 @@ public class Attack extends Order{
                 double prevDist = receiver.getPos().distance(targetPos);
                 if(prevDist <= 4.0){
                     ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 404, OrderType.ATTACK);
+                    this.finishStat = 404;
                     String notFoundMsg = String.format("%s not found at the last location by %s.", currentAttackTarget.getName(), receiver.getName());
                     app.log(notFoundMsg);
                     //TODO order bitince ya da yarım kalınca unitlere hareket belirleme
@@ -49,11 +51,13 @@ public class Attack extends Order{
         if(dist <= 4.0){
             if (receiver.getLocalWorld().getEntities().contains(targetEntity)){
                 ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.ATTACK);
+                this.finishStat = 0;
                 String msgDestroy = String.format("%s destroy the target %s,", receiver.getName(), targetEntity.getName());
                 app.log(msgDestroy);
                 destroy(targetEntity);
             } else {
                 ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 404, OrderType.ATTACK);
+                this.finishStat = 404;
                 String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), receiver.getName());
                 app.log(notFoundMsg);
                 //TODO order bitince ya da yarım kalınca unitlere hareket belirleme
@@ -106,6 +110,10 @@ public class Attack extends Order{
             prevSpeed = receiver.getSpeed();
         }
         isExecute = true;
+    }
+
+    public int getFinishStat() {
+        return finishStat;
     }
 
     @Override
