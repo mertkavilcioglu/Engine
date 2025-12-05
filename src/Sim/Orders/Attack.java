@@ -38,6 +38,19 @@ public class Attack extends Order{
                     receiver.setCurrentOrderState(true);
                     finish(receiver);
                     app.mapView.setTargetPos(null);
+                    targetPos = null;
+                }
+                else{
+                    int targetSpeed = receiver.maxSpeed*2;
+                    Vec2int newSpeed = new Vec2int();
+                    if(receiver.getPos().distance(targetPos) <= receiver.maxSpeed){
+                        newSpeed = new Vec2int(0,0);
+                        receiver.setPos(targetPos);
+                    }
+                    else{
+                        newSpeed = receiver.getPos().vectorDiff(targetPos).normalize(targetSpeed);
+                        receiver.setSpeed(newSpeed);
+                    }
                 }
             }
                 return;
@@ -55,6 +68,8 @@ public class Attack extends Order{
                 String msgDestroy = String.format("%s destroy the target %s,", receiver.getName(), targetEntity.getName());
                 app.log(msgDestroy);
                 destroy(targetEntity);
+                app.mapView.setTargetPos(null);
+                targetPos = null;
             } else {
                 ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 404, OrderType.ATTACK);
                 this.finishStat = 404;
@@ -65,6 +80,8 @@ public class Attack extends Order{
                 receiver.completeCurrentOrder();
                 receiver.setCurrentOrderState(true);
                 finish(receiver);
+                app.mapView.setTargetPos(null);
+                targetPos = null;
             }
 
 
