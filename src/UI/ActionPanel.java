@@ -3,6 +3,8 @@ package UI;
 import App.VCSApp;
 import Sim.Entity;
 import Sim.Orders.Attack;
+import Sim.Orders.Follow;
+import Sim.Orders.Move;
 import Sim.Orders.Order;
 import Sim.TDL.Message;
 import Sim.TDL.TDLTransmitterComp;
@@ -197,7 +199,9 @@ public class ActionPanel extends VCSPanel {
             }
 //            selectedEntity.addOrder(new Follow(app, selectedEntity, choosenEntity, followTime));
 //            refreshCurrentOrderPanel();
-            ((TDLTransmitterComp) selectedEntity.getComponent(Sim.Component.ComponentType.TRANSMITTER)).createFollowMessage2(app, selectedEntity, choosenEntity, followTime);
+            if (selectedEntity.getSide().equals(Entity.Side.ALLY))
+                ((TDLTransmitterComp) selectedEntity.getComponent(Sim.Component.ComponentType.TRANSMITTER)).createFollowMessage2(app, selectedEntity, choosenEntity, followTime);
+            else selectedEntity.addOrder(new Follow(app, selectedEntity, null, choosenEntity, followTime));
         });
         createButtonPanel.setBackground(panelBgColor);
         createButtonPanel.add(followOrderCreateButton);
@@ -302,7 +306,10 @@ public class ActionPanel extends VCSPanel {
                 if (selectedEntity != null){
 //                    selectedEntity.addOrder(new Move(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y)));
 //                    refreshCurrentOrderPanel();
-                    ((TDLTransmitterComp) selectedEntity.getComponent(Sim.Component.ComponentType.TRANSMITTER)).createMoveMessage2(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y));
+                    if (selectedEntity.getSide().equals(Entity.Side.ALLY)){
+                        ((TDLTransmitterComp) selectedEntity.getComponent(Sim.Component.ComponentType.TRANSMITTER)).createMoveMessage2(app, selectedEntity, new Vec2int(coordinatesToMove.x, coordinatesToMove.y));
+
+                    } else selectedEntity.addOrder(new Move(app, selectedEntity, null, new Vec2int(coordinatesToMove.x, coordinatesToMove.y)));
                     setMoveMode(false);
                 }
             }
@@ -379,7 +386,9 @@ public class ActionPanel extends VCSPanel {
             attackerEntity = selectedEntity;
             if (isAttackAction){
                 if (attackerEntity != null){
-                    ((TDLTransmitterComp) attackerEntity.getComponent(Sim.Component.ComponentType.TRANSMITTER)).createAttackMessage2(app,attackerEntity.getId(),targetEntity.getId());
+                    if (attackerEntity.getSide().equals(Entity.Side.ALLY))
+                        ((TDLTransmitterComp) attackerEntity.getComponent(Sim.Component.ComponentType.TRANSMITTER)).createAttackMessage2(app,attackerEntity.getId(),targetEntity.getId());
+                    else attackerEntity.addOrder(new Attack(app, attackerEntity, null, targetEntity.getId()));
                 }
             }
         });
@@ -430,23 +439,23 @@ public class ActionPanel extends VCSPanel {
     }
 
     public void showTargetButtonsForEnemy(Entity selectedOne){
-        List<Entity> detectedEntitiesFromRadar = new ArrayList<>();
+        List<Entity> entitiesToAttack = new ArrayList<>();
         if (!selectedOne.getSide().equals(Entity.Side.ENEMY)) showTargetButtonsForAlly(selectedOne);
         Entity.Type typeOfSelected = selectedOne.getType();
         allyTargetPanel.removeAll();
         for (Entity e : allCreatedEntites){
             if (selectedOne.getSide().equals(e.getSide())){
-                for (Entity entity : e.getLocalWorld().getEntities()){
+                for (Entity entity : e.getLocalWorld().getEntityHashMap().values()){
                     if (entity.getSide().equals(Entity.Side.ALLY))
-                        detectedEntitiesFromRadar.add(entity);
+                        entitiesToAttack.add(entity);
                 }
             } else if (selectedOne.getLocalWorld().getEntityHashMap().containsKey(e.getId()))
-                detectedEntitiesFromRadar.add(e);
+                entitiesToAttack.add(e);
         }
         if (typeOfSelected.equals(Entity.Type.AIR)){
                 for (String entityID : allyButtons.keySet()){
                     Entity keyEntity = app.world.getEntityHashMap().get(entityID);
-                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                    if (entitiesToAttack.contains(keyEntity)) {
                         allyTargetPanel.add(allyButtons.get(keyEntity.getId()));
                         if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                             allyButtons.get(keyEntity.getId()).setEnabled(false);
@@ -456,7 +465,7 @@ public class ActionPanel extends VCSPanel {
         } else if (typeOfSelected.equals(Entity.Type.SURFACE)) {
                 for (String entityID : allyButtons.keySet()){
                     Entity keyEntity = app.world.getEntityHashMap().get(entityID);
-                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                    if (entitiesToAttack.contains(keyEntity)) {
                         if (keyEntity.getType().equals(Entity.Type.SURFACE)){
                             allyTargetPanel.add(allyButtons.get(keyEntity.getId()));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
@@ -468,7 +477,7 @@ public class ActionPanel extends VCSPanel {
         } else if (typeOfSelected.equals(Entity.Type.GROUND)) {
                 for (String entityID : allyButtons.keySet()){
                     Entity keyEntity = app.world.getEntityHashMap().get(entityID);
-                    if (detectedEntitiesFromRadar.contains(keyEntity)) {
+                    if (entitiesToAttack.contains(keyEntity)) {
                         if (keyEntity.getType().equals(Entity.Type.GROUND)){
                             allyTargetPanel.add(allyButtons.get(keyEntity.getId()));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){

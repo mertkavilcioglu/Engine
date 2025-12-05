@@ -65,13 +65,15 @@ public class Follow extends Order{
         }
         else if (followTime == numOfUpdate){
             if(dist <= 3.0){
-                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.FOLLOW);
+                if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                    ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.FOLLOW);
                 String reachString = String.format("%s has reached the target.", receiver.getName());
                 app.log(reachString);
                 receiver.setSpeed(new Vec2int(0,0));
             }
             else{
-                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 408, OrderType.FOLLOW);
+                if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                    ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 408, OrderType.FOLLOW);
                 String timeOutString = String.format("%s stopped following the target %s because time was out.", receiver.getName(), target.getName());
                 app.log(timeOutString);
             }
@@ -86,7 +88,8 @@ public class Follow extends Order{
     protected void printToLog(){
         String followString = String.format("%s is following %s.", receiver.getName(), targetEntity.getName());
         if (!isExecute){
-            ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createMissionStartMessage2(app, receiver.getId(), "J13.2");
+            if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createMissionStartMessage2(app, receiver.getId(), "J13.2");
             app.log(followString);
             receiver.setCurrentOrderState(false);
         }

@@ -39,6 +39,16 @@ public class Radar extends Component {
                         e.isItDetected(hasVisual);
                         parentEntity.getLocalWorld().removeEntityFromLocal(e.getId());
                     }
+                } else if (parentEntity.getSide().equals(Entity.Side.ENEMY) && e.getSide().equals(Entity.Side.ALLY)){
+                    if (!(parentEntity.getLocalWorld().getEntityHashMap().containsKey(e.getId())) && e.isActive()){
+                        parentEntity.getLocalWorld().createEntity(e.getId(), e.getName(), e.getSide(), e.getPos(), e.getSpeed(), e.getType());
+                    } else if (parentEntity.getLocalWorld().getEntityHashMap().containsKey(e.getId()) && e.isActive()) {
+                        parentEntity.getLocalWorld().updateEntity(e.getId(), e.getName(), e.getSide(), e.getPos(), e.getSpeed(), e.getType());
+                    } else if(parentEntity.getLocalWorld().getEntityHashMap().containsKey(e.getId()) && !e.isActive()){
+                        hasVisual = false;
+                        e.isItDetected(hasVisual);
+                        parentEntity.getLocalWorld().removeEntityFromLocal(e.getId());
+                    }
                 }
             } else if (parentEntity.getLocalWorld().getEntityHashMap().containsKey(e.getId())){
                 hasVisual = false;

@@ -23,7 +23,8 @@ public class Move extends Order{
             return;
         double dist = receiver.getPos().distance(destination);
         if(dist <= 2.0){
-            ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.MOVE);
+            if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.MOVE);
             app.log(receiver.getName() + " reached the target.");
             receiver.setSpeed(new Vec2int(0,0));
             receiver.completeCurrentOrder();
@@ -52,7 +53,8 @@ public class Move extends Order{
     @Override
     protected void printToLog(){
         if (!isExecute){
-            ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createMissionStartMessage2(app, receiver.getId(), "J13.3");
+            if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createMissionStartMessage2(app, receiver.getId(), "J13.3");
             app.log(receiver.getName() + " moving to " + destination);
             receiver.setCurrentOrderState(false);
         }

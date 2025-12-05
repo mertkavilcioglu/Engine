@@ -28,7 +28,8 @@ public class Attack extends Order{
             if(targetPos != null){
                 double prevDist = receiver.getPos().distance(targetPos);
                 if(prevDist <= 4.0){
-                    ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 404, OrderType.ATTACK);
+                    if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                        ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 404, OrderType.ATTACK);
                     this.finishStat = 404;
                     String notFoundMsg = String.format("%s not found at the last location by %s.", currentAttackTarget.getName(), receiver.getName());
                     app.log(notFoundMsg);
@@ -63,7 +64,8 @@ public class Attack extends Order{
         app.mapView.setTargetPos(targetPos);
         if(dist <= 4.0){
             if (receiver.getLocalWorld().getEntities().contains(targetEntity)){
-                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.ATTACK);
+                if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                    ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.ATTACK);
                 this.finishStat = 0;
                 String msgDestroy = String.format("%s destroy the target %s,", receiver.getName(), targetEntity.getName());
                 app.log(msgDestroy);
@@ -71,7 +73,8 @@ public class Attack extends Order{
                 app.mapView.setTargetPos(null);
                 targetPos = null;
             } else {
-                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 404, OrderType.ATTACK);
+                if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                    ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 404, OrderType.ATTACK);
                 this.finishStat = 404;
                 String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), receiver.getName());
                 app.log(notFoundMsg);
@@ -120,7 +123,8 @@ public class Attack extends Order{
     @Override
     protected void printToLog(){
         if (!isExecute){
-            ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createMissionStartMessage2(app, receiver.getId(), "J13.1");
+            if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createMissionStartMessage2(app, receiver.getId(), "J13.1");
             String msgAttack = String.format("%s going to attack %s.", receiver.getName(), attackTargetID);
             app.log(msgAttack);
             receiver.setCurrentOrderState(false);
