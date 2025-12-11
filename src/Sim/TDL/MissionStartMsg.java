@@ -19,7 +19,7 @@ public class MissionStartMsg extends Message{
         if (missionType.equals("J13.1")){
             missionName = "Attack";
         } else if (missionType.equals("J13.2")) {
-            missionName = "Escort";
+            missionName = "Follow";
         }else missionName = "Move";
         return String.format("""
                         %s Mission Start Message:
