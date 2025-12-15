@@ -119,47 +119,25 @@ public class VCSApp {
         window.add(editorScroll, BorderLayout.EAST);
 
         window.add(mapView,BorderLayout.CENTER);
-        //window.add(editorPanel, BorderLayout.EAST);
         window.add(hierarchyPanel, BorderLayout.WEST);
         window.add(mergeSouthPanel, BorderLayout.SOUTH);
         window.add(mergeNorthPanel, BorderLayout.NORTH);
-
         window.setVisible(true);
 
         headQuarter = world.createCommander(null, 200);
         hierarchyPanel.entityAdded(headQuarter);
-
         window.setFocusable(true);
         window.requestFocus();
-//        window.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                handleEntityDelete(e); // DEL & BACKSPACE
-//                handleCtrlActivate(e); // CTRL
-//                handleEntityCopy(e); // CTRL + C
-//                handleEntityPaste(e); // CTRL + V
-//                handleRevertingChanges(e); // CTRL + Z
-//            }
-//
-//            @Override
-//            public void keyReleased(KeyEvent e){
-//                handleCtrlDeactivate(e);
-//            }
-//        });
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 int delta = 1000; // 1000
-                int x = 0;
-
                 mapView.initializeTheMap();
 
                 simTimer = new Timer(delta, new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        //System.out.println("Timer::update - THREAD : " + Thread.currentThread().getName());
-                        // update world
                         world.update(delta);
                         world.processSendList2();
                         pixelColor.update(delta);
@@ -167,7 +145,6 @@ public class VCSApp {
                         editorPanel.update();
                         actionPanel.update();
 
-                        //world.entities.removeAll(world.entitiesToRemove);
                         for(Entity ent : world.entitiesToRemove){
                             world.entityHashMap.get(ent.getId()).setActive(false);
                             world.unregisterReceiver(((TDLReceiverComp) ent.getComponent(Component.ComponentType.RECEIVER)));
