@@ -27,7 +27,7 @@ public class VCSApp {
     public HierarchyView hierarchyPanel;
     public ActionPanel actionPanel;
     public LogPanel logPanel;
-    public PlayPausePanel playPausePanel;
+    public ControlPanel controlPanel;
     public LoadSavePanel loadSavePanel;
     public MapPixelPosPanel mapPixelPosPanel;
     public PixelColor pixelColor;
@@ -72,7 +72,7 @@ public class VCSApp {
         hierarchyPanel = new HierarchyView(this);
         logPanel = new LogPanel(this);
         actionPanel = new ActionPanel(this);
-        playPausePanel = new PlayPausePanel(this);
+        controlPanel = new ControlPanel(this);
         loadSavePanel = new LoadSavePanel(this);
         mapPixelPosPanel = new MapPixelPosPanel(this);
         pixelColor = new PixelColor(this);
@@ -88,7 +88,7 @@ public class VCSApp {
 
         JPanel mergeNorthPanel = new JPanel(new BorderLayout());
         mergeNorthPanel.add(loadSavePanel, BorderLayout.WEST);
-        mergeNorthPanel.add(playPausePanel, BorderLayout.CENTER);
+        mergeNorthPanel.add(controlPanel, BorderLayout.CENTER);
         mergeNorthPanel.add(mapPixelPosPanel, BorderLayout.EAST);
         mergeNorthPanel.setBackground(uiColorManager.TOP_BAR_COLOR);
         EmptyBorder eBorder = new EmptyBorder(4,4,4,4);
@@ -236,6 +236,8 @@ public class VCSApp {
             FileWriter myWriter = new FileWriter(saveFile);
             int range = 0;
             for (Sim.Entity ent : world.entities) {
+                if(!ent.isActive())
+                    continue;
                 String posStr;
                 posStr = ent.getPos().toString().substring(1, ent.getPos().toString().length() - 1);
                 for (Component c : ent.getComponents().values()){
