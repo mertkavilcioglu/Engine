@@ -192,9 +192,14 @@ public class LogPanel extends VCSPanel {
                         get(Message.MessageClass.ALL).getViewport().getView()).getModel()).
                         insertElementAt(message, 0); // All listesine ekler
 
+
                 ((DefaultListModel<Message>) ((JList<Message>) filteredListScrollPanes.
                         get(message.type.getMessageClass()).getViewport().getView()).getModel()).
                         insertElementAt(message, 0); // Kendi filtered listesine ekler
+//
+//                if(((JList<Message>) filteredListScrollPanes.get(Message.MessageClass.ALL).getViewport().getView()).getModel().getSize() == 100){
+//                    ((DefaultListModel<Message>) ((JList<Message>) filteredListScrollPanes.get(Message.MessageClass.ALL).getViewport().getView()).getModel()).remove(99);
+//                } //TODO lag ı azaltmak için yazmıştım daha iyisi olur mu bakalım olmazsa bunu kullanalım
             }
         //messageList.ensureIndexIsVisible(messageModel.size() - 1);
     }
