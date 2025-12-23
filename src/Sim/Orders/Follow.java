@@ -42,13 +42,11 @@ public class Follow extends Order{
 
 
     public void followEntity(Entity target){
-        double distX = target.getPos().x - receiver.getPos().x;
-        double distY = target.getPos().y - receiver.getPos().y;
         double dist = receiver.getPos().distance(target.getPos());
         if (followTime > numOfUpdate){
-            if(dist <= 3.0){
+            if(dist <= 25.0){
                 int time = followTime - numOfUpdate;
-
+                receiver.setSpeed(targetEntity.getSpeed());
                 String reachString = String.format("%s has reached the target and will continue tracking for %d seconds.", receiver.getName(), time);
                 app.log(reachString);
                 //source.setSpeed(new Vec2int(0,0));

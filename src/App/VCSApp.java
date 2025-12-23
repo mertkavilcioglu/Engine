@@ -106,7 +106,7 @@ public class VCSApp {
         hierarchyScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         hierarchyScroll.setVerticalScrollBar(new JScrollBar(Adjustable.VERTICAL,0,0,0,0));
         hierarchyScroll.setHorizontalScrollBar(new JScrollBar(Adjustable.HORIZONTAL,0,0,0,0));
-
+        hierarchyScroll.getVerticalScrollBar().setUnitIncrement(30);
         hierarchyPanel.add(hierarchyScroll);
 
         JScrollPane editorScroll = new JScrollPane(editorPanel);
