@@ -444,13 +444,15 @@ public class ActionPanel extends VCSPanel {
         Entity.Type typeOfSelected = selectedOne.getType();
         allyTargetPanel.removeAll();
         for (Entity e : allCreatedEntites){
-            if (selectedOne.getSide().equals(e.getSide())){
-                for (Entity entity : e.getLocalWorld().getEntityHashMap().values()){
-                    if (entity.getSide().equals(Entity.Side.ALLY))
-                        entitiesToAttack.add(entity);
-                }
-            } else if (selectedOne.getLocalWorld().getEntityHashMap().containsKey(e.getId()))
-                entitiesToAttack.add(e);
+            if (e.isActive()) {
+                if (selectedOne.getSide().equals(e.getSide())) {
+                    for (Entity entity : e.getLocalWorld().getEntityHashMap().values()) {
+                        if (entity.getSide().equals(Entity.Side.ALLY))
+                            entitiesToAttack.add(entity);
+                    }
+                } else if (selectedOne.getLocalWorld().getEntityHashMap().containsKey(e.getId()))
+                    entitiesToAttack.add(e);
+            }
         }
         if (typeOfSelected.equals(Entity.Type.AIR)){
                 for (String entityID : allyButtons.keySet()){
@@ -524,10 +526,12 @@ public class ActionPanel extends VCSPanel {
     public void setFollowTargets(){
         if (selectedEntity != null){
             for (Entity entity : allCreatedEntites){
-                if (!selectedEntity.equals(entity)){
-                    if (selectedEntity.getLocalWorld().getEntityHashMap().containsKey(entity.getId())){
-                        followableEntityList.add(entity);
-                        followTargetData.addElement(entity.getName());
+                if (entity.isActive()) {
+                    if (!selectedEntity.equals(entity)) {
+                        if (selectedEntity.getLocalWorld().getEntityHashMap().containsKey(entity.getId())) {
+                            followableEntityList.add(entity);
+                            followTargetData.addElement(entity.getName());
+                        }
                     }
                 }
             }
