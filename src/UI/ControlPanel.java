@@ -1,20 +1,14 @@
 package UI;
 
 import App.VCSApp;
-import Sim.Component;
 import Sim.Entity;
 import Sim.GetInput;
-import Sim.Radar;
-import Vec.Vec2int;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Map;
 
-public class PlayPausePanel extends VCSPanel{
+public class ControlPanel extends VCSPanel{
     private Color initialButColor;
     private Color panelBgColor;
     private ImageIcon playIcon = new ImageIcon("src/Assets/Icons/play_icon.png");
@@ -22,7 +16,7 @@ public class PlayPausePanel extends VCSPanel{
     private ImageIcon stopIcon = new ImageIcon("src/Assets/Icons/stop_icon.png");
     private boolean isFirstPlay = true;
 
-    public PlayPausePanel(VCSApp app) {
+    public ControlPanel(VCSApp app) {
         super(app);
         panelBgColor = app.uiColorManager.TOP_BAR_COLOR;
         this.setLayout(new GridBagLayout());
