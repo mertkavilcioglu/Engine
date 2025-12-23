@@ -32,6 +32,8 @@ public class ResultMsg extends Message{
                     detailMsg = String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Type: %s\nFinsh Report: Target Followed For the Time Limit.", getSrcID(), getTargetID(), orderType.getName());
                 } else if (finishStat == 408){
                     detailMsg = String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Type: %s\nFinsh Report: Following Terminated Because Time Limit Reached.", getSrcID(), getTargetID(), orderType.getName());
+                } else if(finishStat == 1){
+                    detailMsg = String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Type: %s\nFinsh Report: Target is not Found and Couldn't Be Followed.", getSrcID(), getTargetID(), orderType.getName());
                 } else return String.format("Order Result Report Message:\nFrom: %s\nTo: %s\nOrder Type: %s\nFinsh Report: Invalid.", getSrcID(), getTargetID(), orderType.getName());
                 break;
             case MOVE:

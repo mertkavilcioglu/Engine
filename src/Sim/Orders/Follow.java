@@ -45,10 +45,23 @@ public class Follow extends Order{
         double dist = receiver.getPos().distance(target.getPos());
         if (followTime > numOfUpdate){
             if(dist <= 25.0){
-                int time = followTime - numOfUpdate;
-                receiver.setSpeed(targetEntity.getSpeed());
-                String reachString = String.format("%s has reached the target and will continue tracking for %d seconds.", receiver.getName(), time);
-                app.log(reachString);
+                if(targetEntity.isActive()){
+                    int time = followTime - numOfUpdate;
+                    receiver.setSpeed(targetEntity.getSpeed());
+                    String reachString = String.format("%s has reached the target and will continue tracking for %d seconds.", receiver.getName(), time);
+                    app.log(reachString);
+                }
+                else{
+                    numOfUpdate = followTime;
+                    if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                        ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 1, OrderType.FOLLOW);
+                    String reachString = String.format("%s has not found the target.", receiver.getName());
+                    app.log(reachString);
+                    receiver.setSpeed(new Vec2int(receiver.getSpeed().x, receiver.getSpeed().y));
+                    receiver.completeCurrentOrder();
+                    receiver.setCurrentOrderState(true);
+                    finish(receiver);
+                }
                 //source.setSpeed(new Vec2int(0,0));
             }
             else{
@@ -62,12 +75,21 @@ public class Follow extends Order{
             }
         }
         else if (followTime == numOfUpdate){
-            if(dist <= 3.0){
-                if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
-                    ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.FOLLOW);
-                String reachString = String.format("%s has reached the target.", receiver.getName());
-                app.log(reachString);
-                receiver.setSpeed(new Vec2int(0,0));
+            if(dist <= 25.0){
+                if(targetEntity.isActive()){
+                    if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                        ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.FOLLOW);
+                    String reachString = String.format("%s has completed following the target.", receiver.getName());
+                    app.log(reachString);
+                    receiver.setSpeed(new Vec2int(receiver.getSpeed().x, receiver.getSpeed().y));
+                }
+                else{
+                    if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
+                        ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 1, OrderType.FOLLOW);
+                    String reachString = String.format("%s has not found the target.", receiver.getName());
+                    app.log(reachString);
+                    receiver.setSpeed(new Vec2int(receiver.getSpeed().x, receiver.getSpeed().y));
+                }
             }
             else{
                 if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
