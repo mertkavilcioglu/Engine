@@ -277,7 +277,7 @@ public class VCSApp {
     }
 
     public void createHQ(boolean b){
-        if (!b){
+        if (b){
             headQuarter = world.createCommander(null, 5000);
             hierarchyPanel.entityAdded(headQuarter);
         }
