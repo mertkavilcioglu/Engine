@@ -57,7 +57,7 @@ public class Follow extends Order{
                         ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 1, OrderType.FOLLOW);
                     String reachString = String.format("%s has not found the target.", receiver.getName());
                     app.log(reachString);
-                    receiver.setSpeed(new Vec2int(receiver.getSpeed().x, receiver.getSpeed().y));
+                    receiver.setSpeed(new Vec2int(receiver.getSpeed().x/2, receiver.getSpeed().y/2));
                     receiver.completeCurrentOrder();
                     receiver.setCurrentOrderState(true);
                     finish(receiver);
@@ -81,14 +81,14 @@ public class Follow extends Order{
                         ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.FOLLOW);
                     String reachString = String.format("%s has completed following the target.", receiver.getName());
                     app.log(reachString);
-                    receiver.setSpeed(new Vec2int(receiver.getSpeed().x, receiver.getSpeed().y));
+                    receiver.setSpeed(new Vec2int(receiver.getSpeed().x/2, receiver.getSpeed().y/2));
                 }
                 else{
                     if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
                         ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 1, OrderType.FOLLOW);
                     String reachString = String.format("%s has not found the target.", receiver.getName());
                     app.log(reachString);
-                    receiver.setSpeed(new Vec2int(receiver.getSpeed().x, receiver.getSpeed().y));
+                    receiver.setSpeed(new Vec2int(receiver.getSpeed().x/2, receiver.getSpeed().y/2));
                 }
             }
             else{
@@ -96,6 +96,7 @@ public class Follow extends Order{
                     ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 408, OrderType.FOLLOW);
                 String timeOutString = String.format("%s stopped following the target %s because time was out.", receiver.getName(), target.getName());
                 app.log(timeOutString);
+                receiver.setSpeed(new Vec2int(receiver.getSpeed().x/2, receiver.getSpeed().y/2));
             }
             receiver.completeCurrentOrder();
             receiver.setCurrentOrderState(true);

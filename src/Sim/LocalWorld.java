@@ -21,7 +21,7 @@ public class LocalWorld {
 
     public Entity createEntity(String id, String eName, Entity.Side eSide, Vec2int pos, Vec2int speed, Entity.Type type){
         Entity ent = new Entity(src.w, eName, eSide,pos,speed, type);
-        ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
+        ent.maxSpeed = ent.getSpeed().getMagnitudeAsInt();
         if(ent.maxSpeed == 0)
             ent.maxSpeed = 4;
         ent.setId(id);

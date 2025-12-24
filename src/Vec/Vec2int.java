@@ -36,7 +36,7 @@ public class Vec2int {
         return this;
     }
 
-    public int getHypotenuseAsInt() {
+    public int getMagnitudeAsInt() {
         double h = sqrt((this.x * this.x) + (this.y * this.y));
         return (int) (h + 0.5);
     }
