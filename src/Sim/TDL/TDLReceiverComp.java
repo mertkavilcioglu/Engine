@@ -56,7 +56,7 @@ public class TDLReceiverComp extends Component {
                     ((TDLTransmitterComp) parentEntity.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(msg.getApp(), parentEntity, Message.MessageType.ENTITY_INFO);
                     break;
                 case RECEIVE_INFO:
-                    msg.getApp().debugLog("Message arrived successfully.");
+                   // msg.getApp().debugLog("Message arrived successfully.");
                     //TODO orderının receivelendiğini öğreninice nolcak bilmiyorum
                     break;
                 case ORDER_RESULT:

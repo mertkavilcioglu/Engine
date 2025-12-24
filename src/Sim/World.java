@@ -131,7 +131,7 @@ public class World{
         ent.addComponent(r);
         ent.setType(Entity.Type.AIR);
 
-        ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
+        ent.maxSpeed = ent.getSpeed().getMagnitudeAsInt();
         if(ent.maxSpeed == 0)
             ent.maxSpeed = 4;
 
@@ -172,7 +172,7 @@ public class World{
 
         ent.setType(type);
 
-        ent.maxSpeed = ent.getSpeed().getHypotenuseAsInt();
+        ent.maxSpeed = ent.getSpeed().getMagnitudeAsInt();
         if(ent.maxSpeed == 0)
             ent.maxSpeed = 4;
 

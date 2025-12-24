@@ -22,11 +22,15 @@ public class Move extends Order{
         if(destination == null )
             return;
         double dist = receiver.getPos().distance(destination);
-        if(dist <= 2.0){
+        if(dist <= receiver.maxSpeed){
             if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
                 ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.MOVE);
             app.log(receiver.getName() + " reached the target.");
-            receiver.setSpeed(new Vec2int(0,0));
+            if(receiver.getType() != Entity.Type.AIR)
+                receiver.setSpeed(new Vec2int(0,0));
+            else
+                receiver.setSpeed(new Vec2int(receiver.getSpeed().x /2 , receiver.getSpeed().y / 2));
+            receiver.setPos(destination);
             receiver.completeCurrentOrder();
             receiver.setCurrentOrderState(true);
             finish(receiver);
@@ -41,13 +45,24 @@ public class Move extends Order{
 
         Vec2int newSpeed = new Vec2int();
         if(receiver.getPos().distance(destination) <= receiver.maxSpeed){
-            newSpeed = new Vec2int(0,0);
-            receiver.setPos(destination);
+            if(receiver.getType() != Entity.Type.AIR){
+                newSpeed = new Vec2int(0,0);
+                receiver.setPos(destination);
+                receiver.setSpeed(newSpeed);
+            }
+            else{
+                receiver.setPos(destination);
+                newSpeed = new Vec2int(receiver.getSpeed().x /2 , receiver.getSpeed().y / 2);
+                receiver.setSpeed(newSpeed);
+            }
+        }
+        else {
+            newSpeed = receiver.getPos().vectorDiff(destination).normalize(receiver.maxSpeed);
+            if(newSpeed.getMagnitudeAsInt() < 3)
+                newSpeed = receiver.getPos().vectorDiff(destination).normalize(4);
+            receiver.setSpeed(newSpeed);
         }
 
-        else
-            newSpeed = receiver.getPos().vectorDiff(destination).normalize(receiver.maxSpeed);
-        receiver.setSpeed(newSpeed);
     }
 
     @Override

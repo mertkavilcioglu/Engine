@@ -308,6 +308,10 @@ public class Entity {
             speed.x = 0;
             speed.y = 0;
         }
+
+        maxSpeed = getSpeed().getMagnitudeAsInt();
+        if(maxSpeed == 0)
+            maxSpeed = 4;
     }
 
     public boolean CanMove(RGB rgb, Type type) {
