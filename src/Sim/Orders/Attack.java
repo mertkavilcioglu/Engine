@@ -14,6 +14,7 @@ public class Attack extends Order{
     private double dist;
     private Vec2int prevSpeed;
     private Vec2int targetPos;
+    private Vec2int lastKnownPos = null;
     private Entity currentAttackTarget;
     private int finishStat;
 
@@ -24,8 +25,8 @@ public class Attack extends Order{
     }
 
     public void attackEntity(Entity targetEntity){
-        if(targetEntity == null ){
-            if(targetPos != null){
+        if(targetEntity == null || !targetEntity.isActive()){
+            if(targetPos != null || lastKnownPos != null){
                 double prevDist = receiver.getPos().distance(targetPos);
                 if(prevDist <= 4.0){
                     if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
@@ -33,8 +34,10 @@ public class Attack extends Order{
                     this.finishStat = 404;
                     String notFoundMsg = String.format("%s not found at the last location by %s.", currentAttackTarget.getName(), receiver.getName());
                     app.log(notFoundMsg);
-                    //TODO order bitince ya da yarım kalınca unitlere hareket belirleme
-                    receiver.setSpeed(new Vec2int(0,0));
+                    if(receiver.getType() == Entity.Type.AIR)
+                        receiver.setSpeed(new Vec2int(-(receiver.getSpeed().x/2) , -(receiver.getSpeed().y/2)));
+                    else
+                        receiver.setSpeed(new Vec2int(0,0));
                     receiver.completeCurrentOrder();
                     receiver.setCurrentOrderState(true);
                     finish(receiver);
@@ -46,18 +49,21 @@ public class Attack extends Order{
                     if(receiver.getPos().distance(targetPos) <= receiver.maxSpeed){
                         if(receiver.getType() != Entity.Type.AIR){
                             newSpeed = new Vec2int(0,0);
-                            app.debugLogError("BEN TANKIM VE HIZIMI 0 YAPTIM");
                             receiver.setPos(targetPos);
                             receiver.setSpeed(newSpeed);
                         }
                         else{
                             receiver.setPos(targetPos);
                             newSpeed = new Vec2int(receiver.getSpeed().x /2 , receiver.getSpeed().y / 2);
+                            if(newSpeed.getMagnitudeAsInt() < 3)
+                                newSpeed = receiver.getPos().vectorDiff(targetPos).normalize(4);
                             receiver.setSpeed(newSpeed);
                         }
                     }
                     else {
-                        newSpeed = receiver.getPos().vectorDiff(targetPos.normalize(receiver.maxSpeed));
+                        newSpeed = receiver.getPos().vectorDiff(lastKnownPos).normalize(receiver.maxSpeed);
+                        if(newSpeed.getMagnitudeAsInt() < 3)
+                            newSpeed = receiver.getPos().vectorDiff(lastKnownPos).normalize(4);
                         receiver.setSpeed(newSpeed);
                     }
                 }
@@ -65,12 +71,13 @@ public class Attack extends Order{
                 return;
         }
         currentAttackTarget = targetEntity;
+        lastKnownPos = targetEntity.getPos();
         //if (targetEntity.isDetected()){
         targetPos = receiver.getLocalWorld().getEntityHashMap().get(targetEntity.getId()).getPos();
         //}
         dist = receiver.getPos().distance(targetPos);
         app.mapView.setTargetPos(targetPos);
-        if(dist <= 4.0){
+        if(dist <= 20.0){
             if (receiver.getLocalWorld().getEntities().contains(targetEntity)){
                 if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
                     ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.ATTACK);
@@ -88,7 +95,9 @@ public class Attack extends Order{
                 this.finishStat = 404;
                 String notFoundMsg = String.format("%s not found at the last location by %s.", targetEntity.getName(), receiver.getName());
                 app.log(notFoundMsg);
-                //TODO order bitince ya da yarım kalınca unitlere hareket belirleme
+                if(receiver.getType() == Entity.Type.AIR)
+                    receiver.setSpeed(new Vec2int(receiver.getSpeed().x/-2 , receiver.getSpeed().y/-2));
+                else
                     receiver.setSpeed(new Vec2int(0,0));
                 receiver.completeCurrentOrder();
                 receiver.setCurrentOrderState(true);

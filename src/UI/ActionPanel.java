@@ -604,7 +604,8 @@ public class ActionPanel extends VCSPanel {
         } else {
             button = allyButtons.get(attackOrder.getAttackTargetID());
         }
-        button.setEnabled(true);
+        if(button!=null)
+            button.setEnabled(true);
     }
 
     public void setIfPaused(boolean isPaused){

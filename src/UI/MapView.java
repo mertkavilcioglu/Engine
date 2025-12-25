@@ -393,11 +393,11 @@ public class MapView extends VCSPanel {
                     g.drawOval(pos.x - tdlRangeWidth/2, pos.y - tdlRangeWidth/2, tdlRangeWidth, tdlRangeWidth);
                 }
 
-                // ATTACK POINT DEBUG
-                if(targetPos != null){
-                    g.setColor(Color.GREEN);
-                    g.drawRect(targetPos.x, targetPos.y, 4,4);
-                }
+//                // ATTACK POINT DEBUG
+//                if(targetPos != null){
+//                    g.setColor(Color.GREEN);
+//                    g.drawRect(targetPos.x, targetPos.y, 4,4);
+//                }
             }
         }
     }
