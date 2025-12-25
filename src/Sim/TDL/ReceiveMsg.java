@@ -9,9 +9,9 @@ import java.awt.*;
 public class ReceiveMsg extends Message{
     private final MessageType msgType;
 
-    public ReceiveMsg(VCSApp app, Entity src, Entity receiver, MessageType msgType) {
-        super(MessageType.RECEIVE_INFO, app, src.getId(), receiver.getId(), src.getId(), "J0.1");
-        this.msgType = msgType;
+    public ReceiveMsg(VCSApp app, Entity src, String receiverID, Message msg) {
+        super(MessageType.RECEIVE_INFO, app, src.getId(), receiverID, src.getId(), "J0.1");
+        this.msgType = msg.type;
     }
 
     public String receiveDetail(){

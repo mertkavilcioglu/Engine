@@ -71,8 +71,8 @@ public class TDLTransmitterComp extends Component {
         send(knownInfoMsg);
     }
 
-    public void createReceiveMessage2(VCSApp app, Entity source, Message.MessageType type){
-        ReceiveMsg receiveMsg = new ReceiveMsg(app, source, app.getHQ(), type);
+    public void createReceiveMessage2(VCSApp app, Entity source, Message msg){
+        ReceiveMsg receiveMsg = new ReceiveMsg(app, source, msg.getSrcID(), msg);
         //receiveMsg.setCounter(calculateRangeCounter(receiveMsg));
         //messagesToSend.add(receiveMsg);
         send(receiveMsg);
@@ -128,8 +128,9 @@ public class TDLTransmitterComp extends Component {
 
         if (isRelayCreated){
             for (int id : relayMessages.keySet()){
-                send(relayMessages.remove(id));
+                send(relayMessages.get(id));
             }
+            relayMessages.clear();
             isRelayCreated = false;
         }
     }
