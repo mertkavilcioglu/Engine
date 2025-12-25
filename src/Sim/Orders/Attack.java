@@ -42,14 +42,22 @@ public class Attack extends Order{
                     targetPos = null;
                 }
                 else{
-                    int targetSpeed = receiver.maxSpeed*2;
                     Vec2int newSpeed = new Vec2int();
                     if(receiver.getPos().distance(targetPos) <= receiver.maxSpeed){
-                        newSpeed = new Vec2int(0,0);
-                        receiver.setPos(targetPos);
+                        if(receiver.getType() != Entity.Type.AIR){
+                            newSpeed = new Vec2int(0,0);
+                            app.debugLogError("BEN TANKIM VE HIZIMI 0 YAPTIM");
+                            receiver.setPos(targetPos);
+                            receiver.setSpeed(newSpeed);
+                        }
+                        else{
+                            receiver.setPos(targetPos);
+                            newSpeed = new Vec2int(receiver.getSpeed().x /2 , receiver.getSpeed().y / 2);
+                            receiver.setSpeed(newSpeed);
+                        }
                     }
-                    else{
-                        newSpeed = receiver.getPos().vectorDiff(targetPos).normalize(targetSpeed);
+                    else {
+                        newSpeed = receiver.getPos().vectorDiff(targetPos.normalize(receiver.maxSpeed));
                         receiver.setSpeed(newSpeed);
                     }
                 }
@@ -67,7 +75,9 @@ public class Attack extends Order{
                 if (receiver.getComponent(Component.ComponentType.TRANSMITTER) != null)
                     ((TDLTransmitterComp) receiver.getComponent(Component.ComponentType.TRANSMITTER)).createResultMessage2(app, receiver, 0, OrderType.ATTACK);
                 this.finishStat = 0;
-                String msgDestroy = String.format("%s destroy the target %s,", receiver.getName(), targetEntity.getName());
+                String msgDestroy = String.format("%s destroyed the target %s,", receiver.getName(), targetEntity.getName());
+                if(receiver.getType() != Entity.Type.AIR)
+                    receiver.setSpeed(new Vec2int(0,0));
                 app.log(msgDestroy);
                 destroy(targetEntity);
                 app.mapView.setTargetPos(null);
@@ -90,22 +100,25 @@ public class Attack extends Order{
 
         }
         else{
-                int targetSpeed;
-                if(receiver.maxSpeed <= targetEntity.maxSpeed)
-                    targetSpeed = targetEntity.maxSpeed*2;
-                else
-                    targetSpeed = receiver.maxSpeed*2;
-
-
-                Vec2int newSpeed = new Vec2int();
-                if(receiver.getPos().distance(targetPos) <= receiver.maxSpeed){
+            Vec2int newSpeed = new Vec2int();
+            if(receiver.getPos().distance(targetEntity.getPos()) <= receiver.maxSpeed){
+                if(receiver.getType() != Entity.Type.AIR){
                     newSpeed = new Vec2int(0,0);
                     receiver.setPos(targetEntity.getPos());
-                }
-                else{
-                    newSpeed = receiver.getPos().vectorDiff(targetPos).normalize(targetSpeed);
                     receiver.setSpeed(newSpeed);
                 }
+                else{
+                    receiver.setPos(targetEntity.getPos());
+                    newSpeed = new Vec2int(receiver.getSpeed().x /2 , receiver.getSpeed().y / 2);
+                    receiver.setSpeed(newSpeed);
+                }
+            }
+            else {
+                newSpeed = receiver.getPos().vectorDiff(targetEntity.getPos()).normalize(receiver.maxSpeed);
+                if(newSpeed.getMagnitudeAsInt() < targetEntity.maxSpeed)
+                    newSpeed = receiver.getPos().vectorDiff(targetEntity.getPos()).normalize(targetEntity.maxSpeed*2);
+                receiver.setSpeed(newSpeed);
+            }
         }
     }
 
