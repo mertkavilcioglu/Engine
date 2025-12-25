@@ -32,6 +32,8 @@ public class KnownInfosMsg extends Message{
         String result = "";
 
         for(Entity e : knownEntities){
+            if(!e.isActive())
+                continue;
             String newInfo = String.format(
                     """
                             ::::::::::UNIT INFO::::::::::
