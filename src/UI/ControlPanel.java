@@ -60,8 +60,10 @@ public class ControlPanel extends VCSPanel{
             if (!app.loadSavePanel.isAnyFile()){
                 if (isFirstPlay){
                     saveInitial();
-                    app.logPanel.clearLogArea();
                 }
+            }
+            if(isFirstPlay){
+                app.logPanel.clearLogArea();
             }
             isFirstPlay = false;
             //app.logPanel.clearLogArea();
