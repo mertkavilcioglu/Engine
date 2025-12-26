@@ -33,7 +33,7 @@ public class World{
         toSendList.add(msg);
     }
 
-    private HashMap<TDLReceiverComp, Entity> regesteredReceivers = new HashMap<>(); // TODO hashmap ve unregister
+    private HashMap<TDLReceiverComp, Entity> regesteredReceivers = new HashMap<>();
     public void processSendList2(){
         for (Message msg : toSendList){
             int transmitterRange = 0;
@@ -107,6 +107,9 @@ public class World{
                     }
                 }
                 nextRelay = temp;
+                if(nextRelay.equals(targetReceiver) && (src.getPos().distance(targetReceiver.getPos()) > srcTransmitterRange)){
+                    break;
+                }
                 //counter++;
                 //app.debugLog(String.format("Relay %d: %s\n", counter, targetReceiver.getName()));
 
