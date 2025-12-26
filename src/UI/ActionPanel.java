@@ -394,6 +394,18 @@ public class ActionPanel extends VCSPanel {
         });
     }
 
+    public void entityChanged(String entityID, Entity.Side side, String entityName){
+        if (side.equals(Entity.Side.ALLY)){
+            JButton newButton = allyButtons.get(entityID);
+            newButton.setText(entityName);
+            allyButtons.replace(entityID, newButton);
+        } else {
+            JButton newButton = enemyButtons.get(entityID);
+            newButton.setText(entityName);
+            enemyButtons.replace(entityID, newButton);
+        }
+    }
+
     //mapdeki entitylerin sideları ve typelarına göre targetların gösterilmesi
     public void showTargetButtonsForAlly(Entity selectedOne){
         if (!selectedOne.getSide().equals(Entity.Side.ALLY)) showTargetButtonsForEnemy(selectedOne);

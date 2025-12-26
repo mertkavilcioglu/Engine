@@ -199,10 +199,11 @@ public class VCSApp {
         return ent;
     }
 
-    public void updateSelectedEntity(String newName, Entity.Side newSide, Vec2int newPos, Vec2int newSpeed, int newRange, Entity.Type newType){
+    public void updateSelectedEntity(String newName, Entity.Side newSide, Vec2int newPos, Vec2int newSpeed, int newRange, Entity.Type newType, String entityID){
         mapView.getSelectedEntity().updateEntity(newName, newSide, newPos, newSpeed, newRange, newType);
         mapView.repaint();
         hierarchyPanel.entityChanged();
+        actionPanel.entityChanged(entityID, newSide, newName);
     }
 
     public void removeEntity(Entity e){
