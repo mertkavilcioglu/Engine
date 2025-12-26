@@ -14,6 +14,7 @@ public class ControlPanel extends VCSPanel{
     private ImageIcon playIcon = new ImageIcon("src/Assets/Icons/play_icon.png");
     private ImageIcon pauseIcon = new ImageIcon("src/Assets/Icons/pause_icon.png");
     private ImageIcon stopIcon = new ImageIcon("src/Assets/Icons/stop_icon.png");
+    private JButton play, pause, reset;
     private boolean isFirstPlay = true;
 
     public ControlPanel(VCSApp app) {
@@ -22,21 +23,21 @@ public class ControlPanel extends VCSPanel{
         this.setLayout(new GridBagLayout());
         JPanel buttonpanel = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
         buttonpanel.setBackground(app.uiColorManager.TOP_BAR_COLOR);
-        JButton play = new JButton();
+        play = new JButton();
         ImageIcon rescaledPlay = new ImageIcon(
                 playIcon.getImage().getScaledInstance(12,12,Image.SCALE_SMOOTH));
         play.setIcon(rescaledPlay);
         play.setFocusable(false);
         play.setSize(10,20);
         play.setBackground(app.uiColorManager.BUTTON_COLOR);
-        JButton pause = new JButton();
+        pause = new JButton();
         ImageIcon rescaledPause = new ImageIcon(
                 pauseIcon.getImage().getScaledInstance(12,12,Image.SCALE_SMOOTH));
         pause.setIcon(rescaledPause);
         pause.setSize(10,20);
         pause.setFocusable(false);
         pause.setBackground(app.uiColorManager.BUTTON_COLOR);
-        JButton reset = new JButton();
+        reset = new JButton();
         ImageIcon rescaledStop = new ImageIcon(
                 stopIcon.getImage().getScaledInstance(12,12,Image.SCALE_SMOOTH));
         reset.setIcon(rescaledStop);
@@ -93,27 +94,31 @@ public class ControlPanel extends VCSPanel{
         });
 
         reset.addActionListener(e ->{
-            for(Sim.Entity ent:app.world.entities) {
-                ent.deleteAllDetectedEntities();
-            }
-            app.simTimer.stop();
-            play.setBackground(initialButColor);
-            pause.setBackground(initialButColor);
-
-            for (Entity entity : app.world.entities){
-                app.removeEntity(entity);
-            }
-            app.world.entities.removeAll(app.world.entitiesToRemove);
-            app.world.entitiesToRemove.clear();
-            app.world.clearAllStack();
-            restoreInitials();
-            app.mapView.repaint();
-            reset.setEnabled(false);
-            pause.setEnabled(false);
-            play.setEnabled(true);
-            isFirstPlay = true;
-            app.loadSavePanel.changeStateOfSaveButton(true);
+            reset();
         });
+    }
+
+    public void reset(){
+        for(Sim.Entity ent:app.world.entities) {
+            ent.deleteAllDetectedEntities();
+        }
+        app.simTimer.stop();
+        play.setBackground(initialButColor);
+        pause.setBackground(initialButColor);
+
+        for (Entity entity : app.world.entities){
+            app.removeEntity(entity);
+        }
+        app.world.entities.removeAll(app.world.entitiesToRemove);
+        app.world.entitiesToRemove.clear();
+        app.world.clearAllStack();
+        restoreInitials();
+        app.mapView.repaint();
+        reset.setEnabled(false);
+        pause.setEnabled(false);
+        play.setEnabled(true);
+        isFirstPlay = true;
+        app.loadSavePanel.changeStateOfSaveButton(true);
     }
 
     private void saveInitial() {

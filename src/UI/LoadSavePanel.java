@@ -80,6 +80,8 @@ public class LoadSavePanel extends VCSPanel{
             entitiesRemoved.clear();
         }
         GetInput input = new GetInput();
+        app.controlPanel.reset();
+        app.logPanel.clearLogArea();
         input.readInput(app.world, String.valueOf(loadedFilePath));
         for (Entity entity : app.world.entities) {
             if(entity.getType() == Entity.Type.HQ){
