@@ -37,11 +37,11 @@ public class GetInput {
                 Vec2int pos = strToVec2int(posStr);
                 Vec2int speed = strToVec2int(speedStr);
                 if (type.equals(Entity.Type.HQ.getName())){
-                    Entity hq = world.createCommander(pos, range);
+                    //Entity hq = world.createCommander(pos, range);
 
                 }
                 if(world.app.pixelColor.isLocationValidForType(type,pos)){
-                    world.createEntity(name, side, pos, speed, strToType(type) );
+                    //world.createEntity(name, side, pos, speed, strToType(type) );
                 }else {
                     if (!(type.equals(Entity.Type.HQ.getName()))) notCreatedList.add(name);
                 }
