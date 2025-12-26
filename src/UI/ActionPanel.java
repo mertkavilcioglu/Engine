@@ -386,9 +386,14 @@ public class ActionPanel extends VCSPanel {
             attackerEntity = selectedEntity;
             if (isAttackAction){
                 if (attackerEntity != null){
-                    if (attackerEntity.getSide().equals(Entity.Side.ALLY))
-                        ((TDLTransmitterComp) attackerEntity.getComponent(Sim.Component.ComponentType.TRANSMITTER)).createAttackMessage2(app,attackerEntity.getId(),targetEntity.getId());
-                    else attackerEntity.addOrder(new Attack(app, attackerEntity, null, targetEntity.getId()));
+                    if (attackerEntity.getSide().equals(Entity.Side.ALLY)) {
+                        ((TDLTransmitterComp) attackerEntity.getComponent(Sim.Component.ComponentType.TRANSMITTER)).createAttackMessage2(app, attackerEntity.getId(), targetEntity.getId());
+                        enemyButtons.get(targetEntity.getId()).setEnabled(false);
+                    } else {
+                        attackerEntity.addOrder(new Attack(app, attackerEntity, null, targetEntity.getId()));
+                        allyButtons.get(targetEntity.getId()).setEnabled(false);
+                    }
+
                 }
             }
         });
@@ -417,7 +422,7 @@ public class ActionPanel extends VCSPanel {
                         enemyTargetPanel.add(enemyButtons.get(entityID));
                         if (selectedOne.getEntitiesToAttack().contains(app.world.getEntityHashMap().get(entityID))){
                             enemyButtons.get(entityID).setEnabled(false);
-                        }
+                        } else enemyButtons.get(entityID).setEnabled(true);
                     }
                 }
         } else if (typeOfSelected.equals(Entity.Type.SURFACE)) {
@@ -428,7 +433,7 @@ public class ActionPanel extends VCSPanel {
                             enemyTargetPanel.add(enemyButtons.get(entityID));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                                 enemyButtons.get(entityID).setEnabled(false);
-                            }
+                            } else enemyButtons.get(entityID).setEnabled(true);
                         }
                     }
                 }
@@ -441,7 +446,7 @@ public class ActionPanel extends VCSPanel {
                             enemyTargetPanel.add(enemyButtons.get(entityID));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                                 enemyButtons.get(entityID).setEnabled(false);
-                            }
+                            } else enemyButtons.get(entityID).setEnabled(true);
                         }
                     }
                 }
@@ -473,7 +478,7 @@ public class ActionPanel extends VCSPanel {
                         allyTargetPanel.add(allyButtons.get(keyEntity.getId()));
                         if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                             allyButtons.get(keyEntity.getId()).setEnabled(false);
-                        }
+                        } else allyButtons.get(keyEntity.getId()).setEnabled(true);
                     }
                 }
         } else if (typeOfSelected.equals(Entity.Type.SURFACE)) {
@@ -484,7 +489,7 @@ public class ActionPanel extends VCSPanel {
                             allyTargetPanel.add(allyButtons.get(keyEntity.getId()));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                                 allyButtons.get(keyEntity.getId()).setEnabled(false);
-                            }
+                            } else allyButtons.get(keyEntity.getId()).setEnabled(true);
                         }
                     }
                 }
@@ -496,7 +501,7 @@ public class ActionPanel extends VCSPanel {
                             allyTargetPanel.add(allyButtons.get(keyEntity.getId()));
                             if (selectedOne.getEntitiesToAttack().contains(keyEntity)){
                                 allyButtons.get(keyEntity.getId()).setEnabled(false);
-                            }
+                            } else allyButtons.get(keyEntity.getId()).setEnabled(true);
                         }
                     }
                 }
