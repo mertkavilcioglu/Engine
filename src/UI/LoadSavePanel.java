@@ -67,7 +67,9 @@ public class LoadSavePanel extends VCSPanel{
         FileNameExtensionFilter nameRestrict = new FileNameExtensionFilter(".txt files", "txt");
         fileUpload.addChoosableFileFilter(nameRestrict);
         int res = fileUpload.showOpenDialog(null);
-        if (res == JFileChooser.APPROVE_OPTION) {
+        if (res == 1){
+            return;
+        }else if (res == JFileChooser.APPROVE_OPTION) {
             loadedFilePath = new File(fileUpload.getSelectedFile().getAbsolutePath());
         }
         if (!app.world.entities.isEmpty()){
