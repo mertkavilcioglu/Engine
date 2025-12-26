@@ -84,11 +84,13 @@ public class LoadSavePanel extends VCSPanel{
         app.logPanel.clearLogArea();
         input.readInput(app.world, String.valueOf(loadedFilePath));
         for (Entity entity : app.world.entities) {
+            if(!entity.isActive())
+                continue;
             if(entity.getType() == Entity.Type.HQ){
                 isHaveHQ = true;
                 app.setHQ(entity);
             }
-            app.hierarchyPanel.entityAdded(entity);
+            //app.hierarchyPanel.entityAdded(entity);
             app.actionPanel.createNewTargetButton(entity);
         }
         app.createHQ(!isHaveHQ);
