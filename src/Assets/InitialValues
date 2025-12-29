@@ -3,10 +3,9 @@ Ally
 HEADQUARTER
 500,250
 0,0
-0
-AA
-Ally
-Plane
-298,157
-0,0
-0
+COMP::Receiver
+###
+COMP::Transmitter
+300
+null
+null

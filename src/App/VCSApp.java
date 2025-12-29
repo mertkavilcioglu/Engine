@@ -251,6 +251,8 @@ public class VCSApp {
                 myWriter.write(speedStr + "\n");
 
                 for (Component c : ent.getComponents().values()){
+                    if(ent.componentsToRemove.containsKey(c.getType()))
+                        continue;
                     if(c instanceof Radar){
                         myWriter.write(LoadSavePanel.SaveComponentType.COMP_RADAR + "\n");
                         myWriter.write(String.format("%d",((Radar) c).getRange() )+ "\n");
@@ -261,7 +263,21 @@ public class VCSApp {
                     }
                     else if(c instanceof TDLReceiverComp){
                         myWriter.write(LoadSavePanel.SaveComponentType.COMP_RECEIVER + "\n");
+                        myWriter.write("###" + "\n");
                     }
+                }
+
+                int compNumReq = 3;
+
+                for(Component c : ent.getComponents().values()){
+                    if(!ent.componentsToRemove.containsKey(c.getType())){
+                        compNumReq--;
+                    }
+                }
+
+                for(int i=0 ; i<compNumReq ; i++){
+                    myWriter.write("null" + "\n");
+                    myWriter.write("null" + "\n");
                 }
 
 

@@ -11,6 +11,8 @@ public class GetInput {
 
     public void readInput(World world, String filePath) {
         ArrayList<String> notCreatedList = new ArrayList<String>();
+        ArrayList<String> compList = new ArrayList<>();
+        ArrayList<String> rangeList = new ArrayList<>(); //TODO bunları 1 for loop içinde işle ve addComp yap
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             while (true) {
                 String name = br.readLine();
