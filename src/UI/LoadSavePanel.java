@@ -61,6 +61,21 @@ public class LoadSavePanel extends VCSPanel{
         });
     }
 
+    public enum SaveComponentType{
+        COMP_RADAR("COMP::Radar"),
+        COMP_TRANSMITTER("COMP::Transmitter"),
+        COMP_RECEIVER("COMP::Receiver");
+
+        private String name;
+
+        SaveComponentType(String name){
+            this.name = name;
+        }
+        public String toString(){
+            return name;
+        }
+    }
+
     public void load(){
         JFileChooser fileUpload = new JFileChooser();
         fileUpload.setAcceptAllFileFilterUsed(false);
