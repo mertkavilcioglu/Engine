@@ -146,7 +146,7 @@ public class World{
         Entity ent = new Entity(this);
         ent.setName("HEADQUARTER");
         ent.setSide(Entity.Side.ALLY);
-        if(pos == null) ent.setPos(new Vec2int( (int)(app.mapView.getMapWidth() * 0.47), (int)(app.mapView.getMapHeight() * 0.54)));
+        if(pos == null) ent.setPos(new Vec2int( (int)(app.getWindow().getWidth() * 0.32), (int)(app.getWindow().getHeight() * 0.31)));
         else ent.setPos(pos);
         ent.setSpeed(new Vec2int(0, 0));
         ent.setType(Entity.Type.HQ);
