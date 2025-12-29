@@ -559,4 +559,12 @@ public class MapView extends VCSPanel {
             mode = Mode.MOVE_POS_CAPTURE;
         } else mode = Mode.NORMAL;
     }
+
+    public int getMapWidth(){
+        return this.getWidth();
+    }
+
+    public int getMapHeight(){
+        return this.getHeight();
+    }
 }
