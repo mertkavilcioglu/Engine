@@ -7,6 +7,7 @@ import Sim.GetInput;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 
 public class ControlPanel extends VCSPanel{
     private Color initialButColor;
@@ -96,11 +97,15 @@ public class ControlPanel extends VCSPanel{
         });
 
         reset.addActionListener(e ->{
-            reset();
+            try {
+                reset();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         });
     }
 
-    public void reset(){
+    public void reset() throws IOException {
         for(Sim.Entity ent:app.world.entities) {
             ent.deleteAllDetectedEntities();
         }
@@ -128,7 +133,7 @@ public class ControlPanel extends VCSPanel{
         app.saveSenario(init);
     }
 
-    private void restoreInitials(){
+    private void restoreInitials() throws IOException {
         GetInput input = new GetInput();
         if (!app.loadSavePanel.isAnyFile()){
             File filePath = new File("src/Assets/InitialValues");

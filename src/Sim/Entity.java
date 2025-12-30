@@ -117,6 +117,15 @@ public class Entity {
             return 1;
         }
 
+        public Side getSideByString(String s){
+            if(s.equalsIgnoreCase("ally"))
+                return ALLY;
+            else if(s.equalsIgnoreCase("enemy"))
+                return ENEMY;
+            System.out.println("ENTITY SIDE IS NULL!!!!!!!!");
+            return null;
+        }
+
     }
 
     public void addOrder(Order order){
