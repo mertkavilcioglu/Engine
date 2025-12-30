@@ -5,7 +5,6 @@ import Sim.Component;
 import Sim.Managers.IDManager;
 import Sim.Managers.ShortcutManager;
 import Sim.TDL.TDLReceiverComp;
-import Sim.TDL.TDLTransmitterComp;
 import UI.*;
 import Vec.Vec2int;
 
@@ -236,12 +235,19 @@ public class VCSApp {
         }
         try {
             FileWriter myWriter = new FileWriter(saveFile);
+            int range = 0;
             for (Sim.Entity ent : world.entities) {
                 if(!ent.isActive())
                     continue;
                 String posStr;
                 posStr = ent.getPos().toString().substring(1, ent.getPos().toString().length() - 1);
-
+                for (Component c : ent.getComponents().values()){
+                    if(c instanceof Radar){
+                        if(((Radar) c).getRange() != 0){
+                            range = ((Radar) c).getRange();
+                        } else range = 0;
+                    }
+                }
                 String speedStr = ent.getSpeed().toString().substring(1, ent.getSpeed().toString().length() - 1);
                 myWriter.write(ent.getName() + "\n");
                 myWriter.write(ent.getSide() == Entity.Side.ENEMY ? "Enemy" : "Ally");
@@ -249,21 +255,7 @@ public class VCSApp {
                 myWriter.write(ent.getType().getName() + "\n");
                 myWriter.write(posStr + "\n");
                 myWriter.write(speedStr + "\n");
-
-                for (Component c : ent.getComponents().values()){
-                    if(c instanceof Radar){
-                        myWriter.write(LoadSavePanel.SaveComponentType.COMP_RADAR + "\n");
-                        myWriter.write(String.format("%d",((Radar) c).getRange() )+ "\n");
-                    }
-                    else if(c instanceof TDLTransmitterComp){
-                        myWriter.write(LoadSavePanel.SaveComponentType.COMP_TRANSMITTER + "\n");
-                        myWriter.write(String.format("%d",((TDLTransmitterComp) c).getTransmitterRange() ) + "\n");
-                    }
-                    else if(c instanceof TDLReceiverComp){
-                        myWriter.write(LoadSavePanel.SaveComponentType.COMP_RECEIVER + "\n");
-                    }
-                }
-
+                myWriter.write(range + "\n");
 
             }
             myWriter.close();
