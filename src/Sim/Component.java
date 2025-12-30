@@ -28,8 +28,4 @@ public abstract class Component {
 
     public abstract Component copyTo(Entity e);
 
-    public ComponentType getType(){
-        return type;
-    }
-
 }
