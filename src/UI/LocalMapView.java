@@ -19,6 +19,7 @@ import java.util.Queue;
 
 public class LocalMapView extends VCSPanel {
     private LocalWorld localWorld;
+    private double minimizingScale = 0.4;
 
     private ImageIcon turkeyMap = new ImageIcon(new ImageIcon("src/Assets/Turkey_map_painted.png").getImage());
     private final Image friendlyHQ = new ImageIcon("src/Assets/Symbols/nato_hq2j.jpg").getImage();
@@ -29,7 +30,7 @@ public class LocalMapView extends VCSPanel {
     private final Image enemyLand = new ImageIcon("src/Assets/Symbols/nato_enemy_land.png").getImage();
     private final Image enemySea = new ImageIcon("src/Assets/Symbols/nato_enemy_sea.png").getImage();
     private int targetWidth = 19;
-    private final Font timesNewRoman = new Font("Times New Roman", Font.PLAIN, 10 );
+    private final Font timesNewRoman = new Font("Times New Roman", Font.PLAIN, 8 );
 
     private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private String screenResolution = String.format("%dx%d", gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
@@ -37,6 +38,7 @@ public class LocalMapView extends VCSPanel {
     public LocalMapView(VCSApp app, Entity entity) {
         super(app);
         this.localWorld = entity.getLocalWorld();
+        targetWidth = (int) Math.round(targetWidth*minimizingScale*1.8);
         setBackground(UIColorManager.DARK_MAP_BG_BLUE_COLOR);
         setBorder(BorderFactory.createMatteBorder(0,1,0,1,Color.BLACK));
     }
@@ -54,11 +56,12 @@ public class LocalMapView extends VCSPanel {
                     continue;
                 Vec2int pos = e.getPos();
                 String name = e.getName();
+                Vec2int scaledPos = new Vec2int((int) Math.round(pos.x*minimizingScale), (int) Math.round(pos.y * minimizingScale));
 
                 FontMetrics fontMetric = g.getFontMetrics();
                 int textLength = fontMetric.stringWidth(name);
-                int textX = pos.x - (textLength/2);
-                int textY = pos.y - 10;
+                int textX = scaledPos.x - (textLength/2);
+                int textY = scaledPos.y - 10;
 
                 if(e.getSide() == Entity.Side.ALLY)
                     g.setColor(Color.blue);
@@ -67,23 +70,23 @@ public class LocalMapView extends VCSPanel {
 
                 if(e.getSide() == Entity.Side.ALLY){
                     if (e.getType() == Entity.Type.HQ)
-                        drawNormalizedImageByWidth(g, friendlyHQ, pos, targetWidth+2);
+                        drawNormalizedImageByWidth(g, friendlyHQ, scaledPos, targetWidth+2);
                     if(e.getType() == Entity.Type.AIR)
-                        drawNormalizedImageByWidth(g, friendlyAir, pos, targetWidth);
+                        drawNormalizedImageByWidth(g, friendlyAir, scaledPos, targetWidth);
                     else if(e.getType() == Entity.Type.GROUND)
-                        drawNormalizedImageByWidth(g, friendlyLand, pos, targetWidth+2);
+                        drawNormalizedImageByWidth(g, friendlyLand, scaledPos, targetWidth+2);
                     else if(e.getType() == Entity.Type.SURFACE)
-                        drawNormalizedImageByWidth(g, friendlySea, pos, targetWidth);
+                        drawNormalizedImageByWidth(g, friendlySea, scaledPos, targetWidth);
 
                 }
 
                 else if(e.getSide() == Entity.Side.ENEMY){
                     if(e.getType() == Entity.Type.AIR)
-                        drawNormalizedImageByWidth(g, enemyAir, pos, targetWidth);
+                        drawNormalizedImageByWidth(g, enemyAir, scaledPos, targetWidth);
                     else if(e.getType() == Entity.Type.GROUND)
-                        drawNormalizedImageByWidth(g, enemyLand, pos, targetWidth + 2);
+                        drawNormalizedImageByWidth(g, enemyLand, scaledPos, targetWidth + 2);
                     else if(e.getType() == Entity.Type.SURFACE)
-                        drawNormalizedImageByWidth(g, enemySea, pos, targetWidth);
+                        drawNormalizedImageByWidth(g, enemySea, scaledPos, targetWidth);
                 }
 
                 g.setFont(timesNewRoman);
@@ -107,7 +110,7 @@ public class LocalMapView extends VCSPanel {
 
     public void initializeLocalMap(Vec2int resolution){
         turkeyMap = new ImageIcon(new ImageIcon("src/Assets/Turkey_map_painted.png").getImage().
-                getScaledInstance(resolution.x, resolution.y, Image.SCALE_DEFAULT));
+                getScaledInstance( (int) Math.round(resolution.x * minimizingScale), (int) Math.round(resolution.y * minimizingScale), Image.SCALE_DEFAULT));
         Image mapImg = turkeyMap.getImage();
         BufferedImage bImage = new BufferedImage(mapImg.getWidth(null), mapImg.getHeight(null), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bImage.createGraphics();

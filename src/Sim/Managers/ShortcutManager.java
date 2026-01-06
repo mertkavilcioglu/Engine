@@ -115,7 +115,6 @@ public class ShortcutManager {
     public void openLocalFrame(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_M && app.mapView.getSelectedEntity() != null){
             app.mapView.getSelectedEntity().createLocalMapFrame();
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAA");
         }
     }
 

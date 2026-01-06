@@ -616,14 +616,17 @@ public class Entity {
     }
 
     public void createLocalMapFrame(){
-        if(localMapFrame != null)
+        if(localMapFrame != null){
+            localMapFrame.requestFocus();
             return;
+        }
+
         localMapFrame = new JFrame();
         localMapFrame.setVisible(true);
         LocalMapView localMap = new LocalMapView(w.app, this);
         localMapFrame.add(localMap);
         localMap.initializeLocalMap(w.app.mapView.getMapResolution());
-        localMapFrame.setResizable(true);
+        localMapFrame.setResizable(false);
         localMapFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         localMapFrame.pack();
         localMapFrame.addWindowListener(new WindowAdapter() {
