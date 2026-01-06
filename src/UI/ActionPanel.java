@@ -402,10 +402,14 @@ public class ActionPanel extends VCSPanel {
     public void entityChanged(String entityID, Entity.Side side, String entityName){
         if (side.equals(Entity.Side.ALLY)){
             JButton newButton = allyButtons.get(entityID);
+            if(newButton == null)
+                return;
             newButton.setText(entityName);
             allyButtons.replace(entityID, newButton);
         } else {
             JButton newButton = enemyButtons.get(entityID);
+            if(enemyButtons == null)
+                return;
             newButton.setText(entityName);
             enemyButtons.replace(entityID, newButton);
         }

@@ -132,6 +132,8 @@ public class ControlPanel extends VCSPanel{
         play.setEnabled(true);
         isFirstPlay = true;
         app.loadSavePanel.changeStateOfSaveButton(true);
+
+        app.hierarchyPanel.updateHierarchyTree();
     }
 
     private void saveInitial() {

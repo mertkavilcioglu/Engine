@@ -230,6 +230,13 @@ public class HierarchyView extends VCSPanel {
         }
     }
 
+    public void updateHierarchyTree(){
+        for(Entity e : app.world.entities){
+            app.mapView.setSelectedEntity(e);
+            app.editorPanel.updateSelectedEntity();
+        }
+    }
+
     public void clearSelectionInTree(){
         tree.clearSelection();
     }
