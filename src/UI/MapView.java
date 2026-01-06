@@ -26,6 +26,7 @@ public class MapView extends VCSPanel {
     private World world;
     private Map<Entity,Vec2int> initialPoints = new HashMap<>();
     private Map<Entity,Vec2int> initialSpeeds = new HashMap<>();
+    private Vec2int mapResolution;
 
     public Map<String, RGB> allPixelColors;
     private ImageIcon turkeyMap = new ImageIcon(new ImageIcon("src/Assets/Turkey_map_painted.png").getImage());
@@ -51,7 +52,7 @@ public class MapView extends VCSPanel {
     private String screenResolution = String.format("%dx%d", gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
 
 
-    public Vec2int targetPos = null;
+    public Vec2int targetPos = null; // just for visual debug
 
     public void setTargetPos(Vec2int targetPos) {
         this.targetPos = targetPos;
@@ -529,6 +530,7 @@ public class MapView extends VCSPanel {
     public void initializeTheMap(){
         turkeyMap = new ImageIcon(new ImageIcon("src/Assets/Turkey_map_painted.png").getImage().
                 getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT));
+        setMapResolution(new Vec2int(getWidth(), getHeight()));
         Image mapImg = turkeyMap.getImage();
         BufferedImage bImage = new BufferedImage(mapImg.getWidth(null), mapImg.getHeight(null), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bImage.createGraphics();
@@ -566,5 +568,13 @@ public class MapView extends VCSPanel {
 
     public int getMapHeight(){
         return this.getHeight();
+    }
+
+    public Vec2int getMapResolution() {
+        return mapResolution;
+    }
+
+    public void setMapResolution(Vec2int mapResolution) {
+        this.mapResolution = mapResolution;
     }
 }

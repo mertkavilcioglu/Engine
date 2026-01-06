@@ -1,7 +1,7 @@
 HEADQUARTER
 Ally
 HEADQUARTER
-428,267
+458,257
 0,0
 COMP::Receiver
 ###
@@ -12,7 +12,7 @@ null
 ALLY_PLANE
 Ally
 Plane
-380,140
+502,185
 0,0
 COMP::Receiver
 ###
@@ -23,7 +23,7 @@ null
 ALLY_PLANE
 Ally
 Plane
-525,189
+398,154
 0,0
 COMP::Receiver
 ###

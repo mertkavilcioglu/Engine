@@ -31,6 +31,7 @@ public class ShortcutManager {
                 entityPaste(e); // CTRL + V
                 revertChanges(e); // CTRL + Z
                 save(e); // CTRL + S
+                openLocalFrame(e);
             }
 
             @Override
@@ -108,6 +109,12 @@ public class ShortcutManager {
     public void save(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_S && ctrlOn){
             app.loadSavePanel.save();
+        }
+    }
+
+    public void openLocalFrame(KeyEvent e){
+        if(e.getKeyCode() == KeyEvent.VK_M && app.mapView.getSelectedEntity() != null){
+            app.mapView.getSelectedEntity().createLocalMapFrame();
         }
     }
 
