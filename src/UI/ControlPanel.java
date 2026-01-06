@@ -7,7 +7,6 @@ import Sim.GetInput;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 
 public class ControlPanel extends VCSPanel{
     private Color initialButColor;
@@ -63,12 +62,6 @@ public class ControlPanel extends VCSPanel{
                     saveInitial();
                 }
             }
-
-            // i think always save at first is better [mert]
-            if (isFirstPlay){
-                saveInitial();
-            }
-
             if(isFirstPlay){
                 app.logPanel.clearLogArea();
             }
@@ -103,15 +96,11 @@ public class ControlPanel extends VCSPanel{
         });
 
         reset.addActionListener(e ->{
-            try {
-                reset();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            reset();
         });
     }
 
-    public void reset() throws IOException {
+    public void reset(){
         for(Sim.Entity ent:app.world.entities) {
             ent.deleteAllDetectedEntities();
         }
@@ -139,25 +128,16 @@ public class ControlPanel extends VCSPanel{
         app.saveSenario(init);
     }
 
-    private void restoreInitials() throws IOException {
+    private void restoreInitials(){
         GetInput input = new GetInput();
-        if (!app.loadSavePanel.isAnyFile() || app.loadSavePanel.getLoadedFilePath() != null
-                || app.loadSavePanel.getSavedFilePath() != null){
+        if (!app.loadSavePanel.isAnyFile()){
             File filePath = new File("src/Assets/InitialValues");
             input.readInputForReset(app, String.valueOf(filePath));
+        } else if (app.loadSavePanel.getLoadedFilePath() != null) {
+            input.readInputForReset(app, String.valueOf(app.loadSavePanel.getLoadedFilePath()));
+        } else if (app.loadSavePanel.getSavedFilePath() != null) {
+            input.readInputForReset(app, String.valueOf(app.loadSavePanel.getSavedFilePath()));
         }
-        // Load sonrasi reset, runtime oncesi yapilanlari tutsun diye hepsini aynisina cevirdim
-
-        // OLD:
-//        GetInput input = new GetInput();
-//        if (!app.loadSavePanel.isAnyFile()){
-//            File filePath = new File("src/Assets/InitialValues");
-//            input.readInputForReset(app, String.valueOf(filePath));
-//        } else if (app.loadSavePanel.getLoadedFilePath() != null) {
-//            input.readInputForReset(app, String.valueOf(app.loadSavePanel.getLoadedFilePath()));
-//        } else if (app.loadSavePanel.getSavedFilePath() != null) {
-//            input.readInputForReset(app, String.valueOf(app.loadSavePanel.getSavedFilePath()));
-//        }
     }
 
     @Override

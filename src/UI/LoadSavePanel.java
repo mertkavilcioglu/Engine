@@ -7,7 +7,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -45,7 +44,7 @@ public class LoadSavePanel extends VCSPanel{
                 if(e.getSource() == loadButton) {
                     load();
                 }
-            } catch (HeadlessException | IOException ex) {
+            } catch (HeadlessException ex) {
                 ex.printStackTrace();
             }
 
@@ -62,23 +61,7 @@ public class LoadSavePanel extends VCSPanel{
         });
     }
 
-    public enum SaveComponentType{
-        COMP_RADAR("COMP::Radar"),
-        COMP_TRANSMITTER("COMP::Transmitter"),
-        COMP_RECEIVER("COMP::Receiver");
-
-        private String name;
-
-        SaveComponentType(String name){
-            this.name = name;
-        }
-        public String toString(){
-            return name;
-        }
-    }
-
-    public void load() throws IOException {
-        //app.controlPanel.reset();
+    public void load(){
         JFileChooser fileUpload = new JFileChooser();
         fileUpload.setAcceptAllFileFilterUsed(false);
         FileNameExtensionFilter nameRestrict = new FileNameExtensionFilter(".txt files", "txt");
@@ -99,6 +82,7 @@ public class LoadSavePanel extends VCSPanel{
             entitiesRemoved.clear();
         }
         GetInput input = new GetInput();
+        app.controlPanel.reset();
         app.logPanel.clearLogArea();
         input.readInput(app.world, String.valueOf(loadedFilePath));
         for (Entity entity : app.world.entities) {
@@ -108,10 +92,10 @@ public class LoadSavePanel extends VCSPanel{
                 isHaveHQ = true;
                 app.setHQ(entity);
             }
-            app.hierarchyPanel.entityAdded(entity);
+            //app.hierarchyPanel.entityAdded(entity);
             app.actionPanel.createNewTargetButton(entity);
         }
-        //app.createHQ(!isHaveHQ);
+        app.createHQ(!isHaveHQ);
         app.mapView.repaint();
     }
 
