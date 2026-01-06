@@ -2,11 +2,20 @@ package Sim;
 
 import Sim.Orders.Attack;
 import Sim.Orders.Order;
+import Sim.TDL.TDLReceiverComp;
+import UI.AppWindow;
 import UI.EntityEditorView;
+import UI.LocalMapView;
+import UI.MapView;
 import Var.RGB;
 import Vec.Vec2int;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.*;
+import java.util.List;
 
 public class Entity {
     private String id;
@@ -32,6 +41,7 @@ public class Entity {
     private Stack<Vec2int> previousPositions = new Stack<>();
     private boolean isInLink = false;
     private boolean isDetected = false;
+    private JFrame localMapFrame = null;
 
     //private String ppliCode;
 
@@ -603,6 +613,28 @@ public class Entity {
 
     public boolean isLocal(){
         return isLocal;
+    }
+
+    public void createLocalMapFrame(){
+        if(localMapFrame != null)
+            return;
+        localMapFrame = new JFrame();
+        localMapFrame.setVisible(true);
+        LocalMapView localMap = new LocalMapView(w.app, this);
+        localMapFrame.add(localMap);
+        localMap.initializeLocalMap(w.app.mapView.getMapResolution());
+        localMapFrame.setResizable(true);
+        localMapFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        localMapFrame.pack();
+        localMapFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                localMapFrame = null;
+            }
+        });
+
+
     }
 
 }
