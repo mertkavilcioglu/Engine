@@ -1,5 +1,8 @@
 package Sim;
 import App.VCSApp;
+import Sim.TDL.TDLReceiverComp;
+import Sim.TDL.TDLTransmitterComp;
+import UI.LoadSavePanel;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -9,87 +12,148 @@ import java.util.HashSet;
 
 public class GetInput {
 
-    public void readInput(World world, String filePath) {
+    public void readInput(World world, String filePath) throws IOException {
         ArrayList<String> notCreatedList = new ArrayList<String>();
-        try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            while (true) {
-                String name = br.readLine();
-                if (name == null) break;
-                String sideStr = br.readLine();
-                String type = br.readLine();
-                String posStr = br.readLine();
-                String speedStr = br.readLine();
-                String rangeString = br.readLine();
 
-                int range = 0;
-                try {
-                    if (rangeString == null){
-                        range = 0;
-                    } else range = Integer.parseInt(rangeString);
-                } catch (NumberFormatException e) {
-                    range = 0;
-                }
 
-                Entity.Side side = Entity.Side.ENEMY;
-                if (sideStr != null && sideStr.toLowerCase().equals("ally")) {
-                    side = Entity.Side.ALLY;
-                }
-                Vec2int pos = strToVec2int(posStr);
-                Vec2int speed = strToVec2int(speedStr);
-                if (type.equals(Entity.Type.HQ.getName())){
-                    //Entity hq = world.createCommander(pos, range);
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String entry = new String();
 
-                }
-                if(world.app.pixelColor.isLocationValidForType(type,pos)){
-                    //world.createEntity(name, side, pos, speed, strToType(type) );
-                }else {
-                    if (!(type.equals(Entity.Type.HQ.getName()))) notCreatedList.add(name);
-                }
+        while (entry != null) {
+            entry = reader.readLine();
+            if (entry == null)
+                continue;
+            entry = entry.trim();
+            if (entry.isEmpty())
+                continue;
+            String name = entry;
+            String sideStr = reader.readLine();
+            String typeStr = reader.readLine();
+            String posStr = reader.readLine();
+            String speedStr = reader.readLine();
+            String comp1Str = reader.readLine();
+            String range1Str = reader.readLine();
+            String comp2Str = reader.readLine();
+            String range2Str = reader.readLine();
+            String comp3Str = reader.readLine();
+            String range3Str = reader.readLine();
+
+            ArrayList<String> compList = new ArrayList<>();
+            ArrayList<String> rangeList = new ArrayList<>();
+
+            compList.add(comp1Str);
+            compList.add(comp2Str);
+            compList.add(comp3Str);
+            rangeList.add(range1Str);
+            rangeList.add(range2Str);
+            rangeList.add(range3Str);
+
+            Entity.Side side = Entity.Side.ENEMY;
+            if (sideStr != null && sideStr.toLowerCase().equals("ally")) {
+                side = Entity.Side.ALLY;
+            }
+            Vec2int pos = strToVec2int(posStr);
+            Vec2int speed = strToVec2int(speedStr);
+            if (typeStr.equals(Entity.Type.HQ.getName())){
+                Entity hq = world.createCommander(pos, 300); //range is not used
 
             }
-            }catch (IOException ex) {
-                throw new RuntimeException(ex);
+            if(world.app.pixelColor.isLocationValidForType(typeStr,pos)){
+                Entity ent = world.createEntity(name, side, pos, speed, strToType(typeStr) );
+
+                for(int i=0 ; i<3 ; i++){
+                    if(compList.get(i).equalsIgnoreCase(LoadSavePanel.SaveComponentType.COMP_RADAR.toString())){
+                        ent.addComponent(new Radar(ent,ent.w.entities));
+                        ((Radar) ent.getComponent(Component.ComponentType.RADAR)).setRange(Integer.parseInt(rangeList.get(i)));
+                        //System.out.println("added radar by load");
+                    }
+                    else if(compList.get(i).equalsIgnoreCase(LoadSavePanel.SaveComponentType.COMP_TRANSMITTER.toString())){
+                        ent.addComponent(new TDLTransmitterComp(ent,ent.w.entities));
+                        ((TDLTransmitterComp) ent.getComponent(Component.ComponentType.TRANSMITTER)).setRange(Integer.parseInt(rangeList.get(i)));
+                        //System.out.println("added transmitter by load");
+                    }
+                    else if(compList.get(i).equalsIgnoreCase(LoadSavePanel.SaveComponentType.COMP_RECEIVER.toString())){
+                        ent.addComponent(new TDLReceiverComp(ent,ent.w.entities));
+                        //System.out.println("added receiver by load");
+                    }
+                }
+
+            }else {
+                if (!(typeStr.equals(Entity.Type.HQ.getName()))) notCreatedList.add(name);
             }
+
+        }
 
         if (!notCreatedList.isEmpty()) {
             createPopUp(notCreatedList);
         }
 
+
     }
 
-    public void readInputForReset(VCSApp app, String filePath){
+    public void readInputForReset(VCSApp app, String filePath) throws IOException {
         HashSet<Entity> allEntities = new HashSet<>(app.world.entities);
-        try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            while (true) {
-                String name = br.readLine();
-                if (name == null) break;
-                String sideStr = br.readLine();
-                String type = br.readLine();
-                String posStr = br.readLine();
-                String speedStr = br.readLine();
-                String rangeString = br.readLine();
-                int range = 0;
-                try {
-                    if (rangeString == null){
-                        range = 0;
-                    } else range = Integer.parseInt(rangeString);
-                } catch (NumberFormatException e) {
-                    range = 0;
-                }
 
 
-                Entity.Side side = Entity.Side.ENEMY;
-                if (sideStr != null && sideStr.toLowerCase().equals("ally")) {
-                    side = Entity.Side.ALLY;
-                }
-                Vec2int pos = strToVec2int(posStr);
-                Vec2int speed = strToVec2int(speedStr);
-                Entity entity = app.createEntityByReset(name, side, pos, speed, range, strToType(type));
-                if (allEntities.contains(entity)) app.removeEntity(entity);
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String entry = new String();
 
+        while (entry != null) {
+            entry = reader.readLine();
+            if (entry == null)
+                continue;
+            entry = entry.trim();
+            if (entry.isEmpty())
+                continue;
+            String name = entry;
+            String sideStr = reader.readLine();
+            String typeStr = reader.readLine();
+            String posStr = reader.readLine();
+            String speedStr = reader.readLine();
+            String comp1Str = reader.readLine();
+            String range1Str = reader.readLine();
+            String comp2Str = reader.readLine();
+            String range2Str = reader.readLine();
+            String comp3Str = reader.readLine();
+            String range3Str = reader.readLine();
+
+            ArrayList<String> compList = new ArrayList<>();
+            ArrayList<String> rangeList = new ArrayList<>();
+
+            compList.add(comp1Str);
+            compList.add(comp2Str);
+            compList.add(comp3Str);
+            rangeList.add(range1Str);
+            rangeList.add(range2Str);
+            rangeList.add(range3Str);
+
+            Entity.Side side = Entity.Side.ENEMY;
+            if (sideStr != null && sideStr.toLowerCase().equals("ally")) {
+                side = Entity.Side.ALLY;
             }
-        }catch (IOException ex) {
-            throw new RuntimeException(ex);
+            Vec2int pos = strToVec2int(posStr);
+            Vec2int speed = strToVec2int(speedStr);
+
+            Entity ent = app.createEntityByReset(name, side, pos, speed, 200, strToType(typeStr));
+            for(int i=0 ; i<3 ; i++){
+                if(compList.get(i).equalsIgnoreCase(LoadSavePanel.SaveComponentType.COMP_RADAR.toString())){
+                    ent.addComponent(new Radar(ent,ent.w.entities));
+                    ((Radar) ent.getComponent(Component.ComponentType.RADAR)).setRange(Integer.parseInt(rangeList.get(i)));
+                    //System.out.println("added radar by reset");
+                }
+                else if(compList.get(i).equalsIgnoreCase(LoadSavePanel.SaveComponentType.COMP_TRANSMITTER.toString())){
+                    ent.addComponent(new TDLTransmitterComp(ent,ent.w.entities));
+                    ((TDLTransmitterComp) ent.getComponent(Component.ComponentType.TRANSMITTER)).setRange(Integer.parseInt(rangeList.get(i)));
+                    //System.out.println("added transmitter by reset");
+                }
+                else if(compList.get(i).equalsIgnoreCase(LoadSavePanel.SaveComponentType.COMP_RECEIVER.toString())){
+                    ent.addComponent(new TDLReceiverComp(ent,ent.w.entities));
+                    //System.out.println("added receiver by reset");
+                }
+            }
+
+            if (allEntities.contains(ent)) app.removeEntity(ent);
+
         }
     }
 
