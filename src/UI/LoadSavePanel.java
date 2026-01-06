@@ -113,6 +113,7 @@ public class LoadSavePanel extends VCSPanel{
         }
         //app.createHQ(!isHaveHQ);
         app.mapView.repaint();
+        app.hierarchyPanel.updateHierarchyTree();
     }
 
     public void saveAs(){
