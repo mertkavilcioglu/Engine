@@ -11,6 +11,9 @@ public class NodeInfo {
     private DefaultMutableTreeNode radarRoot;
     private DefaultMutableTreeNode radar;
     private DefaultMutableTreeNode side;
+    private DefaultMutableTreeNode receiverRoot;
+    private DefaultMutableTreeNode transmitterRoot;
+    private DefaultMutableTreeNode transmitterRange;
 
     public void assignRoot(DefaultMutableTreeNode node){
         root = node;
@@ -39,6 +42,15 @@ public class NodeInfo {
             case "side":
                 side = node;
                 break;
+            case "receiverRoot":
+                receiverRoot = node;
+                break;
+            case "transmitterRoot":
+                transmitterRoot = node;
+                break;
+            case "transmitterRange":
+                transmitterRange = node;
+                break;
         }
     }
 
@@ -58,6 +70,12 @@ public class NodeInfo {
                 return radar;
             case "side":
                 return side;
+            case "receiverRoot":
+                return receiverRoot;
+            case "transmitterRoot":
+                return transmitterRoot;
+            case "transmitterRange":
+                return transmitterRange;
 
         }
         return null;

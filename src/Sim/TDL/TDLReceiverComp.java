@@ -53,6 +53,8 @@ public class TDLReceiverComp extends Component {
                     if(!msg.getSrcID().equals(parentEntity.getId()))
                         if (parentEntity.getSide().equals(((InfoMsg) msg).getSide()))
                             parentEntity.getLocalWorld().readEntityInfo(msg);
+                    if(parentEntity.getComponent(Component.ComponentType.TRANSMITTER) == null)
+                        return;
                     ((TDLTransmitterComp) parentEntity.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(msg.getApp(), parentEntity, msg);
                     break;
                 case RECEIVE_INFO:
@@ -78,6 +80,8 @@ public class TDLReceiverComp extends Component {
                     if(!msg.getSrcID().equals(parentEntity.getId()))
                         if (parentEntity.getSide().equals(((KnownInfosMsg) msg).getSide())){
                             parentEntity.getLocalWorld().readKnownInfo(msg);
+                            if(parentEntity.getComponent(Component.ComponentType.TRANSMITTER) == null)
+                                return;
                             ((TDLTransmitterComp) parentEntity.getComponent(Component.ComponentType.TRANSMITTER)).createReceiveMessage2(msg.getApp(), parentEntity, msg);
 
                         }

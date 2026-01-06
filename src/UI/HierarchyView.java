@@ -5,6 +5,8 @@ import Sim.Component;
 import Sim.Entity;
 import Sim.NodeInfo;
 import Sim.Radar;
+import Sim.TDL.TDLReceiverComp;
+import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
 import javax.swing.*;
@@ -121,39 +123,124 @@ public class HierarchyView extends VCSPanel {
         return leaf;
     }
 
-    public void updateComponent(String comp, Entity e){
+    public void updateComponent(Component.ComponentType comp, Entity e){
         switch (comp){
-            case "Radar":
+            case RADAR:
                 if(!e.getComponents().isEmpty()){
-                    for(Component c : e.getComponents().values()){
-                        if(c instanceof Radar){
-                            if(((Radar) c).getRange() != 0){
-                                if(e.getNodeInfo().getNode("radarRoot") == null){
-                                    DefaultMutableTreeNode radarNode = new DefaultMutableTreeNode("Radar:");
-                                    DefaultMutableTreeNode radarRange = new DefaultMutableTreeNode(((Radar) c).getRange());
-                                    radarNode.add(radarRange);
-                                    e.getNodeInfo().getRoot().add(radarNode);
-                                    e.getNodeInfo().assignNode("radarRoot", radarNode);
-                                    e.getNodeInfo().assignNode("radarRange", radarRange);
+                    if(e.hasComponent(Component.ComponentType.RADAR)){
+                        Component c = e.getComponent(Component.ComponentType.RADAR);
+                        if(((Radar) c).getRange() != 0){
+                            if(e.getNodeInfo().getNode("radarRoot") == null){
+                                DefaultMutableTreeNode radarNode = new DefaultMutableTreeNode("Radar:");
+                                DefaultMutableTreeNode radarRange = new DefaultMutableTreeNode(((Radar) c).getRange());
+                                radarNode.add(radarRange);
+                                e.getNodeInfo().getRoot().add(radarNode);
+                                e.getNodeInfo().assignNode("radarRoot", radarNode);
+                                e.getNodeInfo().assignNode("radarRange", radarRange);
+                            }
+                            else{
+                                e.getNodeInfo().getNode("radarRange").setUserObject(((Radar) c).getRange());
+                            }
+
+                        }
+                        else{
+                            if(e.getNodeInfo().getNode("radarRange") != null &&
+                                    e.getNodeInfo().getNode("radarRoot") != null){
+                                e.getNodeInfo().getNode("radarRange").setUserObject(0);
+                                e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("radarRoot"));
+                                e.getNodeInfo().assignNode("radarRoot", null);
+                                e.removeComponent(Component.ComponentType.RADAR);
+                            }
+                        }
+                    }
+                    else{
+                        if(e.getNodeInfo().getNode("radarRange") != null &&
+                                e.getNodeInfo().getNode("radarRoot") != null){
+                            e.getNodeInfo().getNode("radarRange").setUserObject(0);
+                            e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("radarRoot"));
+                            e.getNodeInfo().assignNode("radarRoot", null);
+                            e.removeComponent(Component.ComponentType.RADAR);
+                        }
+                    }
+
+                }
+                break;
+            case TRANSMITTER:
+                if(!e.getComponents().isEmpty()){
+                    if(e.hasComponent(Component.ComponentType.TRANSMITTER)){
+                        Component c = e.getComponent(Component.ComponentType.TRANSMITTER);
+                        if(!e.componentsToRemove.containsKey(c.getType())){
+                            if(((TDLTransmitterComp) c).getTransmitterRange() != 0){
+                                if(e.getNodeInfo().getNode("transmitterRoot") == null){
+                                    DefaultMutableTreeNode transmitterNode = new DefaultMutableTreeNode("Transmitter:");
+                                    DefaultMutableTreeNode transmitterRange = new DefaultMutableTreeNode(((TDLTransmitterComp) c).getTransmitterRange());
+                                    transmitterNode.add(transmitterRange);
+                                    e.getNodeInfo().getRoot().add(transmitterNode);
+                                    e.getNodeInfo().assignNode("transmitterRoot", transmitterNode);
+                                    e.getNodeInfo().assignNode("transmitterRange", transmitterRange);
                                 }
                                 else{
-                                    e.getNodeInfo().getNode("radarRange").setUserObject(((Radar) c).getRange());
+                                    e.getNodeInfo().getNode("transmitterRange").setUserObject(((TDLTransmitterComp) c).getTransmitterRange());
                                 }
 
                             }
                             else{
-                                if(e.getNodeInfo().getNode("radarRange") != null &&
-                                        e.getNodeInfo().getNode("radarRoot") != null){
-                                    e.getNodeInfo().getNode("radarRange").setUserObject(0);
-                                    e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("radarRoot"));
-                                    e.getNodeInfo().assignNode("radarRoot", null);
-                                    e.removeComponent(Component.ComponentType.RADAR);
+                                if(e.getNodeInfo().getNode("transmitterRange") != null &&
+                                        e.getNodeInfo().getNode("transmitterRoot") != null){
+                                    e.getNodeInfo().getNode("transmitterRange").setUserObject(0);
+                                    e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("transmitterRoot"));
+                                    e.getNodeInfo().assignNode("transmitterRoot", null);
+                                    e.removeComponent(Component.ComponentType.TRANSMITTER);
                                 }
                             }
                         }
+                        else{
+                            if(e.getNodeInfo().getNode("transmitterRange") != null &&
+                                    e.getNodeInfo().getNode("transmitterRoot") != null){
+                                e.getNodeInfo().getNode("transmitterRange").setUserObject(0);
+                                e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("transmitterRoot"));
+                                e.getNodeInfo().assignNode("transmitterRoot", null);
+                            }
+                        }
+                    }
+                    else{
+                        if(e.getNodeInfo().getNode("transmitterRange") != null &&
+                                e.getNodeInfo().getNode("transmitterRoot") != null){
+                            e.getNodeInfo().getNode("transmitterRange").setUserObject(0);
+                            e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("transmitterRoot"));
+                            e.getNodeInfo().assignNode("transmitterRoot", null);
+                        }
+                    }
+
+                }
+                break;
+
+
+            case RECEIVER:
+                if(!e.getComponents().isEmpty()){
+                    if(e.hasComponent(Component.ComponentType.RECEIVER)){
+                        Component c = e.getComponent(Component.ComponentType.RECEIVER);
+                        if(!e.componentsToRemove.containsKey(c.getType())){
+                            if(e.getNodeInfo().getNode("receiverRoot") == null){
+                                DefaultMutableTreeNode receiverNode = new DefaultMutableTreeNode("Receiver");
+                                e.getNodeInfo().getRoot().add(receiverNode);
+                                e.getNodeInfo().assignNode("receiverRoot", receiverNode);
+                            }
+                        }
+                        else{
+                            if(e.getNodeInfo().getNode("receiverRoot") != null){
+                                e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("receiverRoot"));
+                                e.getNodeInfo().assignNode("receiverRoot", null);
+                            }
+                        }
+                    }
+                    else{
+                        if(e.getNodeInfo().getNode("receiverRoot") != null){
+                            e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("receiverRoot"));
+                            e.getNodeInfo().assignNode("receiverRoot", null);
+                        }
                     }
                 }
-
                 break;
         }
         model.reload(rootNode);

@@ -83,6 +83,8 @@ public class World{
         VCSApp app = msg.getApp();
         double posDiff = src.getPos().distance(targetReceiver.getPos());
         boolean isInRange = true;
+        if(src.getComponent(Component.ComponentType.TRANSMITTER) == null)
+            return;
         int srcTransmitterRange = ((TDLTransmitterComp) src.getComponent(Component.ComponentType.TRANSMITTER)).getTransmitterRange();
 
         ArrayList<Entity> inRangeEntities = new ArrayList<>();

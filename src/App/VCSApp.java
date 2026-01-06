@@ -181,6 +181,7 @@ public class VCSApp {
         actionPanel.createNewTargetButton(ent);
         mapView.setSelectedEntity(ent);
         mapView.repaint();
+        editorPanel.updateSelectedEntity();
 
         return ent;
     }

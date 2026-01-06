@@ -635,7 +635,9 @@ public class EntityEditorView extends VCSPanel {
                 app.world.changedEntities.pop();
                 app.world.changes.pop();
             }
-            app.hierarchyPanel.updateComponent("Radar", app.mapView.getSelectedEntity());
+
+            for(Component c : selectedEntity.getComponents().values())
+                app.hierarchyPanel.updateComponent(c.getType(), app.mapView.getSelectedEntity());
 
             if(!app.mapView.getSelectedEntity().getPreviousPositions().isEmpty() &&
                     app.mapView.getSelectedEntity().getPreviousPositions().getLast().x != pos.x &&
