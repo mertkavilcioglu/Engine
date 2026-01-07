@@ -626,7 +626,8 @@ public class Entity {
             return;
         }
 
-        localMapFrame = new JFrame();
+        String frameName = String.format("Local World of %s (%s)", id, name);
+        localMapFrame = new JFrame(frameName);
         localMapFrame.setVisible(true);
         localMapView = new LocalMapView(w.app, this);
         localMapFrame.add(localMapView);

@@ -97,7 +97,90 @@ public class LocalMapView extends VCSPanel {
                 g.drawString(name, textX, textY);
 
             }
+
+            Entity e = localWorld.getEntities().get(i);
+            if(!e.isActive())
+                continue;
+            Vec2int pos = e.getPos();
+            String name = e.getName();
+            Vec2int scaledPos = new Vec2int((int) Math.round(pos.x*minimizingScale), (int) Math.round(pos.y * minimizingScale));
+
+            FontMetrics fontMetric = g.getFontMetrics();
+            int textLength = fontMetric.stringWidth(name);
+            int textX = scaledPos.x - (textLength/2);
+            int textY = scaledPos.y - 10;
+
+            if(e.getSide() == Entity.Side.ALLY)
+                g.setColor(Color.blue);
+            else if (e.getSide() == Entity.Side.ENEMY)
+                g.setColor(Color.red);
+
+            if(e.getSide() == Entity.Side.ALLY){
+                if (e.getType() == Entity.Type.HQ)
+                    drawNormalizedImageByWidth(g, friendlyHQ, scaledPos, targetWidth+2);
+                if(e.getType() == Entity.Type.AIR)
+                    drawNormalizedImageByWidth(g, friendlyAir, scaledPos, targetWidth);
+                else if(e.getType() == Entity.Type.GROUND)
+                    drawNormalizedImageByWidth(g, friendlyLand, scaledPos, targetWidth+2);
+                else if(e.getType() == Entity.Type.SURFACE)
+                    drawNormalizedImageByWidth(g, friendlySea, scaledPos, targetWidth);
+
+            }
+
+            else if(e.getSide() == Entity.Side.ENEMY){
+                if(e.getType() == Entity.Type.AIR)
+                    drawNormalizedImageByWidth(g, enemyAir, scaledPos, targetWidth);
+                else if(e.getType() == Entity.Type.GROUND)
+                    drawNormalizedImageByWidth(g, enemyLand, scaledPos, targetWidth + 2);
+                else if(e.getType() == Entity.Type.SURFACE)
+                    drawNormalizedImageByWidth(g, enemySea, scaledPos, targetWidth);
+            }
+
+            g.setFont(timesNewRoman);
+            g.drawString(name, textX, textY);
         }
+        Entity e = localWorld.getParent();
+        Vec2int pos = e.getPos();
+        String name = e.getName();
+        Vec2int scaledPos = new Vec2int((int) Math.round(pos.x*minimizingScale), (int) Math.round(pos.y * minimizingScale));
+
+        FontMetrics fontMetric = g.getFontMetrics();
+        int textLength = fontMetric.stringWidth(name);
+        int textX = scaledPos.x - (textLength/2);
+        int textY = scaledPos.y - 10;
+
+        if(e.getSide() == Entity.Side.ALLY)
+            g.setColor(Color.blue);
+        else if (e.getSide() == Entity.Side.ENEMY)
+            g.setColor(Color.red);
+
+        if(e.getSide() == Entity.Side.ALLY){
+            if (e.getType() == Entity.Type.HQ)
+                drawNormalizedImageByWidth(g, friendlyHQ, scaledPos, targetWidth+2);
+            if(e.getType() == Entity.Type.AIR)
+                drawNormalizedImageByWidth(g, friendlyAir, scaledPos, targetWidth);
+            else if(e.getType() == Entity.Type.GROUND)
+                drawNormalizedImageByWidth(g, friendlyLand, scaledPos, targetWidth+2);
+            else if(e.getType() == Entity.Type.SURFACE)
+                drawNormalizedImageByWidth(g, friendlySea, scaledPos, targetWidth);
+
+        }
+
+        else if(e.getSide() == Entity.Side.ENEMY){
+            if(e.getType() == Entity.Type.AIR)
+                drawNormalizedImageByWidth(g, enemyAir, scaledPos, targetWidth);
+            else if(e.getType() == Entity.Type.GROUND)
+                drawNormalizedImageByWidth(g, enemyLand, scaledPos, targetWidth + 2);
+            else if(e.getType() == Entity.Type.SURFACE)
+                drawNormalizedImageByWidth(g, enemySea, scaledPos, targetWidth);
+        }
+
+        g.setFont(timesNewRoman);
+        g.drawString(name, textX, textY);
+        g.setColor(Color.GREEN);
+        int markWidth = (int) (targetWidth*1.6);
+        int half = markWidth / 2;
+        g.drawOval(scaledPos.x - half, scaledPos.y - half, markWidth , markWidth);
     }
 
     @Override
