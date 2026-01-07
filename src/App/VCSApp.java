@@ -39,8 +39,7 @@ public class VCSApp {
     public IDManager idManager;
     private Image appKey = new ImageIcon("src/Assets/Symbols/nato_friendly_coconut.jpg").getImage();
     public Timer simTimer;
-
-    //TODO: undoManager'e taşı revert ile ilgli kısımları
+    
     public void run() {
         System.out.println("App::run");
         boolean isWorking = true;

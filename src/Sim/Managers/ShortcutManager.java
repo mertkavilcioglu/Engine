@@ -44,7 +44,7 @@ public class ShortcutManager {
     private void entityDelete(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
             Entity selectedEntity = mapView.getSelectedEntity();
-            if(selectedEntity != null){
+            if(selectedEntity != null && !selectedEntity.getId().equals("HQ")){
                 addChange(selectedEntity);
                 app.removeEntityInstantaneously(selectedEntity);
                 mapView.repaint();
@@ -60,7 +60,7 @@ public class ShortcutManager {
 
     private void entityCopy(KeyEvent e){
         if(e.getKeyCode() == KeyEvent.VK_C && ctrlOn){
-            if(mapView.getSelectedEntity() != null){
+            if(mapView.getSelectedEntity() != null  && !mapView.getSelectedEntity().getId().equals("HQ")){
                 world.setCopiedEntity(mapView.getSelectedEntity());
             }
         }
