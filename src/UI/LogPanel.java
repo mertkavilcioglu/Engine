@@ -27,9 +27,7 @@ public class LogPanel extends VCSPanel {
     private HashMap<Message.MessageClass, JScrollPane> filteredListScrollPanes = new HashMap<>();
     private JPanel filteredLogPanel = new JPanel();
     private JScrollPane currentListScroll = null;
-    //TODO: selected filter paneli ekle globale, select filter fonksiyonu ekle
-    // parametre olarak msg class alsın, filtreler hashmapi ekle ve gelen parametreye göre
-    // gösterilen filtred paneli güncelle
+    private int logLimit = 50;
 
     public LogPanel(VCSApp app) {
         super(app);
@@ -197,11 +195,11 @@ public class LogPanel extends VCSPanel {
                         get(message.type.getMessageClass()).getViewport().getView()).getModel()).
                         insertElementAt(message, 0); // Kendi filtered listesine ekler
 
-                if(((JList<Message>) filteredListScrollPanes.get(Message.MessageClass.ALL).getViewport().getView()).getModel().getSize() == 200){
-                    ((DefaultListModel<Message>) ((JList<Message>) filteredListScrollPanes.get(Message.MessageClass.ALL).getViewport().getView()).getModel()).remove(199);
+                if(((JList<Message>) filteredListScrollPanes.get(Message.MessageClass.ALL).getViewport().getView()).getModel().getSize() == logLimit){
+                    ((DefaultListModel<Message>) ((JList<Message>) filteredListScrollPanes.get(Message.MessageClass.ALL).getViewport().getView()).getModel()).remove(logLimit-1);
                 }
-                if (((JList<Message>) filteredListScrollPanes.get(message.type.getMessageClass()).getViewport().getView()).getModel().getSize() == 200){
-                    ((DefaultListModel<Message>) ((JList<Message>) filteredListScrollPanes.get(message.type.getMessageClass()).getViewport().getView()).getModel()).remove(199);
+                if (((JList<Message>) filteredListScrollPanes.get(message.type.getMessageClass()).getViewport().getView()).getModel().getSize() == logLimit){
+                    ((DefaultListModel<Message>) ((JList<Message>) filteredListScrollPanes.get(message.type.getMessageClass()).getViewport().getView()).getModel()).remove(logLimit-1);
                 }
                 //TODO lag ı azaltmak için yazmıştım daha iyisi olur mu bakalım olmazsa bunu kullanalım
             }
