@@ -56,8 +56,10 @@ public class LocalMapView extends VCSPanel {
         for (int i = 0; i < localWorld.getEntities().size(); i++) {
             if(!app.world.entitiesToRemove.contains(localWorld.getEntities().get(i))){
                 Entity e = localWorld.getEntities().get(i);
-                if(!e.isActive())
+                if(!app.world.entityHashMap.get(e.getId()).isActive()){
                     continue;
+                }
+
                 Vec2int pos = e.getPos();
                 String name = e.getName();
                 Vec2int scaledPos = new Vec2int((int) Math.round(pos.x*minimizingScale), (int) Math.round(pos.y * minimizingScale));

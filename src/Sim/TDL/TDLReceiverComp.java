@@ -59,7 +59,6 @@ public class TDLReceiverComp extends Component {
                     break;
                 case RECEIVE_INFO:
                    // msg.getApp().debugLog("Message arrived successfully.");
-                    //TODO orderının receivelendiğini öğreninice nolcak bilmiyorum
                     break;
                 case ORDER_RESULT:
                     ResultMsg rm = (ResultMsg) msg;
