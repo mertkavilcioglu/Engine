@@ -43,6 +43,10 @@ public class LocalMapView extends VCSPanel {
         setBorder(BorderFactory.createMatteBorder(0,1,0,1,Color.BLACK));
     }
 
+    public void update(){
+        repaint();
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);

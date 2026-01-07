@@ -42,6 +42,7 @@ public class Entity {
     private boolean isInLink = false;
     private boolean isDetected = false;
     private JFrame localMapFrame = null;
+    private LocalMapView localMapView = null;
 
     //private String ppliCode;
 
@@ -290,6 +291,10 @@ public class Entity {
         }
         //components.removeAll(componentsToRemove);
         componentsToRemove.clear();
+
+        if(localMapView != null)
+            localMapView.update();
+
     }
 
     public void move(){
@@ -623,9 +628,9 @@ public class Entity {
 
         localMapFrame = new JFrame();
         localMapFrame.setVisible(true);
-        LocalMapView localMap = new LocalMapView(w.app, this);
-        localMapFrame.add(localMap);
-        localMap.initializeLocalMap(w.app.mapView.getMapResolution());
+        localMapView = new LocalMapView(w.app, this);
+        localMapFrame.add(localMapView);
+        localMapView.initializeLocalMap(w.app.mapView.getMapResolution());
         localMapFrame.setResizable(false);
         localMapFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         localMapFrame.pack();
@@ -634,6 +639,7 @@ public class Entity {
             public void windowClosed(WindowEvent e) {
                 super.windowClosed(e);
                 localMapFrame = null;
+                localMapView = null;
             }
         });
 
