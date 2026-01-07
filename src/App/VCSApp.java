@@ -182,6 +182,7 @@ public class VCSApp {
         mapView.setSelectedEntity(ent);
         mapView.repaint();
         editorPanel.updateSelectedEntity();
+        hierarchyPanel.selectNode(ent);
 
         return ent;
     }
