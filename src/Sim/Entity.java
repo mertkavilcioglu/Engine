@@ -635,6 +635,8 @@ public class Entity {
         localMapFrame.setResizable(false);
         localMapFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         localMapFrame.pack();
+        localMapFrame.setAlwaysOnTop(true);
+        localMapFrame.setLocation(pos.x, pos.y);
         localMapFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
