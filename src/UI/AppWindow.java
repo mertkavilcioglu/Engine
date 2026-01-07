@@ -100,7 +100,9 @@ public class AppWindow extends JFrame {
 
     private void savePopUp(File file){
         String[] options = { "Save","Don't save", "Cancel" };
-        int choice = JOptionPane.showOptionDialog(null,
+        JFrame popUpFrame = new JFrame();
+        popUpFrame.setAlwaysOnTop(true);
+        int choice = JOptionPane.showOptionDialog(popUpFrame,
                 "Do you want to save?", "Select an option",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,newIcon,
                 options, options[0]);

@@ -9,14 +9,3 @@ COMP::Receiver
 ###
 null
 null
-ALLY_PLANE
-Ally
-Plane
-202,162
-0,0
-COMP::Transmitter
-300
-COMP::Receiver
-###
-null
-null
