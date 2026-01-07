@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,10 +34,10 @@ public class VCSApp {
     public MapPixelPosPanel mapPixelPosPanel;
     public PixelColor pixelColor;
     public UIColorManager uiColorManager;
-    private Entity headQuarter; // TODO BB Bilemedim
+    private Entity headQuarter;
     private ShortcutManager shortcutManager;
     public IDManager idManager;
-
+    private Image appKey = new ImageIcon("src/Assets/Symbols/nato_friendly_coconut.jpg").getImage();
     public Timer simTimer;
 
     //TODO: undoManager'e taşı revert ile ilgli kısımları
@@ -123,7 +124,16 @@ public class VCSApp {
         window.add(hierarchyPanel, BorderLayout.WEST);
         window.add(mergeSouthPanel, BorderLayout.SOUTH);
         window.add(mergeNorthPanel, BorderLayout.NORTH);
+
+        if(appKey.getHeight(new ImageObserver() {
+            @Override
+            public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+                return false;
+            }
+        }) < 1)
+            return;
         window.setVisible(true);
+
 
         headQuarter = world.createCommander(null, 200);
         hierarchyPanel.entityAdded(headQuarter);
