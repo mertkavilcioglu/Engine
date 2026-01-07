@@ -13,14 +13,14 @@ public class LocalWorld {
 
     private ArrayList<Entity> entities = new ArrayList<>();
     private HashMap<String, Entity> entityHashMap = new HashMap<>();
-    private Entity src;
+    private Entity parent;
 
-    public LocalWorld(Entity src) {
-        this.src = src;
+    public LocalWorld(Entity parent) {
+        this.parent = parent;
     }
 
     public Entity createEntity(String id, String eName, Entity.Side eSide, Vec2int pos, Vec2int speed, Entity.Type type){
-        Entity ent = new Entity(src.w, eName, eSide,pos,speed, type);
+        Entity ent = new Entity(parent.w, eName, eSide,pos,speed, type);
         ent.maxSpeed = ent.getSpeed().getMagnitudeAsInt();
         if(ent.maxSpeed == 0)
             ent.maxSpeed = 4;
@@ -53,12 +53,12 @@ public class LocalWorld {
         else
             createEntity(msg.getSrcID(),((InfoMsg) msg).getName(), ((InfoMsg) msg).getSide(), ((InfoMsg) msg).getPos(), ((InfoMsg) msg).getSpeed(), ((InfoMsg) msg).getType());
 
-        src.w.app.debugLog(String.format("Info Message of %s has taken by %s.\n", msg.getSrcID(), src.getId()));
+        parent.w.app.debugLog(String.format("Info Message of %s has taken by %s.\n", msg.getSrcID(), parent.getId()));
     }
 
     public void readKnownInfo(Message msg){
         for(Entity ent : ((KnownInfosMsg) msg).getKnownEntities()){
-            if(ent.getId().equals(src.getId()))
+            if(ent.getId().equals(parent.getId()))
                 continue;
             if(entityHashMap.containsKey(ent.getId()))
                 updateEntity(ent.getId(), ent.getName(), ent.getSide(), ent.getPos(), ent.getSpeed(), ent.getType());
@@ -74,7 +74,7 @@ public class LocalWorld {
           updateEntity(sMsg.getHostileID(), sMsg.getHostileName(), sMsg.getHostileSide(), sMsg.getHostilePos(), sMsg.getHostileSpeed(), sMsg.getHostileType());
         } else createEntity(sMsg.getHostileID(), sMsg.getHostileName(), sMsg.getHostileSide(), sMsg.getHostilePos(), sMsg.getHostileSpeed(), sMsg.getHostileType());
 
-        src.w.app.debugLog(String.format("Surveillance Information of %s from %s taken by %s.\n", sMsg.getHostileID(), sMsg.getSrcID(), sMsg.getTargetID()));
+        parent.w.app.debugLog(String.format("Surveillance Information of %s from %s taken by %s.\n", sMsg.getHostileID(), sMsg.getSrcID(), sMsg.getTargetID()));
     }
 
     public HashMap<String, Entity> getEntityHashMap() {
@@ -88,5 +88,9 @@ public class LocalWorld {
     public void removeEntityFromLocal(String id){
         Entity entity = entityHashMap.remove(id);
         entities.remove(entity);
+    }
+
+    public Entity getParent() {
+        return parent;
     }
 }

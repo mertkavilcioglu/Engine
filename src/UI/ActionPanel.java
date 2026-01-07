@@ -341,7 +341,7 @@ public class ActionPanel extends VCSPanel {
         updateOrderMode(selectedEntity);
 
 
-        selectedUnitLabel.setText("Selected Entity: " + selectedEntity.getName());
+        selectedUnitLabel.setText(String.format("Selected Entity: %s (%s)", selectedEntity.getId(), selectedEntity.getName()));
         refreshCurrentOrderPanel(entity);
         orderDetailLayout.show(orderDetailPanel, "empty");
     }
