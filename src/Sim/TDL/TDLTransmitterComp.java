@@ -71,11 +71,11 @@ public class TDLTransmitterComp extends Component {
         send(knownInfoMsg);
     }
 
+    //    ReceiveMsg receiveMsg = new ReceiveMsg(app, source, msg.getSrcID(), msg);
     public void createReceiveMessage2(VCSApp app, Entity source, Message msg){
-        ReceiveMsg receiveMsg = new ReceiveMsg(app, source, msg.getSrcID(), msg);
         //receiveMsg.setCounter(calculateRangeCounter(receiveMsg));
         //messagesToSend.add(receiveMsg);
-        send(receiveMsg);
+   //     send(receiveMsg);
         //app.debugLog(String.format("Message sent from %s to %s\n", receiveMsg.getSrc(), receiveMsg.getReceiverEntity()));
 
     }

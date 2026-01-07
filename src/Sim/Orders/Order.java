@@ -39,7 +39,7 @@ public abstract class Order {
         actualUpdate();
     }
 
-    protected void finish(Entity entity){
+    protected void orderFinish(Entity entity){
         app.actionPanel.refreshCurrentOrderPanel(entity);
     }
 

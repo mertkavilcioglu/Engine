@@ -3,7 +3,6 @@ package Sim.Orders;
 import App.VCSApp;
 import Sim.Component;
 import Sim.Entity;
-import Sim.TDL.Message;
 import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
@@ -24,7 +23,7 @@ public class Follow extends Order{
             isExecute = true;
             this.receiver.completeCurrentOrder();
             this.receiver.setCurrentOrderState(true);
-            finish(this.receiver);
+            orderFinish(this.receiver);
             return;
         }
     }
@@ -63,7 +62,7 @@ public class Follow extends Order{
                         receiver.setSpeed(new Vec2int(0,0));
                     receiver.completeCurrentOrder();
                     receiver.setCurrentOrderState(true);
-                    finish(receiver);
+                    orderFinish(receiver);
                 }
                 //source.setSpeed(new Vec2int(0,0));
             }
@@ -111,7 +110,7 @@ public class Follow extends Order{
             }
             receiver.completeCurrentOrder();
             receiver.setCurrentOrderState(true);
-            finish(receiver);
+            orderFinish(receiver);
         }
 
     }

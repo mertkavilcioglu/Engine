@@ -3,7 +3,6 @@ package Sim.Orders;
 import App.VCSApp;
 import Sim.Component;
 import Sim.Entity;
-import Sim.TDL.Message;
 import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
@@ -40,7 +39,7 @@ public class Attack extends Order{
                         receiver.setSpeed(new Vec2int(0,0));
                     receiver.completeCurrentOrder();
                     receiver.setCurrentOrderState(true);
-                    finish(receiver);
+                    orderFinish(receiver);
                     app.mapView.setTargetPos(null);
                     targetPos = null;
                 }
@@ -101,7 +100,7 @@ public class Attack extends Order{
                     receiver.setSpeed(new Vec2int(0,0));
                 receiver.completeCurrentOrder();
                 receiver.setCurrentOrderState(true);
-                finish(receiver);
+                orderFinish(receiver);
                 app.mapView.setTargetPos(null);
                 targetPos = null;
             }
@@ -135,7 +134,7 @@ public class Attack extends Order{
         app.removeEntity(e);
         receiver.completeCurrentOrder();
         receiver.setCurrentOrderState(true);
-        finish(receiver);
+        orderFinish(receiver);
     }
 
     public String  getAttackTargetID(){

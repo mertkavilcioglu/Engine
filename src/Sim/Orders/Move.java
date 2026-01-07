@@ -3,7 +3,6 @@ package Sim.Orders;
 import App.VCSApp;
 import Sim.Component;
 import Sim.Entity;
-import Sim.TDL.Message;
 import Sim.TDL.TDLTransmitterComp;
 import Vec.Vec2int;
 
@@ -33,7 +32,7 @@ public class Move extends Order{
             receiver.setPos(destination);
             receiver.completeCurrentOrder();
             receiver.setCurrentOrderState(true);
-            finish(receiver);
+            orderFinish(receiver);
             return;
         }
         else{
