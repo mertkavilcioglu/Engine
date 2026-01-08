@@ -1,8 +1,10 @@
 package UI;
 
 import App.VCSApp;
+import Sim.Component;
 import Sim.Entity;
 import Sim.GetInput;
+import Sim.TDL.TDLReceiverComp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -120,9 +122,11 @@ public class ControlPanel extends VCSPanel{
         pause.setBackground(initialButColor);
 
         for (Entity entity : app.world.entities){
+            app.world.unregisterReceiver(entity.getId());
             app.removeEntity(entity);
         }
         app.world.entities.removeAll(app.world.entitiesToRemove);
+        app.world.entityHashMap.clear();
         app.world.entitiesToRemove.clear();
         app.world.clearAllStack();
         restoreInitials();

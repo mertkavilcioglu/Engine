@@ -33,7 +33,7 @@ public class World{
         toSendList.add(msg);
     }
 
-    private HashMap<TDLReceiverComp, Entity> regesteredReceivers = new HashMap<>();
+    private HashMap<String, TDLReceiverComp> regesteredReceivers = new HashMap<>();
     public void processSendList2(){
         for (Message msg : toSendList){
             int transmitterRange = 0;
@@ -43,7 +43,7 @@ public class World{
             }
             Message message = null;
 
-            for(TDLReceiverComp r : regesteredReceivers.keySet()){
+            for(TDLReceiverComp r : regesteredReceivers.values()){
                 if (!r.parentEntity.getId().equals(msg.getSrcID())){
                     if (msg.type.equals(Message.MessageType.ENTITY_INFO) || msg.type.equals(Message.MessageType.KNOWN_INFO) || msg.type.equals(Message.MessageType.SURVEILLANCE_MSG)){
                         if (source.getPos().distance(r.parentEntity.getPos()) < transmitterRange){
@@ -67,12 +67,12 @@ public class World{
         toSendList.clear();
     }
 
-    public void registerReceiver(TDLReceiverComp rec, Entity owner){
-        regesteredReceivers.put(rec, owner);
+    public void registerReceiver(String ownerID, TDLReceiverComp rec){
+        regesteredReceivers.put(ownerID, rec);
     }
 
-    public void unregisterReceiver(TDLReceiverComp rec){
-        regesteredReceivers.remove(rec);
+    public void unregisterReceiver(String ownerID){
+        regesteredReceivers.remove(ownerID);
     }
 
     public void relay2(Message msg){

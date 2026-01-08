@@ -157,7 +157,7 @@ public class VCSApp {
 
                         for(Entity ent : world.entitiesToRemove){
                             world.entityHashMap.get(ent.getId()).setActive(false);
-                            world.unregisterReceiver(((TDLReceiverComp) ent.getComponent(Component.ComponentType.RECEIVER)));
+                            world.unregisterReceiver(ent.getId());
                         }
                         world.entitiesToRemove.clear();
                         renderToWindow();
