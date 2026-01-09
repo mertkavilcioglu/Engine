@@ -7,7 +7,6 @@ import UI.UIColorManager;
 import java.awt.*;
 import java.util.ArrayList;
 
-//TODO: Infoda bulunan bilgileri arraylist içinde ver ve popup içinde ayrı ayrı bas her ent için
 
 
 public class KnownInfosMsg extends Message{

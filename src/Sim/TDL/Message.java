@@ -85,8 +85,6 @@ public abstract class Message {
         messages.add(msg2);
 
 
-
-        //app.logPanel.addMsgToLog(this); TODO
     }
 
     protected Message(Message other){

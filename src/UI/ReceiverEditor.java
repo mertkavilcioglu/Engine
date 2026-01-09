@@ -17,7 +17,6 @@ public class ReceiverEditor extends JPanel {
     private JLabel nameLbl;
     private JLabel lbl;
 
-    //TODO radar comp. eklenmemişse radarsız oluştur, radar varsa ama invalidse kırmızı yap
     public ReceiverEditor(String label, EntityEditorView editor, Component.ComponentType type){
         setBackground(editor.panelComponentColor);
         nameLbl = new JLabel(label);

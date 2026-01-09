@@ -47,7 +47,7 @@ public class TDLTransmitter {
 //    }
 //
 //    public void createInfoMessage(VCSApp app, Entity src){
-//        //TODO nasıl createlenip ne şekilde ne zaman basılcağına bakmalı
+//
 //        String targetID = " ";
 //        InfoMsg infoMsg = new InfoMsg(app, src.getId(), targetID, src.getName(), src.getSide(), src.getPos(), src.getSpeed(), src.getType());
 //        //messagesToSend.add(infoMsg);
@@ -93,7 +93,7 @@ public class TDLTransmitter {
 //    }
 //
 //    public void  sendMessage2(Message msg){
-//        //TODO: range içindeki herkesin mesaj listesine mesajı gönder,
+//
 //        // receive classında ise her update içinde en üstteki mesajı oku
 //        if (!source.isLocal()){
 //            if (!msg.getTargetID().equals(" ")){
@@ -149,7 +149,7 @@ public class TDLTransmitter {
 //    }
 //
 //
-////    public int calculateRangeCounter(Message msg){ TODO: silme burayı, shortest path için lazım olacak
+////    public int calculateRangeCounter(Message msg){
 ////        int counter  = 0;
 ////        Entity targetReceiver = msg.getTargetReceiver();
 ////        Entity temp = targetReceiver;
@@ -215,7 +215,7 @@ public class TDLTransmitter {
 //        else{
 //            targetReceiver.getTdlTransmitter().relayMessage(msg);
 //        }
-//        //TODO: BURALARI DAHA RUNLAYAMADIN PC BOZULDUGU İCİN. TEST ET!!!!!!!
+//
 //    }
 //
 //

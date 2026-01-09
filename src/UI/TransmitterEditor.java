@@ -23,7 +23,7 @@ public class TransmitterEditor extends JPanel {
     private Color borderColor;
     private boolean isFocused = false;
 
-    //TODO radar comp. eklenmemişse radarsız oluştur, radar varsa ama invalidse kırmızı yap
+
     public TransmitterEditor(String label, EntityEditorView editor, Component.ComponentType type, String defaultRange){
         borderColor = editor.borderColor;
         setBackground(editor.panelComponentColor);

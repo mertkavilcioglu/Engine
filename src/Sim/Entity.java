@@ -400,7 +400,7 @@ public class Entity {
         for (int i = 0; i < ordersArray.length; i++){
             if (ordersArray[i].getClass() == Attack.class){
                 Attack attack = (Attack) ordersArray[i];
-                entities.add(w.entityHashMap.get(attack.getAttackTargetID())); //TODO: entity değil ID al
+                entities.add(w.entityHashMap.get(attack.getAttackTargetID()));
             }
         }
         return entities;
@@ -547,16 +547,6 @@ public class Entity {
         isActive = a;
     }
 
-
-    //TODO list mi tek tek mi kararsızım tek tek info mesaj atılabilir ama tek basar bakıcam
-//    public void sendInfoMessages(){
-//        List<Entity> entities = getAllyEntitiesInRange();
-//        if (entities.isEmpty()){
-//            return;
-//        } else {
-//            this.getTdlTransmitter().createInfoMessage(w.app, this, entities);
-//        }
-//    }
 
     public void setInfoMsgSendEntities(Entity entity){
         if (!infoMsgSendEntities.contains(entity)){

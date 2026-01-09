@@ -25,9 +25,8 @@ public class TDLReceiver {
 //    }
 //
 //    public void update(){
-//        while(!receivedMessages.isEmpty()){ //TODO: VEYA BİR KOTA KOY, HER UPDATE'DE 20 MESAJ OKU GİBİ
+//        while(!receivedMessages.isEmpty()){
 //            //source.w.app.debugLog("MSG read");
-//            // TODO BB global debug nasıl olmalı?
 //            readMessage(receivedMessages.poll());
 //        }
 //    }
@@ -62,20 +61,20 @@ public class TDLReceiver {
 //                break;
 //            case RECEIVE_INFO:
 //                msg.getApp().debugLog("Message arrived successfully.");
-//                //TODO orderının receivelendiğini öğreninice nolcak bilmiyorum
+//
 //                break;
 //            case ORDER_RESULT:
 //                ResultMsg rm = (ResultMsg) msg;
 //                if (rm.getOrderResult()){
-//                    msg.getApp().debugLog("Order done!"); // TODO BB which order ?
+//                    msg.getApp().debugLog("Order done!");
 //                    //order tamamlanmış okey
 //                } else {
 //                    msg.getApp().debugLog("Order not done!");
-//                    //TODO order tamalanamamış, nedeni ve ne orderı olduğuna bakılıp tekrar emir verilinebilir
+//
 //                }
 //                break;
 //            case SURVEILLANCE_MSG:
-//                //TODO with local create func create entity and add to knownentities of target
+//
 //                source.getLocalWorld().readSurveillanceInfo(msg);
 //                break;
 //

@@ -55,10 +55,9 @@ public class LogPanel extends VCSPanel {
         logArea.setBackground(UIColorManager.DARK_PANEL_COLOR);
         int width = this.getWidth();
 
-        for(Message.MessageClass m : Message.MessageClass.values()){ //TODO: FOR DÖNGÜSÜ *******************************************************
+        for(Message.MessageClass m : Message.MessageClass.values()){
             DefaultListModel<Message> messageModel;
             JList<Message> messageList;
-            //TODO:*****EKSİK KALDI Bİ GÖZ AT
             messageModel = new DefaultListModel<>();
             messageList = new JList<>(messageModel);
             messageList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -201,7 +200,6 @@ public class LogPanel extends VCSPanel {
                 if (((JList<Message>) filteredListScrollPanes.get(message.type.getMessageClass()).getViewport().getView()).getModel().getSize() == logLimit){
                     ((DefaultListModel<Message>) ((JList<Message>) filteredListScrollPanes.get(message.type.getMessageClass()).getViewport().getView()).getModel()).remove(logLimit-1);
                 }
-                //TODO lag ı azaltmak için yazmıştım daha iyisi olur mu bakalım olmazsa bunu kullanalım
             }
         //messageList.ensureIndexIsVisible(messageModel.size() - 1);
     }

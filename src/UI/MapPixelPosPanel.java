@@ -28,7 +28,7 @@ public class MapPixelPosPanel extends VCSPanel{
         }
         this.add(labelX);
         this.add(labelY);
-        this.setPreferredSize(new Dimension(100,20));//TODO: ölçeklenebilir olsun hard coded değil
+        this.setPreferredSize(new Dimension(100,20));
     }
 
     public void showPixelPosOfCursor(Vec2int p){

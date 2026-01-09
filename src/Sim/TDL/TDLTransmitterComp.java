@@ -55,7 +55,6 @@ public class TDLTransmitterComp extends Component {
     }
 
     public void createInfoMessage2(VCSApp app, Entity src){
-        //TODO nasıl createlenip ne şekilde ne zaman basılcağına bakmalı
         String targetID = " ";
         InfoMsg infoMsg = new InfoMsg(app, src.getId(), targetID, src.getName(), src.getSide(), src.getPos(), src.getSpeed(), src.getType());
         //messagesToSend.add(infoMsg);
