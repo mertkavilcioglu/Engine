@@ -1,0 +1,96 @@
+package Sim;
+
+import Sim.TDL.InfoMsg;
+import Sim.TDL.KnownInfosMsg;
+import Sim.TDL.Message;
+import Sim.TDL.SurveillanceMsg;
+import Vec.Vec2int;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class LocalWorld {
+
+    private ArrayList<Entity> entities = new ArrayList<>();
+    private HashMap<String, Entity> entityHashMap = new HashMap<>();
+    private Entity parent;
+
+    public LocalWorld(Entity parent) {
+        this.parent = parent;
+    }
+
+    public Entity createEntity(String id, String eName, Entity.Side eSide, Vec2int pos, Vec2int speed, Entity.Type type){
+        Entity ent = new Entity(parent.w, eName, eSide,pos,speed, type);
+        ent.maxSpeed = ent.getSpeed().getMagnitudeAsInt();
+        if(ent.maxSpeed == 0)
+            ent.maxSpeed = 4;
+        ent.setId(id);
+        entities.add(ent);
+        entityHashMap.put(id, ent);
+        ent.isLocal = true;
+        return ent;
+    }
+
+    public void update(int deltaTime) {
+        for (Entity entity : entities) {
+            entity.update(deltaTime);
+        }
+    }
+
+    public void updateEntity(String id, String eName, Entity.Side eSide, Vec2int pos, Vec2int speed, Entity.Type type){
+        Entity ent = entityHashMap.get(id);
+        ent.setName(eName);
+        ent.setSide(eSide);
+        ent.setPos(pos);
+        ent.setSpeed(speed);
+        ent.setType(type);
+        entityHashMap.replace(id, ent);
+    }
+
+    public void readEntityInfo(Message msg){
+        if(entityHashMap.containsKey(msg.getSrcID()))
+            updateEntity(msg.getSrcID(),((InfoMsg) msg).getName(), ((InfoMsg) msg).getSide(), ((InfoMsg) msg).getPos(), ((InfoMsg) msg).getSpeed(), ((InfoMsg) msg).getType());
+        else
+            createEntity(msg.getSrcID(),((InfoMsg) msg).getName(), ((InfoMsg) msg).getSide(), ((InfoMsg) msg).getPos(), ((InfoMsg) msg).getSpeed(), ((InfoMsg) msg).getType());
+
+        parent.w.app.debugLog(String.format("Info Message of %s has taken by %s.\n", msg.getSrcID(), parent.getId()));
+    }
+
+    public void readKnownInfo(Message msg){
+        for(Entity ent : ((KnownInfosMsg) msg).getKnownEntities()){
+            if(ent.getId().equals(parent.getId()))
+                continue;
+            if(entityHashMap.containsKey(ent.getId()))
+                updateEntity(ent.getId(), ent.getName(), ent.getSide(), ent.getPos(), ent.getSpeed(), ent.getType());
+            else
+                createEntity(ent.getId(), ent.getName(), ent.getSide(), ent.getPos(), ent.getSpeed(), ent.getType());
+        }
+    }
+
+
+    public void readSurveillanceInfo(Message msg){
+        SurveillanceMsg sMsg = (SurveillanceMsg) msg;
+        if (entityHashMap.containsKey(sMsg.getHostileID())){
+          updateEntity(sMsg.getHostileID(), sMsg.getHostileName(), sMsg.getHostileSide(), sMsg.getHostilePos(), sMsg.getHostileSpeed(), sMsg.getHostileType());
+        } else createEntity(sMsg.getHostileID(), sMsg.getHostileName(), sMsg.getHostileSide(), sMsg.getHostilePos(), sMsg.getHostileSpeed(), sMsg.getHostileType());
+
+        parent.w.app.debugLog(String.format("Surveillance Information of %s from %s taken by %s.\n", sMsg.getHostileID(), sMsg.getSrcID(), sMsg.getTargetID()));
+    }
+
+    public HashMap<String, Entity> getEntityHashMap() {
+        return entityHashMap;
+    }
+
+    public ArrayList<Entity> getEntities() {
+        return entities;
+    }
+
+    public void removeEntityFromLocal(String id){
+        Entity entity = entityHashMap.remove(id);
+        entities.remove(entity);
+    }
+
+    public Entity getParent() {
+        return parent;
+    }
+}

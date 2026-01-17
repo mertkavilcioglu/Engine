@@ -1,0 +1,366 @@
+package UI;
+
+import App.VCSApp;
+import Sim.Component;
+import Sim.Entity;
+import Sim.NodeInfo;
+import Sim.Radar;
+import Sim.TDL.TDLReceiverComp;
+import Sim.TDL.TDLTransmitterComp;
+import Vec.Vec2int;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.*;
+import java.awt.*;
+import java.util.HashMap;
+
+public class HierarchyView extends VCSPanel {
+
+    public JTree tree;
+    private DefaultMutableTreeNode rootNode;
+    private DefaultTreeModel model; // data of tree
+    private HashMap<String, NodeInfo> leaves = new HashMap<>();
+
+    public HierarchyView(VCSApp app){
+        super(app);
+        this.setLayout(new BorderLayout());
+
+        int targetWidth = Toolkit.getDefaultToolkit().getScreenSize().width / 8;
+        int targetHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+        this.setPreferredSize(new Dimension(targetWidth, targetHeight));
+
+        // Custom Panel Colors
+        TitledBorder titledBorder = new TitledBorder("Hierarchy");
+        titledBorder.setTitleColor(app.uiColorManager.DARK_TITLE_COLOR_1);
+        titledBorder.setBorder(BorderFactory.createLineBorder(app.uiColorManager.DARK_TITLE_COLOR_1, 2));
+        //this.setBorder(titledBorder);
+        this.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+        //setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+        EmptyBorder eBorder = new EmptyBorder(0,7,0,7);
+        setBorder(eBorder);
+
+        rootNode = new DefaultMutableTreeNode("Hierarchy");
+        model = new DefaultTreeModel(rootNode);
+        tree = new JTree(model);
+
+        // Custom Tree BG and Text Colors
+        DefaultTreeCellRenderer cellRenderer = new DefaultTreeCellRenderer();
+        cellRenderer.setBackgroundNonSelectionColor(app.uiColorManager.DARK_PANEL_COLOR);
+        cellRenderer.setTextNonSelectionColor(Color.WHITE);
+        tree.setCellRenderer(cellRenderer);
+        tree.setBackground(app.uiColorManager.DARK_PANEL_COLOR);
+
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+                        tree.getLastSelectedPathComponent();
+
+                // if nothing is selected
+                if (node == null) return;
+
+                Entity entityFound = searchForEntity(node);
+                if (entityFound == null) return;
+
+                app.actionPanel.setSelectedEntity(entityFound);
+                app.mapView.setSelectedEntity(entityFound);
+                app.getWindow().requestFocus();
+            }
+        });
+        add(tree, BorderLayout.CENTER);
+    }
+
+    private DefaultMutableTreeNode createNode(Entity e){
+        DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(e.getName());
+
+        DefaultMutableTreeNode sideNode = new DefaultMutableTreeNode(e.getSideAsName());
+        DefaultMutableTreeNode posNode = new DefaultMutableTreeNode("Pos:");
+        DefaultMutableTreeNode posXnode = new DefaultMutableTreeNode("X: " + e.getPos().x);
+        DefaultMutableTreeNode posYnode = new DefaultMutableTreeNode("Y: " + e.getPos().y);
+
+        leaf.add(sideNode);
+
+        posNode.add(posXnode);
+        posNode.add(posYnode);
+
+        leaf.add(posNode);
+
+        DefaultMutableTreeNode velNode = new DefaultMutableTreeNode("Vel:");
+        DefaultMutableTreeNode velXnode = new DefaultMutableTreeNode("X: " + e.getSpeed().x);
+        DefaultMutableTreeNode velYnode = new DefaultMutableTreeNode("Y: " + e.getSpeed().y);
+
+        velNode.add(velXnode);
+        velNode.add(velYnode);
+
+        leaves.put(e.getId(), e.getNodeInfo());
+        e.getNodeInfo().assignNode("posX", posXnode);
+        e.getNodeInfo().assignNode("posY", posYnode);
+        e.getNodeInfo().assignNode("velX", velXnode);
+        e.getNodeInfo().assignNode("velY", velYnode);
+        e.getNodeInfo().assignNode("side", sideNode);
+        e.getNodeInfo().assignRoot(leaf);
+
+        leaf.add(velNode);
+
+        for(Component c : e.getComponents().values()){
+            if(c instanceof Radar){
+                if(((Radar) c).getRange() != 0){
+                    DefaultMutableTreeNode radarNode = new DefaultMutableTreeNode("Radar:");
+                    DefaultMutableTreeNode radarRange = new DefaultMutableTreeNode(((Radar) c).getRange());
+                    radarNode.add(radarRange);
+                    leaf.add(radarNode);
+                    e.getNodeInfo().assignNode("radarRoot", radarNode);
+                    e.getNodeInfo().assignNode("radarRange", radarRange);
+                }
+            }
+        }
+
+        leaf.setUserObject(e);
+        return leaf;
+    }
+
+    public void updateComponent(Component.ComponentType comp, Entity e){
+        switch (comp){
+            case RADAR:
+                if(!e.getComponents().isEmpty()){
+                    if(e.hasComponent(Component.ComponentType.RADAR)){
+                        Component c = e.getComponent(Component.ComponentType.RADAR);
+                        if(((Radar) c).getRange() != 0){
+                            if(e.getNodeInfo().getNode("radarRoot") == null){
+                                DefaultMutableTreeNode radarNode = new DefaultMutableTreeNode("Radar:");
+                                DefaultMutableTreeNode radarRange = new DefaultMutableTreeNode(((Radar) c).getRange());
+                                radarNode.add(radarRange);
+                                e.getNodeInfo().getRoot().add(radarNode);
+                                e.getNodeInfo().assignNode("radarRoot", radarNode);
+                                e.getNodeInfo().assignNode("radarRange", radarRange);
+                            }
+                            else{
+                                e.getNodeInfo().getNode("radarRange").setUserObject(((Radar) c).getRange());
+                            }
+
+                        }
+                        else{
+                            if(e.getNodeInfo().getNode("radarRange") != null &&
+                                    e.getNodeInfo().getNode("radarRoot") != null){
+                                e.getNodeInfo().getNode("radarRange").setUserObject(0);
+                                e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("radarRoot"));
+                                e.getNodeInfo().assignNode("radarRoot", null);
+                                e.removeComponent(Component.ComponentType.RADAR);
+                            }
+                        }
+                    }
+                    else{
+                        if(e.getNodeInfo().getNode("radarRange") != null &&
+                                e.getNodeInfo().getNode("radarRoot") != null){
+                            e.getNodeInfo().getNode("radarRange").setUserObject(0);
+                            e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("radarRoot"));
+                            e.getNodeInfo().assignNode("radarRoot", null);
+                            e.removeComponent(Component.ComponentType.RADAR);
+                        }
+                    }
+
+                }
+                break;
+            case TRANSMITTER:
+                if(!e.getComponents().isEmpty()){
+                    if(e.hasComponent(Component.ComponentType.TRANSMITTER)){
+                        Component c = e.getComponent(Component.ComponentType.TRANSMITTER);
+                        if(!e.componentsToRemove.containsKey(c.getType())){
+                            if(((TDLTransmitterComp) c).getTransmitterRange() != 0){
+                                if(e.getNodeInfo().getNode("transmitterRoot") == null){
+                                    DefaultMutableTreeNode transmitterNode = new DefaultMutableTreeNode("Transmitter:");
+                                    DefaultMutableTreeNode transmitterRange = new DefaultMutableTreeNode(((TDLTransmitterComp) c).getTransmitterRange());
+                                    transmitterNode.add(transmitterRange);
+                                    e.getNodeInfo().getRoot().add(transmitterNode);
+                                    e.getNodeInfo().assignNode("transmitterRoot", transmitterNode);
+                                    e.getNodeInfo().assignNode("transmitterRange", transmitterRange);
+                                }
+                                else{
+                                    e.getNodeInfo().getNode("transmitterRange").setUserObject(((TDLTransmitterComp) c).getTransmitterRange());
+                                }
+
+                            }
+                            else{
+                                if(e.getNodeInfo().getNode("transmitterRange") != null &&
+                                        e.getNodeInfo().getNode("transmitterRoot") != null){
+                                    e.getNodeInfo().getNode("transmitterRange").setUserObject(0);
+                                    e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("transmitterRoot"));
+                                    e.getNodeInfo().assignNode("transmitterRoot", null);
+                                    e.removeComponent(Component.ComponentType.TRANSMITTER);
+                                }
+                            }
+                        }
+                        else{
+                            if(e.getNodeInfo().getNode("transmitterRange") != null &&
+                                    e.getNodeInfo().getNode("transmitterRoot") != null){
+                                e.getNodeInfo().getNode("transmitterRange").setUserObject(0);
+                                e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("transmitterRoot"));
+                                e.getNodeInfo().assignNode("transmitterRoot", null);
+                            }
+                        }
+                    }
+                    else{
+                        if(e.getNodeInfo().getNode("transmitterRange") != null &&
+                                e.getNodeInfo().getNode("transmitterRoot") != null){
+                            e.getNodeInfo().getNode("transmitterRange").setUserObject(0);
+                            e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("transmitterRoot"));
+                            e.getNodeInfo().assignNode("transmitterRoot", null);
+                        }
+                    }
+
+                }
+                break;
+
+
+            case RECEIVER:
+                if(!e.getComponents().isEmpty()){
+                    if(e.hasComponent(Component.ComponentType.RECEIVER)){
+                        Component c = e.getComponent(Component.ComponentType.RECEIVER);
+                        if(!e.componentsToRemove.containsKey(c.getType())){
+                            if(e.getNodeInfo().getNode("receiverRoot") == null){
+                                DefaultMutableTreeNode receiverNode = new DefaultMutableTreeNode("Receiver");
+                                e.getNodeInfo().getRoot().add(receiverNode);
+                                e.getNodeInfo().assignNode("receiverRoot", receiverNode);
+                            }
+                        }
+                        else{
+                            if(e.getNodeInfo().getNode("receiverRoot") != null){
+                                e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("receiverRoot"));
+                                e.getNodeInfo().assignNode("receiverRoot", null);
+                            }
+                        }
+                    }
+                    else{
+                        if(e.getNodeInfo().getNode("receiverRoot") != null){
+                            e.getNodeInfo().getRoot().remove(e.getNodeInfo().getNode("receiverRoot"));
+                            e.getNodeInfo().assignNode("receiverRoot", null);
+                        }
+                    }
+                }
+                break;
+        }
+        model.reload(rootNode);
+    }
+
+    public void addComponentLeaf(DefaultMutableTreeNode root, String name, Vec2int vec){
+        DefaultMutableTreeNode leaf = new DefaultMutableTreeNode(name);
+        root.add(leaf);
+        DefaultMutableTreeNode xLeaf = new DefaultMutableTreeNode(vec.x);
+        DefaultMutableTreeNode yLeaf = new DefaultMutableTreeNode(vec.y);
+        leaf.add(xLeaf);
+        leaf.add(yLeaf);
+    }
+
+    public void entityAdded(Entity e){
+        DefaultMutableTreeNode node = createNode(e);
+        rootNode.add(node);
+        leaves.put(e.getId(), e.getNodeInfo());
+        model.reload(rootNode);
+    }
+
+    public void entityChanged(){
+        model.reload(rootNode);
+    }
+
+    public void entityRemoved(Entity e){
+        //REMOVE
+        if(/*leaves.get(e) != null && */leaves.get(e.getId()).getRoot() != null && rootNode.isNodeChild(leaves.get(e.getId()).getRoot())) {
+            rootNode.remove(leaves.get(e.getId()).getRoot());
+            model.reload(rootNode);
+            repaint();
+        }
+    }
+    
+    private Entity searchForEntity(DefaultMutableTreeNode node){
+        Object nodeInfo = node.getUserObject();
+        if (nodeInfo.getClass() == Entity.class) {
+            return (Entity) nodeInfo;
+        }else {
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
+            if (node.isRoot()){
+                app.actionPanel.whenRootSelected(nodeInfo);
+                app.mapView.setSelectedEntity(null);
+
+                return null;
+            }
+            return searchForEntity(parent);
+        }
+    }
+
+    public void update(int deltaTime){;
+        for(Entity e : app.world.entities){
+            leaves.get(e.getId()).getNode("posX").setUserObject(e.getPos().x);
+            leaves.get(e.getId()).getNode("posY").setUserObject(e.getPos().y);
+            model.nodeChanged(leaves.get(e.getId()).getNode("posX"));
+            model.nodeChanged(leaves.get(e.getId()).getNode("posY"));
+
+            leaves.get(e.getId()).getNode("velX").setUserObject(e.getSpeed().x);
+            leaves.get(e.getId()).getNode("velY").setUserObject(e.getSpeed().y);
+            model.nodeChanged(leaves.get(e.getId()).getNode("velX"));
+            model.nodeChanged(leaves.get(e.getId()).getNode("velY"));
+
+            leaves.get(e.getId()).getNode("side").setUserObject(e.getSide().getName());
+            model.nodeChanged(leaves.get(e.getId()).getNode("side"));
+        }
+
+
+    }
+
+    public void selectNode(Entity key){
+        if(key != null){
+            TreePath path = new TreePath(leaves.get(key.getId()).getRoot().getPath());
+            tree.setSelectionPath(path);
+        }
+    }
+
+    public void updateHierarchyTree(){
+        for(Entity e : app.world.entities){
+            app.mapView.setSelectedEntity(e);
+            app.editorPanel.updateSelectedEntity();
+        }
+    }
+
+    public void clearSelectionInTree(){
+        tree.clearSelection();
+    }
+
+    @Override
+    public void selectedEntityChanged(Entity entity) {
+        System.out.println("EditorView::selectedEntityChanged");
+    }
+}
+
+
+//DefaultMutableTreeNode Mert = new DefaultMutableTreeNode("Mert");
+//DefaultMutableTreeNode Emir = new DefaultMutableTreeNode("Emir");
+//DefaultMutableTreeNode Seda = new DefaultMutableTreeNode("Seda");
+//
+//DefaultMutableTreeNode Position1 = new DefaultMutableTreeNode("Position");
+//DefaultMutableTreeNode Velocity1 = new DefaultMutableTreeNode("Velocity");
+//
+//DefaultMutableTreeNode Position2 = new DefaultMutableTreeNode("Position");
+//DefaultMutableTreeNode Velocity2 = new DefaultMutableTreeNode("Velocity");
+//
+//DefaultMutableTreeNode Position3 = new DefaultMutableTreeNode("Position");
+//DefaultMutableTreeNode Velocity3 = new DefaultMutableTreeNode("Velocity");
+//
+//        Mert.add(Position1);
+//        Mert.add(Velocity1);
+//
+//        Emir.add(Position2);
+//        Emir.add(Velocity2);
+//
+//        Seda.add(Position3);
+//        Seda.add(Velocity3);
+//
+//
+//        rootNode.add(Mert);
+//        rootNode.add(Emir);
+//        rootNode.add(Seda);
+//
+//
+//JTree tree = new JTree(rootNode);
